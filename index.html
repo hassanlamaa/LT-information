@@ -1,102 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LT Information</title>
-
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background:#f4f4f4;
-            margin:0;
-            padding:0;
-        }
-
-        header{
-            background:#0f172a;
-            color:white;
-            padding:30px;
-            text-align:center;
-        }
-
-        .container{
-            max-width:1000px;
-            margin:auto;
-            padding:30px;
-        }
-
-        .pages{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-            gap:20px;
-        }
-
-        .card{
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .card h3{
-            margin-top:0;
-        }
-
-        .card a{
-            display:inline-block;
-            margin-top:10px;
-            text-decoration:none;
-            background:#2563eb;
-            color:white;
-            padding:10px 15px;
-            border-radius:6px;
-        }
-
-        .card a:hover{
-            background:#1d4ed8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LT Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      color: #1f2937;
+    }
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 35px 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: white;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+    .card a {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .card a:hover {
+      background: #1d4ed8;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #6b7280;
+    }
+  </style>
 </head>
-
 <body>
 
 <header>
-    <h1>LT Information</h1>
-    <p>Project Pages Directory</p>
+  <h1>LT Information</h1>
+  <p>HTML Pages Directory</p>
 </header>
 
 <div class="container">
 
-    <div class="pages">
+  <div class="card">
+    <h2>Chapter 4</h2>
+    <p>Open Chapter 4 page.</p>
+    <a href="chapter4.html">Open Page</a>
+  </div>
 
-        <div class="card">
-            <h3>Home Page</h3>
-            <p>Main landing page.</p>
-            <a href="home.html">Open</a>
-        </div>
+  <div class="card">
+    <h2>Chapter 4 - CORBA</h2>
+    <p>Open CORBA chapter page.</p>
+    <a href="chapter4corba.html">Open Page</a>
+  </div>
 
-        <div class="card">
-            <h3>About</h3>
-            <p>About the project.</p>
-            <a href="about.html">Open</a>
-        </div>
+  <div class="card">
+    <h2>HTTP</h2>
+    <p>Open HTTP lesson page.</p>
+    <a href="http.html">Open Page</a>
+  </div>
 
-        <div class="card">
-            <h3>Documentation</h3>
-            <p>Technical documentation page.</p>
-            <a href="docs.html">Open</a>
-        </div>
-
-        <div class="card">
-            <h3>Dashboard</h3>
-            <p>Dashboard interface.</p>
-            <a href="dashboard.html">Open</a>
-        </div>
-
-    </div>
+  <div class="card">
+    <h2>Practice</h2>
+    <p>Open practice page.</p>
+    <a href="paractis.html">Open Page</a>
+  </div>
 
 </div>
+
+<footer>
+  © 2026 LT Information
+</footer>
 
 </body>
 </html>
