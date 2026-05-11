@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>🌐 RMI‑IIOP & CORBA Deep Dive | Interactive Course + Final Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4f8;
+      color: #0a2c3b;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      background: linear-gradient(145deg, #144e68, #2a8eb3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin: 1.8rem 0 1rem;
+      border-left: 6px solid #3b8db0;
+      padding-left: 1rem;
+      color: #134b5e;
+    }
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 1rem 0 0.6rem;
+      color: #1e6f8c;
+    }
+    .card {
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+      padding: 1.6rem;
+      margin-bottom: 2rem;
+      border: 1px solid #d9e4ec;
+      transition: all 0.2s;
+    }
+    .code-block {
+      background: #0e2a36;
+      color: #d4f0fc;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      font-family: 'Menlo', 'Monaco', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    .highlight {
+      background: #e9f2f9;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .knowledge-check {
+      background: #eef3fa;
+      border-radius: 1.5rem;
+      padding: 1rem 1.5rem;
+      margin-top: 1.5rem;
+      border-left: 5px solid #2c9b8e;
+    }
+    .quiz-option {
+      margin: 0.6rem 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    button {
+      background: #1d6f8b;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.6rem 1.3rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0.5rem;
+    }
+    button:hover { background: #0f556d; transform: translateY(-1px); }
+    .feedback {
+      margin-top: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 1rem;
+      font-weight: 500;
+    }
+    .correct-feedback { background: #e0f2e9; color: #0f5c3e; border-left: 4px solid #2ecc71; }
+    .wrong-feedback { background: #ffe6e6; color: #b13e3e; border-left: 4px solid #e74c3c; }
+    .final-quiz {
+      background: #fef7e0;
+      border: 2px solid #f3c26b;
+    }
+    .arch-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .arch-card {
+      background: #fafcfd;
+      border-radius: 1.2rem;
+      padding: 0.8rem;
+      flex: 1 1 200px;
+      border: 1px solid #cbdbe0;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #3e7c91;
+    }
+    hr { margin: 1rem 0; border-color: #d4e0e8; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1><i class="fas fa-globe"></i> RMI‑IIOP · CORBA · Java IDL</h1>
+  <p style="margin-bottom: 1.5rem; font-size: 1.1rem;"><i class="fas fa-book"></i> Deep interactive course on IIOP, CORBA architecture, IDL, and language‑independent distributed objects.</p>
+
+  <!-- ========= 4.9.3 RMI-IIOP ========= -->
+  <div class="card">
+    <h2>📡 4.9.3 RMI‑IIOP & Java IDL</h2>
+    <p><strong>IIOP (Internet Inter‑ORB Protocol)</strong> is CORBA’s standard protocol (TCP/IP) enabling cross‑language distributed communication. <strong>CORBA</strong> (Common Object Request Broker Architecture) – OMG standard for platform‑neutral distributed objects.</p>
+    <p><strong>Java IDL</strong> = Java’s CORBA/IIOP implementation. The <code>idlj</code> compiler generates stubs and skeletons from IDL files, allowing Java objects to interact with any CORBA‑compliant system.</p>
+    <div class="code-block">
+      // Example IDL (hello.idl)<br>
+      module HelloApp { interface Hello { string sayHello(); }; };
+      // idlj -fall hello.idl  → generates client stubs + server skeletons
+    </div>
+    <p><strong>RMI‑IIOP:</strong> combines RMI simplicity with CORBA interoperability. By adhering to restrictions (no pass‑by‑reference, etc.), RMI remote objects can use IIOP and communicate with CORBA clients in any language (C++, Python, etc.).</p>
+    <div class="knowledge-check" id="check-iiop">
+      <strong><i class="fas fa-brain"></i> Knowledge Check 4.9.3</strong>
+      <p>What is the primary benefit of RMI‑IIOP?</p>
+      <div class="quiz-option"><input type="radio" name="qiiop" value="A"> A) It replaces RMI with a faster transport.</div>
+      <div class="quiz-option"><input type="radio" name="qiiop" value="B"> B) It allows RMI objects to interoperate with CORBA objects written in any language.</div>
+      <div class="quiz-option"><input type="radio" name="qiiop" value="C"> C) It removes the need for stub generation.</div>
+      <div class="quiz-option"><input type="radio" name="qiiop" value="D"> D) It only works between Java applications.</div>
+      <button class="check-btn" data-qgroup="iiop" data-correct="B">Check Answer</button>
+      <div class="feedback-area" id="fb-iiop"></div>
+    </div>
+  </div>
+
+  <!-- ========= 4.9.4 OMG CORBA (Introduction) ========= -->
+  <div class="card">
+    <h2>🏛️ 4.9.4 OMG CORBA – Introduction</h2>
+    <p><strong>CORBA</strong> is a technical standard for an <strong>ORB (Object Request Broker)</strong> – an object‑oriented evolution of RPC. It allows applications on different computers, OS, CPU types, and languages (C++, Java, Python, COBOL) to interoperate.</p>
+    <p><i class="fas fa-quote-left"></i> “Making software work together” – middleware for heterogeneous environments.</p>
+    <ul>
+      <li><i class="fas fa-check"></i> Distributed middleware – network transparency.</li>
+      <li><i class="fas fa-check"></i> Language‑independent interface definitions via IDL.</li>
+      <li><i class="fas fa-check"></i> ORB handles location, activation, communication.</li>
+    </ul>
+    <div class="code-block">
+      // CORBA invocation steps at runtime:<br>
+      1. Server object starts, registers with ORB.<br>
+      2. Client binds (finds) server object reference via ORB.<br>
+      3. Client invokes method on object reference.<br>
+      4. ORB delivers request to server object.<br>
+      5. Server returns result through ORB.
+    </div>
+    <div class="knowledge-check" id="check-corba-intro">
+      <strong><i class="fas fa-brain"></i> Knowledge Check (CORBA Basics)</strong>
+      <p>What does ORB stand for in CORBA?</p>
+      <div class="quiz-option"><input type="radio" name="qcorba1" value="A"> A) Object Request Broker</div>
+      <div class="quiz-option"><input type="radio" name="qcorba1" value="B"> B) Object Remote Bridge</div>
+      <div class="quiz-option"><input type="radio" name="qcorba1" value="C"> C) Operation Routing Buffer</div>
+      <div class="quiz-option"><input type="radio" name="qcorba1" value="D"> D) Open Request Bus</div>
+      <button class="check-btn" data-qgroup="corba1" data-correct="A">Check Answer</button>
+      <div class="feedback-area" id="fb-corba1"></div>
+    </div>
+  </div>
+
+  <!-- ========= CORBA Architecture Deep Dive ========= -->
+  <div class="card">
+    <h2>⚙️ CORBA Architecture – Core Components</h2>
+    <div class="arch-grid">
+      <div class="arch-card"><i class="fas fa-database"></i><br><strong>Interface Repository</strong><br>Dynamic info about object interfaces.</div>
+      <div class="arch-card"><i class="fas fa-code-branch"></i><br><strong>DII</strong><br>Dynamic Invocation Interface – construct requests at runtime.</div>
+      <div class="arch-card"><i class="fas fa-file-code"></i><br><strong>Client Stubs (IDL)</strong><br>Precompiled static invocations.</div>
+      <div class="arch-card"><i class="fas fa-plug"></i><br><strong>ORB Interface</strong><br>APIs for local ORB services.</div>
+      <div class="arch-card"><i class="fas fa-microchip"></i><br><strong>Object Adapter</strong><br>Mediates ORB & servants (BOA/OA).</div>
+      <div class="arch-card"><i class="fas fa-tachometer-alt"></i><br><strong>Server Skeletons</strong><br>Static IDL skeletons for server methods.</div>
+      <div class="arch-card"><i class="fas fa-dharmachakra"></i><br><strong>DSI (Dynamic Skeleton)</strong><br>Runtime binding for servers without precompiled stubs.</div>
+      <div class="arch-card"><i class="fas fa-exchange-alt"></i><br><strong>Implementation Repository</strong><br>Stores server activation details.</div>
+    </div>
+    <p><span class="highlight">ORB Core</span> is the switch – routes requests between objects. <strong>Object Adapter</strong> (e.g., POA – Portable Object Adapter) handles activation, reference generation, request dispatching.</p>
+    <div class="knowledge-check" id="check-arch">
+      <strong><i class="fas fa-brain"></i> Knowledge Check (Architecture)</strong>
+      <p>Which component allows a CORBA server to be implemented without compiling IDL‑specific skeletons (dynamic dispatch)?</p>
+      <div class="quiz-option"><input type="radio" name="qarch" value="A"> A) Dynamic Invocation Interface (DII)</div>
+      <div class="quiz-option"><input type="radio" name="qarch" value="B"> B) Dynamic Skeleton Interface (DSI)</div>
+      <div class="quiz-option"><input type="radio" name="qarch" value="C"> C) Interface Repository</div>
+      <div class="quiz-option"><input type="radio" name="qarch" value="D"> D) ORB Interface</div>
+      <button class="check-btn" data-qgroup="arch" data-correct="B">Check Answer</button>
+      <div class="feedback-area" id="fb-arch"></div>
+    </div>
+  </div>
+
+  <!-- ========= IDL Deep Dive & Example ========= -->
+  <div class="card">
+    <h2>📜 Interface Definition Language (IDL) & Example</h2>
+    <p>IDL is declarative – defines object interfaces (operations, attributes, exceptions). Supports <strong>in / out / inout</strong> parameter directions, multiple inheritance, and user exceptions.</p>
+    <div class="code-block">
+      // Example IDL file: Bank.idl<br>
+      module Bank {<br>
+        exception InsufficientFunds {};<br>
+        interface Account {<br>
+          readonly attribute string owner;<br>
+          long balance();<br>
+          void withdraw(in long amount) raises (InsufficientFunds);<br>
+          void deposit(in long amount);<br>
+        };<br>
+      };
+    </div>
+    <p>Compiled with <code>idlj -fall Bank.idl</code> → stubs, skeletons, helper classes. <strong>System exceptions</strong> (30+ predefined) are thrown by ORB; <strong>user exceptions</strong> defined in IDL.</p>
+    <div class="knowledge-check" id="check-idl">
+      <strong><i class="fas fa-brain"></i> Knowledge Check (IDL)</strong>
+      <p>What does the IDL direction “inout” indicate?</p>
+      <div class="quiz-option"><input type="radio" name="qidl" value="A"> A) Parameter is only passed client→server.</div>
+      <div class="quiz-option"><input type="radio" name="qidl" value="B"> B) Parameter is only server→client.</div>
+      <div class="quiz-option"><input type="radio" name="qidl" value="C"> C) Parameter is passed both directions (client→server and server→client).</div>
+      <div class="quiz-option"><input type="radio" name="qidl" value="D"> D) Parameter is ignored.</div>
+      <button class="check-btn" data-qgroup="idl" data-correct="C">Check Answer</button>
+      <div class="feedback-area" id="fb-idl"></div>
+    </div>
+  </div>
+
+  <!-- ========= Advantages of CORBA & Middleware ========= -->
+  <div class="card">
+    <h2>✅ Advantages of CORBA & Role as Middleware</h2>
+    <ul>
+      <li><i class="fas fa-check-circle"></i> Language, OS, hardware independence.</li>
+      <li><i class="fas fa-check-circle"></i> Location transparency – objects can move without client change.</li>
+      <li><i class="fas fa-check-circle"></i> Built‑on standard IDL – strict interface contracts.</li>
+      <li><i class="fas fa-check-circle"></i> Interoperability via IIOP.</li>
+      <li><i class="fas fa-check-circle"></i> Reuse of legacy systems by wrapping them as CORBA objects.</li>
+    </ul>
+    <p><strong>Middleware</strong> (CORBA, RMI, MQ, .NET) connects applications. CORBA is <strong>distributed middleware</strong> – excels at cross‑platform, cross‑language communication.</p>
+    <div class="knowledge-check" id="check-adv">
+      <strong><i class="fas fa-brain"></i> Knowledge Check (Advantages)</strong>
+      <p>Which statement best describes a key advantage of CORBA?</p>
+      <div class="quiz-option"><input type="radio" name="qadv" value="A"> A) It only works on Windows.</div>
+      <div class="quiz-option"><input type="radio" name="qadv" value="B"> B) It allows objects written in different languages (C++, Java, Python) to communicate transparently.</div>
+      <div class="quiz-option"><input type="radio" name="qadv" value="C"> C) It is a programming language, not a middleware.</div>
+      <div class="quiz-option"><input type="radio" name="qadv" value="D"> D) It requires all objects to run on the same machine.</div>
+      <button class="check-btn" data-qgroup="adv" data-correct="B">Check Answer</button>
+      <div class="feedback-area" id="fb-adv"></div>
+    </div>
+  </div>
+
+  <!-- ========= FINAL QUIZ (Comprehensive) ========= -->
+  <div class="card final-quiz">
+    <h2><i class="fas fa-graduation-cap"></i> 🎓 Final Exam: RMI‑IIOP · CORBA · IDL</h2>
+    <p>Test your mastery (10 questions covering all deep concepts).</p>
+    <div id="finalQuizContainer"></div>
+    <button id="submitFinalQuiz" style="background:#e67e22;"><i class="fas fa-check-double"></i> Submit Final Quiz</button>
+    <div id="finalQuizResult" style="margin-top: 1.2rem;"></div>
+  </div>
+
+  <footer><i class="fas fa-code"></i> Complete deep lesson: RMI‑IIOP, CORBA architecture, IDL, ORB, Object Adapters — created from official materials.</footer>
+</div>
+
+<script>
+  // utility: knowledge check handler
+  document.querySelectorAll('.check-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const group = btn.getAttribute('data-qgroup');
+      const correctAnswer = btn.getAttribute('data-correct');
+      let selectedRadio = null;
+      if (group === 'iiop') selectedRadio = document.querySelector('input[name="qiiop"]:checked');
+      else if (group === 'corba1') selectedRadio = document.querySelector('input[name="qcorba1"]:checked');
+      else if (group === 'arch') selectedRadio = document.querySelector('input[name="qarch"]:checked');
+      else if (group === 'idl') selectedRadio = document.querySelector('input[name="qidl"]:checked');
+      else if (group === 'adv') selectedRadio = document.querySelector('input[name="qadv"]:checked');
+      const fbDiv = document.getElementById(`fb-${group}`);
+      if (!selectedRadio) {
+        fbDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-exclamation-triangle"></i> Please select an answer.</div>`;
+        return;
+      }
+      const userVal = selectedRadio.value;
+      if (userVal === correctAnswer) {
+        fbDiv.innerHTML = `<div class="feedback correct-feedback"><i class="fas fa-check-circle"></i> ✅ Correct! Well done.</div>`;
+      } else {
+        let correctLetter = "";
+        if (correctAnswer === "A") correctLetter = "A";
+        else if (correctAnswer === "B") correctLetter = "B";
+        else if (correctAnswer === "C") correctLetter = "C";
+        else correctLetter = "D";
+        fbDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-times-circle"></i> ❌ Incorrect. The correct answer is ${correctLetter}. Review the material.</div>`;
+      }
+    });
+  });
+
+  // ----- FINAL QUIZ (10 questions covering IIOP, CORBA, IDL, Architecture, RMI-IIOP) -----
+  const finalQuestions = [
+    { text: "1. What protocol does CORBA use for communication between ORBs over TCP/IP?", options: ["RMI", "IIOP", "SOAP", "JRMP"], correct: "IIOP" },
+    { text: "2. Which tool generates Java stubs and skeletons from an IDL file?", options: ["javac", "rmic", "idlj", "orbd"], correct: "idlj" },
+    { text: "3. What does the CORBA Object Adapter (e.g., POA) primarily do?", options: ["Encrypts IIOP messages", "Manages object references, activation, and request dispatching", "Compiles IDL to bytecode", "Provides naming service only"], correct: "Manages object references, activation, and request dispatching" },
+    { text: "4. Which component allows a CORBA client to construct a request dynamically without pre‑compiled stubs?", options: ["Dynamic Skeleton Interface (DSI)", "Interface Repository", "Dynamic Invocation Interface (DII)", "ORB Core"], correct: "Dynamic Invocation Interface (DII)" },
+    { text: "5. In IDL, an attribute declared as 'readonly' maps to:", options: ["A pair of get/set operations", "Only a get operation", "Only a set operation", "No operation"], correct: "Only a get operation" },
+    { text: "6. Which of the following is a system exception in CORBA that can be thrown by any operation?", options: ["InsufficientFunds", "UserNotFound", "CORBA.UNKNOWN", "IOException"], correct: "CORBA.UNKNOWN" },
+    { text: "7. What is the main purpose of the Interface Repository?", options: ["Store server implementations", "Provide runtime information about available object interfaces (methods, types)", "Cache method invocations", "Authenticate clients"], correct: "Provide runtime information about available object interfaces (methods, types)" },
+    { text: "8. RMI‑IIOP allows:", options: ["RMI objects to use JRMP only", "RMI objects to use IIOP while retaining RMI programming simplicity", "CORBA objects to be written in Java only", "To replace IDL with Java interfaces"], correct: "RMI objects to use IIOP while retaining RMI programming simplicity" },
+    { text: "9. Which CORBA component acts as a 'switch' routing requests between objects?", options: ["Object Adapter", "ORB Core", "Dynamic Skeleton", "Implementation Repository"], correct: "ORB Core" },
+    { text: "10. If a parameter in IDL is marked 'out', it means:", options: ["Value is passed from client to server only", "Value is passed from server to client only (result)", "Value is passed both ways", "Parameter is constant"], correct: "Value is passed from server to client only (result)" }
+  ];
+
+  function buildFinalQuiz() {
+    const container = document.getElementById("finalQuizContainer");
+    container.innerHTML = "";
+    finalQuestions.forEach((q, idx) => {
+      const qDiv = document.createElement("div");
+      qDiv.style.background = "#fff7e8";
+      qDiv.style.borderRadius = "1.2rem";
+      qDiv.style.padding = "1rem";
+      qDiv.style.marginBottom = "1rem";
+      qDiv.innerHTML = `<strong>${q.text}</strong><div id="finalOpts-${idx}" style="margin-top: 0.6rem;"></div>`;
+      const optsDiv = qDiv.querySelector(`#finalOpts-${idx}`);
+      q.options.forEach(opt => {
+        const label = document.createElement("label");
+        label.className = "quiz-option";
+        label.innerHTML = `<input type="radio" name="finalQ${idx}" value="${opt.replace(/"/g, '&quot;')}"> <span>${opt}</span>`;
+        optsDiv.appendChild(label);
+      });
+      container.appendChild(qDiv);
+    });
+  }
+  buildFinalQuiz();
+
+  document.getElementById("submitFinalQuiz").addEventListener("click", () => {
+    let score = 0;
+    const results = [];
+    for (let i = 0; i < finalQuestions.length; i++) {
+      const selected = document.querySelector(`input[name="finalQ${i}"]:checked`);
+      const userAnswer = selected ? selected.value : null;
+      const isCorrect = (userAnswer === finalQuestions[i].correct);
+      if (isCorrect) score++;
+      results.push({ q: finalQuestions[i].text, correct: finalQuestions[i].correct, user: userAnswer, ok: isCorrect });
+    }
+    const resultDiv = document.getElementById("finalQuizResult");
+    let html = `<div style="background:#ecf5f0; border-radius:1.2rem; padding:1rem;"><i class="fas fa-chalkboard-teacher"></i> <strong>Final Score: ${score} / ${finalQuestions.length}</strong><br>`;
+    if (score === finalQuestions.length) html += "🏅 Perfect! You have deep knowledge of RMI‑IIOP, CORBA, and IDL.";
+    else if (score >= 7) html += "👍 Great! Review the incorrect answers to sharpen your expertise.";
+    else html += "📘 Re‑study CORBA architecture, IIOP, and IDL direction semantics, then retry.";
+    html += "<details><summary>🔎 Show detailed answers & explanations</summary><ul>";
+    results.forEach((r, idx) => {
+      html += `<li><strong>Q${idx+1}:</strong> ${r.q}<br> Your answer: ${r.user || "—"} — ${r.ok ? "✅ Correct" : `❌ Correct answer: ${r.correct}`}</li>`;
+    });
+    html += "</ul></details></div>";
+    resultDiv.innerHTML = html;
+    resultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+</script>
+
+<!-- additional inline explanation for optional exam exercises (conceptual) -->
+<div style="max-width:1300px; margin: 1rem auto 0; background: #fbfaf0; border-radius: 1.5rem; padding: 1rem; border: 1px solid #eee2b5;">
+  <p><i class="fas fa-pen-alt"></i> <strong>📌 Exam exercises (based on official questions)</strong> – Use the interactive quizzes above to practice. For deeper preparation, consider:</p>
+  <ul>
+    <li>Compare 2‑tier vs 3‑tier client/server architectures (presentation, logic, data layers).</li>
+    <li>Explain RPC characteristics (transparency, marshalling, stubs).</li>
+    <li>Middleware functions: communication, data transformation, transaction management, naming.</li>
+    <li>HTTP methods: safe (GET, HEAD) vs idempotent (GET, PUT, DELETE).</li>
+    <li>InetAddress class – represents IP addresses; useful for host resolution.</li>
+    <li>RDA (Remote Database Access) – standard for remote SQL execution.</li>
+    <li>RMI security via policy files (<code>-Djava.security.policy</code>).</li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>🌐 HTTP & HTTPS Masterclass | Interactive Lesson + API Playground</title>
+  <!-- Google Fonts + Font Awesome 6 (free icons) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f6f9fc 0%, #eef2f5 100%);
+      color: #1a2c3e;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* typography */
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0f2b3d, #1e5a7d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      border-left: 5px solid #2c7da0;
+      padding-left: 1rem;
+      color: #1f5068;
+    }
+
+    h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin: 1rem 0 0.6rem;
+      color: #1e3b4a;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(0px);
+      border-radius: 2rem;
+      box-shadow: 0 12px 28px rgba(0, 32, 64, 0.08);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(44, 125, 160, 0.15);
+    }
+
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+
+    /* method badges */
+    .method-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    .method-card {
+      flex: 1 1 180px;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid #e2edf2;
+    }
+
+    .method-card i {
+      font-size: 2rem;
+      margin-bottom: 0.4rem;
+      display: inline-block;
+    }
+
+    .method-card .method-name {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+
+    .method-card small {
+      font-size: 0.75rem;
+      color: #4b6f86;
+    }
+
+    .badge-safe {
+      background: #d4f1f4;
+      color: #0f5c6b;
+      border-radius: 50px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* comparison pills */
+    .http-compare {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    .compare-card {
+      flex: 1;
+      background: #ffffffcc;
+      border-radius: 1.5rem;
+      padding: 1rem 1.2rem;
+      border-left: 6px solid;
+    }
+    .http-card { border-left-color: #d9534f; }
+    .https-card { border-left-color: #5cb85c; }
+
+    /* playground */
+    .playground-area {
+      background: #0f212e;
+      color: #eef4fc;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    input, select, textarea, button {
+      font-family: inherit;
+      border-radius: 1rem;
+      border: 1px solid #cbdde6;
+      padding: 0.7rem 1rem;
+      font-size: 0.9rem;
+      background: white;
+      transition: 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2c7da0;
+      box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+    }
+
+    button {
+      background: #2c7da0;
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    button:hover {
+      background: #1f5e7a;
+      transform: translateY(-1px);
+    }
+
+    .response-box {
+      background: #07161f;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+      font-size: 0.85rem;
+    }
+
+    pre {
+      color: #bbd9ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'Menlo', monospace;
+    }
+
+    .quiz-option {
+      margin: 0.8rem 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-question {
+      background: #f0f6fa;
+      border-radius: 1.2rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-badge {
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #496f84;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 2rem;">
+    <h1><i class="fas fa-globe" style="background: none; color: #2c7da0;"></i> HTTP/HTTPS · Deep Interactive Course</h1>
+    <div><i class="fas fa-shield-alt"></i> request | response | security</div>
+  </div>
+
+  <!-- 1. HTTP + HTTPS Intro -->
+  <div class="card">
+    <h2><i class="fas fa-exchange-alt"></i> HTTP vs HTTPS — The core difference</h2>
+    <div class="http-compare">
+      <div class="compare-card http-card">
+        <i class="fas fa-unlock-alt" style="color:#d9534f;"></i>
+        <h3 style="margin:0.4rem 0">HTTP</h3>
+        <p>HyperText Transfer Protocol — plain text, no encryption. Data sent in clear text, vulnerable to eavesdropping (man-in-the-middle). Default port: <code>80</code>.</p>
+        <span class="badge-safe"><i class="fas fa-exclamation-triangle"></i> insecure</span>
+      </div>
+      <div class="compare-card https-card">
+        <i class="fas fa-lock" style="color:#5cb85c;"></i>
+        <h3 style="margin:0.4rem 0">HTTPS</h3>
+        <p>HTTP + SSL/TLS encryption. Authenticates server and encrypts all data, ensuring confidentiality & integrity. Default port: <code>443</code>. Essential for modern web.</p>
+        <span class="badge-safe" style="background:#d9edf7;"><i class="fas fa-check-circle"></i> secure</span>
+      </div>
+    </div>
+    <p style="margin-top: 1rem;"><i class="fas fa-lightbulb"></i> <strong>Key takeaway:</strong> HTTPS protects login credentials, payments, and sensitive data. Always prefer HTTPS in production.</p>
+  </div>
+
+  <!-- 2. HTTP Methods deep dive -->
+  <div class="card">
+    <h2><i class="fas fa-code-branch"></i> HTTP Request Methods (verbs)</h2>
+    <p>HTTP methods indicate the desired action to perform on a resource. Below are the most important ones:</p>
+    <div class="method-grid">
+      <div class="method-card"><i class="fas fa-eye" style="color:#3498db;"></i><div class="method-name">GET</div><small>read / retrieve data</small><div class="badge-safe" style="margin-top:6px;">safe + idempotent</div></div>
+      <div class="method-card"><i class="fas fa-plus-circle" style="color:#2ecc71;"></i><div class="method-name">POST</div><small>create new resource</small><div class="badge-safe" style="margin-top:6px; background:#ffe6e6;">not idempotent</div></div>
+      <div class="method-card"><i class="fas fa-edit" style="color:#f39c12;"></i><div class="method-name">PUT</div><small>full update / replace</small><div class="badge-safe" style="margin-top:6px;">idempotent</div></div>
+      <div class="method-card"><i class="fas fa-pencil-alt" style="color:#e67e22;"></i><div class="method-name">PATCH</div><small>partial update</small><div class="badge-safe" style="margin-top:6px;">not always idempotent</div></div>
+      <div class="method-card"><i class="fas fa-trash-alt" style="color:#e74c3c;"></i><div class="method-name">DELETE</div><small>remove resource</small><div class="badge-safe" style="margin-top:6px;">idempotent</div></div>
+    </div>
+    <p><strong>⚡ Important concepts:</strong> <strong>Safe methods</strong> (GET) don't alter server state. <strong>Idempotent</strong> methods (PUT, DELETE, GET) have same effect after multiple identical requests. POST is neither safe nor idempotent.</p>
+    <div style="background:#eef3f7; border-radius:1rem; padding:1rem; margin-top:1rem;">
+      <i class="fas fa-terminal"></i> <strong>Example request lines:</strong><br>
+      <code>GET /users/42 HTTP/1.1</code><br>
+      <code>POST /products HTTP/1.1  (with body: { "name": "Laptop" })</code><br>
+      <code>DELETE /posts/7 HTTP/1.1</code>
+    </div>
+  </div>
+
+  <!-- 3. INTERACTIVE API PLAYGROUND (test methods in real time) -->
+  <div class="card">
+    <h2><i class="fas fa-gamepad"></i> 🔥 LIVE API Playground · Test HTTP methods</h2>
+    <p>Send real requests to <strong>JSONPlaceholder</strong> (mock REST API). Learn by doing — pick a method, call the endpoint, see raw response!</p>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0;">
+      <div style="flex:2; min-width: 200px;">
+        <label><i class="fas fa-exchange-alt"></i> Method:</label>
+        <select id="httpMethodSelect" style="width: 100%;">
+          <option value="GET">GET (retrieve)</option>
+          <option value="POST">POST (create)</option>
+          <option value="PUT">PUT (full update)</option>
+          <option value="PATCH">PATCH (partial update)</option>
+          <option value="DELETE">DELETE (remove)</option>
+        </select>
+      </div>
+      <div style="flex:4;">
+        <label><i class="fas fa-link"></i> URL (HTTPS endpoint):</label>
+        <input type="text" id="apiUrl" value="https://jsonplaceholder.typicode.com/posts/1" style="width: 100%;">
+      </div>
+    </div>
+
+    <div id="bodyContainer" style="margin-bottom: 0.8rem;">
+      <label><i class="fas fa-code"></i> Request Body (for POST/PUT/PATCH — JSON format):</label>
+      <textarea id="requestBody" rows="3" style="width: 100%; font-family: monospace;" placeholder='{ "title": "demo", "body": "interactive lesson", "userId": 1 }'>{"title": "Interactive HTTP", "body": "Learning via playground", "userId": 1}</textarea>
+      <small class="info-note">⚠️ GET & DELETE ignore body. Use valid JSON for write methods.</small>
+    </div>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <button id="sendRequestBtn"><i class="fas fa-paper-plane"></i> Send HTTP Request</button>
+      <button id="resetDemoUrl" style="background:#547a8f;"><i class="fas fa-sync-alt"></i> Reset Example URLs</button>
+    </div>
+
+    <div class="response-box" id="responseArea">
+      <div><i class="fas fa-chart-line"></i> <strong>Response preview</strong> <span id="loadingIndicator" style="display:none;"><i class="fas fa-spinner fa-pulse"></i> sending...</span></div>
+      <pre id="responseOutput">✨ Click "Send HTTP Request" — real API response will appear here.  
+(using fetch + JSONPlaceholder, inspect status, headers & body)</pre>
+    </div>
+    <p class="info-note" style="margin-top: 12px;"><i class="fas fa-info-circle"></i> JSONPlaceholder is a test service: POST/PUT will return a mock object with new ID (200/201). DELETE returns empty 200. Learn by tweaking URLs: /posts, /posts/1, /comments</p>
+  </div>
+
+  <!-- 4. QUIZ: interactive knowledge check -->
+  <div class="card">
+    <h2><i class="fas fa-graduation-cap"></i> 📝 Knowledge Check: HTTP Methods & Security</h2>
+    <p>Test what you've learned! Select answers then submit.</p>
+    <div id="quizContainer"></div>
+    <button id="submitQuizBtn" style="margin-top: 1rem;"><i class="fas fa-check-double"></i> Submit Quiz</button>
+    <div id="quizResult" style="margin-top: 1rem; font-weight: 600;"></div>
+  </div>
+  <footer>
+    <i class="fas fa-shield-haltered"></i> Full interactive lesson — HTTP Methods, Idempotency, HTTPS encryption, API simulation.
+  </footer>
+</div>
+
+<script>
+  // ---------- QUIZ DATA ----------
+  const quizQuestions = [
+    {
+      text: "1️⃣ Which HTTP method is considered 'safe' (does not modify server state) and is used to retrieve data?",
+      options: ["POST", "PUT", "GET", "DELETE"],
+      correct: "GET"
+    },
+    {
+      text: "2️⃣ What does HTTPS add to HTTP to provide security?",
+      options: ["Compression layer", "SSL/TLS encryption + authentication", "Faster caching", "UDP protocol"],
+      correct: "SSL/TLS encryption + authentication"
+    },
+    {
+      text: "3️⃣ Which HTTP method is NOT idempotent? (Making multiple identical requests may create duplicate resources)",
+      options: ["GET", "PUT", "DELETE", "POST"],
+      correct: "POST"
+    },
+    {
+      text: "4️⃣ Default port for HTTPS is:",
+      options: ["80", "8080", "443", "22"],
+      correct: "443"
+    },
+    {
+      text: "5️⃣ When you want to partially update a resource (e.g., change only the email field), the most appropriate method is:",
+      options: ["PUT", "PATCH", "POST", "GET"],
+      correct: "PATCH"
+    }
+  ];
+
+  function buildQuiz() {
+    const container = document.getElementById("quizContainer");
+    container.innerHTML = "";
+    quizQuestions.forEach((q, idx) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "quiz-question";
+      qDiv.innerHTML = `<strong>${q.text}</strong><div class="quiz-options" id="quizOptions-${idx}"></div>`;
+      const optionsDiv = qDiv.querySelector(".quiz-options");
+      q.options.forEach(opt => {
+        const label = document.createElement("label");
+        label.className = "quiz-option";
+        label.innerHTML = `<input type="radio" name="q${idx}" value="${opt.replace(/"/g, '&quot;')}"> <span>${opt}</span>`;
+        optionsDiv.appendChild(label);
+      });
+      container.appendChild(qDiv);
+    });
+  }
+  buildQuiz();
+
+  // evaluate quiz
+  document.getElementById("submitQuizBtn").addEventListener("click", () => {
+    let score = 0;
+    const results = [];
+    for (let i = 0; i < quizQuestions.length; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const userAnswer = selected ? selected.value : null;
+      const isCorrect = (userAnswer === quizQuestions[i].correct);
+      if (isCorrect) score++;
+      results.push({ question: quizQuestions[i].text, correct: quizQuestions[i].correct, userAnswer, isCorrect });
+    }
+    const resultDiv = document.getElementById("quizResult");
+    resultDiv.innerHTML = `<div style="background:#e9f3e8; padding:1rem; border-radius:1rem">🎉 Your score: ${score} / ${quizQuestions.length}<br>`;
+    if (score === quizQuestions.length) resultDiv.innerHTML += "🌟 Perfect! You mastered HTTP/HTTPS fundamentals! 🌟</div>";
+    else resultDiv.innerHTML += `💡 Review: ${score} correct. Check again: ${quizQuestions.length-score} mistake(s).<br> 👉 HTTPS encrypts, POST is not idempotent, PATCH for partial updates.</div>`;
+    // detailed feedback optional but light
+  });
+
+  // ---------- API PLAYGROUND ----------
+  const methodSelect = document.getElementById("httpMethodSelect");
+  const apiUrlInput = document.getElementById("apiUrl");
+  const requestBodyTextarea = document.getElementById("requestBody");
+  const sendBtn = document.getElementById("sendRequestBtn");
+  const responseOutput = document.getElementById("responseOutput");
+  const loadingSpan = document.getElementById("loadingIndicator");
+  const resetBtn = document.getElementById("resetDemoUrl");
+
+  // helper: toggle body visibility note, set default urls per method
+  function updateBodyFieldVisibility() {
+    const method = methodSelect.value;
+    const bodyContainer = document.getElementById("bodyContainer");
+    if (method === "GET" || method === "DELETE") {
+      requestBodyTextarea.disabled = true;
+      requestBodyTextarea.style.opacity = "0.6";
+      requestBodyTextarea.placeholder = "Body ignored for GET/DELETE requests";
+    } else {
+      requestBodyTextarea.disabled = false;
+      requestBodyTextarea.style.opacity = "1";
+      requestBodyTextarea.placeholder = 'JSON body e.g., { "title": "New Post" }';
+    }
+  }
+
+  // set example URLs based on method suggestion when reset or method changes optionally
+  function setExampleUrlForMethod() {
+    const method = methodSelect.value;
+    if (method === "GET") apiUrlInput.value = "https://jsonplaceholder.typicode.com/posts/1";
+    else if (method === "POST") apiUrlInput.value = "https://jsonplaceholder.typicode.com/posts";
+    else if (method === "PUT") apiUrlInput.value = "https://jsonplaceholder.typicode.com/posts/1";
+    else if (method === "PATCH") apiUrlInput.value = "https://jsonplaceholder.typicode.com/posts/1";
+    else if (method === "DELETE") apiUrlInput.value = "https://jsonplaceholder.typicode.com/posts/1";
+  }
+
+  resetBtn.addEventListener("click", () => {
+    setExampleUrlForMethod();
+    // also set a default relevant body
+    if (methodSelect.value === "POST") {
+      requestBodyTextarea.value = JSON.stringify({ title: "New Course Resource", body: "Interactive HTTP lesson!", userId: 1 }, null, 2);
+    } else if (methodSelect.value === "PUT" || methodSelect.value === "PATCH") {
+      requestBodyTextarea.value = JSON.stringify({ id: 1, title: "Updated Title", body: "Modified via PUT/PATCH" }, null, 2);
+    } else {
+      requestBodyTextarea.value = '{"title": "demo", "body": "try it", "userId": 1}';
+    }
+    updateBodyFieldVisibility();
+  });
+
+  methodSelect.addEventListener("change", () => {
+    updateBodyFieldVisibility();
+    setExampleUrlForMethod();
+  });
+
+  updateBodyFieldVisibility();
+  // initial example set
+  setExampleUrlForMethod();
+
+  // send request core function
+  async function sendRequest() {
+    const method = methodSelect.value;
+    let url = apiUrlInput.value.trim();
+    if (!url) {
+      responseOutput.innerText = "❌ Error: Please enter a valid URL (use HTTPS endpoint).";
+      return;
+    }
+    // enforce better SSL note
+    if (!url.startsWith("https://")) {
+      responseOutput.innerText = "⚠️ Note: Real-world APIs use HTTPS. The playground works with HTTPS endpoints.\nWe'll still attempt the request, but prefer HTTPS for security.";
+    }
+    let body = null;
+    let headers = { "Content-Type": "application/json" };
+    if (method !== "GET" && method !== "DELETE") {
+      const rawBody = requestBodyTextarea.value;
+      if (rawBody.trim() !== "") {
+        try {
+          // validate JSON
+          body = JSON.parse(rawBody);
+          body = JSON.stringify(body);
+        } catch (e) {
+          responseOutput.innerText = `❌ Invalid JSON in request body: ${e.message}\nExample valid JSON: { "key": "value" }`;
+          return;
+        }
+      } else {
+        // if empty but method expects body, warn but still send undefined
+        if (method !== "GET" && method !== "DELETE") {
+          responseOutput.innerText = "⚠️ Sending request without body. For POST/PUT/PATCH, provide JSON body.";
+        }
+      }
+    }
+
+    // UI loading
+    loadingSpan.style.display = "inline";
+    responseOutput.innerText = "⏳ Sending request...";
+    const startTime = Date.now();
+
+    try {
+      const fetchOptions = {
+        method: method,
+        headers: headers,
+      };
+      if (body && (method === "POST" || method === "PUT" || method === "PATCH")) {
+        fetchOptions.body = body;
+      } else if (body && method === "DELETE") {
+        // ignore
+      }
+      const response = await fetch(url, fetchOptions);
+      const endTime = Date.now();
+      let responseData;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        responseData = await response.json();
+      } else {
+        responseData = await response.text();
+      }
+      const duration = endTime - startTime;
+      // format pretty output
+      let prettyOutput = `📡 [${method}] ${url}\n✅ Status: ${response.status} ${response.statusText}\n⏱️ Time: ${duration}ms\n`;
+      prettyOutput += `🔐 Secure? ${url.startsWith("https") ? "Yes (HTTPS encrypted)" : "No encryption (HTTP)"}\n\n📦 Response Data:\n`;
+      if (typeof responseData === "object") {
+        prettyOutput += JSON.stringify(responseData, null, 2);
+      } else {
+        prettyOutput += responseData;
+      }
+      responseOutput.innerText = prettyOutput;
+    } catch (err) {
+      responseOutput.innerText = `❌ Request failed: ${err.message}\n💡 Common issues: CORS? Network? Use valid HTTPS endpoint like JSONPlaceholder.\nURL used: ${url}`;
+    } finally {
+      loadingSpan.style.display = "none";
+    }
+  }
+
+  sendBtn.addEventListener("click", sendRequest);
+
+  // extra: provide dynamic method info and update body disabled state again on page load
+  window.addEventListener("load", () => {
+    updateBodyFieldVisibility();
+    // small tip content
+    const playgroundNote = document.createElement("div");
+    // we have note already, fine.
+  });
+
+  // add educational note in console? not needed
+  // Also help beginners with body examples when method changes
+  function exampleBodyByMethod() {
+    const method = methodSelect.value;
+    if (method === "POST") {
+      requestBodyTextarea.value = JSON.stringify({ title: "My Interactive Post", body: "learning HTTP methods", userId: 1 }, null, 2);
+    } else if (method === "PUT") {
+      requestBodyTextarea.value = JSON.stringify({ id: 1, title: "Fully Updated Resource", body: "replace all fields", userId: 1 }, null, 2);
+    } else if (method === "PATCH") {
+      requestBodyTextarea.value = JSON.stringify({ title: "Partial update only" }, null, 2);
+    } else {
+      requestBodyTextarea.value = '{"sample": "no body needed for GET/DELETE"}';
+    }
+  }
+  methodSelect.addEventListener("change", () => {
+    if (!resetBtn.matches(":active")) {
+      // but just change example body friendly
+      if (methodSelect.value === "POST") requestBodyTextarea.value = JSON.stringify({ title: "New Post", body: "Content", userId: 1 }, null, 2);
+      else if (methodSelect.value === "PUT") requestBodyTextarea.value = JSON.stringify({ id: 1, title: "Full replacement", body: "new content" }, null, 2);
+      else if (methodSelect.value === "PATCH") requestBodyTextarea.value = JSON.stringify({ title: "Patched Title" }, null, 2);
+    }
+    updateBodyFieldVisibility();
+  });
+  // init custom
+  if (methodSelect.value === "POST") requestBodyTextarea.value = JSON.stringify({ title: "New Post", body: "Content", userId: 1 }, null, 2);
+  else if (methodSelect.value === "PUT") requestBodyTextarea.value = JSON.stringify({ id: 1, title: "Full replacement", body: "new content" }, null, 2);
+  else if (methodSelect.value === "PATCH") requestBodyTextarea.value = JSON.stringify({ title: "Patched update" }, null, 2);
+</script>
+</body>
+</html>

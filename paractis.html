@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📝 RMI‑IIOP & CORBA – Extra Practice Zone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #eef2f7;
+      color: #0a2c3b;
+      padding: 2rem 1.5rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .practice-card {
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      border-top: 6px solid #e67e22;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #1d5a73;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .exercise {
+      background: #f9fafc;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      margin: 1.2rem 0;
+      border-left: 4px solid #2c9b8e;
+    }
+    .quiz-option {
+      margin: 0.6rem 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    input, textarea {
+      font-family: inherit;
+      padding: 0.6rem;
+      border-radius: 1rem;
+      border: 1px solid #cbd5e1;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    button {
+      background: #1d6f8b;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.6rem 1.3rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0.5rem 0.5rem 0 0;
+    }
+    button:hover { background: #0f556d; transform: translateY(-1px); }
+    .feedback {
+      margin-top: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 1rem;
+      font-weight: 500;
+    }
+    .correct { background: #e0f2e9; color: #0f5c3e; border-left: 4px solid #2ecc71; }
+    .wrong { background: #ffe6e6; color: #b13e3e; border-left: 4px solid #e74c3c; }
+    .neutral { background: #eef2fa; }
+    .match-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+    .match-col {
+      flex: 1;
+      background: #f1f5f9;
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+    .drag-item {
+      background: white;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 0.8rem;
+      cursor: pointer;
+      border: 1px solid #b9cfdf;
+      transition: 0.1s;
+    }
+    .drag-item.selected {
+      background: #cbe5f0;
+      border-color: #1d6f8b;
+    }
+    .target-slot {
+      background: #fff6e0;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 0.8rem;
+      border: 1px dashed #e67e22;
+      min-height: 3rem;
+    }
+    hr { margin: 1rem 0; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="practice-card">
+    <h2><i class="fas fa-laptop-code"></i> Extra Practice Zone: CORBA · RMI‑IIOP · IDL</h2>
+    <p>Test your deeper understanding with scenario questions, fill‑in‑blanks, a matching game, and an IDL writing task.</p>
+
+    <!-- ========= 1. SCENARIO-BASED MCQs ========= -->
+    <div class="exercise">
+      <h3><i class="fas fa-comments"></i> Scenario 1 – Cross‑language banking</h3>
+      <p>A bank has a legacy C++ CORBA server that exposes an <code>Account</code> interface (IDL). A new Java client uses RMI‑IIOP to communicate with it. Which statement is true?</p>
+      <div class="quiz-option"><input type="radio" name="scen1" value="A"> A) The Java client must rewrite the server in Java.</div>
+      <div class="quiz-option"><input type="radio" name="scen1" value="B"> B) The Java client can use IIOP and the same IDL to generate stubs, invoking the C++ server directly.</div>
+      <div class="quiz-option"><input type="radio" name="scen1" value="C"> C) CORBA does not support C++ and Java interoperability.</div>
+      <div class="quiz-option"><input type="radio" name="scen1" value="D"> D) Only RMI over JRMP works, not IIOP.</div>
+      <button class="scen-btn" data-scen="1" data-ans="B">Submit</button>
+      <div id="scen1-fb" class="feedback neutral"></div>
+    </div>
+
+    <div class="exercise">
+      <h3><i class="fas fa-comments"></i> Scenario 2 – Dynamic vs Static invocation</h3>
+      <p>A developer wants to build a generic CORBA browser that can invoke any method on any object without knowing the interface at compile time. Which CORBA component should they use?</p>
+      <div class="quiz-option"><input type="radio" name="scen2" value="A"> A) Static IDL stubs</div>
+      <div class="quiz-option"><input type="radio" name="scen2" value="B"> B) Dynamic Invocation Interface (DII) + Interface Repository</div>
+      <div class="quiz-option"><input type="radio" name="scen2" value="C"> C) Server skeletons</div>
+      <div class="quiz-option"><input type="radio" name="scen2" value="D"> D) Object Adapter only</div>
+      <button class="scen-btn" data-scen="2" data-ans="B">Submit</button>
+      <div id="scen2-fb" class="feedback neutral"></div>
+    </div>
+
+    <div class="exercise">
+      <h3><i class="fas fa-comments"></i> Scenario 3 – IDL direction misuse</h3>
+      <p>In an IDL definition: <code>void transfer(in long amount, out long newBalance);</code> The client passes <code>amount = 100</code> and a variable <code>balance</code>. After the call, which statement is correct?</p>
+      <div class="quiz-option"><input type="radio" name="scen3" value="A"> A) <code>amount</code> can be modified by the server and returned.</div>
+      <div class="quiz-option"><input type="radio" name="scen3" value="B"> B) <code>newBalance</code> is sent from client to server.</div>
+      <div class="quiz-option"><input type="radio" name="scen3" value="C"> C) <code>amount</code> is read‑only from server side; <code>newBalance</code> is written by server and sent back to client.</div>
+      <div class="quiz-option"><input type="radio" name="scen3" value="D"> D) Both parameters are inout.</div>
+      <button class="scen-btn" data-scen="3" data-ans="C">Submit</button>
+      <div id="scen3-fb" class="feedback neutral"></div>
+    </div>
+
+    <!-- ========= 2. FILL IN THE BLANK ========= -->
+    <div class="exercise">
+      <h3><i class="fas fa-pen-fancy"></i> Fill in the blanks</h3>
+      <p>1. The protocol used by CORBA for communication over TCP/IP is called <strong>________</strong>.</p>
+      <input type="text" id="fill1" placeholder="Your answer">
+      <p>2. The component that mediates between the ORB and servant objects (manages activation, object references) is the <strong>________</strong> (e.g., POA).</p>
+      <input type="text" id="fill2" placeholder="Your answer">
+      <button id="checkFillBtn">Check Fill‑in Answers</button>
+      <div id="fillFb" class="feedback neutral"></div>
+    </div>
+
+    <!-- ========= 3. MATCHING GAME (CORBA components) ========= -->
+    <div class="exercise">
+      <h3><i class="fas fa-puzzle-piece"></i> Matching: CORBA Components</h3>
+      <p>Drag the term on the left to its correct description on the right. Click a term, then click a slot.</p>
+      <div class="match-grid">
+        <div class="match-col">
+          <p><strong>🔹 Terms</strong></p>
+          <div id="termsList">
+            <div class="drag-item" data-term="ORB Core">ORB Core</div>
+            <div class="drag-item" data-term="Dynamic Skeleton Interface (DSI)">Dynamic Skeleton Interface (DSI)</div>
+            <div class="drag-item" data-term="Interface Repository">Interface Repository</div>
+            <div class="drag-item" data-term="Portable Object Adapter (POA)">Portable Object Adapter (POA)</div>
+          </div>
+        </div>
+        <div class="match-col">
+          <p><strong>🔸 Descriptions</strong></p>
+          <div id="targetSlots">
+            <div class="target-slot" data-slot="0">[1] Routes requests and acts as a switch between objects.</div>
+            <div class="target-slot" data-slot="1">[2] Allows servers to receive requests without pre‑compiled skeletons (runtime binding).</div>
+            <div class="target-slot" data-slot="2">[3] Stores available object interfaces (types, methods) for dynamic lookup.</div>
+            <div class="target-slot" data-slot="3">[4] Mediates ORB and servants, handles activation & reference generation.</div>
+          </div>
+        </div>
+      </div>
+      <button id="checkMatchBtn">Verify Matching</button>
+      <div id="matchFb" class="feedback neutral"></div>
+    </div>
+
+    <!-- ========= 4. IDL CODING CHALLENGE ========= -->
+    <div class="exercise">
+      <h3><i class="fas fa-code"></i> IDL Coding Challenge</h3>
+      <p>Write an IDL interface for a <strong>TemperatureSensor</strong> that:</p>
+      <ul>
+        <li>Has a <strong>readonly attribute</strong> <code>location</code> (string).</li>
+        <li>Has an operation <code>getTemp()</code> returning a <code>float</code>.</li>
+        <li>May raise a user exception <code>SensorError</code> (with no extra data).</li>
+      </ul>
+      <textarea id="idlCode" rows="6" style="width:100%; font-family: monospace;" placeholder="Write IDL here..."></textarea>
+      <button id="checkIdlBtn">Check IDL</button>
+      <div id="idlFb" class="feedback neutral"></div>
+      <details>
+        <summary><i class="fas fa-lightbulb"></i> Hint</summary>
+        <pre style="background:#eef; padding:0.5rem;">module Sensors {
+  exception SensorError {};
+  interface TemperatureSensor {
+    readonly attribute string location;
+    float getTemp() raises (SensorError);
+  };
+};</pre>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----- Scenario MCQs -----
+  const scenAnswers = {1:"B",2:"B",3:"C"};
+  for (let i=1; i<=3; i++) {
+    const btn = document.querySelector(`.scen-btn[data-scen="${i}"]`);
+    if(btn) {
+      btn.addEventListener('click', () => {
+        const selected = document.querySelector(`input[name="scen${i}"]:checked`);
+        const fbDiv = document.getElementById(`scen${i}-fb`);
+        if(!selected) { fbDiv.innerHTML = `<div class="feedback wrong">❌ Please select an answer.</div>`; return; }
+        if(selected.value === scenAnswers[i]) {
+          fbDiv.innerHTML = `<div class="feedback correct">✅ Correct! ${i===1 ? "RMI‑IIOP enables Java to talk to C++ CORBA via IIOP." : i===2 ? "DII + Interface Repository allow dynamic invocation." : "in = input only, out = server returns value."}</div>`;
+        } else {
+          fbDiv.innerHTML = `<div class="feedback wrong">❌ Incorrect. Correct answer: ${scenAnswers[i]}. ${i===1 ? "RMI‑IIOP provides cross‑language interoperability." : i===2 ? "Use DII for generic browsers." : "Parameters: in (client→server), out (server→client)."}</div>`;
+        }
+      });
+    }
+  }
+
+  // Fill in the blanks
+  document.getElementById("checkFillBtn").addEventListener("click", () => {
+    const ans1 = document.getElementById("fill1").value.trim().toUpperCase();
+    const ans2 = document.getElementById("fill2").value.trim().toUpperCase();
+    let fb = "";
+    let correctCount = 0;
+    if(ans1 === "IIOP" || ans1 === "INTERNET INTER-ORB PROTOCOL") { correctCount++; } 
+    else { fb += "• Fill 1: ❌ correct answer is 'IIOP' (Internet Inter‑ORB Protocol).<br>"; }
+    if(ans2 === "OBJECT ADAPTER" || ans2 === "PORTABLE OBJECT ADAPTER" || ans2 === "POA" || ans2.includes("OBJECT ADAPTER")) { correctCount++; }
+    else { fb += "• Fill 2: ❌ correct answer is 'Object Adapter' (or POA).<br>"; }
+    if(correctCount === 2) fb = "✅ Both answers correct! Perfect.<br>";
+    else if(correctCount === 1) fb = "⚠️ One correct. Review: IIOP and Object Adapter (POA).<br>" + fb;
+    else fb = "❌ Both incorrect. IIOP = CORBA protocol; POA/Object Adapter manages servants.<br>" + fb;
+    document.getElementById("fillFb").innerHTML = `<div class="feedback ${correctCount===2 ? 'correct' : 'wrong'}">${fb}</div>`;
+  });
+
+  // Matching game logic
+  let selectedTerm = null;
+  const termDivs = document.querySelectorAll('.drag-item');
+  const slots = document.querySelectorAll('.target-slot');
+  // store correct mapping (slot index -> correct term)
+  const correctMapping = {
+    0: "ORB Core",
+    1: "Dynamic Skeleton Interface (DSI)",
+    2: "Interface Repository",
+    3: "Portable Object Adapter (POA)"
+  };
+  let userMatches = {0:null,1:null,2:null,3:null}; // term name placed into each slot
+
+  function updateSlotDisplay() {
+    slots.forEach((slot, idx) => {
+      const term = userMatches[idx];
+      if(term) {
+        slot.innerHTML = `[${idx+1}] ${term} <i class="fas fa-check-circle" style="color:#2ecc71;"></i>`;
+      } else {
+        slot.innerHTML = `[${idx+1}] (empty) — click a term then a slot`;
+      }
+    });
+  }
+
+  termDivs.forEach(term => {
+    term.addEventListener('click', () => {
+      // remove highlight from others
+      termDivs.forEach(t => t.classList.remove('selected'));
+      term.classList.add('selected');
+      selectedTerm = term.getAttribute('data-term');
+    });
+  });
+
+  slots.forEach((slot, idx) => {
+    slot.addEventListener('click', () => {
+      if(selectedTerm) {
+        userMatches[idx] = selectedTerm;
+        updateSlotDisplay();
+        selectedTerm = null;
+        termDivs.forEach(t => t.classList.remove('selected'));
+      } else {
+        // clear slot if double-click? optional: remove if empty? skip.
+      }
+    });
+  });
+
+  document.getElementById("checkMatchBtn").addEventListener("click", () => {
+    let correctCount = 0;
+    for(let i=0;i<4;i++) {
+      if(userMatches[i] === correctMapping[i]) correctCount++;
+    }
+    let msg = "";
+    if(correctCount === 4) msg = "🎉 Perfect matching! You know CORBA components.";
+    else msg = `⚠️ ${correctCount}/4 correct. Correct mapping: ORB Core → [1], DSI → [2], Interface Repository → [3], POA → [4].`;
+    document.getElementById("matchFb").innerHTML = `<div class="feedback ${correctCount===4 ? 'correct' : 'wrong'}">${msg}</div>`;
+  });
+
+  // IDL coding challenge evaluation (simple but robust)
+  document.getElementById("checkIdlBtn").addEventListener("click", () => {
+    const code = document.getElementById("idlCode").value;
+    let score = 0;
+    let feedback = "";
+    const hasReadonly = /readonly\s+attribute\s+string\s+\w*location/i.test(code);
+    const hasGetTemp = /float\s+\w*getTemp\s*\(\s*\)\s*(raises\s*\([^)]*SensorError\s*\))?/i.test(code);
+    const hasException = /exception\s+SensorError/i.test(code);
+    const hasInterface = /interface\s+\w*TemperatureSensor/i.test(code);
+    if(hasInterface) score++;
+    else feedback += "❌ Missing interface 'TemperatureSensor'.<br>";
+    if(hasReadonly) score++;
+    else feedback += "❌ Missing 'readonly attribute string location'.<br>";
+    if(hasGetTemp) score++;
+    else feedback += "❌ Missing 'float getTemp()' operation (or raise clause).<br>";
+    if(hasException) score++;
+    else feedback += "❌ Missing user exception 'SensorError'.<br>";
+    if(score === 4) feedback = "✅ Excellent! Your IDL correctly defines the sensor interface.<br>";
+    else feedback = `⚠️ Score: ${score}/4. ${feedback}<br>Check sample in the hint.`;
+    document.getElementById("idlFb").innerHTML = `<div class="feedback ${score===4 ? 'correct' : 'wrong'}">${feedback}</div>`;
+  });
+
+  // initial reset for matching display
+  updateSlotDisplay();
+</script>
+</body>
+</html>
