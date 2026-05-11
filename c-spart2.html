@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Server Architecture Learning Module</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .nav-link {
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .definition-box {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .diagram {
+            background-color: #f8f9fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .interactive-demo {
+            background-color: #f0f7ff;
+            border: 1px dashed var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .server-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .server-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--secondary-color);
+        }
+        
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .server-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .server-card p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .pros, .cons {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .pros ul, .cons ul {
+            padding-left: 1.5rem;
+        }
+        
+        .pros li, .cons li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .pros h3 {
+            color: var(--success-color);
+        }
+        
+        .cons h3 {
+            color: var(--accent-color);
+        }
+        
+        .quiz-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .quiz-option {
+            padding: 0.8rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .quiz-option:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .quiz-option.selected {
+            background-color: #e1f0ff;
+            border-color: var(--secondary-color);
+        }
+        
+        .quiz-option.correct {
+            background-color: #d4ffd4;
+            border-color: var(--success-color);
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #ffd4d4;
+            border-color: var(--accent-color);
+        }
+        
+        .quiz-feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .feedback-correct {
+            background-color: #e8f8ef;
+            color: var(--success-color);
+            border-left: 3px solid var(--success-color);
+        }
+        
+        .feedback-incorrect {
+            background-color: #fdeaea;
+            color: var(--accent-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .quiz-result {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: none;
+        }
+        
+        .result-excellent {
+            background-color: #e8f8ef;
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
+        }
+        
+        .result-good {
+            background-color: #fff9e6;
+            color: var(--warning-color);
+            border: 2px solid var(--warning-color);
+        }
+        
+        .result-poor {
+            background-color: #fdeaea;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            
+            .server-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison {
+                flex-direction: column;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Client-Server Architecture</h1>
+            <p class="subtitle">Understanding How Web Applications Work</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container nav-container">
+            <a href="#intro" class="nav-link active">Introduction</a>
+            <a href="#process" class="nav-link">How It Works</a>
+            <a href="#advantages" class="nav-link">Pros & Cons</a>
+            <a href="#servers" class="nav-link">Server Types</a>
+            <a href="#quiz" class="nav-link">Knowledge Check</a>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <section id="intro" class="section">
+            <h2>Introduction to Client-Server Architecture</h2>
+            
+            <div class="definition-box">
+                <p><strong>Web Client:</strong> A program that sends requests for documents to a web server (e.g., a web browser).</p>
+                <p><strong>Web Server:</strong> A program that receives requests and sends back the requested documents.</p>
+            </div>
+            
+            <p>A <strong>distributed architecture</strong> means that a client program may be running on a completely separate machine from that of the server. Because the task of document storage is left to the server and the task of document presentation is left to the client, each program can concentrate on those duties and progress independently of each other.</p>
+            
+            <div class="diagram">
+                <h3>Client-Server Model</h3>
+                <svg width="100%" height="200" viewBox="0 0 600 200">
+                    <rect x="50" y="50" width="150" height="80" rx="10" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                    <text x="125" y="95" text-anchor="middle" fill="white" font-weight="bold">Client</text>
+                    
+                    <rect x="400" y="50" width="150" height="80" rx="10" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                    <text x="475" y="95" text-anchor="middle" fill="white" font-weight="bold">Server</text>
+                    
+                    <path d="M200 90 L400 90" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <text x="300" y="85" text-anchor="middle" fill="#2c3e50" font-size="14">Request</text>
+                    
+                    <path d="M400 110 L200 110" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <text x="300" y="125" text-anchor="middle" fill="#2c3e50" font-size="14">Response</text>
+                    
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+        
+        <section id="process" class="section">
+            <h2>How Client-Server Communication Works</h2>
+            
+            <p>Here's an example of how the process works when you request a web page:</p>
+            
+            <div class="interactive-demo">
+                <h3>Interactive Demo: Requesting "The History of Computers"</h3>
+                <div class="demo-controls">
+                    <button id="step1">Step 1: Click Hyperlink</button>
+                    <button id="step2">Step 2: Send HTTP Request</button>
+                    <button id="step3">Step 3: Receive Response</button>
+                    <button id="reset">Reset</button>
+                </div>
+                
+                <div id="demo-content">
+                    <p>Click "Step 1" to begin the simulation.</p>
+                </div>
+            </div>
+            
+            <h3>The Process Explained:</h3>
+            <ol>
+                <li>Running a Web client, the user selects a hyperlink in a piece of hypertext connecting to another document - "The History of Computers", for example.</li>
+                <li>The Web client uses the address associated with that hyperlink to connect to the Web server at a specified network address and asks for the document.</li>
+                <li>The server responds by sending the text and any other media within that text (pictures, sounds, or movies) to the client, which the client then renders for presentation on the user's screen.</li>
+            </ol>
+        </section>
+        
+        <section id="advantages" class="section">
+            <h2>Advantages and Disadvantages</h2>
+            
+            <div class="comparison">
+                <div class="pros">
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li><strong>Centralized management:</strong> easier network administration, maintenance, and backups</li>
+                        <li><strong>Scalability:</strong> Easy to add more resources without affecting performance</li>
+                        <li><strong>Enhanced Data Sharing:</strong> Data is immediately available to all authorized users</li>
+                        <li><strong>Location Independence:</strong> Users can access applications from anywhere</li>
+                        <li><strong>Improved security:</strong> Centralized control over access and resources</li>
+                    </ul>
+                </div>
+                
+                <div class="cons">
+                    <h3>Disadvantages</h3>
+                    <ul>
+                        <li><strong>Server cost:</strong> Requires investment in hardware and software</li>
+                        <li><strong>Complex configuration:</strong> Setup and maintenance can be complicated</li>
+                        <li><strong>Single point of failure:</strong> If the server goes down, the entire network fails</li>
+                        <li><strong>Traffic congestion:</strong> Server can become overloaded with too many requests</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="servers" class="section">
+            <h2>Different Types of Servers</h2>
+            <p>Servers are classified by the services they provide. Here are the most common types:</p>
+            
+            <div class="server-types">
+                <div class="server-card">
+                    <h4>File Server</h4>
+                    <p>Used for sharing files (documents, media, images) across a network. Designed primarily for storage and retrieval of files requested by clients.</p>
+                </div>
+                
+                <div class="server-card">
+                    <h4>Database Server</h4>
+                    <p>Provides database services to other computers. Works with query languages like SQL. Examples: Oracle, Microsoft SQL Server.</p>
+                </div>
+                
+                <div class="server-card">
+                    <h4>Transaction Server</h4>
+                    <p>Divides work into individual operations called transactions. Used in Online Transaction Processing (OLTP) systems.</p>
+                </div>
+                
+                <div class="server-card">
+                    <h4>Groupware Server</h4>
+                    <p>Provides applications for collaboration (shared calendars, databases, electronic meetings). Examples: Microsoft Exchange.</p>
+                </div>
+                
+                <div class="server-card">
+                    <h4>Web Server</h4>
+                    <p>Handles HTTP protocol and serves static content. Retrieves files from the server's storage and sends them to clients.</p>
+                </div>
+                
+                <div class="server-card">
+                    <h4>Web Application Server</h4>
+                    <p>Extends web servers to support dynamic content by mixing data with templates or accessing databases.</p>
+                </div>
+            </div>
+            
+            <h3>Web Server vs. Web Application Server</h3>
+            <div class="diagram">
+                <svg width="100%" height="300" viewBox="0 0 600 300">
+                    <!-- Client -->
+                    <rect x="50" y="50" width="100" height="60" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                    <text x="100" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Client</text>
+                    
+                    <!-- Web Server -->
+                    <rect x="200" y="30" width="150" height="80" rx="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                    <text x="275" y="75" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Web Server</text>
+                    <text x="275" y="95" text-anchor="middle" fill="white" font-size="12">(Static Content)</text>
+                    
+                    <!-- App Server -->
+                    <rect x="200" y="150" width="150" height="80" rx="5" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                    <text x="275" y="195" text-anchor="middle" fill="white" font-weight="bold" font-size="14">App Server</text>
+                    <text x="275" y="215" text-anchor="middle" fill="white" font-size="12">(Dynamic Content)</text>
+                    
+                    <!-- Database -->
+                    <rect x="400" y="150" width="150" height="80" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
+                    <text x="475" y="195" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Database</text>
+                    
+                    <!-- Arrows -->
+                    <path d="M150 80 L200 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    <path d="M200 80 L150 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    
+                    <path d="M350 80 L400 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    <path d="M400 170 L350 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    
+                    <path d="M350 170 L400 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    <path d="M400 170 L350 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
+                    
+                    <!-- Labels -->
+                    <text x="175" y="70" text-anchor="middle" fill="#2c3e50" font-size="12">HTTP Request/Response</text>
+                    <text x="375" y="125" text-anchor="middle" fill="#2c3e50" font-size="12">Dynamic Content Request</text>
+                    <text x="375" y="240" text-anchor="middle" fill="#2c3e50" font-size="12">Database Query</text>
+                    
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+        
+        <section id="quiz" class="section">
+            <h2>Knowledge Check</h2>
+            <p>Test your understanding of client-server architecture with this interactive quiz:</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-question" id="q1">
+                    <h3>Question 1: What is the primary role of a web client?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Store documents and data</div>
+                        <div class="quiz-option" data-correct="true">Send requests for documents to a web server</div>
+                        <div class="quiz-option" data-correct="false">Process database transactions</div>
+                        <div class="quiz-option" data-correct="false">Manage network security</div>
+                    </div>
+                    <div class="quiz-feedback feedback-correct">
+                        <strong>Correct!</strong> A web client's main function is to send requests to a web server and display the received content.
+                    </div>
+                    <div class="quiz-feedback feedback-incorrect">
+                        <strong>Incorrect.</strong> The primary role of a web client is to send requests for documents to a web server, not to store data or process transactions.
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="q2">
+                    <h3>Question 2: Which protocol is primarily used for communication between web clients and servers?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">FTP (File Transfer Protocol)</div>
+                        <div class="quiz-option" data-correct="false">SMTP (Simple Mail Transfer Protocol)</div>
+                        <div class="quiz-option" data-correct="true">HTTP (Hypertext Transfer Protocol)</div>
+                        <div class="quiz-option" data-correct="false">TCP (Transmission Control Protocol)</div>
+                    </div>
+                    <div class="quiz-feedback feedback-correct">
+                        <strong>Correct!</strong> HTTP is the primary protocol used for web communication between clients and servers.
+                    </div>
+                    <div class="quiz-feedback feedback-incorrect">
+                        <strong>Incorrect.</strong> While TCP is used at the transport layer, HTTP is the application-layer protocol specifically designed for web communication.
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="q3">
+                    <h3>Question 3: What is a key disadvantage of the client-server model?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">Enhanced data sharing</div>
+                        <div class="quiz-option" data-correct="false">Centralized management</div>
+                        <div class="quiz-option" data-correct="true">Single point of failure</div>
+                        <div class="quiz-option" data-correct="false">Location independence</div>
+                    </div>
+                    <div class="quiz-feedback feedback-correct">
+                        <strong>Correct!</strong> If the server fails, the entire network or application can become unavailable, creating a single point of failure.
+                    </div>
+                    <div class="quiz-feedback feedback-incorrect">
+                        <strong>Incorrect.</strong> The other options are actually advantages of the client-server model. The single point of failure is a significant disadvantage.
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="q4">
+                    <h3>Question 4: Which type of server is specifically designed to handle dynamic content?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="false">File Server</div>
+                        <div class="quiz-option" data-correct="false">Database Server</div>
+                        <div class="quiz-option" data-correct="false">Transaction Server</div>
+                        <div class="quiz-option" data-correct="true">Web Application Server</div>
+                    </div>
+                    <div class="quiz-feedback feedback-correct">
+                        <strong>Correct!</strong> Web Application Servers are specifically designed to generate dynamic content by combining data with templates.
+                    </div>
+                    <div class="quiz-feedback feedback-incorrect">
+                        <strong>Incorrect.</strong> While database servers store data and transaction servers process transactions, web application servers are specifically designed for dynamic content generation.
+                    </div>
+                </div>
+                
+                <div class="quiz-question" id="q5">
+                    <h3>Question 5: What is the main advantage of centralized management in client-server architecture?</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-correct="true">Easier administration, maintenance, and backups</div>
+                        <div class="quiz-option" data-correct="false">Faster processing on client machines</div>
+                        <div class="quiz-option" data-correct="false">Lower hardware costs</div>
+                        <div class="quiz-option" data-correct="false">Eliminates the need for network infrastructure</div>
+                    </div>
+                    <div class="quiz-feedback feedback-correct">
+                        <strong>Correct!</strong> Centralized management makes network administration, maintenance, and backups much easier since resources are managed in one place.
+                    </div>
+                    <div class="quiz-feedback feedback-incorrect">
+                        <strong>Incorrect.</strong> While client-server architecture has many benefits, the main advantage of centralized management is simplified administration and maintenance.
+                    </div>
+                </div>
+                
+                <div class="demo-controls">
+                    <button id="check-answers">Check Answers</button>
+                    <button id="reset-quiz">Reset Quiz</button>
+                </div>
+                
+                <div id="quiz-result" class="quiz-result">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>Client-Server Architecture Learning Module &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            
+            // Set up intersection observer to highlight active section
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Smooth scrolling for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Interactive demo functionality
+            const step1Btn = document.getElementById('step1');
+            const step2Btn = document.getElementById('step2');
+            const step3Btn = document.getElementById('step3');
+            const resetBtn = document.getElementById('reset');
+            const demoContent = document.getElementById('demo-content');
+            
+            step1Btn.addEventListener('click', function() {
+                demoContent.innerHTML = `
+                    <p><strong>Step 1:</strong> User clicks on a hyperlink for "The History of Computers" in their web browser.</p>
+                    <div style="margin: 1rem 0; padding: 1rem; background: #e8f4fd; border-radius: 4px;">
+                        <a href="#" style="color: #3498db; text-decoration: underline;">The History of Computers</a>
+                    </div>
+                    <p>The browser now knows which document to request from the server.</p>
+                `;
+            });
+            
+            step2Btn.addEventListener('click', function() {
+                demoContent.innerHTML = `
+                    <p><strong>Step 2:</strong> The browser sends an HTTP request to the web server.</p>
+                    <div style="margin: 1rem 0; padding: 1rem; background: #fff3cd; border-radius: 4px; font-family: monospace;">
+                        GET /history-of-computers.html HTTP/1.1<br>
+                        Host: www.example.com<br>
+                        User-Agent: Mozilla/5.0...
+                    </div>
+                    <p>The request travels over the network to the server at the specified address.</p>
+                `;
+            });
+            
+            step3Btn.addEventListener('click', function() {
+                demoContent.innerHTML = `
+                    <p><strong>Step 3:</strong> The server processes the request and sends back the HTML document.</p>
+                    <div style="margin: 1rem 0; padding: 1rem; background: #d4edda; border-radius: 4px; font-family: monospace;">
+                        HTTP/1.1 200 OK<br>
+                        Content-Type: text/html<br>
+                        <br>
+                        &lt;html&gt;<br>
+                        &lt;head&gt;&lt;title&gt;History of Computers&lt;/title&gt;&lt;/head&gt;<br>
+                        &lt;body&gt;<br>
+                        &lt;h1&gt;The History of Computers&lt;/h1&gt;<br>
+                        &lt;p&gt;Content about computer history...&lt;/p&gt;<br>
+                        &lt;/body&gt;<br>
+                        &lt;/html&gt;
+                    </div>
+                    <p>The browser receives the HTML, renders it, and displays the page to the user.</p>
+                `;
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                demoContent.innerHTML = `<p>Click "Step 1" to begin the simulation.</p>`;
+            });
+            
+            // Quiz functionality
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            const checkAnswersBtn = document.getElementById('check-answers');
+            const resetQuizBtn = document.getElementById('reset-quiz');
+            const quizResult = document.getElementById('quiz-result');
+            const quizQuestions = document.querySelectorAll('.quiz-question');
+            
+            // Track answered questions
+            let answeredQuestions = new Set();
+            
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const question = this.closest('.quiz-question');
+                    const questionId = question.id;
+                    
+                    // Remove selected class from siblings in the same question
+                    const siblings = this.parentElement.children;
+                    for (let sibling of siblings) {
+                        sibling.classList.remove('selected');
+                    }
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Mark question as answered
+                    answeredQuestions.add(questionId);
+                    
+                    // Enable check answers button if all questions are answered
+                    if (answeredQuestions.size === quizQuestions.length) {
+                        checkAnswersBtn.disabled = false;
+                    }
+                });
+            });
+            
+            checkAnswersBtn.addEventListener('click', function() {
+                let correctAnswers = 0;
+                let totalQuestions = quizQuestions.length;
+                
+                quizQuestions.forEach(question => {
+                    const selectedOption = question.querySelector('.quiz-option.selected');
+                    const correctFeedback = question.querySelector('.feedback-correct');
+                    const incorrectFeedback = question.querySelector('.feedback-incorrect');
+                    
+                    if (selectedOption) {
+                        const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                        
+                        // Highlight correct/incorrect answers
+                        question.querySelectorAll('.quiz-option').forEach(option => {
+                            option.classList.remove('correct', 'incorrect');
+                            if (option.getAttribute('data-correct') === 'true') {
+                                option.classList.add('correct');
+                            } else if (option === selectedOption && !isCorrect) {
+                                option.classList.add('incorrect');
+                            }
+                        });
+                        
+                        // Show appropriate feedback
+                        if (isCorrect) {
+                            correctAnswers++;
+                            correctFeedback.style.display = 'block';
+                            incorrectFeedback.style.display = 'none';
+                        } else {
+                            correctFeedback.style.display = 'none';
+                            incorrectFeedback.style.display = 'block';
+                        }
+                    }
+                });
+                
+                // Calculate and display results
+                const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+                let resultClass, resultMessage;
+                
+                if (percentage === 100) {
+                    resultClass = 'result-excellent';
+                    resultMessage = `Excellent! You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%) - Perfect score!`;
+                } else if (percentage >= 70) {
+                    resultClass = 'result-good';
+                    resultMessage = `Good job! You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%) - Well done!`;
+                } else {
+                    resultClass = 'result-poor';
+                    resultMessage = `You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%). Review the material and try again!`;
+                }
+                
+                quizResult.textContent = resultMessage;
+                quizResult.className = `quiz-result ${resultClass}`;
+                quizResult.style.display = 'block';
+                
+                // Scroll to results
+                quizResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+            
+            resetQuizBtn.addEventListener('click', function() {
+                // Reset all quiz questions
+                quizQuestions.forEach(question => {
+                    question.querySelectorAll('.quiz-option').forEach(option => {
+                        option.classList.remove('selected', 'correct', 'incorrect');
+                    });
+                    
+                    question.querySelectorAll('.quiz-feedback').forEach(feedback => {
+                        feedback.style.display = 'none';
+                    });
+                });
+                
+                // Reset results display
+                quizResult.style.display = 'none';
+                quizResult.textContent = '';
+                
+                // Reset answered questions tracking
+                answeredQuestions.clear();
+                
+                // Reset check answers button
+                checkAnswersBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>

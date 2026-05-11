@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: The CIA Triad - Cybersecurity Fundamentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --confidentiality: #3498db;
+            --integrity: #2ecc71;
+            --availability: #e74c3c;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .breadcrumb {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .cia-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cia-intro h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cia-intro p {
+            font-size: 1.1rem;
+            max-width: 900px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .triad-visual {
+            display: flex;
+            justify-content: center;
+            margin: 3rem 0;
+        }
+
+        .triad-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 0 1rem;
+            flex: 1;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .triad-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .triad-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            height: 80px;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+
+        .confidentiality {
+            background: rgba(52, 152, 219, 0.1);
+            border-top: 5px solid var(--confidentiality);
+        }
+
+        .confidentiality .triad-icon {
+            background: var(--confidentiality);
+            color: white;
+        }
+
+        .integrity {
+            background: rgba(46, 204, 113, 0.1);
+            border-top: 5px solid var(--integrity);
+        }
+
+        .integrity .triad-icon {
+            background: var(--integrity);
+            color: white;
+        }
+
+        .availability {
+            background: rgba(231, 76, 60, 0.1);
+            border-top: 5px solid var(--availability);
+        }
+
+        .availability .triad-icon {
+            background: var(--availability);
+            color: white;
+        }
+
+        .principle-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .principle-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .principle-header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .principle-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+        }
+
+        .confidentiality-header .principle-icon {
+            background: var(--confidentiality);
+        }
+
+        .integrity-header .principle-icon {
+            background: var(--integrity);
+        }
+
+        .availability-header .principle-icon {
+            background: var(--availability);
+        }
+
+        .principle-content h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        .key-points {
+            margin: 1rem 0;
+        }
+
+        .key-points li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .key-points li i {
+            margin-top: 0.2rem;
+        }
+
+        .example-section {
+            background: #e8f4f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--confidentiality);
+        }
+
+        .example-section h4 {
+            color: #0277bd;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .case-study {
+            background: #fff3e0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .case-study h4 {
+            color: #ef6c00;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .implementation-section {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .implementation-section h4 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .visual-aid {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .visual-aid h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .interrelationship {
+            background: #f3e5f5;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .interrelationship h3 {
+            color: #7b1fa2;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+
+        .quiz-options {
+            margin: 1rem 0;
+        }
+
+        .quiz-option {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #f5f5f5;
+        }
+
+        .quiz-option.correct {
+            background: #e8f5e9;
+            border-left: 4px solid var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: #ffebee;
+            border-left: 4px solid var(--danger);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .triad-visual {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .triad-item {
+                margin: 1rem 0;
+                max-width: 100%;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .principle-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .principle-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> The CIA Triad</h1>
+            <p>Confidentiality, Integrity, and Availability - The Foundation of Cybersecurity</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#"><i class="fas fa-home"></i> Home</a> &gt; 
+            <a href="#">Cybersecurity Course</a> &gt; 
+            <a href="#">Lesson 1</a> &gt; 
+            <span>The CIA Triad</span>
+        </div>
+
+        <div class="cia-intro">
+            <h2>The Cornerstone of Information Security</h2>
+            <p>The CIA Triad is a fundamental model that forms the basis for developing security systems and policies. These three principles guide organizations in keeping their sensitive data and systems protected from unauthorized access, tampering, and disruption.</p>
+        </div>
+
+        <div class="triad-visual">
+            <div class="triad-item confidentiality">
+                <div class="triad-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Confidentiality</h3>
+                <p>Protecting information from unauthorized access</p>
+            </div>
+            <div class="triad-item integrity">
+                <div class="triad-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Integrity</h3>
+                <p>Ensuring data accuracy and trustworthiness</p>
+            </div>
+            <div class="triad-item availability">
+                <div class="triad-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Availability</h3>
+                <p>Guaranteeing access to information when needed</p>
+            </div>
+        </div>
+
+        <!-- Confidentiality Section -->
+        <div class="principle-section">
+            <div class="principle-header confidentiality-header">
+                <div class="principle-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>Confidentiality: Protecting Sensitive Information</h2>
+            </div>
+            
+            <div class="principle-content">
+                <p>Confidentiality involves preventing the disclosure of information to unauthorized individuals, entities, or systems. It ensures that sensitive data is accessed only by those who have been authorized to view it.</p>
+                
+                <h3>Why Confidentiality Matters</h3>
+                <p>In our digital age, confidential information comes in many forms: personal identification data, financial records, trade secrets, intellectual property, and government classified information. A breach of confidentiality can lead to identity theft, financial loss, competitive disadvantage, or even threats to national security.</p>
+                
+                <div class="example-section">
+                    <h4><i class="fas fa-lightbulb"></i> Real-World Example: Healthcare Data Protection</h4>
+                    <p>In healthcare, patient records contain extremely sensitive information. The HIPAA (Health Insurance Portability and Accountability Act) in the United States mandates strict confidentiality controls. When you visit a doctor, only authorized medical staff can access your records - not the administrative staff, not other patients, and certainly not external parties.</p>
+                    <p>A breach occurred in 2015 when Anthem Inc. suffered a cyberattack that exposed the personal information of nearly 80 million people. The attackers accessed names, social security numbers, medical IDs, and other sensitive data, highlighting the catastrophic consequences of confidentiality failures.</p>
+                </div>
+                
+                <h3>Implementing Confidentiality</h3>
+                <div class="implementation-section">
+                    <h4><i class="fas fa-tools"></i> Confidentiality Controls and Mechanisms</h4>
+                    <ul class="key-points">
+                        <li><i class="fas fa-key" style="color: var(--confidentiality);"></i> <strong>Encryption:</strong> Transforming data into unreadable ciphertext that can only be decrypted with the correct key</li>
+                        <li><i class="fas fa-user-lock" style="color: var(--confidentiality);"></i> <strong>Access Control Lists (ACLs):</strong> Defining which users or system processes are granted access to objects</li>
+                        <li><i class="fas fa-passport" style="color: var(--confidentiality);"></i> <strong>Authentication:</strong> Verifying the identity of users before granting access</li>
+                        <li><i class="fas fa-user-tag" style="color: var(--confidentiality);"></i> <strong>Authorization:</strong> Determining what an authenticated user is allowed to do</li>
+                        <li><i class="fas fa-eye-slash" style="color: var(--confidentiality);"></i> <strong>Data Classification:</strong> Categorizing data based on sensitivity and applying appropriate protection</li>
+                        <li><i class="fas fa-file-signature" style="color: var(--confidentiality);"></i> <strong>Non-Disclosure Agreements (NDAs):</strong> Legal contracts that prevent parties from sharing confidential information</li>
+                    </ul>
+                </div>
+                
+                <div class="case-study">
+                    <h4><i class="fas fa-briefcase"></i> Case Study: The Panama Papers</h4>
+                    <p>In 2016, an anonymous source leaked 11.5 million documents from the Panamanian law firm Mossack Fonseca. These documents contained confidential information about offshore entities used by wealthy individuals and public officials for various purposes, including tax evasion and money laundering.</p>
+                    <p><strong>Confidentiality Failure:</strong> The law firm failed to protect its clients' confidential data, resulting in one of the largest data leaks in history. The breach had global repercussions, leading to political resignations, criminal investigations, and increased scrutiny of offshore financial activities.</p>
+                    <p><strong>Lesson:</strong> Even organizations whose primary business is maintaining confidentiality can fall victim to breaches if they don't implement robust security measures.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrity Section -->
+        <div class="principle-section">
+            <div class="principle-header integrity-header">
+                <div class="principle-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Integrity: Ensuring Data Accuracy and Trustworthiness</h2>
+            </div>
+            
+            <div class="principle-content">
+                <p>Integrity involves maintaining the consistency, accuracy, and trustworthiness of data over its entire lifecycle. Data must not be changed in transit, and measures must be in place to ensure that unauthorized persons cannot alter data.</p>
+                
+                <h3>The Importance of Data Integrity</h3>
+                <p>When data integrity is compromised, the consequences can be severe. In financial systems, altered transaction amounts can lead to massive financial losses. In healthcare, modified patient records can result in incorrect treatments. In legal contexts, tampered evidence can lead to unjust outcomes.</p>
+                
+                <div class="visual-aid">
+                    <h4>Data Integrity Throughout the Information Lifecycle</h4>
+                    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 1rem;">
+                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
+                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <p>Creation</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
+                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <p>Storage</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
+                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <p>Transmission</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
+                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <p>Modification</p>
+                        </div>
+                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
+                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                            <p>Destruction</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Implementing Integrity</h3>
+                <div class="implementation-section">
+                    <h4><i class="fas fa-tools"></i> Integrity Controls and Mechanisms</h4>
+                    <ul class="key-points">
+                        <li><i class="fas fa-hashtag" style="color: var(--integrity);"></i> <strong>Hash Functions:</strong> Creating unique digital fingerprints of data to detect alterations</li>
+                        <li><i class="fas fa-digital-tachograph" style="color: var(--integrity);"></i> <strong>Digital Signatures:</strong> Verifying the authenticity and integrity of digital messages</li>
+                        <li><i class="fas fa-clipboard-check" style="color: var(--integrity);"></i> <strong>Checksums:</strong> Simple error-detection method to verify data integrity</li>
+                        <li><i class="fas fa-code-branch" style="color: var(--integrity);"></i> <strong>Version Control:</strong> Tracking changes to documents or code over time</li>
+                        <li><i class="fas fa-user-shield" style="color: var(--integrity);"></i> <strong>Access Controls:</strong> Preventing unauthorized modifications through permission systems</li>
+                        <li><i class="fas fa-history" style="color: var(--integrity);"></i> <strong>Audit Trails:</strong> Logging all access and modification attempts for later review</li>
+                    </ul>
+                </div>
+                
+                <div class="case-study">
+                    <h4><i class="fas fa-briefcase"></i> Case Study: The Stuxnet Worm</h4>
+                    <p>Discovered in 2010, Stuxnet was a sophisticated computer worm that targeted industrial control systems, specifically Iran's nuclear facilities. Unlike most malware that focuses on confidentiality or availability, Stuxnet was designed to compromise integrity.</p>
+                    <p><strong>Integrity Attack:</strong> Stuxnet subtly altered the programming of centrifuges used for uranium enrichment while reporting normal operation readings to monitoring systems. This caused the centrifuges to physically degrade and fail while operators believed they were functioning normally.</p>
+                    <p><strong>Lesson:</strong> Integrity attacks can be more dangerous than confidentiality breaches because they can cause physical damage while remaining undetected. Critical infrastructure requires special integrity protection measures.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Availability Section -->
+        <div class="principle-section">
+            <div class="principle-header availability-header">
+                <div class="principle-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h2>Availability: Ensuring Access to Information and Systems</h2>
+            </div>
+            
+            <div class="principle-content">
+                <p>Availability ensures that information and systems are accessible and usable upon demand by authorized users. This principle focuses on maintaining operational performance and quick recovery from disruptions.</p>
+                
+                <h3>The Critical Nature of Availability</h3>
+                <p>In today's always-on digital economy, system downtime can have devastating consequences. E-commerce sites lose sales every minute they're unavailable. Emergency services depend on available communication systems. Manufacturing plants halt production when control systems go offline. The cost of downtime extends beyond immediate financial loss to include reputational damage and loss of customer trust.</p>
+                
+                <div class="example-section">
+                    <h4><i class="fas fa-lightbulb"></i> Real-World Example: Cloud Service Outages</h4>
+                    <p>In 2017, Amazon Web Services (AWS) experienced a significant outage that affected thousands of websites and services, including Trello, Slack, and Quora. The disruption was caused by a human error during a routine debugging exercise that accidentally took down more servers than intended.</p>
+                    <p>This incident highlighted how dependent modern businesses are on cloud services and how a failure in one part of the infrastructure can have cascading effects. Companies that had implemented proper availability measures with multi-region deployments were less affected than those relying on a single region.</p>
+                </div>
+                
+                <h3>Implementing Availability</h3>
+                <div class="implementation-section">
+                    <h4><i class="fas fa-tools"></i> Availability Controls and Mechanisms</h4>
+                    <ul class="key-points">
+                        <li><i class="fas fa-redo" style="color: var(--availability);"></i> <strong>Redundancy:</strong> Deploying duplicate components to ensure continued operation if one fails</li>
+                        <li><i class="fas fa-battery-full" style="color: var(--availability);"></i> <strong>Failover Systems:</strong> Automatic switching to backup systems when primary systems fail</li>
+                        <li><i class="fas fa-cloud-download-alt" style="color: var(--availability);"></i> <strong>Backup Solutions:</strong> Regular copying of data to enable recovery after data loss</li>
+                        <li><i class="fas fa-tachometer-alt" style="color: var(--availability);"></i> <strong>Load Balancing:</strong> Distributing workloads across multiple systems to prevent overload</li>
+                        <li><i class="fas fa-plug" style="color: var(--availability);"></i> <strong>Uninterruptible Power Supplies (UPS):</strong> Providing emergency power during outages</li>
+                        <li><i class="fas fa-first-aid" style="color: var(--availability);"></i> <strong>Disaster Recovery Plans:</strong> Documented processes for responding to and recovering from disasters</li>
+                    </ul>
+                </div>
+                
+                <div class="case-study">
+                    <h4><i class="fas fa-briefcase"></i> Case Study: The 2016 Dyn Cyberattack</h4>
+                    <p>In October 2016, a massive Distributed Denial of Service (DDoS) attack targeted Dyn, a major DNS provider. The attack leveraged millions of Internet of Things (IoT) devices infected with the Mirai malware to overwhelm Dyn's servers with traffic.</p>
+                    <p><strong>Availability Impact:</strong> The attack made many major websites inaccessible for hours, including Twitter, Netflix, Reddit, and GitHub. The incident demonstrated how vulnerabilities in seemingly unimportant connected devices (like cameras and DVRs) could be weaponized to disrupt critical internet infrastructure.</p>
+                    <p><strong>Lesson:</strong> Availability requires protecting not just your own systems but also understanding dependencies on third-party services. Defense-in-depth strategies are essential for maintaining availability against sophisticated attacks.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interrelationship Section -->
+        <div class="interrelationship">
+            <h3><i class="fas fa-project-diagram"></i> The Interrelationship of CIA Principles</h3>
+            <p>The three principles of the CIA Triad are interconnected and sometimes involve trade-offs. Strengthening one aspect might weaken another, requiring careful balance in security planning.</p>
+            
+            <div class="visual-aid">
+                <h4>CIA Trade-offs in Practice</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Confidentiality Impact</th>
+                        <th>Integrity Impact</th>
+                        <th>Availability Impact</th>
+                    </tr>
+                    <tr>
+                        <td>Implementing complex encryption</td>
+                        <td style="color: var(--success);">Increases</td>
+                        <td style="color: var(--warning);">May decrease (performance issues)</td>
+                        <td style="color: var(--warning);">May decrease (processing overhead)</td>
+                    </tr>
+                    <tr>
+                        <td>Adding multiple authentication factors</td>
+                        <td style="color: var(--success);">Increases</td>
+                        <td style="color: var(--success);">Increases</td>
+                        <td style="color: var(--warning);">May decrease (user inconvenience)</td>
+                    </tr>
+                    <tr>
+                        <td>Implementing comprehensive logging</td>
+                        <td style="color: var(--warning);">May decrease (if logs exposed)</td>
+                        <td style="color: var(--success);">Increases</td>
+                        <td style="color: var(--warning);">May decrease (storage requirements)</td>
+                    </tr>
+                    <tr>
+                        <td>Creating system redundancies</td>
+                        <td style="color: var(--warning);">May decrease (more attack surfaces)</td>
+                        <td style="color: var(--neutral);">Neutral</td>
+                        <td style="color: var(--success);">Increases</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <p>Effective cybersecurity requires finding the right balance among these three principles based on the specific needs and risk profile of each organization and system.</p>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h3><i class="fas fa-question-circle"></i> Test Your Understanding</h3>
+            
+            <div class="quiz-question">
+                <p><strong>1. A hospital implements a system where patient records can only be accessed by authorized medical staff using secure login credentials. Which CIA principle does this primarily address?</strong></p>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="true">Confidentiality</div>
+                    <div class="quiz-option" data-correct="false">Integrity</div>
+                    <div class="quiz-option" data-correct="false">Availability</div>
+                    <div class="quiz-option" data-correct="false">All of the above</div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><strong>2. A financial institution uses cryptographic hash functions to ensure that transaction data hasn't been altered during transmission. Which CIA principle is being protected?</strong></p>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">Confidentiality</div>
+                    <div class="quiz-option" data-correct="true">Integrity</div>
+                    <div class="quiz-option" data-correct="false">Availability</div>
+                    <div class="quiz-option" data-correct="false">Authentication</div>
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><strong>3. An e-commerce website implements load balancers and redundant servers to ensure it can handle high traffic during holiday sales. Which CIA principle is the primary focus?</strong></p>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="false">Confidentiality</div>
+                    <div class="quiz-option" data-correct="false">Integrity</div>
+                    <div class="quiz-option" data-correct="true">Availability</div>
+                    <div class="quiz-option" data-correct="false">Authorization</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Cybersecurity Fundamentals - Lesson 1: The CIA Triad &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const isCorrect = this.getAttribute('data-correct') === 'true';
+                    
+                    // Remove previous styling
+                    this.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+                    
+                    // Add appropriate styling
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                    } else {
+                        this.classList.add('incorrect');
+                        
+                        // Highlight correct answer
+                        this.parentElement.querySelector('[data-correct="true"]').classList.add('correct');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

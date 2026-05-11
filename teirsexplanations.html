@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Server Architecture Tiers</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .tier-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .tier-card {
+            border-left: 4px solid var(--secondary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            background-color: var(--light);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tier-card h3 {
+            display: flex;
+            align-items: center;
+            margin-top: 0;
+        }
+        
+        .tier-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .architecture-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .architecture-diagram img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .pros-cons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .pros, .cons {
+            flex: 1;
+            min-width: 300px;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .pros {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .cons {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .pros h3, .cons h3 {
+            display: flex;
+            align-items: center;
+        }
+        
+        .pros h3::before {
+            content: "✓";
+            color: var(--success);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .cons h3::before {
+            content: "✗";
+            color: var(--accent);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .quiz-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+        }
+        
+        .options {
+            margin: 1rem 0;
+        }
+        
+        .option {
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .option.selected {
+            background-color: #e1f5fe;
+            border-color: var(--secondary);
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: var(--success);
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: var(--accent);
+        }
+        
+        .submit-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .result.failure {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .pros-cons {
+                flex-direction: column;
+            }
+            
+            .pros, .cons {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Client-Server Architecture Tiers</h1>
+            <p>Understanding 1-Tier, 2-Tier, 3-Tier, and N-Tier Architectures</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <h2>Introduction to Client-Server Architecture</h2>
+            <p>Client-server architecture is a computing model where the server hosts, delivers, and manages most of the resources and services requested by the client. This architecture is categorized into different tiers based on the distribution of responsibilities between the client and server.</p>
+            <p>Tiers represent the logical separation of application components, which can be deployed on different physical machines or on the same machine. The number of tiers determines how the presentation, application processing, and data management functions are separated.</p>
+        </section>
+        
+        <section class="tier-section">
+            <h2>Tier 1 Architecture (Single-Tier)</h2>
+            <div class="tier-card">
+                <h3><span class="tier-number">1</span> Overview</h3>
+                <p>In a 1-tier architecture, all components of the application exist in a single system. The user interface, business logic, and data storage are all combined together. This is also known as a monolithic architecture.</p>
+                
+                <div class="architecture-diagram">
+                    <h3>1-Tier Architecture Diagram</h3>
+                    <svg width="100%" height="200" viewBox="0 0 800 200">
+                        <rect x="50" y="50" width="700" height="100" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                        <text x="400" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Single System</text>
+                        <text x="400" y="130" text-anchor="middle" fill="white" font-size="14">Presentation + Business Logic + Data Storage</text>
+                    </svg>
+                </div>
+                
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Simple to develop and deploy</li>
+                            <li>No network latency issues</li>
+                            <li>Easier to maintain for small applications</li>
+                            <li>Lower development costs initially</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li>Not scalable</li>
+                            <li>Difficult to maintain as application grows</li>
+                            <li>Single point of failure</li>
+                            <li>Cannot be distributed across multiple machines</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Use Cases</h3>
+                <p>Single-user applications, small desktop applications, simple mobile apps without backend services.</p>
+            </div>
+        </section>
+        
+        <section class="tier-section">
+            <h2>Tier 2 Architecture (Two-Tier)</h2>
+            <div class="tier-card">
+                <h3><span class="tier-number">2</span> Overview</h3>
+                <p>In a 2-tier architecture, the application is divided into two parts: client and server. The client contains the user interface and application logic, while the server handles the database functionality.</p>
+                
+                <div class="architecture-diagram">
+                    <h3>2-Tier Architecture Diagram</h3>
+                    <svg width="100%" height="200" viewBox="0 0 800 200">
+                        <rect x="100" y="50" width="250" height="100" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                        <text x="225" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Client</text>
+                        <text x="225" y="130" text-anchor="middle" fill="white" font-size="14">Presentation + Business Logic</text>
+                        
+                        <rect x="450" y="50" width="250" height="100" rx="10" ry="10" fill="#e74c3c" opacity="0.7"/>
+                        <text x="575" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Server</text>
+                        <text x="575" y="130" text-anchor="middle" fill="white" font-size="14">Data Storage</text>
+                        
+                        <line x1="350" y1="100" x2="450" y2="100" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="450,100 440,95 440,105" fill="#2c3e50"/>
+                    </svg>
+                </div>
+                
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Better performance than 1-tier for multiple users</li>
+                            <li>Simpler to implement than 3-tier</li>
+                            <li>Direct communication between client and server</li>
+                            <li>Easier to understand and maintain</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li>Business logic tied to client, making updates difficult</li>
+                            <li>Limited scalability</li>
+                            <li>Security concerns as business logic resides on client</li>
+                            <li>Network congestion with many clients</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Use Cases</h3>
+                <p>Small to medium business applications, departmental systems, client-server databases.</p>
+            </div>
+        </section>
+        
+        <section class="tier-section">
+            <h2>Tier 3 Architecture (Three-Tier)</h2>
+            <div class="tier-card">
+                <h3><span class="tier-number">3</span> Overview</h3>
+                <p>In a 3-tier architecture, the application is divided into three logical and physical computing tiers: presentation tier, application tier, and data tier. Each tier runs on a separate platform.</p>
+                
+                <div class="architecture-diagram">
+                    <h3>3-Tier Architecture Diagram</h3>
+                    <svg width="100%" height="200" viewBox="0 0 800 200">
+                        <rect x="50" y="50" width="200" height="100" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                        <text x="150" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Presentation</text>
+                        <text x="150" y="130" text-anchor="middle" fill="white" font-size="14">User Interface</text>
+                        
+                        <rect x="300" y="50" width="200" height="100" rx="10" ry="10" fill="#2ecc71" opacity="0.7"/>
+                        <text x="400" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Application</text>
+                        <text x="400" y="130" text-anchor="middle" fill="white" font-size="14">Business Logic</text>
+                        
+                        <rect x="550" y="50" width="200" height="100" rx="10" ry="10" fill="#e74c3c" opacity="0.7"/>
+                        <text x="650" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Data</text>
+                        <text x="650" y="130" text-anchor="middle" fill="white" font-size="14">Database</text>
+                        
+                        <line x1="250" y1="100" x2="300" y2="100" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="300,100 290,95 290,105" fill="#2c3e50"/>
+                        
+                        <line x1="500" y1="100" x2="550" y2="100" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="550,100 540,95 540,105" fill="#2c3e50"/>
+                    </svg>
+                </div>
+                
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Improved scalability and performance</li>
+                            <li>Better security with separation of concerns</li>
+                            <li>Easier to maintain and update individual tiers</li>
+                            <li>Allows for load balancing</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li>More complex to develop and deploy</li>
+                            <li>Increased network latency</li>
+                            <li>Higher initial development costs</li>
+                            <li>Requires more expertise to manage</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Use Cases</h3>
+                <p>Large web applications, enterprise systems, e-commerce platforms, SaaS applications.</p>
+            </div>
+        </section>
+        
+        <section class="tier-section">
+            <h2>Tier N Architecture (N-Tier)</h2>
+            <div class="tier-card">
+                <h3><span class="tier-number">N</span> Overview</h3>
+                <p>N-tier architecture divides an application into multiple tiers that can be distributed across multiple servers. It extends the 3-tier model by further separating the application tier into multiple specialized tiers.</p>
+                
+                <div class="architecture-diagram">
+                    <h3>N-Tier Architecture Diagram</h3>
+                    <svg width="100%" height="250" viewBox="0 0 800 250">
+                        <rect x="50" y="50" width="150" height="80" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                        <text x="125" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Presentation</text>
+                        
+                        <rect x="220" y="50" width="150" height="80" rx="10" ry="10" fill="#2ecc71" opacity="0.7"/>
+                        <text x="295" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Business Logic</text>
+                        
+                        <rect x="390" y="50" width="150" height="80" rx="10" ry="10" fill="#9b59b6" opacity="0.7"/>
+                        <text x="465" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Application</text>
+                        
+                        <rect x="560" y="50" width="150" height="80" rx="10" ry="10" fill="#e74c3c" opacity="0.7"/>
+                        <text x="635" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Data</text>
+                        
+                        <rect x="220" y="150" width="150" height="80" rx="10" ry="10" fill="#f39c12" opacity="0.7"/>
+                        <text x="295" y="190" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Web Services</text>
+                        
+                        <rect x="390" y="150" width="150" height="80" rx="10" ry="10" fill="#1abc9c" opacity="0.7"/>
+                        <text x="465" y="190" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Integration</text>
+                        
+                        <line x1="200" y1="90" x2="220" y2="90" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="220,90 210,85 210,95" fill="#2c3e50"/>
+                        
+                        <line x1="370" y1="90" x2="390" y2="90" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="390,90 380,85 380,95" fill="#2c3e50"/>
+                        
+                        <line x1="540" y1="90" x2="560" y2="90" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="560,90 550,85 550,95" fill="#2c3e50"/>
+                        
+                        <line x1="295" y1="130" x2="295" y2="150" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="295,150 290,140 300,140" fill="#2c3e50"/>
+                        
+                        <line x1="465" y1="130" x2="465" y2="150" stroke="#2c3e50" stroke-width="2"/>
+                        <polygon points="465,150 460,140 470,140" fill="#2c3e50"/>
+                    </svg>
+                </div>
+                
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Maximum scalability and flexibility</li>
+                            <li>Each tier can be optimized independently</li>
+                            <li>Improved fault isolation</li>
+                            <li>Better resource utilization</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Disadvantages</h3>
+                        <ul>
+                            <li>Most complex to develop and maintain</li>
+                            <li>Highest development and infrastructure costs</li>
+                            <li>Increased network complexity and latency</li>
+                            <li>Requires sophisticated monitoring and management</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Use Cases</h3>
+                <p>Large-scale enterprise systems, cloud-native applications, microservices architectures, global web applications.</p>
+            </div>
+        </section>
+        
+        <section class="tier-section">
+            <h2>Comparison Table</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>1-Tier</th>
+                        <th>2-Tier</th>
+                        <th>3-Tier</th>
+                        <th>N-Tier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Complexity</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Very High</td>
+                    </tr>
+                    <tr>
+                        <td>Scalability</td>
+                        <td>Very Low</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance</td>
+                        <td>Easy (for small apps)</td>
+                        <td>Moderate</td>
+                        <td>Easier than 2-tier</td>
+                        <td>Complex</td>
+                    </tr>
+                    <tr>
+                        <td>Security</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Very High</td>
+                    </tr>
+                    <tr>
+                        <td>Development Cost</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Very High</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>High (for single user)</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Very High (when scaled)</td>
+                    </tr>
+                    <tr>
+                        <td>Flexibility</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Very High</td>
+                    </tr>
+                    <tr>
+                        <td>Use Case Examples</td>
+                        <td>Desktop apps, simple mobile apps</td>
+                        <td>Small business apps, departmental systems</td>
+                        <td>Web applications, enterprise systems</td>
+                        <td>Large-scale systems, cloud applications</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section class="quiz-section">
+            <h2>Knowledge Check</h2>
+            <p>Test your understanding of client-server architecture tiers with this interactive quiz.</p>
+            
+            <div class="question">
+                <h3>Question 1: Which architecture has all components combined in a single system?</h3>
+                <div class="options">
+                    <div class="option" data-correct="true">1-Tier Architecture</div>
+                    <div class="option">2-Tier Architecture</div>
+                    <div class="option">3-Tier Architecture</div>
+                    <div class="option">N-Tier Architecture</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>Question 2: In which architecture is the business logic typically located on the client side?</h3>
+                <div class="options">
+                    <div class="option">1-Tier Architecture</div>
+                    <div class="option" data-correct="true">2-Tier Architecture</div>
+                    <div class="option">3-Tier Architecture</div>
+                    <div class="option">N-Tier Architecture</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>Question 3: Which architecture provides the best scalability for large enterprise applications?</h3>
+                <div class="options">
+                    <div class="option">1-Tier Architecture</div>
+                    <div class="option">2-Tier Architecture</div>
+                    <div class="option">3-Tier Architecture</div>
+                    <div class="option" data-correct="true">N-Tier Architecture</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>Question 4: What is the main disadvantage of 1-tier architecture?</h3>
+                <div class="options">
+                    <div class="option">High development cost</div>
+                    <div class="option">Complex network configuration</div>
+                    <div class="option" data-correct="true">Lack of scalability</div>
+                    <div class="option">Security vulnerabilities</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>Question 5: Which architecture separates presentation, business logic, and data into distinct tiers?</h3>
+                <div class="options">
+                    <div class="option">1-Tier Architecture</div>
+                    <div class="option">2-Tier Architecture</div>
+                    <div class="option" data-correct="true">3-Tier Architecture</div>
+                    <div class="option">All of the above</div>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitQuiz">Submit Answers</button>
+            
+            <div class="result" id="quizResult"></div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Client-Server Architecture Tiers - Educational Resource</p>
+            <p>© 2023 Architecture Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.getElementById('submitQuiz');
+            const resultDiv = document.getElementById('quizResult');
+            
+            // Add click event to options
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = this.parentElement.children;
+                    for (let sibling of siblings) {
+                        sibling.classList.remove('selected');
+                    }
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Submit quiz
+            submitBtn.addEventListener('click', function() {
+                let score = 0;
+                const questions = document.querySelectorAll('.question');
+                
+                // Check each question
+                questions.forEach(question => {
+                    const options = question.querySelectorAll('.option');
+                    let answered = false;
+                    let correct = false;
+                    
+                    options.forEach(option => {
+                        if (option.classList.contains('selected')) {
+                            answered = true;
+                            
+                            // Check if correct
+                            if (option.hasAttribute('data-correct')) {
+                                correct = true;
+                                option.classList.add('correct');
+                                score++;
+                            } else {
+                                option.classList.add('incorrect');
+                                // Highlight correct answer
+                                options.forEach(opt => {
+                                    if (opt.hasAttribute('data-correct')) {
+                                        opt.classList.add('correct');
+                                    }
+                                });
+                            }
+                        } else if (option.hasAttribute('data-correct')) {
+                            // Highlight correct answer if not selected
+                            if (!answered) {
+                                option.classList.add('correct');
+                            }
+                        }
+                    });
+                });
+                
+                // Display result
+                const percentage = (score / questions.length) * 100;
+                resultDiv.textContent = `You scored ${score} out of ${questions.length} (${percentage}%)`;
+                
+                if (percentage >= 80) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent += ' - Excellent! You have a strong understanding of client-server architectures.';
+                } else if (percentage >= 60) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent += ' - Good job! You understand the basics but could use more practice.';
+                } else {
+                    resultDiv.className = 'result failure';
+                    resultDiv.textContent += ' - You might want to review the material and try again.';
+                }
+                
+                // Scroll to result
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Client–Server Tiers – Knowledge Check</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f7;
+            color: #222;
+        }
+        header {
+            background: #1f2933;
+            color: #fff;
+            padding: 1rem 1.5rem;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+        main {
+            max-width: 1000px;
+            margin: 1.5rem auto 2rem;
+            padding: 0 1rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+        }
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+        .highlight {
+            background: #eef2ff;
+            border-left: 4px solid #4f46e5;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Diagram */
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .tier-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .tier-box {
+            min-width: 220px;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            text-align: center;
+            font-weight: 600;
+        }
+        .tier-box small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        .arrow {
+            font-size: 1.2rem;
+            color: #4b5563;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f3f4f6;
+        }
+
+        /* Quiz */
+        .question {
+            margin-bottom: 1rem;
+            padding: 0.75rem 0.9rem;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+        .question p {
+            margin: 0 0 0.4rem;
+            font-weight: 600;
+        }
+        .question label {
+            display: block;
+            margin: 0.15rem 0;
+            font-weight: 400;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 0.55rem 1.3rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 0.75rem;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        #result {
+            margin-top: 0.75rem;
+            font-weight: 600;
+        }
+        #result.good { color: #16a34a; }
+        #result.medium { color: #eab308; }
+        #result.bad { color: #dc2626; }
+
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Client–Server Architecture: Tiers (1, 2, 3, N)</h1>
+    </header>
+
+    <main>
+        <!-- Overview -->
+        <section class="card">
+            <h2>Quick Overview</h2>
+            <p>
+                A <strong>tier</strong> is a logical layer in a client–server system.
+                We can combine or separate the presentation, business logic, and data
+                into different tiers to balance <em>simplicity, scalability, and security</em>.
+            </p>
+            <div class="highlight">
+                <strong>Rule of thumb:</strong><br />
+                More tiers = more flexibility and scalability, but also more complexity.
+            </div>
+        </section>
+
+        <!-- 3-tier diagram -->
+        <section class="card">
+            <h2>Example: Classic 3-Tier Architecture</h2>
+            <p>In a 3-tier system, each layer has a clear role:</p>
+            <div class="diagram-container">
+                <div class="tier-diagram">
+                    <div class="tier-box">
+                        Presentation Tier (Client)
+                        <small>Browser, mobile app, desktop UI</small>
+                    </div>
+                    <div class="arrow">&#8595;</div>
+                    <div class="tier-box">
+                        Application Tier (Server)
+                        <small>Business logic, APIs, validation</small>
+                    </div>
+                    <div class="arrow">&#8595;</div>
+                    <div class="tier-box">
+                        Data Tier (Database)
+                        <small>Relational DB, files, storage</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison table -->
+        <section class="card">
+            <h2>Tier Comparison</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tier Type</th>
+                        <th>Layers</th>
+                        <th>Where is Logic?</th>
+                        <th>Main Advantages</th>
+                        <th>Main Disadvantages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1-Tier</td>
+                        <td>One program with UI + logic + data</td>
+                        <td>All inside the same executable</td>
+                        <td>Very simple; no network; fast for a single user</td>
+                        <td>Not scalable; hard to share data; hard to maintain</td>
+                    </tr>
+                    <tr>
+                        <td>2-Tier</td>
+                        <td>Client + Database server</td>
+                        <td>Mainly in the client, some in DB</td>
+                        <td>Simpler than 3-tier; good performance; central DB</td>
+                        <td>Many clients to update; DB more exposed; limited scaling</td>
+                    </tr>
+                    <tr>
+                        <td>3-Tier</td>
+                        <td>Presentation, Application, Data</td>
+                        <td>Application server (web/API layer)</td>
+                        <td>Separation of concerns; better security; easier scaling</td>
+                        <td>More components; more complexity to manage</td>
+                    </tr>
+                    <tr>
+                        <td>N-Tier</td>
+                        <td>Client, gateways, services, DB, cache, etc.</td>
+                        <td>Split across multiple services</td>
+                        <td>Highly scalable and flexible; fault isolation</td>
+                        <td>Very complex; needs strong DevOps and monitoring</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Quiz -->
+        <section class="card">
+            <h2>Knowledge Check Quiz</h2>
+            <p>Choose the best answer for each question, then click <strong>Check Answers</strong>.</p>
+
+            <div class="question">
+                <p>1. Which tier type usually combines UI, logic, and data in one application?</p>
+                <label><input type="radio" name="q1" value="a" /> 2-Tier</label>
+                <label><input type="radio" name="q1" value="b" /> 3-Tier</label>
+                <label><input type="radio" name="q1" value="c" /> 1-Tier</label>
+                <label><input type="radio" name="q1" value="d" /> N-Tier</label>
+            </div>
+
+            <div class="question">
+                <p>2. In a 2-tier system, the client usually talks directly to:</p>
+                <label><input type="radio" name="q2" value="a" /> The API gateway</label>
+                <label><input type="radio" name="q2" value="b" /> The database server</label>
+                <label><input type="radio" name="q2" value="c" /> A message queue</label>
+                <label><input type="radio" name="q2" value="d" /> A caching layer</label>
+            </div>
+
+            <div class="question">
+                <p>3. In a 3-tier architecture, which tier should contain most of the business rules?</p>
+                <label><input type="radio" name="q3" value="a" /> Presentation tier (client)</label>
+                <label><input type="radio" name="q3" value="b" /> Application tier (server)</label>
+                <label><input type="radio" name="q3" value="c" /> Data tier only</label>
+                <label><input type="radio" name="q3" value="d" /> None of them</label>
+            </div>
+
+            <div class="question">
+                <p>4. What is the main reason to move from 3-tier to N-tier?</p>
+                <label><input type="radio" name="q4" value="a" /> To remove all servers</label>
+                <label><input type="radio" name="q4" value="b" /> To support microservices and higher scalability</label>
+                <label><input type="radio" name="q4" value="c" /> To force clients to connect directly to the DB</label>
+                <label><input type="radio" name="q4" value="d" /> To reduce the number of layers</label>
+            </div>
+
+            <div class="question">
+                <p>5. Which statement is <strong>true</strong>?</p>
+                <label><input type="radio" name="q5" value="a" /> More tiers always make the system simpler.</label>
+                <label><input type="radio" name="q5" value="b" /> 1-tier is always more scalable than 3-tier.</label>
+                <label><input type="radio" name="q5" value="c" /> N-tier increases flexibility but also complexity.</label>
+                <label><input type="radio" name="q5" value="d" /> 2-tier has no database.</label>
+            </div>
+
+            <button id="checkBtn">Check Answers</button>
+            <div id="result"></div>
+        </section>
+    </main>
+
+    <footer>
+        Client–Server Architecture – Practice Page
+    </footer>
+
+    <script>
+        const answerKey = {
+            q1: "c",
+            q2: "b",
+            q3: "b",
+            q4: "b",
+            q5: "c"
+        };
+
+        document.getElementById("checkBtn").addEventListener("click", function () {
+            let score = 0;
+            let total = Object.keys(answerKey).length;
+
+            for (const q in answerKey) {
+                const selected = document.querySelector('input[name="' + q + '"]:checked');
+                if (selected && selected.value === answerKey[q]) {
+                    score++;
+                }
+            }
+
+            const result = document.getElementById("result");
+            const percent = Math.round((score / total) * 100);
+            let cls = "bad";
+            let msg = "";
+
+            if (percent === 100) {
+                cls = "good";
+                msg = "Excellent! You scored " + score + " / " + total + " (" + percent + "%).";
+            } else if (percent >= 60) {
+                cls = "medium";
+                msg = "Good job! You scored " + score + " / " + total + " (" + percent + "%). Review the questions you missed.";
+            } else {
+                cls = "bad";
+                msg = "You scored " + score + " / " + total + " (" + percent + "%). Re-read the notes and try again.";
+            }
+
+            result.className = cls;
+            result.textContent = msg;
+        });
+    </script>
+</body>
+</html>

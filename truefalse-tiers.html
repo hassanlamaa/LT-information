@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Server Architecture: True/False Quiz</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .architecture-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        
+        .architecture-diagram img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 2rem 0;
+        }
+        
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .question.correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-color: var(--success);
+        }
+        
+        .question.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .options {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .option {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .option:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .option.selected.true {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        .option.selected.false {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .feedback {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-left: 4px solid var(--success);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+        
+        .submit-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .result.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+            display: block;
+        }
+        
+        .result.failure {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            display: block;
+        }
+        
+        .score-display {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .restart-btn {
+            background-color: var(--warning);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .restart-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Client-Server Architecture</h1>
+            <p>True/False Knowledge Check</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <h2>Understanding Client-Server Architecture</h2>
+            <p>Client-server architecture is a distributed application structure that partitions tasks or workloads between service providers (servers) and service requesters (clients).</p>
+            <p>Test your knowledge with these true/false questions about different tier architectures in client-server systems.</p>
+            
+            <div class="architecture-diagram">
+                <h3>Basic Client-Server Model</h3>
+                <svg width="100%" height="200" viewBox="0 0 800 200">
+                    <rect x="100" y="50" width="250" height="100" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                    <text x="225" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Client</text>
+                    <text x="225" y="130" text-anchor="middle" fill="white" font-size="14">Requests Services</text>
+                    
+                    <rect x="450" y="50" width="250" height="100" rx="10" ry="10" fill="#e74c3c" opacity="0.7"/>
+                    <text x="575" y="110" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Server</text>
+                    <text x="575" y="130" text-anchor="middle" fill="white" font-size="14">Provides Services</text>
+                    
+                    <line x1="350" y1="100" x2="450" y2="100" stroke="#2c3e50" stroke-width="2"/>
+                    <polygon points="450,100 440,95 440,105" fill="#2c3e50"/>
+                    <text x="400" y="90" text-anchor="middle" fill="#2c3e50" font-size="14">Network</text>
+                </svg>
+            </div>
+        </section>
+        
+        <section class="quiz-section">
+            <h2>True/False Quiz</h2>
+            <p>Select whether each statement is True or False. You'll receive immediate feedback after selecting your answer.</p>
+            
+            <div class="question" id="question1">
+                <div class="question-header">
+                    <span class="question-number">1</span>
+                    <span class="question-text">In a 1-tier architecture, the presentation, business logic, and data storage are all combined in a single system.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> In 1-tier architecture, all components exist in a single system without separation.
+                </div>
+            </div>
+            
+            <div class="question" id="question2">
+                <div class="question-header">
+                    <span class="question-number">2</span>
+                    <span class="question-text">A 2-tier architecture is also known as a client-server architecture.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> The 2-tier architecture is the classic client-server model where the client handles presentation and business logic, while the server manages data storage.
+                </div>
+            </div>
+            
+            <div class="question" id="question3">
+                <div class="question-header">
+                    <span class="question-number">3</span>
+                    <span class="question-text">In a 3-tier architecture, the business logic is typically located on the client side.</span>
+                </div>
+                <div class="options">
+                    <div class="option true">True</div>
+                    <div class="option false" data-correct="true">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> In 3-tier architecture, business logic is separated into its own tier (application tier), not located on the client side.
+                </div>
+            </div>
+            
+            <div class="question" id="question4">
+                <div class="question-header">
+                    <span class="question-number">4</span>
+                    <span class="question-text">N-tier architecture allows for better scalability than 2-tier architecture.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> N-tier architecture provides better scalability as each tier can be scaled independently based on demand.
+                </div>
+            </div>
+            
+            <div class="question" id="question5">
+                <div class="question-header">
+                    <span class="question-number">5</span>
+                    <span class="question-text">The main advantage of 1-tier architecture is its high scalability for large user bases.</span>
+                </div>
+                <div class="options">
+                    <div class="option true">True</div>
+                    <div class="option false" data-correct="true">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> 1-tier architecture has very poor scalability as all components are combined in a single system.
+                </div>
+            </div>
+            
+            <div class="question" id="question6">
+                <div class="question-header">
+                    <span class="question-number">6</span>
+                    <span class="question-text">In client-server architecture, the server always initiates the communication with clients.</span>
+                </div>
+                <div class="options">
+                    <div class="option true">True</div>
+                    <div class="option false" data-correct="true">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> In client-server architecture, clients typically initiate communication by requesting services from servers.
+                </div>
+            </div>
+            
+            <div class="question" id="question7">
+                <div class="question-header">
+                    <span class="question-number">7</span>
+                    <span class="question-text">A web browser is an example of a client in client-server architecture.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> A web browser acts as a client that requests web pages from web servers.
+                </div>
+            </div>
+            
+            <div class="question" id="question8">
+                <div class="question-header">
+                    <span class="question-number">8</span>
+                    <span class="question-text">Peer-to-peer architecture is the same as client-server architecture.</span>
+                </div>
+                <div class="options">
+                    <div class="option true">True</div>
+                    <div class="option false" data-correct="true">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> Peer-to-peer architecture is different from client-server architecture as each node can act as both client and server.
+                </div>
+            </div>
+            
+            <div class="question" id="question9">
+                <div class="question-header">
+                    <span class="question-number">9</span>
+                    <span class="question-text">Thick clients contain most of the application logic and require minimal server interaction.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> Thick clients (fat clients) process most data locally and only communicate with the server for data storage/retrieval.
+                </div>
+            </div>
+            
+            <div class="question" id="question10">
+                <div class="question-header">
+                    <span class="question-number">10</span>
+                    <span class="question-text">Microservices architecture is an example of N-tier architecture.</span>
+                </div>
+                <div class="options">
+                    <div class="option true" data-correct="true">True</div>
+                    <div class="option false">False</div>
+                </div>
+                <div class="feedback">
+                    <strong>Correct!</strong> Microservices architecture extends the N-tier concept by further decomposing application tiers into independently deployable services.
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitQuiz">Check All Answers</button>
+            
+            <div class="result" id="quizResult">
+                <div class="score-display" id="scoreDisplay"></div>
+                <p id="resultMessage"></p>
+                <button class="restart-btn" id="restartQuiz">Restart Quiz</button>
+            </div>
+        </section>
+        
+        <section class="intro">
+            <h2>Architecture Comparison</h2>
+            <div class="architecture-diagram">
+                <h3>Evolution of Client-Server Architectures</h3>
+                <svg width="100%" height="400" viewBox="0 0 800 400">
+                    <!-- 1-Tier -->
+                    <rect x="50" y="50" width="200" height="100" rx="10" ry="10" fill="#3498db" opacity="0.7"/>
+                    <text x="150" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">1-Tier</text>
+                    <text x="150" y="130" text-anchor="middle" fill="white" font-size="12">All in One</text>
+                    
+                    <!-- 2-Tier -->
+                    <rect x="300" y="50" width="200" height="100" rx="10" ry="10" fill="#2ecc71" opacity="0.7"/>
+                    <text x="400" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">2-Tier</text>
+                    <line x1="350" y1="90" x2="450" y2="90" stroke="white" stroke-width="1"/>
+                    <text x="350" y="110" text-anchor="middle" fill="white" font-size="12">Client</text>
+                    <text x="450" y="110" text-anchor="middle" fill="white" font-size="12">Server</text>
+                    
+                    <!-- 3-Tier -->
+                    <rect x="550" y="50" width="200" height="100" rx="10" ry="10" fill="#e74c3c" opacity="0.7"/>
+                    <text x="650" y="70" text-anchor="middle" fill="white" font-size="14" font-weight="bold">3-Tier</text>
+                    <line x1="570" y1="90" x2="610" y2="90" stroke="white" stroke-width="1"/>
+                    <line x1="630" y1="90" x2="730" y2="90" stroke="white" stroke-width="1"/>
+                    <text x="590" y="110" text-anchor="middle" fill="white" font-size="10">Presentation</text>
+                    <text x="650" y="110" text-anchor="middle" fill="white" font-size="10">Application</text>
+                    <text x="710" y="110" text-anchor="middle" fill="white" font-size="10">Data</text>
+                    
+                    <!-- N-Tier -->
+                    <rect x="50" y="200" width="700" height="150" rx="10" ry="10" fill="#9b59b6" opacity="0.7"/>
+                    <text x="400" y="220" text-anchor="middle" fill="white" font-size="14" font-weight="bold">N-Tier</text>
+                    
+                    <rect x="100" y="250" width="120" height="80" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="160" y="290" text-anchor="middle" fill="#9b59b6" font-size="10">Presentation</text>
+                    
+                    <rect x="240" y="250" width="120" height="80" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="300" y="270" text-anchor="middle" fill="#9b59b6" font-size="10">Business</text>
+                    <text x="300" y="290" text-anchor="middle" fill="#9b59b6" font-size="10">Logic</text>
+                    
+                    <rect x="380" y="250" width="120" height="80" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="440" y="270" text-anchor="middle" fill="#9b59b6" font-size="10">Application</text>
+                    <text x="440" y="290" text-anchor="middle" fill="#9b59b6" font-size="10">Services</text>
+                    
+                    <rect x="520" y="250" width="120" height="80" rx="5" ry="5" fill="white" opacity="0.9"/>
+                    <text x="580" y="270" text-anchor="middle" fill="#9b59b6" font-size="10">Data</text>
+                    <text x="580" y="290" text-anchor="middle" fill="#9b59b6" font-size="10">Access</text>
+                    
+                    <line x1="220" y1="290" x2="240" y2="290" stroke="white" stroke-width="2"/>
+                    <line x1="360" y1="290" x2="380" y2="290" stroke="white" stroke-width="2"/>
+                    <line x1="500" y1="290" x2="520" y2="290" stroke="white" stroke-width="2"/>
+                    
+                    <text x="400" y="380" text-anchor="middle" fill="white" font-size="12">Multiple specialized tiers that can be scaled independently</text>
+                </svg>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Client-Server Architecture True/False Quiz - Educational Resource</p>
+            <p>© 2023 Architecture Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questions = document.querySelectorAll('.question');
+            const submitBtn = document.getElementById('submitQuiz');
+            const restartBtn = document.getElementById('restartQuiz');
+            const resultDiv = document.getElementById('quizResult');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            // Add click event to options
+            questions.forEach(question => {
+                const options = question.querySelectorAll('.option');
+                
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Remove selected class from siblings
+                        const siblings = this.parentElement.children;
+                        for (let sibling of siblings) {
+                            sibling.classList.remove('selected');
+                        }
+                        
+                        // Add selected class to clicked option
+                        this.classList.add('selected');
+                        
+                        // Show immediate feedback
+                        const feedback = question.querySelector('.feedback');
+                        const isCorrect = this.hasAttribute('data-correct');
+                        
+                        // Update question styling
+                        question.classList.remove('correct', 'incorrect');
+                        question.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        
+                        // Show feedback
+                        feedback.classList.remove('correct', 'incorrect');
+                        feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        
+                        // Update feedback text if incorrect
+                        if (!isCorrect) {
+                            const correctOption = question.querySelector('.option[data-correct="true"]');
+                            const correctText = correctOption.textContent;
+                            feedback.innerHTML = `<strong>Incorrect.</strong> The correct answer is <strong>${correctText}</strong>. ${feedback.textContent.split('. ')[1]}`;
+                        }
+                    });
+                });
+            });
+            
+            // Submit quiz
+            submitBtn.addEventListener('click', function() {
+                let score = 0;
+                let answeredAll = true;
+                
+                // Check each question
+                questions.forEach(question => {
+                    const selectedOption = question.querySelector('.option.selected');
+                    
+                    if (selectedOption) {
+                        if (selectedOption.hasAttribute('data-correct')) {
+                            score++;
+                        }
+                    } else {
+                        answeredAll = false;
+                    }
+                });
+                
+                // Display result
+                if (!answeredAll) {
+                    alert('Please answer all questions before submitting.');
+                    return;
+                }
+                
+                const percentage = (score / questions.length) * 100;
+                scoreDisplay.textContent = `Score: ${score} / ${questions.length} (${percentage}%)`;
+                
+                if (percentage >= 80) {
+                    resultMessage.textContent = 'Excellent! You have a strong understanding of client-server architectures.';
+                    resultDiv.className = 'result success';
+                } else if (percentage >= 60) {
+                    resultMessage.textContent = 'Good job! You understand the basics but could use more practice.';
+                    resultDiv.className = 'result success';
+                } else {
+                    resultMessage.textContent = 'You might want to review the material and try again.';
+                    resultDiv.className = 'result failure';
+                }
+                
+                // Scroll to result
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Restart quiz
+            restartBtn.addEventListener('click', function() {
+                questions.forEach(question => {
+                    // Reset options
+                    const options = question.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Reset question styling
+                    question.classList.remove('correct', 'incorrect');
+                    
+                    // Hide feedback
+                    const feedback = question.querySelector('.feedback');
+                    feedback.classList.remove('correct', 'incorrect');
+                    feedback.style.display = 'none';
+                });
+                
+                // Hide result
+                resultDiv.style.display = 'none';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

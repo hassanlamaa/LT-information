@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Layers Interactive Learning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --layer1: #3498db;    /* Logical Security - Blue */
+            --layer2: #2ecc71;    /* Operational Security - Green */
+            --layer3: #9b59b6;    /* Telecom Security - Purple */
+            --layer4: #e74c3c;    /* Cybersecurity - Red */
+            --dark-bg: #1a1a2e;
+            --darker-bg: #16213e;
+            --light-bg: #f5f7fa;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
+            color: var(--text-light);
+            padding: 2rem 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--layer1), var(--layer2), var(--layer3), var(--layer4));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .learning-objectives {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .learning-objectives h3 {
+            color: var(--layer4);
+            margin-bottom: 1rem;
+        }
+
+        .objectives-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .objective-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .objective-item i {
+            color: var(--layer2);
+            margin-top: 3px;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: var(--card-bg);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .nav-btn.active {
+            color: white;
+        }
+
+        .nav-btn.layer1.active {
+            background-color: var(--layer1);
+        }
+
+        .nav-btn.layer2.active {
+            background-color: var(--layer2);
+        }
+
+        .nav-btn.layer3.active {
+            background-color: var(--layer3);
+        }
+
+        .nav-btn.layer4.active {
+            background-color: var(--layer4);
+        }
+
+        /* Main Content Area */
+        .content-area {
+            min-height: 500px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+        }
+
+        .section-title.layer1 {
+            border-bottom-color: var(--layer1);
+        }
+
+        .section-title.layer2 {
+            border-bottom-color: var(--layer2);
+        }
+
+        .section-title.layer3 {
+            border-bottom-color: var(--layer3);
+        }
+
+        .section-title.layer4 {
+            border-bottom-color: var(--layer4);
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .layer1 .section-icon {
+            color: var(--layer1);
+        }
+
+        .layer2 .section-icon {
+            color: var(--layer2);
+        }
+
+        .layer3 .section-icon {
+            color: var(--layer3);
+        }
+
+        .layer4 .section-icon {
+            color: var(--layer4);
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Security Onion Visualization */
+        .security-onion {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .onion-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .onion-layer {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .onion-layer:hover {
+            transform: scale(1.05);
+        }
+
+        .layer-cyber {
+            width: 300px;
+            height: 300px;
+            background-color: var(--layer4);
+            z-index: 1;
+        }
+
+        .layer-telecom {
+            width: 230px;
+            height: 230px;
+            background-color: var(--layer3);
+            z-index: 2;
+            top: 35px;
+            left: 35px;
+        }
+
+        .layer-operational {
+            width: 160px;
+            height: 160px;
+            background-color: var(--layer2);
+            z-index: 3;
+            top: 70px;
+            left: 70px;
+        }
+
+        .layer-logical {
+            width: 90px;
+            height: 90px;
+            background-color: var(--layer1);
+            z-index: 4;
+            top: 105px;
+            left: 105px;
+        }
+
+        /* Components Grid */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .component-card {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .component-card.layer1 {
+            border-left-color: var(--layer1);
+        }
+
+        .component-card.layer2 {
+            border-left-color: var(--layer2);
+        }
+
+        .component-card.layer3 {
+            border-left-color: var(--layer3);
+        }
+
+        .component-card.layer4 {
+            border-left-color: var(--layer4);
+        }
+
+        .component-icon {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Example Section */
+        .example-section {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .example-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .example-title i {
+            color: var(--layer4);
+        }
+
+        .example-scenario {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--layer4);
+        }
+
+        .vulnerability-list {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .vulnerability-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Knowledge Check */
+        .knowledge-check {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quiz-container {
+            margin-top: 1.5rem;
+        }
+
+        .quiz-question {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 1rem 0;
+        }
+
+        .quiz-option {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--layer1);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--layer2);
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--layer4);
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        .quiz-feedback {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-left: 5px solid var(--layer2);
+        }
+
+        .quiz-feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 5px solid var(--layer4);
+        }
+
+        .check-answer-btn, .next-question-btn {
+            background-color: var(--layer1);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .check-answer-btn:hover, .next-question-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .next-question-btn {
+            background-color: var(--layer2);
+            display: none;
+        }
+
+        .next-question-btn:hover {
+            background-color: #27ae60;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--layer1), var(--layer2), var(--layer3), var(--layer4));
+            width: 25%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 90%;
+                justify-content: center;
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .onion-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .layer-cyber {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .layer-telecom {
+                width: 190px;
+                height: 190px;
+                top: 30px;
+                left: 30px;
+            }
+            
+            .layer-operational {
+                width: 130px;
+                height: 130px;
+                top: 60px;
+                left: 60px;
+            }
+            
+            .layer-logical {
+                width: 70px;
+                height: 70px;
+                top: 90px;
+                left: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> Cybersecurity Layers Interactive Learning</h1>
+                <p class="subtitle">Explore how different security domains interact and protect information systems. Understand the "weakest link" principle through interactive examples and knowledge checks.</p>
+                
+                <div class="learning-objectives">
+                    <h3><i class="fas fa-bullseye"></i> Learning Objectives</h3>
+                    <div class="objectives-list">
+                        <div class="objective-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Distinguish between the four primary security layers</span>
+                        </div>
+                        <div class="objective-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Explain key components and concerns of each layer</span>
+                        </div>
+                        <div class="objective-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Analyze real-world scenarios to identify involved layers</span>
+                        </div>
+                        <div class="objective-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Apply the "weakest link" principle to security assessment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn layer1 active" data-target="layer1">
+                <i class="fas fa-code"></i> Layer 1: Logical & Application Security
+            </button>
+            <button class="nav-btn layer2" data-target="layer2">
+                <i class="fas fa-cogs"></i> Layer 2: Operational Security
+            </button>
+            <button class="nav-btn layer3" data-target="layer3">
+                <i class="fas fa-network-wired"></i> Layer 3: Telecommunications Security
+            </button>
+            <button class="nav-btn layer4" data-target="layer4">
+                <i class="fas fa-umbrella"></i> Layer 4: Cybersecurity Integration
+            </button>
+        </div>
+
+        <!-- Security Onion Visualization -->
+        <div class="security-onion">
+            <div class="onion-container">
+                <div class="onion-layer layer-cyber" data-target="layer4">
+                    <span>Cybersecurity</span>
+                </div>
+                <div class="onion-layer layer-telecom" data-target="layer3">
+                    <span>Telecommunications</span>
+                </div>
+                <div class="onion-layer layer-operational" data-target="layer2">
+                    <span>Operational</span>
+                </div>
+                <div class="onion-layer layer-logical" data-target="layer1">
+                    <span>Logical</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Layer 1: Logical & Application Security -->
+            <section class="section-content active" id="layer1">
+                <div class="section-title layer1">
+                    <i class="fas fa-code section-icon"></i>
+                    <h2>Layer 1: Logical & Application Security</h2>
+                </div>
+                
+                <p><strong>Definition:</strong> Security implemented through <strong>software, programs, and data management</strong> to ensure proper functioning and data protection.</p>
+                
+                <div class="components-grid">
+                    <div class="component-card layer1">
+                        <div class="component-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3>Secure Development</h3>
+                        <p>Following "Security by Design" principles, quality coding practices, and thorough security testing during development.</p>
+                    </div>
+                    
+                    <div class="component-card layer1">
+                        <div class="component-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>Cryptography</h3>
+                        <p>Implementing encryption and hashing to ensure data <strong>integrity and confidentiality</strong> during storage and transmission.</p>
+                    </div>
+                    
+                    <div class="component-card layer1">
+                        <div class="component-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Access Control</h3>
+                        <p>Authentication procedures and authorization mechanisms to ensure only authorized users access specific resources.</p>
+                    </div>
+                    
+                    <div class="component-card layer1">
+                        <div class="component-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Data Classification</h3>
+                        <p>Categorizing data by sensitivity (Normal, Confidential, Secret) and applying appropriate protection measures for each category.</p>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-title">
+                        <i class="fas fa-hospital-alt"></i>
+                        <h3>Real-World Example: Hospital Records System</h3>
+                    </div>
+                    
+                    <div class="example-scenario">
+                        <p><strong>Scenario:</strong> A hospital uses state-of-the-art encryption for patient data. However, their software was developed quickly with minimal testing, and all doctors share the same admin password.</p>
+                        
+                        <p><strong>Logical Security Issues:</strong></p>
+                        <ul class="vulnerability-list">
+                            <li class="vulnerability-item"><strong>Poor Development Quality:</strong> Minimal testing leads to undiscovered vulnerabilities</li>
+                            <li class="vulnerability-item"><strong>Weak Access Control:</strong> Shared admin passwords eliminate accountability</li>
+                            <li class="vulnerability-item"><strong>No Least Privilege:</strong> All doctors have admin access when they only need patient data access</li>
+                        </ul>
+                        
+                        <p><strong>Outcome:</strong> Despite strong encryption (one component), the system is vulnerable due to weaknesses in other logical security components.</p>
+                    </div>
+                </div>
+                
+                <!-- Knowledge Check for Layer 1 -->
+                <div class="knowledge-check">
+                    <h3><i class="fas fa-brain"></i> Knowledge Check: Logical Security</h3>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question" id="question1">
+                            <p><strong>Question 1:</strong> A company has implemented strong encryption for all data but hasn't classified data by sensitivity level. Which logical security component is weak?</p>
+                            
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">Cryptography</div>
+                                <div class="quiz-option" data-correct="true">Data Classification</div>
+                                <div class="quiz-option" data-correct="false">Access Control</div>
+                                <div class="quiz-option" data-correct="false">Malware Detection</div>
+                            </div>
+                            
+                            <div class="quiz-feedback">
+                                <p><strong>Explanation:</strong> Data classification is essential for applying appropriate protection measures based on sensitivity. Without it, all data gets the same protection level, which may be insufficient for confidential information or wasteful for normal data.</p>
+                            </div>
+                            
+                            <button class="check-answer-btn">Check Answer</button>
+                            <button class="next-question-btn">Next Question</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Layer 2: Operational Security -->
+            <section class="section-content" id="layer2">
+                <div class="section-title layer2">
+                    <i class="fas fa-cogs section-icon"></i>
+                    <h2>Layer 2: Operational Security</h2>
+                </div>
+                
+                <p><strong>Definition:</strong> Ensuring <strong>day-to-day functioning</strong> through tools, procedures, maintenance, and management of IT systems.</p>
+                
+                <div class="components-grid">
+                    <div class="component-card layer2">
+                        <div class="component-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>Configuration & Update Management</h3>
+                        <p>Keeping systems properly configured, patched, and updated to address known vulnerabilities.</p>
+                    </div>
+                    
+                    <div class="component-card layer2">
+                        <div class="component-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>Backup & Continuity Management</h3>
+                        <p>Regular backups, tested restoration procedures, and business continuity planning for disaster recovery.</p>
+                    </div>
+                    
+                    <div class="component-card layer2">
+                        <div class="component-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3>Incident Management</h3>
+                        <p>Processes for detecting, responding to, and resolving security incidents with proper documentation.</p>
+                    </div>
+                    
+                    <div class="component-card layer2">
+                        <div class="component-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Log Management</h3>
+                        <p>Collecting, monitoring, and analyzing log files for security events, anomalies, and forensic investigations.</p>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-title">
+                        <i class="fas fa-building"></i>
+                        <h3>Real-World Example: Financial Firm Outage</h3>
+                    </div>
+                    
+                    <div class="example-scenario">
+                        <p><strong>Scenario:</strong> A financial firm skipped server maintenance to "save costs." No recent backup tests were performed. During peak trading hours, their transaction system fails completely.</p>
+                        
+                        <p><strong>Operational Security Issues:</strong></p>
+                        <ul class="vulnerability-list">
+                            <li class="vulnerability-item"><strong>Poor Maintenance:</strong> Skipped maintenance leads to preventable system failure</li>
+                            <li class="vulnerability-item"><strong>Untested Backups:</strong> Recovery procedures aren't verified to work when needed</li>
+                            <li class="vulnerability-item"><strong>Lack of Monitoring:</strong> No performance monitoring to predict impending failure</li>
+                        </ul>
+                        
+                        <p><strong>Outcome:</strong> Recovery takes 8 hours instead of the promised 30 minutes, causing significant financial losses and reputational damage.</p>
+                    </div>
+                </div>
+                
+                <!-- Knowledge Check for Layer 2 -->
+                <div class="knowledge-check">
+                    <h3><i class="fas fa-brain"></i> Knowledge Check: Operational Security</h3>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question" id="question2">
+                            <p><strong>Question 2:</strong> A company performs regular backups but has never tested restoring data from them. Which operational security principle is being violated?</p>
+                            
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">Configuration Management</div>
+                                <div class="quiz-option" data-correct="false">Incident Management</div>
+                                <div class="quiz-option" data-correct="true">Backup Verification</div>
+                                <div class="quiz-option" data-correct="false">Log Management</div>
+                            </div>
+                            
+                            <div class="quiz-feedback">
+                                <p><strong>Explanation:</strong> Backups without restoration testing are unreliable. The only way to ensure backups work is to periodically test restoration procedures. Many organizations discover their backups are corrupted or incomplete only during a real crisis.</p>
+                            </div>
+                            
+                            <button class="check-answer-btn">Check Answer</button>
+                            <button class="next-question-btn">Next Question</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Layer 3: Telecommunications Security -->
+            <section class="section-content" id="layer3">
+                <div class="section-title layer3">
+                    <i class="fas fa-network-wired section-icon"></i>
+                    <h2>Layer 3: Telecommunications Security</h2>
+                </div>
+                
+                <p><strong>Definition:</strong> Securing <strong>end-to-end network connectivity</strong> and infrastructure to ensure reliable, protected communication.</p>
+                
+                <div class="components-grid">
+                    <div class="component-card layer3">
+                        <div class="component-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3>Network Architecture Security</h3>
+                        <p>Designing network topology with security zones, segmentation, and defense-in-depth principles.</p>
+                    </div>
+                    
+                    <div class="component-card layer3">
+                        <div class="component-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Access Controls</h3>
+                        <p>Network access controls, firewalls, and intrusion prevention systems to filter and monitor traffic.</p>
+                    </div>
+                    
+                    <div class="component-card layer3">
+                        <div class="component-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <h3>Transmission Security</h3>
+                        <p>Encrypting data in transit using protocols like TLS/SSL, VPNs, and secure routing protocols.</p>
+                    </div>
+                    
+                    <div class="component-card layer3">
+                        <div class="component-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3>Network Management</h3>
+                        <p>Monitoring network performance, availability, and security events through centralized management tools.</p>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-title">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>Real-World Example: E-commerce Platform</h3>
+                    </div>
+                    
+                    <div class="example-scenario">
+                        <p><strong>Scenario:</strong> An e-commerce company uses strong TLS encryption for customer transactions. However, their internal network has no segmentation, and employee workstations are on the same network segment as database servers.</p>
+                        
+                        <p><strong>Telecommunications Security Issues:</strong></p>
+                        <ul class="vulnerability-list">
+                            <li class="vulnerability-item"><strong>Poor Network Segmentation:</strong> Flat network allows lateral movement if one device is compromised</li>
+                            <li class="vulnerability-item"><strong>Weak Internal Controls:</strong> No internal firewalls between different network zones</li>
+                            <li class="vulnerability-item"><strong>Over-reliance on Perimeter Security:</strong> Strong external encryption doesn't protect against internal threats</li>
+                        </ul>
+                        
+                        <p><strong>Outcome:</strong> When an employee's workstation gets infected with malware, attackers can easily move to database servers and steal customer data despite strong external encryption.</p>
+                    </div>
+                </div>
+                
+                <!-- Knowledge Check for Layer 3 -->
+                <div class="knowledge-check">
+                    <h3><i class="fas fa-brain"></i> Knowledge Check: Telecommunications Security</h3>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question" id="question3">
+                            <p><strong>Question 3:</strong> A company implements excellent encryption for data transmission but doesn't segment their internal network. Which telecommunications security principle is weak?</p>
+                            
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">Transmission Security</div>
+                                <div class="quiz-option" data-correct="true">Network Architecture</div>
+                                <div class="quiz-option" data-correct="false">Access Controls</div>
+                                <div class="quiz-option" data-correct="false">Network Management</div>
+                            </div>
+                            
+                            <div class="quiz-feedback">
+                                <p><strong>Explanation:</strong> Network segmentation is a critical architectural security control that limits lateral movement if a system is compromised. Without segmentation, attackers who breach one system can easily access others on the same network, regardless of strong transmission encryption.</p>
+                            </div>
+                            
+                            <button class="check-answer-btn">Check Answer</button>
+                            <button class="next-question-btn">Next Question</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Layer 4: Cybersecurity Integration -->
+            <section class="section-content" id="layer4">
+                <div class="section-title layer4">
+                    <i class="fas fa-umbrella section-icon"></i>
+                    <h2>Layer 4: Cybersecurity Integration</h2>
+                </div>
+                
+                <p><strong>Definition:</strong> The <strong>strategic integration</strong> of all security layers to create a comprehensive security posture and organizational resilience.</p>
+                
+                <div class="components-grid">
+                    <div class="component-card layer4">
+                        <div class="component-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3>Integration & Coordination</h3>
+                        <p>Ensuring all security layers work together cohesively rather than as isolated silos.</p>
+                    </div>
+                    
+                    <div class="component-card layer4">
+                        <div class="component-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3>Weakest Link Principle</h3>
+                        <p>Recognizing that overall security strength equals the strength of the weakest component across all layers.</p>
+                    </div>
+                    
+                    <div class="component-card layer4">
+                        <div class="component-icon">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3>Risk Management</h3>
+                        <p>Balancing security investments based on threat assessment (dangerousness × probability).</p>
+                    </div>
+                    
+                    <div class="component-card layer4">
+                        <div class="component-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Organizational Responsibility</h3>
+                        <p>Establishing security as everyone's responsibility, not just the IT department's job.</p>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-title">
+                        <i class="fas fa-industry"></i>
+                        <h3>Real-World Example: Manufacturing Company</h3>
+                    </div>
+                    
+                    <div class="example-scenario">
+                        <p><strong>Scenario:</strong> A manufacturing company invests heavily in network security (firewalls, intrusion detection) but neglects employee security training. They also have excellent backup systems but poor access controls on their design servers.</p>
+                        
+                        <p><strong>Cybersecurity Integration Issues:</strong></p>
+                        <ul class="vulnerability-list">
+                            <li class="vulnerability-item"><strong>Inconsistent Security Investment:</strong> Strong in some areas, weak in others</li>
+                            <li class="vulnerability-item"><strong>Failure to Recognize Weakest Link:</strong> Despite strong network security, human factors create vulnerabilities</li>
+                            <li class="vulnerability-item"><strong>Lack of Holistic View:</strong> Treating security as a set of isolated controls rather than an integrated system</li>
+                        </ul>
+                        
+                        <p><strong>Outcome:</strong> An employee falls for a phishing email, giving attackers credentials that bypass the strong network security. Attackers then access design servers due to weak access controls, stealing proprietary manufacturing designs.</p>
+                    </div>
+                </div>
+                
+                <!-- Knowledge Check for Layer 4 -->
+                <div class="knowledge-check">
+                    <h3><i class="fas fa-brain"></i> Knowledge Check: Cybersecurity Integration</h3>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question" id="question4">
+                            <p><strong>Question 4:</strong> A company has strong logical, operational, and telecommunications security, but no employee security training program. According to the "weakest link" principle, what is their overall security level?</p>
+                            
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-correct="false">Excellent - 3 out of 4 areas are strong</div>
+                                <div class="quiz-option" data-correct="false">Good - The majority of areas are strong</div>
+                                <div class="quiz-option" data-correct="true">Poor - One weak area compromises all</div>
+                                <div class="quiz-option" data-correct="false">Can't determine without more information</div>
+                            </div>
+                            
+                            <div class="quiz-feedback">
+                                <p><strong>Explanation:</strong> The "weakest link" principle states that overall security is determined by the weakest component. Since human factors (lack of training) often represent significant vulnerabilities, this weakness can undermine all other security controls, making the overall security poor despite strengths in other areas.</p>
+                            </div>
+                            
+                            <button class="check-answer-btn">Check Answer</button>
+                            <button class="next-question-btn">Complete Module</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-tracker">
+            <span class="progress-text">Module Progress</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="progress-text" id="progressText">25%</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Cybersecurity Layers Interactive Learning Module | Based on teaching guide for information security foundations</p>
+            <p>Remember: <em>"Global security is always that of the weakest link."</em></p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const onionLayers = document.querySelectorAll('.onion-layer');
+            const sections = document.querySelectorAll('.section-content');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            // Initialize first section as active
+            let currentSection = 'layer1';
+            updateProgress();
+            
+            // Navigation button click handlers
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Update active button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    showSection(target);
+                    
+                    // Update progress
+                    updateProgress();
+                });
+            });
+            
+            // Onion layer click handlers
+            onionLayers.forEach(layer => {
+                layer.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Update active button
+                    navButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.getAttribute('data-target') === target) {
+                            btn.classList.add('active');
+                        }
+                    });
+                    
+                    // Show corresponding section
+                    showSection(target);
+                    
+                    // Update progress
+                    updateProgress();
+                });
+            });
+            
+            // Function to show a specific section
+            function showSection(sectionId) {
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Update current section
+                currentSection = sectionId;
+            }
+            
+            // Update progress based on current section
+            function updateProgress() {
+                let progress = 25;
+                
+                switch(currentSection) {
+                    case 'layer1':
+                        progress = 25;
+                        break;
+                    case 'layer2':
+                        progress = 50;
+                        break;
+                    case 'layer3':
+                        progress = 75;
+                        break;
+                    case 'layer4':
+                        progress = 100;
+                        break;
+                }
+                
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${progress}%`;
+            }
+            
+            // Quiz functionality
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            const checkAnswerBtns = document.querySelectorAll('.check-answer-btn');
+            const nextQuestionBtns = document.querySelectorAll('.next-question-btn');
+            
+            // Quiz option selection
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selection from all options in this question
+                    const questionContainer = this.closest('.quiz-question');
+                    const options = questionContainer.querySelectorAll('.quiz-option');
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Select this option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Check answer button functionality
+            checkAnswerBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionContainer = this.closest('.quiz-question');
+                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
+                    const feedback = questionContainer.querySelector('.quiz-feedback');
+                    
+                    if (!selectedOption) {
+                        alert('Please select an answer first!');
+                        return;
+                    }
+                    
+                    // Show feedback
+                    feedback.style.display = 'block';
+                    
+                    // Mark correct/incorrect
+                    const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                    
+                    if (isCorrect) {
+                        selectedOption.classList.add('correct');
+                        feedback.classList.add('correct');
+                        feedback.innerHTML = '<p><strong>Correct!</strong> ' + feedback.innerHTML + '</p>';
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        feedback.classList.add('incorrect');
+                        feedback.innerHTML = '<p><strong>Incorrect.</strong> ' + feedback.innerHTML + '</p>';
+                        
+                        // Also show the correct answer
+                        const correctOption = questionContainer.querySelector('.quiz-option[data-correct="true"]');
+                        if (correctOption) {
+                            correctOption.classList.add('correct');
+                        }
+                    }
+                    
+                    // Disable all options
+                    const options = questionContainer.querySelectorAll('.quiz-option');
+                    options.forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                    });
+                    
+                    // Show next question button
+                    this.style.display = 'none';
+                    const nextBtn = questionContainer.querySelector('.next-question-btn');
+                    if (nextBtn) {
+                        nextBtn.style.display = 'inline-block';
+                    }
+                });
+            });
+            
+            // Next question button functionality
+            nextQuestionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionContainer = this.closest('.quiz-question');
+                    const currentSectionId = questionContainer.closest('.section-content').id;
+                    
+                    // Determine next section
+                    let nextSectionId;
+                    switch(currentSectionId) {
+                        case 'layer1':
+                            nextSectionId = 'layer2';
+                            break;
+                        case 'layer2':
+                            nextSectionId = 'layer3';
+                            break;
+                        case 'layer3':
+                            nextSectionId = 'layer4';
+                            break;
+                        case 'layer4':
+                            // Completion message
+                            alert('Congratulations! You have completed the Cybersecurity Layers module. Remember: Security is a process, not a product!');
+                            return;
+                    }
+                    
+                    // Navigate to next section
+                    navButtons.forEach(navBtn => {
+                        navBtn.classList.remove('active');
+                        if (navBtn.getAttribute('data-target') === nextSectionId) {
+                            navBtn.classList.add('active');
+                        }
+                    });
+                    
+                    showSection(nextSectionId);
+                    updateProgress();
+                });
+            });
+            
+            // Add some interactive effects to component cards
+            const componentCards = document.querySelectorAll('.component-card');
+            componentCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

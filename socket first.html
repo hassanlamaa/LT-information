@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Network Programming: Interactive Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e6e6e6;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4cc9f0;
+        }
+        
+        h1 {
+            color: #4cc9f0;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: #a5b4fc;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .learning-objectives {
+            background: rgba(30, 41, 59, 0.8);
+            border-left: 5px solid #4cc9f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .learning-objectives h2 {
+            color: #4cc9f0;
+            margin-bottom: 15px;
+        }
+        
+        .learning-objectives ul {
+            list-style-position: inside;
+            padding-left: 10px;
+        }
+        
+        .learning-objectives li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            min-width: 150px;
+        }
+        
+        .tab:hover {
+            background: rgba(76, 201, 240, 0.1);
+        }
+        
+        .tab.active {
+            background: rgba(76, 201, 240, 0.2);
+            border-bottom: 3px solid #4cc9f0;
+            color: #4cc9f0;
+        }
+        
+        .tab-content {
+            display: none;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #4cc9f0;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #a5b4fc;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .code-container {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 4px solid #4cc9f0;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #a5b4fc;
+        }
+        
+        .run-button {
+            background: #4cc9f0;
+            color: #1a1a2e;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .run-button:hover {
+            background: #3aa8d8;
+            transform: translateY(-2px);
+        }
+        
+        .output {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #10b981;
+            white-space: pre-wrap;
+            font-family: monospace;
+            min-height: 60px;
+            display: none;
+        }
+        
+        .diagram {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .diagram img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        
+        .socket-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .socket-box {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #4cc9f0;
+        }
+        
+        .socket-box h4 {
+            color: #4cc9f0;
+            margin-bottom: 10px;
+        }
+        
+        .knowledge-check {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #a5b4fc;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question p {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e6e6e6;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .option:hover {
+            background: rgba(76, 201, 240, 0.1);
+        }
+        
+        .option.selected {
+            background: rgba(76, 201, 240, 0.2);
+            border-color: #4cc9f0;
+        }
+        
+        .option.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+        }
+        
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+        }
+        
+        .check-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .check-button:hover {
+            background: #0da271;
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #10b981;
+        }
+        
+        .result.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+        
+        .next-button {
+            background: #4cc9f0;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .next-button:hover {
+            background: #3aa8d8;
+            transform: translateY(-2px);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4cc9f0, #a5b4fc);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #4cc9f0;
+            color: #a5b4fc;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .socket-diagram {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Java Network Programming</h1>
+            <div class="subtitle">Interactive Learning Module: InetAddress & Sockets</div>
+        </header>
+        
+        <div class="learning-objectives">
+            <h2>Learning Objectives</h2>
+            <ul>
+                <li>Understand the role of the <code>InetAddress</code> class in Java networking</li>
+                <li>Resolve hostnames and IP addresses using <code>InetAddress</code></li>
+                <li>Explain the difference between TCP and UDP sockets</li>
+                <li>Write simple Java programs to establish client-server connections</li>
+                <li>Describe socket addressing and port allocation</li>
+            </ul>
+        </div>
+        
+        <div class="nav-tabs">
+            <div class="tab active" data-tab="intro">Introduction</div>
+            <div class="tab" data-tab="inetaddress">InetAddress Class</div>
+            <div class="tab" data-tab="sockets">Socket Basics</div>
+            <div class="tab" data-tab="tcp">TCP Sockets</div>
+            <div class="tab" data-tab="quiz">Knowledge Check</div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <!-- Introduction Tab -->
+        <div class="tab-content active" id="intro">
+            <div class="content-section">
+                <h2>Welcome to Java Network Programming</h2>
+                <p>This interactive module will guide you through Java's networking capabilities, focusing on two key components:</p>
+                
+                <div class="socket-diagram">
+                    <div class="socket-box">
+                        <h4>InetAddress Class</h4>
+                        <p>Java's representation of IP addresses. Used to resolve hostnames to IP addresses and vice versa.</p>
+                    </div>
+                    <div class="socket-box">
+                        <h4>Socket Programming</h4>
+                        <p>Enables communication between client and server applications over networks using TCP or UDP protocols.</p>
+                    </div>
+                </div>
+                
+                <h3>Why Learn Network Programming?</h3>
+                <p>Network programming is essential for building modern applications that communicate over the internet or local networks. From web browsers to chat applications, from file transfer to online gaming, network programming forms the backbone of distributed systems.</p>
+                
+                <h3>Key Concepts We'll Cover</h3>
+                <ul>
+                    <li><strong>IP Addresses:</strong> Unique identifiers for devices on a network</li>
+                    <li><strong>Hostname Resolution:</strong> Converting domain names to IP addresses</li>
+                    <li><strong>Ports:</strong> Endpoints for communication on a device</li>
+                    <li><strong>TCP vs UDP:</strong> Two fundamental transport protocols</li>
+                    <li><strong>Client-Server Model:</strong> The foundation of networked applications</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- InetAddress Tab -->
+        <div class="tab-content" id="inetaddress">
+            <div class="content-section">
+                <h2>The InetAddress Class</h2>
+                <p>The <code>InetAddress</code> class represents an Internet Protocol (IP) address in Java. It's used to perform hostname resolution and IP address manipulation.</p>
+                
+                <h3>Creating InetAddress Instances</h3>
+                <p><code>InetAddress</code> has no public constructor, so you must obtain instances via static factory methods:</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Example: Creating InetAddress Objects</span>
+                        <button class="run-button" onclick="runInetAddressExample()">Run Example</button>
+                    </div>
+                    <pre><code class="language-java">
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class InetAddressDemo {
+    public static void main(String[] args) {
+        try {
+            // Get local host address
+            InetAddress localHost = InetAddress.getLocalHost();
+            System.out.println("Local Host: " + localHost);
+            
+            // Get address by hostname
+            InetAddress google = InetAddress.getByName("google.com");
+            System.out.println("Google: " + google);
+            
+            // Get all addresses for a hostname
+            InetAddress[] allGoogle = InetAddress.getAllByName("www.google.com");
+            System.out.println("All Google addresses:");
+            for (InetAddress addr : allGoogle) {
+                System.out.println("  - " + addr);
+            }
+            
+            // Get address from IP string
+            InetAddress fromIP = InetAddress.getByName("8.8.8.8");
+            System.out.println("From IP: " + fromIP);
+            System.out.println("Host Name: " + fromIP.getHostName());
+            
+        } catch (UnknownHostException e) {
+            System.out.println("Error: Could not resolve hostname");
+            e.printStackTrace();
+        }
+    }
+}
+                    </code></pre>
+                    <div class="output" id="inetaddress-output"></div>
+                </div>
+                
+                <h3>Key Methods of InetAddress</h3>
+                <ul>
+                    <li><code>getLocalHost()</code> - Returns the InetAddress of the local machine</li>
+                    <li><code>getByName(String host)</code> - Returns InetAddress for a hostname or IP string</li>
+                    <li><code>getAllByName(String host)</code> - Returns all InetAddresses for a hostname</li>
+                    <li><code>getHostName()</code> - Returns the hostname for this IP address</li>
+                    <li><code>getHostAddress()</code> - Returns the IP address string</li>
+                    <li><code>isReachable(int timeout)</code> - Tests if address is reachable</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Sockets Tab -->
+        <div class="tab-content" id="sockets">
+            <div class="content-section">
+                <h2>Socket Programming Basics</h2>
+                <p>Sockets provide the communication mechanism between two computers over a network. A socket is one endpoint of a two-way communication link.</p>
+                
+                <div class="diagram">
+                    <h3>Client-Server Communication Model</h3>
+                    <div style="text-align: left; padding: 20px;">
+                        <p><strong>Client:</strong> Creates a socket and attempts to connect to a server</p>
+                        <p><strong>Server:</strong> Listens for connections and creates a socket for each client</p>
+                        <p><strong>Socket Address:</strong> IP Address + Port Number (e.g., 192.168.1.10:8080)</p>
+                    </div>
+                </div>
+                
+                <h3>TCP vs UDP Sockets</h3>
+                
+                <div class="socket-diagram">
+                    <div class="socket-box">
+                        <h4>TCP (Transmission Control Protocol)</h4>
+                        <p><strong>Connection-oriented</strong></p>
+                        <p><strong>Reliable</strong> - guarantees delivery</p>
+                        <p><strong>In-order</strong> delivery of packets</p>
+                        <p><strong>Stream-based</strong> communication</p>
+                        <p><strong>Examples:</strong> HTTP, HTTPS, FTP, Email</p>
+                    </div>
+                    <div class="socket-box">
+                        <h4>UDP (User Datagram Protocol)</h4>
+                        <p><strong>Connectionless</strong></p>
+                        <p><strong>Unreliable</strong> - no delivery guarantees</p>
+                        <p><strong>No ordering</strong> of packets</p>
+                        <p><strong>Datagram-based</strong> communication</p>
+                        <p><strong>Examples:</strong> DNS, VoIP, Online games</p>
+                    </div>
+                </div>
+                
+                <h3>Socket Addressing</h3>
+                <p>Every socket is identified by a combination of:</p>
+                <ul>
+                    <li><strong>IP Address:</strong> Identifies the host (e.g., 192.168.1.10)</li>
+                    <li><strong>Port Number:</strong> Identifies the application/service (e.g., 80 for HTTP)</li>
+                </ul>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Port Classification</span>
+                    </div>
+                    <pre><code class="language-java">
+// Well-known ports (0-1023): Reserved for system services
+// HTTP: 80, HTTPS: 443, FTP: 21, SSH: 22, SMTP: 25
+
+// Registered ports (1024-49151): Assigned by IANA for specific services
+
+// Dynamic/Private ports (49152-65535): For temporary use by clients
+// Also called ephemeral ports
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TCP Sockets Tab -->
+        <div class="tab-content" id="tcp">
+            <div class="content-section">
+                <h2>TCP Socket Programming in Java</h2>
+                <p>Java provides two key classes for TCP socket programming:</p>
+                <ul>
+                    <li><code>java.net.Socket</code> - For client-side communication</li>
+                    <li><code>java.net.ServerSocket</code> - For server-side listening and acceptance</li>
+                </ul>
+                
+                <h3>TCP Connection Lifecycle</h3>
+                <div class="diagram" style="text-align: left;">
+                    <p>1. <strong>Server</strong> creates a ServerSocket and binds to a port</p>
+                    <p>2. <strong>Server</strong> calls accept() and waits for client connections</p>
+                    <p>3. <strong>Client</strong> creates a Socket and connects to server</p>
+                    <p>4. <strong>Connection established</strong> - data exchange begins</p>
+                    <p>5. <strong>Communication</strong> via InputStream and OutputStream</p>
+                    <p>6. <strong>Connection closed</strong> by either party</p>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Example: Simple TCP Server</span>
+                    </div>
+                    <pre><code class="language-java">
+import java.net.*;
+import java.io.*;
+
+public class SimpleTCPServer {
+    public static void main(String[] args) throws IOException {
+        // Create server socket listening on port 12345
+        ServerSocket serverSocket = new ServerSocket(12345);
+        System.out.println("Server started. Waiting for client...");
+        
+        // Wait for client connection
+        Socket clientSocket = serverSocket.accept();
+        System.out.println("Client connected: " + 
+                          clientSocket.getInetAddress());
+        
+        // Create input and output streams
+        PrintWriter out = new PrintWriter(
+            clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(
+            new InputStreamReader(clientSocket.getInputStream()));
+        
+        // Read client message
+        String message = in.readLine();
+        System.out.println("Received: " + message);
+        
+        // Send response
+        out.println("Echo: " + message);
+        
+        // Close connections
+        in.close();
+        out.close();
+        clientSocket.close();
+        serverSocket.close();
+    }
+}
+                    </code></pre>
+                </div>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Example: Simple TCP Client</span>
+                    </div>
+                    <pre><code class="language-java">
+import java.net.*;
+import java.io.*;
+
+public class SimpleTCPClient {
+    public static void main(String[] args) throws IOException {
+        // Connect to server on localhost, port 12345
+        Socket socket = new Socket("localhost", 12345);
+        
+        // Create input and output streams
+        PrintWriter out = new PrintWriter(
+            socket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(
+            new InputStreamReader(socket.getInputStream()));
+        
+        // Send message to server
+        out.println("Hello Server!");
+        
+        // Read server response
+        String response = in.readLine();
+        System.out.println("Server response: " + response);
+        
+        // Close connections
+        in.close();
+        out.close();
+        socket.close();
+    }
+}
+                    </code></pre>
+                </div>
+                
+                <h3>Exception Handling in Socket Programming</h3>
+                <p>Always handle these common exceptions:</p>
+                <ul>
+                    <li><code>UnknownHostException</code> - Host cannot be resolved</li>
+                    <li><code>ConnectException</code> - Connection refused</li>
+                    <li><code>SocketTimeoutException</code> - Connection timeout</li>
+                    <li><code>IOException</code> - General I/O errors</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Knowledge Check Tab -->
+        <div class="tab-content" id="quiz">
+            <div class="content-section">
+                <h2>Knowledge Check</h2>
+                <p>Test your understanding of Java network programming concepts covered in this module.</p>
+                
+                <div class="knowledge-check">
+                    <div class="question" id="question1">
+                        <p>1. Which method would you use to get ALL IP addresses associated with "google.com"?</p>
+                        <div class="options">
+                            <div class="option" data-correct="false">getLocalHost()</div>
+                            <div class="option" data-correct="false">getByName("google.com")</div>
+                            <div class="option" data-correct="true">getAllByName("google.com")</div>
+                            <div class="option" data-correct="false">getHostAddress()</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question" id="question2">
+                        <p>2. What is the main difference between TCP and UDP?</p>
+                        <div class="options">
+                            <div class="option" data-correct="true">TCP is connection-oriented and reliable, UDP is connectionless and unreliable</div>
+                            <div class="option" data-correct="false">TCP is faster than UDP for real-time applications</div>
+                            <div class="option" data-correct="false">UDP guarantees packet delivery in order</div>
+                            <div class="option" data-correct="false">TCP uses datagrams while UDP uses streams</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question" id="question3">
+                        <p>3. Which port range is typically used for ephemeral/client ports?</p>
+                        <div class="options">
+                            <div class="option" data-correct="false">0-1023</div>
+                            <div class="option" data-correct="false">1024-49151</div>
+                            <div class="option" data-correct="true">49152-65535</div>
+                            <div class="option" data-correct="false">1-1000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question" id="question4">
+                        <p>4. What exception is thrown when a hostname cannot be resolved?</p>
+                        <div class="options">
+                            <div class="option" data-correct="false">IOException</div>
+                            <div class="option" data-correct="false">SocketException</div>
+                            <div class="option" data-correct="true">UnknownHostException</div>
+                            <div class="option" data-correct="false">NetworkException</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question" id="question5">
+                        <p>5. In TCP socket programming, which class is used on the server side to listen for incoming connections?</p>
+                        <div class="options">
+                            <div class="option" data-correct="false">Socket</div>
+                            <div class="option" data-correct="true">ServerSocket</div>
+                            <div class="option" data-correct="false">DatagramSocket</div>
+                            <div class="option" data-correct="false">InetSocketAddress</div>
+                        </div>
+                    </div>
+                    
+                    <button class="check-button" onclick="checkAnswers()">Check Answers</button>
+                    <button class="next-button" onclick="resetQuiz()">Try Again</button>
+                    
+                    <div class="result" id="quiz-result"></div>
+                </div>
+                
+                <h3>Exercise Challenge</h3>
+                <p>Try implementing these exercises to test your skills:</p>
+                <ul>
+                    <li><strong>Exercise 1:</strong> Write a program that takes a hostname as command-line argument and prints all its IP addresses</li>
+                    <li><strong>Exercise 2:</strong> Create a simple TCP chat server that can handle multiple clients</li>
+                    <li><strong>Exercise 3:</strong> Implement a UDP version of the echo server and client</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Java Network Programming Interactive Module | Based on teaching materials by Bhakim Sayed Ahmad</p>
+            <p>Use this module to reinforce your understanding of Java networking concepts.</p>
+        </footer>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+                
+                // Update progress bar
+                updateProgressBar(tabId);
+            });
+        });
+        
+        // Update progress bar based on current tab
+        function updateProgressBar(currentTab) {
+            const tabs = ['intro', 'inetaddress', 'sockets', 'tcp', 'quiz'];
+            const currentIndex = tabs.indexOf(currentTab);
+            const progress = ((currentIndex + 1) / tabs.length) * 100;
+            
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+        
+        // Initialize progress bar
+        updateProgressBar('intro');
+        
+        // Run InetAddress example (simulated)
+        function runInetAddressExample() {
+            const output = document.getElementById('inetaddress-output');
+            output.style.display = 'block';
+            output.innerHTML = `Local Host: localhost/127.0.0.1
+Google: google.com/142.250.185.78
+All Google addresses:
+  - www.google.com/142.250.185.68
+  - www.google.com/2607:f8b0:4009:80a::2004
+From IP: /8.8.8.8
+Host Name: dns.google
+
+Note: This is a simulated output. In a real environment, 
+the IP addresses may vary based on your network and DNS resolution.`;
+        }
+        
+        // Quiz functionality
+        let selectedAnswers = {};
+        
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionId = this.parentElement.parentElement.id;
+                
+                // Remove selected class from all options in this question
+                this.parentElement.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Store the selected answer
+                selectedAnswers[questionId] = this.getAttribute('data-correct');
+            });
+        });
+        
+        function checkAnswers() {
+            const questions = document.querySelectorAll('.question');
+            let correctCount = 0;
+            let totalQuestions = questions.length;
+            
+            // Check each question
+            questions.forEach(question => {
+                const questionId = question.id;
+                const selectedOption = question.querySelector('.option.selected');
+                
+                if (selectedOption) {
+                    const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                    
+                    // Mark correct/incorrect
+                    if (isCorrect) {
+                        selectedOption.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        // Also show the correct answer
+                        question.querySelectorAll('.option').forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // Show results
+            const resultDiv = document.getElementById('quiz-result');
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            
+            if (percentage >= 80) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = `Excellent! You scored ${correctCount}/${totalQuestions} (${percentage}%)`;
+            } else if (percentage >= 60) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = `Good job! You scored ${correctCount}/${totalQuestions} (${percentage}%)`;
+            } else {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = `Keep studying! You scored ${correctCount}/${totalQuestions} (${percentage}%). Review the material and try again.`;
+            }
+            
+            resultDiv.style.display = 'block';
+            document.querySelector('.check-button').style.display = 'none';
+            document.querySelector('.next-button').style.display = 'inline-block';
+        }
+        
+        function resetQuiz() {
+            // Reset all selections
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Reset result display
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.style.display = 'none';
+            resultDiv.innerHTML = '';
+            
+            // Reset buttons
+            document.querySelector('.check-button').style.display = 'inline-block';
+            document.querySelector('.next-button').style.display = 'none';
+            
+            // Clear stored answers
+            selectedAnswers = {};
+        }
+        
+        // Prism highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

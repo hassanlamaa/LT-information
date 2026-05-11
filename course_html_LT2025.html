@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client/Server Architecture Course</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .author {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 1rem 0;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        
+        .module {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .module:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .module-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .module-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-icon {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .comparison-table th {
+            background-color: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .diagram {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .code-block {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 1rem 20px;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0.5rem 1rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Client/Server Architecture</h1>
+            <p class="subtitle">LT-Informatics Course 2016-2017</p>
+            <p class="author">Prepared by: Hassan Lamaas</p>
+            <p>A comprehensive guide to distributed computing models and implementations</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="logo">C/S Architecture</div>
+            <ul class="nav-links">
+                <li><a href="#module1">Foundations</a></li>
+                <li><a href="#module2">Architectures</a></li>
+                <li><a href="#module3">Communication</a></li>
+                <li><a href="#module4">Protocols</a></li>
+                <li><a href="#module5">Middleware</a></li>
+                <li><a href="#module6">RPC & RMI</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <!-- Module 1: Foundations of Client/Server Model -->
+        <section id="module1" class="module">
+            <div class="module-header">
+                <div class="module-icon">1</div>
+                <h2 class="module-title">Foundations of Client/Server Model</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔍</span> What is Client/Server?</h3>
+                    <p>A network model where each computer is either a client or a server. Clients rely on servers for resources like files, devices, and processing power.</p>
+                    <ul>
+                        <li><strong>Clients:</strong> PCs/workstations running user applications</li>
+                        <li><strong>Servers:</strong> Powerful computers storing/managing public files and applications</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔄</span> Communication Pattern</h3>
+                    <p>Clients and servers exchange messages using a request-response pattern through Inter-Process Communication (IPC).</p>
+                    <p>They communicate using common protocols and servers use scheduling systems to handle multiple client requests.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">⚖️</span> Pros & Cons</h3>
+                    <div>
+                        <h4>Advantages:</h4>
+                        <ul>
+                            <li>Centralized management</li>
+                            <li>Scalability</li>
+                            <li>Enhanced data sharing</li>
+                            <li>Improved security</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Disadvantages:</h4>
+                        <ul>
+                            <li>Server cost</li>
+                            <li>Complex configuration</li>
+                            <li>Single point of failure</li>
+                            <li>Traffic congestion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Module 2: Server Types & System Architectures -->
+        <section id="module2" class="module">
+            <div class="module-header">
+                <div class="module-icon">2</div>
+                <h2 class="module-title">Server Types & System Architectures</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🖥️</span> Server Types</h3>
+                    <ul>
+                        <li><strong>File Server:</strong> Shares files across network</li>
+                        <li><strong>Database Server:</strong> Provides database services</li>
+                        <li><strong>Transaction Server:</strong> Handles OLTP operations</li>
+                        <li><strong>Groupware Server:</strong> Enables collaboration</li>
+                        <li><strong>Web Server:</strong> Handles HTTP protocol</li>
+                        <li><strong>Web Application Server:</strong> Supports dynamic content</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">⚖️</span> Fat Client vs Fat Server</h3>
+                    <p><strong>Fat Client:</strong> More functions on client side, knows data organization</p>
+                    <p><strong>Fat Server:</strong> More functions on server side, easier to manage and deploy</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🏗️</span> N-Tier Architectures</h3>
+                    <ul>
+                        <li><strong>2-Tier:</strong> Client + Database Server</li>
+                        <li><strong>3-Tier:</strong> Client + Application Server + Database Server</li>
+                        <li><strong>N-Tier:</strong> Extended architecture with specialized components</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">2-Tier vs 3-Tier Architecture Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>2-Tier</th>
+                        <th>3-Tier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>System Administration</td>
+                        <td>More logic on client to manage</td>
+                        <td>Centrally managed on server</td>
+                    </tr>
+                    <tr>
+                        <td>Performance</td>
+                        <td>Poor (many SQL statements over network)</td>
+                        <td>Good (only service requests/responses)</td>
+                    </tr>
+                    <tr>
+                        <td>Scalability</td>
+                        <td>Poor/Low</td>
+                        <td>Excellent (distribute load across servers)</td>
+                    </tr>
+                    <tr>
+                        <td>Application Reuse</td>
+                        <td>Poor (application on client)</td>
+                        <td>Excellent (reuse services and objects)</td>
+                    </tr>
+                    <tr>
+                        <td>Ease of Development</td>
+                        <td>High</td>
+                        <td>Complex</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Module 3: Core Communication Technologies -->
+        <section id="module3" class="module">
+            <div class="module-header">
+                <div class="module-icon">3</div>
+                <h2 class="module-title">Core Communication Technologies</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔌</span> Sockets & Ports</h3>
+                    <p>Sockets provide communication mechanism between computers using IP addresses and ports.</p>
+                    <p><strong>Well-known ports:</strong></p>
+                    <ul>
+                        <li>HTTP: 80</li>
+                        <li>HTTPS: 443</li>
+                        <li>FTP: 21</li>
+                        <li>SMTP: 25</li>
+                        <li>DNS: 53</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔄</span> TCP vs UDP</h3>
+                    <p><strong>TCP:</strong> Connection-oriented, reliable, ordered delivery</p>
+                    <p><strong>UDP:</strong> Connectionless, faster, no delivery guarantees</p>
+                    <p>Used for voice, video, DNS, DHCP</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">☕</span> Java Networking</h3>
+                    <p>Java provides comprehensive networking support:</p>
+                    <ul>
+                        <li>InetAddress class for IP address representation</li>
+                        <li>Socket and ServerSocket for TCP communication</li>
+                        <li>DatagramSocket for UDP communication</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">TCP vs UDP Detailed Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>TCP</th>
+                        <th>UDP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Connection</td>
+                        <td>Connection-oriented</td>
+                        <td>Connectionless</td>
+                    </tr>
+                    <tr>
+                        <td>Reliability</td>
+                        <td>High (error checking, retransmission)</td>
+                        <td>Low (no guarantees)</td>
+                    </tr>
+                    <tr>
+                        <td>Speed</td>
+                        <td>Slower</td>
+                        <td>Faster</td>
+                    </tr>
+                    <tr>
+                        <td>Header Size</td>
+                        <td>20-60 bytes</td>
+                        <td>8 bytes</td>
+                    </tr>
+                    <tr>
+                        <td>Usage</td>
+                        <td>HTTP, HTTPS, FTP, SMTP</td>
+                        <td>DNS, DHCP, VoIP, Video Streaming</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="code-block">
+                <pre>// Java TCP Client Example
+import java.io.*;
+import java.net.*;
+
+public class TCPClient {
+    public static void main(String args[]) throws Exception {
+        String sentence;
+        String modifiedSentence;
+        BufferedReader inFromUser = new BufferedReader(
+            new InputStreamReader(System.in));
+        
+        Socket clientSocket = new Socket("localhost", 6789);
+        
+        DataOutputStream outToServer = new DataOutputStream(
+            clientSocket.getOutputStream());
+        
+        BufferedReader inFromServer = new BufferedReader(
+            new InputStreamReader(clientSocket.getInputStream()));
+        
+        sentence = inFromUser.readLine();
+        outToServer.writeBytes(sentence + '\n');
+        modifiedSentence = inFromServer.readLine();
+        System.out.println(modifiedSentence);
+        clientSocket.close();
+    }
+}</pre>
+            </div>
+        </section>
+        
+        <!-- Module 4: Application Protocols -->
+        <section id="module4" class="module">
+            <div class="module-header">
+                <div class="module-icon">4</div>
+                <h2 class="module-title">Application Protocols (Case Studies)</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🌐</span> HTTP Protocol</h3>
+                    <p>Application-level protocol for distributed, collaborative, hypermedia information systems.</p>
+                    <p><strong>Key Features:</strong></p>
+                    <ul>
+                        <li>Connectionless</li>
+                        <li>Media independent</li>
+                        <li>Stateless</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">📁</span> FTP Protocol</h3>
+                    <p>Protocol for transferring files between computers, typically from your computer to a web server.</p>
+                    <p>Uses port 20 for data and port 21 for control.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔒</span> HTTP Methods</h3>
+                    <ul>
+                        <li><strong>GET:</strong> Retrieve information</li>
+                        <li><strong>POST:</strong> Send data to server</li>
+                        <li><strong>PUT:</strong> Replace resource</li>
+                        <li><strong>DELETE:</strong> Remove resource</li>
+                        <li><strong>HEAD:</strong> Get headers only</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">HTTP Method Safety & Idempotence</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>HTTP Method</th>
+                        <th>Safe (Yes/No)</th>
+                        <th>Idempotent (Yes/No)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OPTIONS</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>HEAD</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>No</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>TRACE</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Module 5: Middleware & Advanced Distribution -->
+        <section id="module5" class="module">
+            <div class="module-header">
+                <div class="module-icon">5</div>
+                <h2 class="module-title">Middleware & Advanced Distribution</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🔗</span> What is Middleware?</h3>
+                    <p>Connectivity software that enables multiple processes to interact across a network.</p>
+                    <p>Essential for migrating mainframe applications to client/server and providing communication across heterogeneous platforms.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">📊</span> Middleware Types</h3>
+                    <ul>
+                        <li>RPC - Remote Procedure Calls</li>
+                        <li>MOM - Message-Oriented Middleware</li>
+                        <li>Publish/Subscribe</li>
+                        <li>ORB - Object Request Broker</li>
+                        <li>SQL-oriented Data Access</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🗃️</span> Database Middleware</h3>
+                    <ul>
+                        <li>ODBC - Open Database Connectivity</li>
+                        <li>OLE-DB - Microsoft enhancement</li>
+                        <li>JDBC - Java Database Connectivity</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">JDBC Architecture</h3>
+            <div class="diagram">
+                <p>Java Application → JDBC API → JDBC Driver Manager → JDBC Driver → Database</p>
+            </div>
+            
+            <div class="code-block">
+                <pre>// JDBC Connection Example
+import java.sql.*;
+
+public class JDBCExample {
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/EMP";
+    static final String USER = "username";
+    static final String PASS = "password";
+    
+    public static void main(String[] args) {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            // Register JDBC driver
+            Class.forName(JDBC_DRIVER);
+            
+            // Open a connection
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            // Execute a query
+            stmt = conn.createStatement();
+            String sql = "SELECT id, first, last, age FROM Employees";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            // Extract data from result set
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                int age = rs.getInt("age");
+                String first = rs.getString("first");
+                String last = rs.getString("last");
+                
+                System.out.print("ID: " + id);
+                System.out.print(", Age: " + age);
+                System.out.print(", First: " + first);
+                System.out.println(", Last: " + last);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch(SQLException se) {
+            se.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            </div>
+        </section>
+        
+        <!-- Module 6: Remote Invocation (RPC & RMI) -->
+        <section id="module6" class="module">
+            <div class="module-header">
+                <div class="module-icon">6</div>
+                <h2 class="module-title">Remote Invocation (RPC & RMI)</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">📞</span> RPC - Remote Procedure Call</h3>
+                    <p>Mechanism to execute subroutines on other hosts without including socket code in programs.</p>
+                    <p>Hides network code into stub procedures.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">☕</span> RMI - Remote Method Invocation</h3>
+                    <p>Java mechanism allowing objects in one JVM to invoke objects running on another JVM.</p>
+                    <p>Used to build distributed applications.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title"><span class="card-icon">🌐</span> CORBA</h3>
+                    <p>Common Object Request Broker Architecture - platform and language-independent framework for building distributed systems.</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">RPC Mechanism</h3>
+            <div class="diagram">
+                <p>Client → Client Stub → Network → Server Stub → Server Procedure</p>
+                <p>Then reverse for response</p>
+            </div>
+            
+            <div class="code-block">
+                <pre>// RMI Remote Interface Example
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface Calculator extends Remote {
+    public long add(long a, long b) throws RemoteException;
+    public long sub(long a, long b) throws RemoteException;
+    public long mul(long a, long b) throws RemoteException;
+    public long div(long a, long b) throws RemoteException;
+}</pre>
+            </div>
+        </section>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <h2>Course Resources</h2>
+            <p style="margin-bottom: 1.5rem;">Explore additional materials and references</p>
+            <a href="#" class="btn">Download Full PDF</a>
+            <a href="#" class="btn btn-outline" style="margin-left: 1rem;">Java Code Examples</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <p>Client/Server Architecture Course - LT-Informatics 2016-2017</p>
+            <p>Prepared by Hassan Lamaas</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">&copy; 2023 - Educational Material</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Highlight active section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Add active class styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .nav-links a.active {
+                color: var(--secondary) !important;
+                font-weight: 600;
+                border-bottom: 2px solid var(--secondary);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
