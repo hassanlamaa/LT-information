@@ -25,7 +25,7 @@
     <span class="eyebrow">Client/Server Architecture · Practice</span>
     <h1>Tiers: True or False</h1>
     <p class="lead">Revise the client/server model and the four tier architectures, then decide whether each statement is true or false. Every answer comes with a short explanation, so wrong answers become revision too.</p>
-    <div class="chips"><span class="chip">≈ 15 min</span><span class="chip">22 true/false questions</span><span class="chip">Level: Beginner to Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 15 min</span><span class="chip">22 true/false questions</span><span class="chip">3 knowledge checks (9 questions)</span><span class="chip">Level: Beginner to Intermediate</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -63,6 +63,39 @@
       </figure>
       <div class="callout example"><span class="label">Example</span><p>Your browser (client) sends <code>GET /timetable</code> to the university web server; the server returns the HTML page. One server answers thousands of browsers at once.</p></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>A client is a customer at a counter, the server is the shop assistant. Customers come and ask; the assistant does not walk out and start conversations. In <strong>peer-to-peer</strong> (P2P), by contrast, everyone is both customer and assistant: each node can request from and serve to the others, as in BitTorrent.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Client/server basics</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In client/server architecture, which side starts the conversation?</p>
+          <div class="opts">
+            <button>The server, by contacting each client</button>
+            <button data-correct>The client, by sending a request</button>
+            <button>Neither; both always send at the same moment</button>
+          </div>
+          <div class="explain">The client (service requester) sends a request and the server (service provider) answers. The server starting the conversation is the tempting wrong answer: like a shop assistant, it waits for customers to come and ask.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Your browser sends <code>GET /timetable</code> to the university web server, which returns the HTML page. In this exchange the web server is the client.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The browser sends the request, so it is the client; the web server does the work and returns the response, so it is the server.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which arrangement describes peer-to-peer rather than client/server?</p>
+          <div class="opts">
+            <button>One central server answers thousands of browsers</button>
+            <button>A shop assistant waits for customers at a counter</button>
+            <button data-correct>Every node can both ask for and provide services, with no central server</button>
+          </div>
+          <div class="explain">In peer-to-peer every node is both client and server. The other two options describe client/server: a central server answering many clients, and the counter analogy where only customers start the conversation.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -84,6 +117,39 @@
       </dl>
       <div class="callout warn"><span class="label">Common mistake</span><p>"More tiers make each request faster" is false. Each tier adds a network hop. What more tiers improve is <strong>throughput</strong> (users served at once), flexibility and fault isolation.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Words like <em>always</em>, <em>never</em> and <em>only</em> in a true/false statement are a warning sign. Check whether there is any counter-example before you answer True.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Tier models recap</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In which model does the client never touch the database, making it the standard for the web?</p>
+          <div class="opts">
+            <button data-correct>3-tier</button>
+            <button>2-tier</button>
+            <button>1-tier</button>
+          </div>
+          <div class="explain">In 3-tier every request goes through the application server, so the database stays hidden. 2-tier is the tempting wrong answer: there the client talks straight to the database.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A browser showing pages generated on the server is an example of a thick client.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The browser mostly displays results and sends input while the server does the processing, which is a thin client. A thick client, such as a desktop accounting app in 2-tier, does most processing on the user's device.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The statement "more tiers make each request faster" is false. What do more tiers actually improve?</p>
+          <div class="opts">
+            <button>The speed of every single request</button>
+            <button>The number of network hops per request</button>
+            <button data-correct>Throughput, flexibility and fault isolation</button>
+          </div>
+          <div class="explain">Each tier adds a network hop, so a single request gets slightly slower, but the system can serve far more users at once and parts can change or fail independently. "Fewer hops" is wrong: more tiers mean more hops.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -123,6 +189,39 @@
         <figcaption>Figure 2. Evolution of client/server architectures, from one program to many specialised tiers.</figcaption>
       </figure>
       <p>Real N-tier systems often add more tiers again: a load balancer in front, a cache (such as Redis) and a message queue (such as Kafka) beside the database, and an integration tier for outside services like payment providers. See <a href="teirsexplanations.html">Architecture Tiers Explained</a> for the full picture.</p>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Evolution of the architectures</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In Figure 2, what does the 2-tier client contain?</p>
+          <div class="opts">
+            <button>Only the database</button>
+            <button data-correct>The user interface and the business logic</button>
+            <button>App services and data access</button>
+          </div>
+          <div class="explain">The 2-tier client holds the UI and the logic, and the server holds the database. "App services and data access" is tempting, but those are the extra tiers shown in N-tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Real N-tier systems often add a load balancer, a cache, a message queue and an integration tier for outside services such as payment providers.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. These are the typical extra tiers beyond the four boxes in Figure 2. Answering False assumes N-tier is limited to the four tiers in the diagram, but "N" means any number greater than three.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>An online shop wants to send order-confirmation emails without making the customer wait. Which extra N-tier component fits?</p>
+          <div class="opts">
+            <button>A cache such as Redis</button>
+            <button>An integration tier for the payment provider</button>
+            <button data-correct>A message queue such as Kafka</button>
+          </div>
+          <div class="explain">A message queue lets one tier hand work to another asynchronously, so the email is sent later while the customer gets an instant reply. A cache is tempting, but it speeds up repeated reads; it does not hand off work.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>

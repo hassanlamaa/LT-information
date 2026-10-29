@@ -25,7 +25,7 @@
     <span class="eyebrow">Network Programming · Guide</span>
     <h1>Java Network Programming</h1>
     <p class="lead">How a Java program finds another computer (<code>InetAddress</code>) and talks to it (sockets over TCP and UDP). Every web browser, chat app, game and database driver is built on these ideas, so this is the foundation for everything that follows in the course.</p>
-    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">16 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">Java 17+ (Java 21 for virtual threads)</span></div>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">45 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">Java 17+ (Java 21 for virtual threads)</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -63,6 +63,31 @@
       </dl>
 
       <div class="callout analogy"><span class="label">Analogy</span><p>Think of the network as a city. The <strong>IP address</strong> is the street address of a building (the host), the <strong>port</strong> is the apartment number inside it (the application), and <strong>DNS</strong> is the directory that turns a business name into a street address.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Why network programming?</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the city analogy, what does the <strong>port</strong> correspond to?</p>
+          <div class="opts"><button>The street address of the building</button><button>The city's directory</button><button data-correct>The apartment number inside the building</button><button>The road between buildings</button></div>
+          <div class="explain">The IP address finds the building (the host) and the port finds the apartment (the application) inside it. The street address is tempting, but that is the IP address; the directory is DNS.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>How many bits does an IPv6 address have?</p>
+          <div class="opts"><button>32</button><button>16</button><button>64</button><button data-correct>128</button></div>
+          <div class="explain">IPv6 addresses are 128 bits, such as <code>2001:db8::1</code>. 32 is tempting but is IPv4, and 16 bits is the size of a port number.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: a port is a 16-bit number, so the highest port is 65535.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. 16 bits give 2<sup>16</sup> = 65536 values, 0–65535. Port numbers above that cannot exist.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In the client-server model, who starts the conversation?</p>
+          <div class="opts"><button data-correct>The client</button><button>The server</button><button>The DNS server</button><button>Whichever host has the lower IP address</button></div>
+          <div class="explain">The server waits for requests and the client initiates. The server is tempting because it "serves", but it only listens until a client connects.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -149,6 +174,41 @@ IP string: 8.8.8.8</code></pre>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Forgetting that every lookup can fail. <code>getByName</code>, <code>getAllByName</code> and <code>getLocalHost</code> throw the checked exception <code>UnknownHostException</code>, so the code does not compile unless you catch it or declare it.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>"Why does InetAddress have no constructor?" Answer: it uses static factory methods so it can validate input, reuse cached DNS results and return the correct subclass (<code>Inet4Address</code> or <code>Inet6Address</code>). This is the <em>factory method</em> design pattern.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The InetAddress class</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which method would you use to get ALL IP addresses associated with "google.com"?</p>
+          <div class="opts">
+            <button>getLocalHost()</button>
+            <button>getByName("google.com")</button>
+            <button data-correct>getAllByName("google.com")</button>
+            <button>getHostAddress()</button>
+          </div>
+          <div class="explain"><code>getAllByName</code> returns an array with every address DNS gives for the name. <code>getByName</code> returns only one of them; <code>getHostAddress</code> just formats an address you already have.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What does this print?<br><code>InetAddress a = InetAddress.getByName("8.8.8.8");</code><br><code>System.out.println(a);</code></p>
+          <div class="opts"><button><code>dns.google/8.8.8.8</code></button><button data-correct><code>/8.8.8.8</code></button><button><code>8.8.8.8/dns.google</code></button><button><code>8.8.8.8</code></button></div>
+          <div class="explain"><code>toString()</code> prints <code>hostname/IP</code>, and an object built from an IP literal has an empty hostname part until a reverse lookup fills it. <code>dns.google/8.8.8.8</code> is tempting, but you would see it only after calling <code>getHostName()</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: <code>InetAddress.getByName("8.8.8.8")</code> sends a DNS query.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">When given an IP literal, <code>getByName</code> only checks its format and builds the object. A DNS (reverse) lookup happens later, only if you call <code>getHostName()</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Why does <code>InetAddress a = new InetAddress();</code> not compile?</p>
+          <div class="opts"><button>InetAddress is an interface</button><button>You must pass the IP string: <code>new InetAddress("8.8.8.8")</code></button><button>It needs <code>import java.io.*</code></button><button data-correct>InetAddress has no public constructor; use a static factory method such as <code>getByName()</code></button></div>
+          <div class="explain">Instances come only from factory methods, so Java can validate input, reuse cached DNS results and return <code>Inet4Address</code> or <code>Inet6Address</code>. Adding an IP string argument is tempting, but there is no public constructor of any kind.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: if <code>isReachable(5000)</code> returns <code>false</code>, the host is definitely down.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. <code>isReachable</code> uses ICMP ping only with enough privileges, otherwise TCP port 7, and firewalls often block both. A host that is up can still return false.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -207,6 +267,51 @@ IP string: 8.8.8.8</code></pre>
       </table></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>TCP is a <strong>phone call</strong>: you dial first, the other side answers, and words arrive in order; if you miss something you ask again. UDP is <strong>sending postcards</strong>: each card travels on its own, cheaply, but some may get lost or arrive in a different order.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Saying "the web always uses TCP". HTTP/1.1 and HTTP/2 run over TCP, but HTTP/3 runs over <strong>QUIC</strong>, which is built on UDP and adds its own reliability and encryption. Also, DNS uses UDP for normal queries but falls back to TCP for large responses.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Socket basics</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the main difference between TCP and UDP?</p>
+          <div class="opts">
+            <button data-correct>TCP is connection-oriented and reliable, UDP is connectionless and unreliable</button>
+            <button>TCP is faster than UDP for real-time applications</button>
+            <button>UDP guarantees packet delivery in order</button>
+            <button>TCP uses datagrams while UDP uses streams</button>
+          </div>
+          <div class="explain">TCP sets up a connection and guarantees ordered delivery. UDP sends independent datagrams without guarantees, which makes it lighter and lower-latency. The last option has the two swapped: TCP is a stream, UDP uses datagrams.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which port range is typically used for ephemeral (temporary client) ports?</p>
+          <div class="opts">
+            <button>0–1023</button>
+            <button>1024–49151</button>
+            <button data-correct>49152–65535</button>
+            <button>1–1000</button>
+          </div>
+          <div class="explain">IANA reserves 49152–65535 as the dynamic/private (ephemeral) range. 0–1023 are well-known ports and 1024–49151 are registered ports. (Some operating systems use a different range, such as 32768–60999 on Linux.)</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Why do video calls and online games usually prefer UDP?</p>
+          <div class="opts">
+            <button>UDP encrypts data automatically</button>
+            <button>UDP guarantees that no frame is ever lost</button>
+            <button data-correct>Late data is useless, so skipping a lost packet is better than waiting for a retransmission</button>
+            <button>TCP cannot carry audio or video</button>
+          </div>
+          <div class="explain">TCP would pause the whole stream to retransmit a lost segment. For real-time media, a small glitch is better than a delay, so UDP's low latency wins.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: TCP keeps message boundaries, so two <code>write()</code> calls always arrive as two separate <code>read()</code> results.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">TCP is a byte stream. Two writes may arrive in one read, or one write may be split across several reads. That is why we use a delimiter such as newline (<code>readLine</code>) or a length prefix. UDP, in contrast, keeps datagram boundaries.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Two browser tabs connect <code>192.168.1.23:51544 → 93.184.215.14:443</code> and <code>192.168.1.23:51545 → 93.184.215.14:443</code>. How does the server keep them apart?</p>
+          <div class="opts"><button>They use different server ports</button><button>They use different IP addresses</button><button>The server cannot: it serves one tab at a time</button><button data-correct>The client ports differ, so the two four-tuples are different</button></div>
+          <div class="explain">A TCP connection is identified by client IP, client port, server IP and server port. Here only the client port differs, and that is enough. "Different server ports" is tempting, but both use 443.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -246,6 +351,41 @@ IP string: 8.8.8.8</code></pre>
 
       <div class="callout key"><span class="label">Key idea</span><p>A <code>ServerSocket</code> never carries data. It only waits for connections. Each call to <code>accept()</code> returns a brand-new <code>Socket</code> that is used to talk to that one client.</p></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>The <code>ServerSocket</code> is a company's receptionist. When a caller arrives, the receptionist hands them to an employee (a new <code>Socket</code>) and goes back to waiting at the desk for the next caller.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>How a TCP connection works</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the correct order of the TCP three-way handshake?</p>
+          <div class="opts">
+            <button>ACK, SYN, SYN-ACK</button>
+            <button data-correct>SYN, SYN-ACK, ACK</button>
+            <button>SYN, ACK, FIN</button>
+            <button>HELLO, OK, READY</button>
+          </div>
+          <div class="explain">The client sends SYN, the server answers SYN-ACK, and the client confirms with ACK. FIN is used to close a connection, not to open one.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What does <code>serverSocket.accept()</code> do?</p>
+          <div class="opts">
+            <button>Sends a SYN packet to the client</button>
+            <button data-correct>Blocks until a client connects, then returns a new Socket for that client</button>
+            <button>Accepts any data waiting on the port and returns it as a String</button>
+            <button>Returns immediately with null if no client is waiting</button>
+          </div>
+          <div class="explain"><code>accept()</code> blocks (waits) and returns a new <code>Socket</code> per client. The handshake itself is done by the operating system; the ServerSocket keeps listening for the next client.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The client closes its socket. What does the server's <code>in.readLine()</code> return next?</p>
+          <div class="opts"><button>An empty string <code>""</code></button><button>It throws <code>EOFException</code></button><button>It blocks forever</button><button data-correct><code>null</code></button></div>
+          <div class="explain">End of stream is signalled by <code>null</code>, which is why loops are written <code>while ((line = in.readLine()) != null)</code>. An empty string is tempting, but that means the client sent an empty line and is still connected.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: the <code>ServerSocket</code> carries the data exchanged with each client.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. A ServerSocket only waits for connections. Each <code>accept()</code> returns a new <code>Socket</code>, and all data for that client flows through it, like the receptionist handing callers to an employee.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -428,6 +568,46 @@ IP string: 8.8.8.8</code></pre>
         <li>Type lines; each comes back as <code>Echo: ...</code>. Open a third terminal with another client to see two clients served at once. Type <code>bye</code> to finish.</li>
       </ol>
       <div class="callout tip"><span class="label">Tip</span><p>If the client says "Connection refused", the server is not running, is on another port, or a firewall blocks it. If the server says "Address already in use" (<code>BindException</code>), another program, or an old copy of your server, already holds the port.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>TCP socket programming in Java</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In TCP socket programming, which class is used on the server side to listen for incoming connections?</p>
+          <div class="opts">
+            <button>Socket</button>
+            <button data-correct>ServerSocket</button>
+            <button>DatagramSocket</button>
+            <button>InetSocketAddress</button>
+          </div>
+          <div class="explain"><code>ServerSocket</code> binds to a port and its <code>accept()</code> method waits for clients. <code>Socket</code> is a single connection; <code>DatagramSocket</code> is for UDP; <code>InetSocketAddress</code> only holds an IP and port.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why create <code>new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)</code> with <code>true</code>?</p>
+          <div class="opts">
+            <button>To make the socket non-blocking</button>
+            <button data-correct>To flush automatically after every println, so data is actually sent</button>
+            <button>To enable encryption</button>
+            <button>To append to an existing file</button>
+          </div>
+          <div class="explain">The second argument is <code>autoFlush</code>. Without flushing, text can sit in the buffer and the other side waits forever, a classic socket bug.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A client uses <code>new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)</code> but sends with <code>out.print("Hello Server!");</code>. The server calls <code>in.readLine()</code>. What happens?</p>
+          <div class="opts"><button>The server immediately prints <code>Received: Hello Server!</code></button><button>The client throws <code>ConnectException</code></button><button data-correct>Both sides may hang: the text has no newline and auto-flush applies only to <code>println</code></button><button>It does not compile</button></div>
+          <div class="explain"><code>readLine()</code> waits for a line ending, and auto-flush is triggered by <code>println</code> (and <code>printf</code>/<code>format</code>), not by <code>print</code>. Expecting the server to print the message is the tempting mistake; use <code>println</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Starting the server prints <code>BindException: Address already in use</code>. What is the most likely cause?</p>
+          <div class="opts"><button data-correct>Another program, or an old copy of your server, already holds the port</button><button>The client is not running yet</button><button>The hostname is misspelled</button><button>The client forgot to flush</button></div>
+          <div class="explain">Only one program can listen on a port. A server does not need a client to start, so "the client is not running" is tempting but irrelevant; that problem shows up on the client as "Connection refused".</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: on Java 17, <code>new InputStreamReader(in)</code> without a charset uses the platform default encoding, which may differ between the client and server machines.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Before Java 18 the default depends on the operating system, so accented or Arabic characters can be garbled. Passing <code>StandardCharsets.UTF_8</code> on both sides avoids it.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -457,6 +637,36 @@ IP string: 8.8.8.8</code></pre>
     }
 }</code></pre>
       <div class="callout exam"><span class="label">Exam tip</span><p>"Why does a TCP server need multithreading?" Because <code>accept()</code> and <code>read()</code> block. Without extra threads (or non-blocking I/O) the server serves one client at a time, and a slow client blocks everyone else.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Serving many clients</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which Java 21 feature lets a simple "one thread per client" server handle tens of thousands of connections?</p>
+          <div class="opts">
+            <button>Records</button>
+            <button data-correct>Virtual threads (Executors.newVirtualThreadPerTaskExecutor())</button>
+            <button>The var keyword</button>
+            <button>DatagramChannel</button>
+          </div>
+          <div class="explain">Virtual threads are lightweight threads scheduled by the JVM, so blocking in <code>accept()</code> or <code>readLine()</code> costs very little. You keep simple blocking code while scaling much further than platform threads.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A single-threaded server is inside client A's <code>readLine()</code> loop when client B connects. What happens to B?</p>
+          <div class="opts"><button>B is served in parallel automatically</button><button>A is disconnected so B can be served</button><button data-correct>B waits: the server returns to <code>accept()</code> and serves B only after it finishes with A</button><button>B gets <code>ConnectException</code> at once</button></div>
+          <div class="explain"><code>readLine()</code> blocks the only thread, so nothing else happens until A is done. "Served in parallel" is tempting, but parallelism needs more threads (or NIO).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A server uses <code>Executors.newFixedThreadPool(50)</code> and 60 clients are connected. What happens to the extra 10?</p>
+          <div class="opts"><button data-correct>Their tasks wait in the pool's queue until a thread is free</button><button>They are rejected with <code>ConnectException</code></button><button>The pool creates 10 more threads</button><button>They are served by virtual threads instead</button></div>
+          <div class="explain">A fixed pool caps the number of threads; extra tasks are queued. Creating more threads is tempting, but that is exactly what a fixed pool does not do.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: to use virtual threads you must rewrite <code>handle()</code> in a non-blocking style.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The point of virtual threads is that the same blocking <code>handle()</code> code works; only the executor changes. Non-blocking rewrites are what NIO with a Selector needs.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -523,6 +733,36 @@ IP string: 8.8.8.8</code></pre>
 }</code></pre>
       <div class="callout warn"><span class="label">Common mistake</span><p>Using <code>new String(packet.getData())</code> without the length. The buffer is 1024 bytes but the message may be 14, so you would print the message followed by leftover bytes. Always use <code>getLength()</code>. Also keep UDP messages small (well under about 1,400 bytes) so they are not fragmented.</p></div>
       <div class="callout key"><span class="label">Key idea</span><p>With UDP, reliability is your job. If you need it, add timeouts, retries, and sequence numbers yourself, or use a protocol such as QUIC that already does this on top of UDP.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>UDP sockets in Java</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which pair of classes is used for UDP in Java?</p>
+          <div class="opts">
+            <button>Socket and ServerSocket</button>
+            <button data-correct>DatagramSocket and DatagramPacket</button>
+            <button>UdpSocket and UdpMessage</button>
+            <button>HttpClient and HttpRequest</button>
+          </div>
+          <div class="explain"><code>DatagramSocket</code> sends and receives; <code>DatagramPacket</code> holds one message and its address. Socket and ServerSocket are TCP; UdpSocket does not exist.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The buffer is <code>new byte[1024]</code> and the client sent the 14-byte message <code>Hello over UDP</code>. What does <code>new String(packet.getData(), StandardCharsets.UTF_8)</code> give?</p>
+          <div class="opts"><button data-correct>A 1024-character string: the message followed by leftover zero bytes from the buffer</button><button>Exactly <code>Hello over UDP</code></button><button>An empty string</button><button>It throws <code>SocketTimeoutException</code></button></div>
+          <div class="explain">Without <code>0, packet.getLength()</code> the whole buffer is decoded. "Exactly the message" is tempting, but <code>getData()</code> returns the entire array, not just the bytes received.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The UDP client sets <code>socket.setSoTimeout(2_000)</code> and the reply is lost. What does <code>socket.receive(reply)</code> do?</p>
+          <div class="opts"><button>Waits forever</button><button>Returns an empty packet</button><button data-correct>Throws <code>SocketTimeoutException</code> after about 2 seconds</button><button>Asks the server to resend automatically</button></div>
+          <div class="explain">The timeout limits how long <code>receive</code> blocks; then the exception is thrown and the client prints its "No reply" message. Automatic resending is tempting, but UDP has no retransmission; retries are your job.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: if a UDP client sends "A" and then "B", the server always receives "A" first.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. UDP has no ordering: datagrams may arrive out of order, twice, or not at all. Only TCP guarantees in-order delivery.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -547,6 +787,46 @@ socket.connect(<span class="k">new</span> <span class="t">InetSocketAddress</spa
 socket.setSoTimeout(<span class="n">5_000</span>); <span class="c">// read timeout: each read() waits at most 5 s</span></code></pre>
       <div class="callout warn"><span class="label">Common mistake</span><p>Believing <code>setSoTimeout()</code> limits how long connecting takes. It only limits each <em>read</em>. <code>new Socket(host, port)</code> has no connect timeout of its own; use <code>connect(address, timeout)</code> on an unconnected socket as above. Without timeouts, a client can hang indefinitely.</p></div>
       <div class="callout tip"><span class="label">Tip</span><p>Give users helpful messages ("Cannot reach the server, check your connection") instead of stack traces, and consider retrying with a delay for temporary failures.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Exceptions and timeouts</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What exception is thrown when a hostname cannot be resolved?</p>
+          <div class="opts">
+            <button>IOException</button>
+            <button>SocketException</button>
+            <button data-correct>UnknownHostException</button>
+            <button>NetworkException</button>
+          </div>
+          <div class="explain"><code>UnknownHostException</code> (a subclass of <code>IOException</code>) signals that DNS could not find an address. <code>NetworkException</code> does not exist in <code>java.net</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A client gets <code>ConnectException: Connection refused</code>. What is the most likely cause?</p>
+          <div class="opts">
+            <button>The hostname is misspelled</button>
+            <button data-correct>The host is reachable but no program is listening on that port</button>
+            <button>The server replied too slowly</button>
+            <button>The message was not flushed</button>
+          </div>
+          <div class="explain">"Refused" means the host answered with a reset because nothing listens on the port (or a firewall rejects it). A misspelled name gives UnknownHostException; slowness gives SocketTimeoutException.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What does <code>socket.setSoTimeout(5000)</code> control?</p>
+          <div class="opts">
+            <button>How long connecting to the server may take</button>
+            <button data-correct>How long each read on the socket may block before SocketTimeoutException</button>
+            <button>How long the socket stays open in total</button>
+            <button>How long the server waits before closing idle ports</button>
+          </div>
+          <div class="explain">SO_TIMEOUT is a read timeout. For a connect timeout use <code>socket.connect(new InetSocketAddress(host, port), ms)</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>What happens with this code?<br><code>try { /* connect and read */ }</code><br><code>catch (IOException e) { ... }</code><br><code>catch (ConnectException e) { ... }</code></p>
+          <div class="opts"><button>It compiles, and the ConnectException block handles refused connections</button><button>It compiles, but with a warning only</button><button>It fails at run time when the connection is refused</button><button data-correct>Compile error: ConnectException is a subclass of IOException, so the second catch is unreachable</button></div>
+          <div class="explain">Specific exceptions must be caught before their parents. The first option is tempting, but the IOException block would already catch every ConnectException, so Java rejects the unreachable second block.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -575,171 +855,10 @@ socket.setSoTimeout(<span class="n">5_000</span>); <span class="c">// read timeo
     }
 }</code></pre>
       <div class="callout warn"><span class="label">Outdated code to avoid</span><p>The constructor <code>new URL(String)</code> is deprecated since Java 20. Write <code>URI.create("https://example.com/").toURL()</code> instead (it still throws <code>MalformedURLException</code>, a subclass of <code>IOException</code>). Prefer <code>HttpClient</code> over the old <code>HttpURLConnection</code> in new code.</p></div>
-    </section>
-
-    <section>
-      <h2><span class="num">10</span>Knowledge check</h2>
-      <p>Test your understanding of the Java network programming concepts in this guide. Click an answer to see whether it is right and why.</p>
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: InetAddress and sockets</h3><span class="quiz-score"></span></div>
-
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Beyond raw sockets: URLs and HttpClient</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>Which method would you use to get ALL IP addresses associated with "google.com"?</p>
-          <div class="opts">
-            <button>getLocalHost()</button>
-            <button>getByName("google.com")</button>
-            <button data-correct>getAllByName("google.com")</button>
-            <button>getHostAddress()</button>
-          </div>
-          <div class="explain"><code>getAllByName</code> returns an array with every address DNS gives for the name. <code>getByName</code> returns only one of them; <code>getHostAddress</code> just formats an address you already have.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>What is the main difference between TCP and UDP?</p>
-          <div class="opts">
-            <button data-correct>TCP is connection-oriented and reliable, UDP is connectionless and unreliable</button>
-            <button>TCP is faster than UDP for real-time applications</button>
-            <button>UDP guarantees packet delivery in order</button>
-            <button>TCP uses datagrams while UDP uses streams</button>
-          </div>
-          <div class="explain">TCP sets up a connection and guarantees ordered delivery. UDP sends independent datagrams without guarantees, which makes it lighter and lower-latency. The last option has the two swapped: TCP is a stream, UDP uses datagrams.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>Which port range is typically used for ephemeral (temporary client) ports?</p>
-          <div class="opts">
-            <button>0–1023</button>
-            <button>1024–49151</button>
-            <button data-correct>49152–65535</button>
-            <button>1–1000</button>
-          </div>
-          <div class="explain">IANA reserves 49152–65535 as the dynamic/private (ephemeral) range. 0–1023 are well-known ports and 1024–49151 are registered ports. (Some operating systems use a different range, such as 32768–60999 on Linux.)</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>What exception is thrown when a hostname cannot be resolved?</p>
-          <div class="opts">
-            <button>IOException</button>
-            <button>SocketException</button>
-            <button data-correct>UnknownHostException</button>
-            <button>NetworkException</button>
-          </div>
-          <div class="explain"><code>UnknownHostException</code> (a subclass of <code>IOException</code>) signals that DNS could not find an address. <code>NetworkException</code> does not exist in <code>java.net</code>.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>In TCP socket programming, which class is used on the server side to listen for incoming connections?</p>
-          <div class="opts">
-            <button>Socket</button>
-            <button data-correct>ServerSocket</button>
-            <button>DatagramSocket</button>
-            <button>InetSocketAddress</button>
-          </div>
-          <div class="explain"><code>ServerSocket</code> binds to a port and its <code>accept()</code> method waits for clients. <code>Socket</code> is a single connection; <code>DatagramSocket</code> is for UDP; <code>InetSocketAddress</code> only holds an IP and port.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>What does <code>serverSocket.accept()</code> do?</p>
-          <div class="opts">
-            <button>Sends a SYN packet to the client</button>
-            <button data-correct>Blocks until a client connects, then returns a new Socket for that client</button>
-            <button>Accepts any data waiting on the port and returns it as a String</button>
-            <button>Returns immediately with null if no client is waiting</button>
-          </div>
-          <div class="explain"><code>accept()</code> blocks (waits) and returns a new <code>Socket</code> per client. The handshake itself is done by the operating system; the ServerSocket keeps listening for the next client.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>What is the correct order of the TCP three-way handshake?</p>
-          <div class="opts">
-            <button>ACK, SYN, SYN-ACK</button>
-            <button data-correct>SYN, SYN-ACK, ACK</button>
-            <button>SYN, ACK, FIN</button>
-            <button>HELLO, OK, READY</button>
-          </div>
-          <div class="explain">The client sends SYN, the server answers SYN-ACK, and the client confirms with ACK. FIN is used to close a connection, not to open one.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>Why do video calls and online games usually prefer UDP?</p>
-          <div class="opts">
-            <button>UDP encrypts data automatically</button>
-            <button>UDP guarantees that no frame is ever lost</button>
-            <button data-correct>Late data is useless, so skipping a lost packet is better than waiting for a retransmission</button>
-            <button>TCP cannot carry audio or video</button>
-          </div>
-          <div class="explain">TCP would pause the whole stream to retransmit a lost segment. For real-time media, a small glitch is better than a delay, so UDP's low latency wins.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>What does <code>socket.setSoTimeout(5000)</code> control?</p>
-          <div class="opts">
-            <button>How long connecting to the server may take</button>
-            <button data-correct>How long each read on the socket may block before SocketTimeoutException</button>
-            <button>How long the socket stays open in total</button>
-            <button>How long the server waits before closing idle ports</button>
-          </div>
-          <div class="explain">SO_TIMEOUT is a read timeout. For a connect timeout use <code>socket.connect(new InetSocketAddress(host, port), ms)</code>.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>True or false: <code>InetAddress.getByName("8.8.8.8")</code> sends a DNS query.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">When given an IP literal, <code>getByName</code> only checks its format and builds the object. A DNS (reverse) lookup happens later, only if you call <code>getHostName()</code>.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>Which pair of classes is used for UDP in Java?</p>
-          <div class="opts">
-            <button>Socket and ServerSocket</button>
-            <button data-correct>DatagramSocket and DatagramPacket</button>
-            <button>UdpSocket and UdpMessage</button>
-            <button>HttpClient and HttpRequest</button>
-          </div>
-          <div class="explain"><code>DatagramSocket</code> sends and receives; <code>DatagramPacket</code> holds one message and its address. Socket and ServerSocket are TCP; UdpSocket does not exist.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>True or false: TCP keeps message boundaries, so two <code>write()</code> calls always arrive as two separate <code>read()</code> results.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">TCP is a byte stream. Two writes may arrive in one read, or one write may be split across several reads. That is why we use a delimiter such as newline (<code>readLine</code>) or a length prefix. UDP, in contrast, keeps datagram boundaries.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>A client gets <code>ConnectException: Connection refused</code>. What is the most likely cause?</p>
-          <div class="opts">
-            <button>The hostname is misspelled</button>
-            <button data-correct>The host is reachable but no program is listening on that port</button>
-            <button>The server replied too slowly</button>
-            <button>The message was not flushed</button>
-          </div>
-          <div class="explain">"Refused" means the host answered with a reset because nothing listens on the port (or a firewall rejects it). A misspelled name gives UnknownHostException; slowness gives SocketTimeoutException.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>Why create <code>new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)</code> with <code>true</code>?</p>
-          <div class="opts">
-            <button>To make the socket non-blocking</button>
-            <button data-correct>To flush automatically after every println, so data is actually sent</button>
-            <button>To enable encryption</button>
-            <button>To append to an existing file</button>
-          </div>
-          <div class="explain">The second argument is <code>autoFlush</code>. Without flushing, text can sit in the buffer and the other side waits forever, a classic socket bug.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q15</span>Which Java 21 feature lets a simple "one thread per client" server handle tens of thousands of connections?</p>
-          <div class="opts">
-            <button>Records</button>
-            <button data-correct>Virtual threads (Executors.newVirtualThreadPerTaskExecutor())</button>
-            <button>The var keyword</button>
-            <button>DatagramChannel</button>
-          </div>
-          <div class="explain">Virtual threads are lightweight threads scheduled by the JVM, so blocking in <code>accept()</code> or <code>readLine()</code> costs very little. You keep simple blocking code while scaling much further than platform threads.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q16</span>In current Java, how should you create a <code>URL</code> object from a string?</p>
+          <p class="q-text"><span class="qn">Q1</span>In current Java, how should you create a <code>URL</code> object from a string?</p>
           <div class="opts">
             <button><code>new URL("https://example.com")</code></button>
             <button data-correct><code>URI.create("https://example.com").toURL()</code></button>
@@ -747,6 +866,67 @@ socket.setSoTimeout(<span class="n">5_000</span>); <span class="c">// read timeo
             <button><code>InetAddress.getByName("https://example.com")</code></button>
           </div>
           <div class="explain">The <code>URL(String)</code> constructors are deprecated since Java 20 because they do not validate well. Build a <code>URI</code> first, then call <code>toURL()</code>. InetAddress takes a hostname, not a URL.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span><code>HttpDemo.main</code> declares <code>throws IOException, InterruptedException</code>. Why both?</p>
+          <div class="opts"><button>Because <code>URI.create</code> throws both</button><button>Because <code>Duration.ofSeconds</code> can fail</button><button data-correct>Because <code>client.send(...)</code> declares both checked exceptions</button><button>The second one is optional decoration</button></div>
+          <div class="explain"><code>send</code> can fail on the network (IOException) and blocks the thread, which can be interrupted (InterruptedException). <code>URI.create</code> is tempting, but it throws only the unchecked IllegalArgumentException for a bad string.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: <code>URI.create("https://example.com/").toURL()</code> can still throw <code>MalformedURLException</code>, a subclass of <code>IOException</code>.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. <code>toURL()</code> declares MalformedURLException (for example for an unknown protocol), so callers still handle or declare it.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>For calling a web API, why use <code>HttpClient</code> instead of writing HTTP by hand on a raw <code>Socket</code>?</p>
+          <div class="opts"><button>Raw sockets cannot connect to port 443</button><button>HttpClient uses UDP, so it is faster</button><button>Raw sockets are deprecated since Java 20</button><button data-correct>It speaks HTTP for you: HTTP/1.1 and HTTP/2, TLS, timeouts and asynchronous calls</button></div>
+          <div class="explain">HttpClient handles the protocol details you would otherwise write and get wrong. "Raw sockets are deprecated" is tempting because of the URL warning, but only the <code>URL(String)</code> constructor is deprecated; sockets remain the foundation.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">10</span>Final review</h2>
+      <p>Test your understanding of the Java network programming concepts in this guide. Click an answer to see whether it is right and why.</p>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Final review: mixed questions from the whole guide</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which setup gives a client both a connect timeout and a read timeout?</p>
+          <div class="opts"><button><code>new Socket(host, port)</code> on its own</button><button data-correct>An unconnected <code>new Socket()</code>, then <code>connect(new InetSocketAddress(host, port), 5_000)</code> and <code>setSoTimeout(10_000)</code></button><button>Only <code>setSoTimeout(10_000)</code></button><button>Switching to UDP</button></div>
+          <div class="explain">Connecting and reading are limited separately, and EchoClient does both. <code>setSoTimeout</code> alone is tempting, but it limits reads only; <code>new Socket(host, port)</code> has no connect timeout of its own.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: DNS normally uses UDP but can fall back to TCP for large responses.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Normal queries fit in one UDP datagram; larger answers are retried over TCP. This is one reason "UDP protocols never use TCP" is wrong.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A server runs <code>new DatagramSocket(5001)</code>. A client runs <code>new Socket("localhost", 5001)</code>. What happens?</p>
+          <div class="opts"><button>The client connects and can talk to the UDP server</button><button>The client throws <code>UnknownHostException</code></button><button>The server's <code>receive()</code> gets a SYN packet</button><button data-correct>The client gets <code>ConnectException</code>: TCP and UDP ports are separate, and nothing listens on TCP port 5001</button></div>
+          <div class="explain">TCP port 5001 and UDP port 5001 are different endpoints. UnknownHostException is tempting when a connection fails, but <code>localhost</code> resolves fine; the refusal comes from the empty TCP port.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>For the chat-server exercise, where should the server keep every client's <code>PrintWriter</code> so it can broadcast each line?</p>
+          <div class="opts"><button>In a plain <code>ArrayList</code> shared by all client threads</button><button>In a single <code>static PrintWriter</code></button><button data-correct>In a thread-safe set such as <code>ConcurrentHashMap.newKeySet()</code></button><button>In a <code>DatagramPacket</code> array</button></div>
+          <div class="explain">Many client threads add, remove and iterate at the same time, so the collection must be thread-safe. A plain ArrayList is tempting because it is the usual list, but concurrent changes can corrupt it or throw ConcurrentModificationException.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which call returns the IP address as text and never does a lookup?</p>
+          <div class="opts"><button data-correct><code>getHostAddress()</code></button><button><code>getHostName()</code></button><button><code>getLocalHost()</code></button><button><code>getAllByName(host)</code></button></div>
+          <div class="explain"><code>getHostAddress()</code> only formats the address it already holds. <code>getHostName()</code> is tempting because it sounds similar, but it may do a slow reverse DNS lookup.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>True or false: a socket returned by <code>accept()</code> uses a different local port from the <code>ServerSocket</code> it came from.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The accepted socket keeps the server's port (for example 443); connections are told apart by the four-tuple, because each client's IP or port differs. That is how one port serves thousands of clients.</div>
         </div>
 
         <div class="quiz-done"></div>

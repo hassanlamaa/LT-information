@@ -25,7 +25,7 @@
     <span class="eyebrow">Client/Server Architecture · Tiers</span>
     <h1>Architecture Tiers Explained</h1>
     <p class="lead">Every client/server application does three jobs: it shows things to the user, applies the business rules, and stores data. How you split those jobs across machines (1, 2, 3 or N tiers) decides how well the system scales, how secure it is, and how hard it is to change.</p>
-    <div class="chips"><span class="chip">≈ 30 min read</span><span class="chip">12 quiz questions</span><span class="chip">Level: Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 30 min read</span><span class="chip">7 knowledge checks + final review</span><span class="chip">34 quiz questions</span><span class="chip">Level: Intermediate</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -65,6 +65,46 @@
       <div class="callout key"><span class="label">Key idea</span><p>Layers are about how you <em>organise the code</em>. Tiers are about where that code <em>runs</em>. A 3-layer application can be deployed as 1 tier (all on one PC) or as 3 tiers (three servers).</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Some notes say tiers are a "logical" separation. Many sources use the words loosely, but in an exam the safe answer is: <strong>layer = logical, tier = physical</strong>. Tiers <em>can</em> run on the same physical machine as separate processes (for example, a web server and a database on one small VPS), but the point of a tier is that it can be moved to its own machine.</p></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>Think of a restaurant. The <strong>dining room and waiter</strong> are the presentation layer, the <strong>kitchen</strong> is the business logic, and the <strong>pantry and fridge</strong> are the data layer. A food truck where one person takes orders, cooks and stores ingredients in the same van is 1-tier. A big restaurant with a separate dining room, kitchen and storeroom is 3-tier.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Introduction and layers</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the difference between a layer and a tier?</p>
+          <div class="opts">
+            <button>They mean exactly the same thing</button>
+            <button data-correct>A layer is a logical grouping of code; a tier is a physical deployment unit</button>
+            <button>A tier is a logical grouping; a layer is a physical server</button>
+            <button>Layers exist only in 1-tier systems</button>
+          </div>
+          <div class="explain">Layers organise code by responsibility; tiers are where that code is deployed, so several layers can run in one tier. The tempting third option swaps the words round: the course convention is <strong>layer = logical, tier = physical</strong>.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A 3-layer application must always be deployed on three separate machines.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Layers are a logical split of the code. The same 3-layer application can run as 1 tier (all on one PC) or as 3 tiers (three servers). It is tempting to answer True because "3 layers" sounds like "3 tiers", but the number of tiers is a deployment choice.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In an online shop, the rule "orders over $50 get free shipping" belongs to which layer?</p>
+          <div class="opts">
+            <button>Presentation</button>
+            <button>Data</button>
+            <button data-correct>Business logic</button>
+          </div>
+          <div class="explain">It is a rule the application applies, so it is business logic. The checkout page (presentation) only <em>shows</em> the shipping cost, and the data layer stores the order but does not decide the price.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In client/server architecture, the client sends the request and the server waits for requests, does the work and replies.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The client (browser, app, desktop program) starts the conversation; the server waits, processes and responds. Answering False usually comes from mixing up the roles: the server provides services, it does not start the exchange.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -111,6 +151,52 @@
       <p>Single-user applications, small desktop applications, simple mobile apps without backend services, prototypes and tools that must work offline.</p>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Do not treat "1-tier" and "monolithic" as the same thing. 1-tier means everything runs on one machine. <em>Monolithic</em> means the code is built and deployed as one unit. A monolithic web application can still sit in the middle tier of a 3-tier system.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>1-tier architecture</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which architecture has all components combined in a single system?</p>
+          <div class="opts">
+            <button data-correct>1-Tier Architecture</button>
+            <button>2-Tier Architecture</button>
+            <button>3-Tier Architecture</button>
+            <button>N-Tier Architecture</button>
+          </div>
+          <div class="explain">In 1-tier, presentation, business logic and data storage all run on one machine, usually in one program. 2-tier is the tempting wrong answer, but it already moves the data onto a separate database server.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What is the main disadvantage of 1-tier architecture?</p>
+          <div class="opts">
+            <button>High development cost</button>
+            <button>Complex network configuration</button>
+            <button data-correct>Lack of scalability</button>
+            <button>Security vulnerabilities</button>
+          </div>
+          <div class="explain">Everything runs on one machine, so it cannot grow beyond that machine or easily share data among many users. 1-tier is cheap and needs no network, so the first two options are wrong.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A monolithic web application is always a 1-tier system.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. <em>Monolithic</em> means the code is built and deployed as one unit; <em>1-tier</em> means everything runs on one machine. A monolithic web application can sit in the middle tier of a 3-tier system, with browsers in front and a database server behind.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A shop owner's desktop accounting tool keeps its data in a local SQLite file. The laptop's disk fails and there is no backup. Which 1-tier disadvantage does this show?</p>
+          <div class="opts">
+            <button>Network latency between the tiers</button>
+            <button data-correct>Single point of failure</button>
+            <button>Database credentials stored on many clients</button>
+            <button>Too many servers to monitor</button>
+          </div>
+          <div class="explain">With everything on one machine, losing that machine loses the application and its data: a single point of failure. Network latency is wrong because 1-tier has no network between its parts, and stored credentials are a 2-tier problem.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -166,6 +252,51 @@
       <p>Small to medium business applications, departmental systems and client/server databases on a trusted local network (LAN) with tens of users, not thousands.</p>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>A website is <strong>not</strong> 2-tier just because you can see a browser and "a server". The browser talks to a web/application server, which then talks to the database: that is three tiers. 2-tier means the client connects to the database directly.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>2-tier architecture</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In which architecture is the business logic typically located on the client side?</p>
+          <div class="opts">
+            <button>1-Tier Architecture</button>
+            <button data-correct>2-Tier Architecture</button>
+            <button>3-Tier Architecture</button>
+            <button>N-Tier Architecture</button>
+          </div>
+          <div class="explain">Classic 2-tier uses a thick client: UI and business rules on the user's PC, data on the database server. In 3-tier and N-tier the rules move to the server side. (1-tier has no separate client and server at all.)</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A website is 2-tier because there is a browser and a server.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The browser talks to a web/application server, which then talks to the database: that is 3 tiers. 2-tier means the client connects to the database <em>directly</em>. It is tempting to count only "client" and "server", but the database server is a separate tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A clinic's appointment app runs on five reception PCs, and each copy keeps the SQL Server login in its configuration file. Which 2-tier disadvantage does this illustrate?</p>
+          <div class="opts">
+            <button>Extra network hop through an application server</button>
+            <button>No way for several users to share data</button>
+            <button>Every request goes through an API gateway</button>
+            <button data-correct>Security: database credentials on every client can be extracted</button>
+          </div>
+          <div class="explain">In 2-tier the database must be reachable from every client and the client holds the credentials, so anyone with access to a PC can pull them out. The extra hop is a 3-tier cost, not a 2-tier one, and sharing one central database is actually a 2-tier <em>advantage</em>.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A 2-tier system where the client only shows screens and the rules are written as stored procedures and triggers in the database is called…</p>
+          <div class="opts">
+            <button>Fat (thick) client 2-tier</button>
+            <button>3-tier</button>
+            <button data-correct>Thin client 2-tier</button>
+          </div>
+          <div class="explain">When the logic lives in the database, the client is thin, so this is thin-client 2-tier. Fat-client 2-tier is the usual case with rules in the client program. It is not 3-tier, because there is still no separate application tier.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -238,6 +369,52 @@
       <h3>Use cases</h3>
       <p>Most web applications: e-commerce sites, online banking, university portals, enterprise systems and SaaS applications.</p>
       <div class="callout exam"><span class="label">Exam tip</span><p>When asked to "describe 3-tier architecture", name all three tiers, give each one's responsibility in one line, and add the rule that the client never accesses the database directly. Finish with one advantage (security or scalability) and one disadvantage (complexity or latency).</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>3-tier architecture</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which architecture separates presentation, business logic and data into distinct tiers?</p>
+          <div class="opts">
+            <button>1-Tier Architecture</button>
+            <button>2-Tier Architecture</button>
+            <button data-correct>3-Tier Architecture</button>
+            <button>All of the above</button>
+          </div>
+          <div class="explain">3-tier gives each of the three layers its own tier. 2-tier combines presentation and logic on the client and 1-tier combines all three, so "All of the above" is wrong.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In a 3-tier web application, which tier may connect directly to the database?</p>
+          <div class="opts">
+            <button>The browser</button>
+            <button data-correct>The application tier</button>
+            <button>Any tier that has the password</button>
+            <button>None; the database connects to the browser</button>
+          </div>
+          <div class="explain">Only the application tier talks to the data tier. "Any tier that has the password" is tempting, but the point is that the database sits on a private network the browser cannot reach at all; keeping it off the client's path is the main security benefit of 3-tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In 3-tier, changing a business rule means redeploying the application server once, not updating every user's device.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The rules live on the application server, so one redeploy changes them for every client. Answering False confuses 3-tier with thick-client 2-tier, where the rules are installed on every PC.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Traffic to a university portal triples during registration week. The application servers are stateless. What is the usual fix?</p>
+          <div class="opts">
+            <button>Let browsers query the database directly to skip a hop</button>
+            <button>Move the business rules into the browser</button>
+            <button>Merge all three tiers onto one bigger machine</button>
+            <button data-correct>Run more copies of the application server behind a load balancer</button>
+          </div>
+          <div class="explain">Stateless servers can be copied, and a load balancer spreads requests across them: horizontal scaling. Letting browsers reach the database would remove the security benefit of 3-tier, and merging the tiers onto one machine limits growth to that machine.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -318,6 +495,52 @@
       <h3>Use cases</h3>
       <p>Large-scale enterprise systems, cloud-native applications, microservices architectures and global web applications such as streaming services, marketplaces and banking platforms.</p>
       <div class="callout warn"><span class="label">Common mistake</span><p>"More tiers = faster" is false. Each extra tier adds a network hop, so a single request usually gets <em>slower</em>. What improves is <strong>throughput</strong>: the system can serve far more users at once because each tier can be scaled out.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>N-tier architecture</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which of these is an extra tier typically found in N-tier systems but not in basic 3-tier?</p>
+          <div class="opts">
+            <button>The user interface</button>
+            <button>The database</button>
+            <button data-correct>A cache or API gateway tier</button>
+            <button>The keyboard driver</button>
+          </div>
+          <div class="explain">N-tier keeps the original three tiers and adds specialised ones such as load balancers, API gateways, caches, message queues and integration tiers. The user interface and the database are tempting, but basic 3-tier already has both.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Adding more tiers to a system usually…</p>
+          <div class="opts">
+            <button>Makes every single request faster</button>
+            <button data-correct>Increases throughput and flexibility, but adds latency and complexity</button>
+            <button>Removes the need for monitoring</button>
+            <button>Reduces hosting costs</button>
+          </div>
+          <div class="explain">Each tier is another network hop, so individual requests get a little slower, while the whole system can serve more users. "Makes every single request faster" is the classic wrong answer: throughput improves, per-request latency does not. Complexity and cost go up.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Microservices split the business tier into small services organised by business capability (orders, payments, users), each deployed independently.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. This is why microservices are taught as the most extreme form of N-tier. It is tempting to say False because classic N-tier splits by layer rather than by capability, but a microservice system still has presentation, gateway, service and data tiers.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In a food-delivery app, restaurant menus are read thousands of times a minute but change rarely. Which N-tier component best reduces load on the database?</p>
+          <div class="opts">
+            <button>Message queue</button>
+            <button>API gateway</button>
+            <button>Integration tier</button>
+            <button data-correct>Cache tier (for example Redis)</button>
+          </div>
+          <div class="explain">A cache keeps frequently read data in memory, so the database is not asked the same question again and again. A message queue is tempting, but it hands work between tiers asynchronously; it does not answer repeated reads.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -338,6 +561,51 @@
         </tbody>
       </table></div>
       <div class="callout tip"><span class="label">Today</span><p>Modern single-page web apps and mobile apps sit in between ("rich clients"): they run a lot of JavaScript or app code for a smooth interface, but the business rules are still enforced on the server. The rule is: <strong>never trust the client</strong>. Checks done in the browser are for convenience; the application tier must check everything again, because users can modify anything that runs on their own device.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Thin and thick clients</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A browser showing pages rendered on the server, with all rules enforced by the server, is an example of a…</p>
+          <div class="opts">
+            <button data-correct>Thin client</button>
+            <button>Thick client</button>
+            <button>Database server</button>
+            <button>1-tier application</button>
+          </div>
+          <div class="explain">A thin client mostly displays and sends input; the processing happens on the server. A thick client would run the rules locally, which is not the case here, and a database server is a tier, not a client.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>If a single-page web app already checks the business rules in JavaScript, the application tier does not need to check them again.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Users control anything that runs on their own device and can change or skip browser checks. Browser checks are for a smooth interface; the server must enforce every rule. Never trust the client.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A video editor applies effects on the user's computer and only syncs project files to the cloud. What kind of client is it?</p>
+          <div class="opts">
+            <button>Thin client</button>
+            <button data-correct>Thick (fat) client</button>
+            <button>Database server</button>
+          </div>
+          <div class="explain">The processing runs locally and the server is used mainly for shared data, which is the definition of a thick client. It is not thin, because a thin client leaves the processing to the server.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which is an advantage of a thin client compared with a thick client?</p>
+          <div class="opts">
+            <button>It usually works offline</button>
+            <button>It needs a more powerful device</button>
+            <button data-correct>Nothing to install on each device; update the server once</button>
+            <button>Its logic runs on the client device</button>
+          </div>
+          <div class="explain">With the logic on the server, there is nothing to roll out to each device. "Works offline" is tempting, but that is a thick-client strength; thin clients usually need the server to do anything.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -373,93 +641,72 @@
       </div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Scenario questions ("a bank wants…", "a small shop needs…") are marked on the justification. Mention number of users, whether they connect over the internet, how often the rules change, and the security of the data. Then name the model.</p></div>
       <details class="reveal"><summary>Try it: a school library with 2 librarians on one PC network, no online access for students. Which model?</summary><p>2-tier is reasonable: few users, a trusted LAN and a shared database. If students later need to search the catalogue from home over the internet, move to 3-tier so the database is not exposed.</p></details>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Choosing a tier model</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>An online shop with thousands of internet users should not use 2-tier mainly because…</p>
+          <div class="opts">
+            <button>2-tier has no database</button>
+            <button data-correct>The database would have to be exposed to every user's device over the internet</button>
+            <button>2-tier cannot show web pages</button>
+            <button>2-tier needs microservices</button>
+          </div>
+          <div class="explain">In 2-tier the client connects straight to the database, so the DB (and its credentials) would be reachable from the internet, and it would also need one connection per user. 3-tier hides the database behind the application tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A personal budget app is used by one person and must work with no internet connection. Which model fits best?</p>
+          <div class="opts">
+            <button>3-tier</button>
+            <button>N-tier with microservices</button>
+            <button data-correct>1-tier</button>
+          </div>
+          <div class="explain">One user, offline: the simplest model that meets the need is 1-tier. 3-tier and N-tier would need a network and servers, adding cost and complexity the requirement does not ask for.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>When in doubt, choose the model with the most tiers, because more tiers is always better.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. There is no "best" number of tiers. Each tier adds cost, latency and things to secure, so pick the simplest model that meets the requirements. "Always" is the giveaway.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A streaming service has millions of users worldwide and dozens of development teams. Which model should it choose?</p>
+          <div class="opts">
+            <button>1-tier</button>
+            <button>2-tier</button>
+            <button>3-tier with a single application server</button>
+            <button data-correct>N-tier, often microservices on the cloud</button>
+          </div>
+          <div class="explain">At this scale each part must scale and be deployed on its own, and teams need independent ownership, which N-tier gives. 3-tier with one application server is tempting, but it cannot scale individual services finely or isolate failures.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
-      <h2><span class="num">9</span>Knowledge check</h2>
-      <p>Test your understanding of client/server architecture tiers. Click an answer to see the explanation.</p>
+      <h2><span class="num">9</span>Final review</h2>
+      <p>Mixed questions that cross all the tier models. Each section above has its own knowledge check; use this review to test whether you can compare the models. Click an answer to see the explanation.</p>
       <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: Architecture tiers</h3><span class="quiz-score"></span></div>
+        <div class="quiz-head"><h3>Final review: architecture tiers</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>Which architecture has all components combined in a single system?</p>
-          <div class="opts">
-            <button data-correct>1-Tier Architecture</button>
-            <button>2-Tier Architecture</button>
-            <button>3-Tier Architecture</button>
-            <button>N-Tier Architecture</button>
-          </div>
-          <div class="explain">In 1-tier, presentation, business logic and data storage all run on one machine, usually in one program.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>In which architecture is the business logic typically located on the client side?</p>
-          <div class="opts">
-            <button>1-Tier Architecture</button>
-            <button data-correct>2-Tier Architecture</button>
-            <button>3-Tier Architecture</button>
-            <button>N-Tier Architecture</button>
-          </div>
-          <div class="explain">Classic 2-tier uses a thick client: UI and business rules on the user's PC, data on the database server. In 3-tier and N-tier the rules move to the server side. (1-tier has no separate client and server at all.)</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>Which architecture provides the best scalability for large enterprise applications?</p>
+          <p class="q-text"><span class="qn">Q1</span>Which architecture provides the best scalability for large enterprise applications?</p>
           <div class="opts">
             <button>1-Tier Architecture</button>
             <button>2-Tier Architecture</button>
             <button>3-Tier Architecture</button>
             <button data-correct>N-Tier Architecture</button>
           </div>
-          <div class="explain">N-tier lets each specialised tier be scaled on its own (for example, add more payment-service instances without touching the rest). 3-tier scales well too, but less finely.</div>
+          <div class="explain">N-tier lets each specialised tier be scaled on its own (for example, add more payment-service instances without touching the rest). 3-tier is the tempting answer: it scales well too, but less finely, while 1-tier and 2-tier are limited by one machine or by direct database connections.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>What is the main disadvantage of 1-tier architecture?</p>
-          <div class="opts">
-            <button>High development cost</button>
-            <button>Complex network configuration</button>
-            <button data-correct>Lack of scalability</button>
-            <button>Security vulnerabilities</button>
-          </div>
-          <div class="explain">Everything runs on one machine, so it cannot grow beyond that machine or easily share data among many users. 1-tier is cheap and needs no network, so the first two options are wrong.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>Which architecture separates presentation, business logic and data into distinct tiers?</p>
-          <div class="opts">
-            <button>1-Tier Architecture</button>
-            <button>2-Tier Architecture</button>
-            <button data-correct>3-Tier Architecture</button>
-            <button>All of the above</button>
-          </div>
-          <div class="explain">3-tier gives each of the three layers its own tier. 2-tier combines presentation and logic on the client; 1-tier combines all three.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>What is the difference between a layer and a tier?</p>
-          <div class="opts">
-            <button>They mean exactly the same thing</button>
-            <button data-correct>A layer is a logical grouping of code; a tier is a physical deployment unit</button>
-            <button>A tier is a logical grouping; a layer is a physical server</button>
-            <button>Layers exist only in 1-tier systems</button>
-          </div>
-          <div class="explain">Layers organise code by responsibility; tiers are where that code is deployed. Several layers can run in one tier.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>In a 3-tier web application, which tier may connect directly to the database?</p>
-          <div class="opts">
-            <button>The browser</button>
-            <button data-correct>The application tier</button>
-            <button>Any tier that has the password</button>
-            <button>None; the database connects to the browser</button>
-          </div>
-          <div class="explain">Only the application tier talks to the data tier. Keeping the database off the client's path is the main security benefit of 3-tier.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>A company must change a tax rule. In which model is the change hardest to roll out?</p>
+          <p class="q-text"><span class="qn">Q2</span>A company must change a tax rule. In which model is the change hardest to roll out?</p>
           <div class="opts">
             <button>1-tier used by one person</button>
             <button data-correct>2-tier with the rule in the thick client on 300 PCs</button>
@@ -470,47 +717,41 @@
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>Which of these is an extra tier typically found in N-tier systems but not in basic 3-tier?</p>
+          <p class="q-text"><span class="qn">Q3</span>Which pairing of tier model and where the business logic mainly runs is correct?</p>
           <div class="opts">
-            <button>The user interface</button>
-            <button>The database</button>
-            <button data-correct>A cache or API gateway tier</button>
-            <button>The keyboard driver</button>
+            <button>1-tier: on a separate application server</button>
+            <button>3-tier: in the browser</button>
+            <button data-correct>2-tier: in the client program</button>
+            <button>N-tier: only inside the database</button>
           </div>
-          <div class="explain">N-tier keeps the original three tiers and adds specialised ones such as load balancers, API gateways, caches, message queues and integration tiers.</div>
+          <div class="explain">Classic 2-tier puts the rules in the thick client. In 1-tier the logic is in the single program (there is no separate server), in 3-tier it is on the application server, and in N-tier it is split across several services.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>Adding more tiers to a system usually…</p>
-          <div class="opts">
-            <button>Makes every single request faster</button>
-            <button data-correct>Increases throughput and flexibility, but adds latency and complexity</button>
-            <button>Removes the need for monitoring</button>
-            <button>Reduces hosting costs</button>
-          </div>
-          <div class="explain">Each tier is another network hop, so individual requests get a little slower, while the whole system can serve more users. Complexity and cost go up.</div>
+          <p class="q-text"><span class="qn">Q4</span>Moving from 2-tier to 3-tier usually improves security, because the database is no longer reachable from users' devices, at the cost of an extra network hop.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The application tier now stands between users and the database, and database credentials stay on the server. The trade-off is one more hop per request and more components to run.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>A browser showing pages rendered on the server, with all rules enforced by the server, is an example of a…</p>
+          <p class="q-text"><span class="qn">Q5</span>A school library system is 2-tier for two librarians on the office LAN. Students now want to search the catalogue from home. What is the best change?</p>
           <div class="opts">
-            <button data-correct>Thin client</button>
-            <button>Thick client</button>
-            <button>Database server</button>
-            <button>1-tier application</button>
+            <button data-correct>Add an application tier (web/API server) in front of the database and let students use a browser</button>
+            <button>Open the database port to the internet so students' copies of the app can connect</button>
+            <button>Install the thick client, with the database password, on every student's laptop</button>
           </div>
-          <div class="explain">A thin client mostly displays and sends input; the processing happens on the server.</div>
+          <div class="explain">Internet users means 3-tier: the application tier answers students and is the only thing that talks to the database. Opening the database port is tempting because it is quick, but it exposes the database and its credentials to the whole internet.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>An online shop with thousands of internet users should not use 2-tier mainly because…</p>
+          <p class="q-text"><span class="qn">Q6</span>Which statement about security across the tier models is accurate?</p>
           <div class="opts">
-            <button>2-tier has no database</button>
-            <button data-correct>The database would have to be exposed to every user's device over the internet</button>
-            <button>2-tier cannot show web pages</button>
-            <button>2-tier needs microservices</button>
+            <button>N-tier is automatically the most secure because it has the most tiers</button>
+            <button data-correct>3-tier hides the database behind the application tier, but every extra tier in N-tier is one more component to secure</button>
+            <button>2-tier is the most secure because the client talks to the database directly</button>
+            <button>1-tier has no security concerns at all</button>
           </div>
-          <div class="explain">In 2-tier the client connects straight to the database, so the DB (and its credentials) would be reachable from the internet, and it would also need one connection per user. 3-tier hides the database behind the application tier.</div>
+          <div class="explain">Separating tiers gives you places to put firewalls and access checks, but more parts also mean a larger attack surface. "N-tier is automatically the most secure" is the tempting wrong answer: security depends on securing every tier.</div>
         </div>
 
         <div class="quiz-done"></div>

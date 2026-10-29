@@ -24,7 +24,7 @@
     <span class="eyebrow">Client/Server Architecture · Course</span>
     <h1>Client/Server Architecture &amp; IT Security</h1>
     <p class="lead">Almost every service you use, from a banking app to a university portal, is a client talking to a server. This course explains how that conversation works, how real systems are split into tiers, how to write client and server programs in Java, and how HTTP and FTP do it in practice, including their secure modern versions.</p>
-    <div class="chips"><span class="chip">≈ 60 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">Language: Java</span></div>
+    <div class="chips"><span class="chip">≈ 60 min read</span><span class="chip">39 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">Language: Java</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -45,7 +45,7 @@
     <!-- 0. SYLLABUS -->
     <section id="intro">
       <h2><span class="num">0</span>Syllabus</h2>
-      <p>This course introduces the principles of client/server architecture, the core network protocols it relies on, multi-tier designs, and hands-on programming with sockets. Each chapter starts with plain-English explanations, then moves to definitions, examples and exam-style points. A quiz at the end checks the whole course.</p>
+      <p>This course introduces the principles of client/server architecture, the core network protocols it relies on, multi-tier designs, and hands-on programming with sockets. Each chapter starts with plain-English explanations, then moves to definitions, examples and exam-style points. Each chapter ends with a short knowledge check, and a final review at the end mixes questions from the whole course.</p>
       <div class="cards">
         <div class="card">
           <h3>Learning outcomes</h3>
@@ -144,6 +144,49 @@
       </table></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Saying "if the server fails, the whole network fails". The <em>network</em> keeps working; the <em>service</em> that server provided becomes unavailable. Real systems reduce this risk with redundancy: several servers behind a load balancer, database replicas, and backups in another location.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>When asked for advantages and disadvantages, give a matched pair and a mitigation. Example: "Centralisation makes backups easy, but creates a single point of failure; this is reduced with redundant servers and load balancing."</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Principles</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the communication?</p>
+          <div class="opts">
+            <button>The server, by broadcasting its services</button>
+            <button data-correct>The client, by sending a request</button>
+            <button>Whichever side has more processing power</button>
+            <button>A router chooses the side</button>
+          </div>
+          <div class="explain">The client is the active side: it sends a request. The server is passive: it listens on a port and only responds. Processing power has nothing to do with the roles.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: in the online-banking scenario, the web server is a server to your browser and also a client of the application and database servers.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Client and server are roles in a particular conversation, not types of hardware. One program can play both roles at once, which is exactly what happens behind the bank's web server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which term means "the agreed rules for message format, order and meaning"?</p>
+          <div class="opts">
+            <button>Port</button>
+            <button data-correct>Protocol</button>
+            <button>IP address</button>
+            <button>Scheduling</button>
+          </div>
+          <div class="explain">A protocol (HTTP, FTP, SMTP…) is the shared set of rules both sides follow. A port only identifies which service on a host receives the message; it says nothing about the message format.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>The only server of a service goes down. What is the most accurate description?</p>
+          <div class="opts">
+            <button>The whole network fails</button>
+            <button>Clients automatically become servers</button>
+            <button data-correct>The network keeps working, but that service is unavailable to every client</button>
+            <button>Nothing happens, because clients cache everything</button>
+          </div>
+          <div class="explain">This is the single point of failure: the <em>service</em> stops, not the network. "The whole network fails" is the common exam mistake the lesson corrects; redundancy and load balancers reduce the risk.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 2. COMMUNICATION & PROTOCOLS -->
@@ -206,6 +249,54 @@
       <div class="callout analogy"><span class="label">Analogy</span><p>TCP is a phone call: you dial, the other person answers, and you both know if the line drops. UDP is sending postcards: each one is independent, cheap and fast, but some may never arrive and they can arrive in any order.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>"UDP is useless because it is unreliable." UDP is chosen exactly when a late packet is worse than a lost one (a voice call cannot wait for a retransmission) or when the application adds its own reliability. QUIC, the transport under HTTP/3, is built on UDP and adds reliability and encryption itself.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>For "TCP or UDP?" questions, name the deciding property: needs every byte in order (file, web page, email) → TCP; needs low delay and tolerates loss (voice, live video, games, simple DNS lookups) → UDP.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Communication &amp; Protocols</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What does a port number identify?</p>
+          <div class="opts">
+            <button>A computer on the network</button>
+            <button data-correct>A specific service or endpoint on a host</button>
+            <button>The physical network card</button>
+            <button>The user who is logged in</button>
+          </div>
+          <div class="explain">The IP address identifies the host; the port (0–65535) identifies the service on that host, such as 443 for HTTPS. The network card is identified by its MAC address.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which service is the best fit for UDP?</p>
+          <div class="opts">
+            <button>Downloading a software installer</button>
+            <button>Sending an email with SMTP</button>
+            <button data-correct>A live voice call</button>
+            <button>Logging in to online banking</button>
+          </div>
+          <div class="explain">A voice call needs low delay and can tolerate a lost packet; waiting for a retransmission would cause gaps. The other three need every byte, delivered in order, so they use TCP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The ephemeral (dynamic) port range is:</p>
+          <div class="opts">
+            <button>0–1023</button>
+            <button>1024–49151</button>
+            <button data-correct>49152–65535</button>
+            <button>1–255</button>
+          </div>
+          <div class="explain">0–1023 are well-known ports, 1024–49151 are registered ports, and 49152–65535 are the dynamic/ephemeral ports that the operating system assigns to the client side of a connection.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A browser connection is shown as <code>192.168.1.20:51344 → 93.184.215.14:443</code>. What is <code>51344</code>?</p>
+          <div class="opts">
+            <button>The server's well-known HTTPS port</button>
+            <button data-correct>The client's ephemeral port, chosen by the operating system</button>
+            <button>A registered port for MySQL</button>
+            <button>The TLS version number</button>
+          </div>
+          <div class="explain">The left side is the client, and 51344 is an ephemeral port that changes every time. The fixed, well-known port is 443 on the server side, which is why it is tempting to think every port in the line is "the HTTPS port".</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 3. SERVER TYPES -->
@@ -237,6 +328,49 @@
         </tbody>
       </table></div>
       <div class="callout tip"><span class="label">Tip</span><p>The line between web server and application server is blurred today: Nginx often serves static files <em>and</em> forwards dynamic requests to an application server behind it (a "reverse proxy"). In exams, keep the classic split: web server = static, application server = dynamic + business logic.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Server Types &amp; Roles</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which server type generates dynamic content and runs business logic?</p>
+          <div class="opts">
+            <button>File server</button>
+            <button>Web server serving static files</button>
+            <button data-correct>Application server</button>
+            <button>Groupware server</button>
+          </div>
+          <div class="explain">The application server builds content per request (your timetable, your balance) and holds the business rules. A web server in the classic split serves static files; a file server stores files; groupware supports collaboration.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>"Take 100 from account A and add 100 to account B" must never half-happen. Which ACID property guarantees that?</p>
+          <div class="opts">
+            <button>Durability</button>
+            <button>Isolation</button>
+            <button>Consistency</button>
+            <button data-correct>Atomicity</button>
+          </div>
+          <div class="explain">Atomicity means all or nothing: either both updates happen or neither does. Durability is tempting but means something else: once committed, the result survives a crash.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Staff need to share a folder of reports over the network. Which server type fits best?</p>
+          <div class="opts">
+            <button data-correct>File server, using SMB or NFS</button>
+            <button>Transaction server</button>
+            <button>Application server</button>
+            <button>Groupware server</button>
+          </div>
+          <div class="explain">Sharing and storing files is exactly a file server's job, over SMB (Windows shares) or NFS. Groupware also shares documents, but it is about collaboration tools such as calendars, mail and meetings, not plain file storage.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: one physical machine can host several server roles, and one role can be spread over many machines.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Server types describe the <em>service</em>, not the hardware, so a single host can run a web server and a database server, and a busy web service can run on many machines.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 4. ARCHITECTURES -->
@@ -271,6 +405,49 @@
       </table></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Mixing up <strong>tiers</strong> and <strong>layers</strong>. Layers are a logical split in the code (presentation, logic, data classes). Tiers are a physical split into separately running parts. A 3-layer program can still run as a single tier on one machine.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>"Why is 3-tier more secure than 2-tier?" Answer: clients never connect to the database directly; only the application server does, so the database can sit on a private network and the business rules are enforced on a machine the user does not control.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Architectures (2-Tier, 3-Tier, N-Tier)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the main security benefit of 3-tier over 2-tier?</p>
+          <div class="opts">
+            <button>The client stores a copy of the database</button>
+            <button data-correct>Clients no longer connect to the database directly</button>
+            <button>It removes the need for passwords</button>
+            <button>It uses UDP instead of TCP</button>
+          </div>
+          <div class="explain">In 3-tier, only the application server talks to the database, so the database can be hidden on a private network and the business rules are enforced on a server the user cannot modify.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: a program written in three layers (presentation, logic and data classes) is automatically a 3-tier system.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Layers are a logical split in the code; tiers are a physical split into separately running parts. A 3-layer program can still run as a single tier on one machine.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In a 2-tier stock-control program, the business rules change. What must happen?</p>
+          <div class="opts">
+            <button>Only the database is restarted</button>
+            <button data-correct>Every installed client must be updated</button>
+            <button>Nothing; 2-tier has no business rules</button>
+            <button>Only the load balancer is reconfigured</button>
+          </div>
+          <div class="explain">In 2-tier the logic lives in (or is duplicated in) every client, so changing it means updating each installation. Moving the logic into one middle tier is exactly what 3-tier fixes.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>What is the main cost of moving from 3-tier to N-tier?</p>
+          <div class="opts">
+            <button>Lower scalability</button>
+            <button>The database becomes exposed to clients</button>
+            <button data-correct>More network hops and more operational complexity</button>
+            <button>Business logic must move back to the client</button>
+          </div>
+          <div class="explain">N-tier scales and maintains better, but each extra service adds network hops and more parts to run and secure. Scalability actually improves, so "lower scalability" is the tempting wrong answer.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 5. PROGRAMMING -->
@@ -793,6 +970,64 @@ public class ChatClient {
       <div class="callout warn"><span class="label">Common mistake</span><p>Handling clients inside the <code>accept()</code> loop without threads. The second user then cannot connect until the first leaves. The fix is one thread (or one task in a thread pool) per client. Since Java 21, <strong>virtual threads</strong> make this cheap even for thousands of clients: <code>Thread.ofVirtual().start(handler)</code> or <code>Executors.newVirtualThreadPerTaskExecutor()</code>.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Be ready to explain <em>why</em> the name check must be atomic: two clients could both ask for "Ali" at the same moment; if "check" and "add" are separate steps, both checks pass and both get the name. A <code>synchronized</code> block or a concurrent set's <code>add()</code> (which returns <code>false</code> if the element exists) prevents this race condition.</p></div>
       <div class="callout tip"><span class="label">Note on Swing</span><p>Swing (<code>javax.swing</code>) is still part of the JDK and fine for learning, but it is considered legacy for new desktop apps; JavaFX or a web front end is more common today. The networking code is identical either way.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Programming Examples</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the Java TCP server, what does <code>welcomeSocket.accept()</code> do?</p>
+          <div class="opts">
+            <button>Sends a welcome message to the client</button>
+            <button data-correct>Waits until a client connects, then returns a new Socket for that client</button>
+            <button>Opens port 6789 for the first time</button>
+            <button>Accepts a UDP datagram</button>
+          </div>
+          <div class="explain"><code>accept()</code> blocks until a client connects and returns a dedicated <code>Socket</code> for it. The port was already opened by <code>new ServerSocket(6789)</code>. UDP has no accept; it uses <code>receive()</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why does the UDP client call <code>setSoTimeout(10000)</code>?</p>
+          <div class="opts">
+            <button>To make the connection faster</button>
+            <button>To encrypt the packet for 10 seconds</button>
+            <button data-correct>So <code>receive()</code> gives up if the reply is lost, instead of waiting forever</button>
+            <button>Because UDP requires a handshake</button>
+          </div>
+          <div class="explain">UDP does not retransmit lost datagrams. Without a timeout, <code>receive()</code> would block forever if the reply never arrives. After 10 seconds it throws <code>SocketTimeoutException</code>, and the client reports the packet as lost.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Why does the chat server create a new Handler thread for each client?</p>
+          <div class="opts">
+            <button>Threads encrypt the messages</button>
+            <button data-correct>So many clients can be served at the same time</button>
+            <button>Because Swing requires it</button>
+            <button>To use less memory than a single thread</button>
+          </div>
+          <div class="explain">Each Handler blocks on <code>readLine()</code> for its own client. If the main thread did that, no other client could connect. One thread per client (or a virtual thread in Java 21+) lets the server keep accepting.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In <code>TCPClient</code>, what happens if <code>outToServer.writeBytes(sentence + '\n');</code> is changed to <code>outToServer.writeBytes(sentence);</code>?</p>
+          <div class="opts">
+            <button>The text is sent in uppercase</button>
+            <button data-correct>The server's <code>readLine()</code> waits for a line ending that never comes, so both programs hang</button>
+            <button>The connection switches to UDP</button>
+            <button>Nothing changes</button>
+          </div>
+          <div class="explain"><code>readLine()</code> returns only when it sees a line ending. Without <code>'\n'</code> the server keeps waiting and the client waits for its reply. The uppercasing happens on the server and is unaffected.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In <code>ChatServer</code>, why is <code>if (names.add(name))</code> on a <code>ConcurrentHashMap.newKeySet()</code> used instead of checking <code>contains(name)</code> and then calling <code>add(name)</code>?</p>
+          <div class="opts">
+            <button>Because <code>contains</code> does not exist on sets</button>
+            <button>Because it is faster to type</button>
+            <button>Because <code>add</code> sends the name to the client</button>
+            <button data-correct>Because <code>add</code> checks and inserts in one atomic step, so two clients cannot both get the same name</button>
+          </div>
+          <div class="explain">With separate check-then-add steps, two clients asking for "Ali" at the same moment could both pass the check. <code>add()</code> on a concurrent set does both at once and returns <code>false</code> if the name exists. A plain <code>HashSet</code> would not be thread-safe at all.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 6. HTTP -->
@@ -947,6 +1182,49 @@ class HttpRequest {
 }</code></pre>
       <div class="callout warn"><span class="label">Security note</span><p>Do not copy parts of the request (such as the path) straight into the HTML response: an attacker can put a script in the URL and it will run in the victim's browser (reflected cross-site scripting, XSS). Real servers also limit header size and time out slow clients.</p></div>
       <div class="callout tip"><span class="label">Current Java APIs</span><p>For real work you rarely write HTTP by hand. Java includes <code>java.net.http.HttpClient</code> (Java 11+, supports HTTP/2), a built-in lightweight server <code>com.sun.net.httpserver.HttpServer</code>, and the <code>jwebserver</code> command (Java 18+) that serves a folder over HTTP for testing. The legacy <code>HttpURLConnection</code> still works but is no longer the recommended client.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>HTTP Protocol (Case Study)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>True or false: since HTTP/1.1, a new TCP connection is opened and closed for every single request by default.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">That was HTTP/1.0. HTTP/1.1 made persistent connections the default, and HTTP/2 and HTTP/3 multiplex many requests over one connection. HTTP is still <em>stateless</em>, which is a different property.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>HTTP/3 runs on top of which transport?</p>
+          <div class="opts">
+            <button>TCP with TLS 1.2</button>
+            <button data-correct>QUIC, which runs over UDP</button>
+            <button>SCTP</button>
+            <button>Raw IP with no transport</button>
+          </div>
+          <div class="explain">HTTP/3 (RFC 9114, 2022) uses QUIC, which runs over UDP and has TLS 1.3 built in. HTTP/1.1 and HTTP/2 use TCP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A server returns <strong>403</strong>. What does it mean?</p>
+          <div class="opts">
+            <button>The page was not found</button>
+            <button>The server crashed</button>
+            <button data-correct>The server understood the request but refuses to allow it</button>
+            <button>The page moved permanently</button>
+          </div>
+          <div class="explain">403 Forbidden: you are not permitted. 404 is Not Found, 500 is a server error, 301 is Moved Permanently. 401 would mean you have not authenticated yet.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which HTTP method is neither safe nor idempotent?</p>
+          <div class="opts">
+            <button>PUT</button>
+            <button data-correct>POST</button>
+            <button>DELETE</button>
+            <button>HEAD</button>
+          </div>
+          <div class="explain">Sending the same POST twice usually creates two things (two orders). PUT and DELETE are idempotent although not safe: repeating them leaves the same final state. HEAD is safe and idempotent.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 7. FTP -->
@@ -1006,6 +1284,54 @@ class HttpRequest {
         </tbody>
       </table></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>"SFTP is FTP with SSL." No: that is <strong>FTPS</strong>. <strong>SFTP</strong> is part of the SSH family, unrelated to FTP apart from its purpose, and uses port 22.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>FTP Protocol (Case Study)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In FTP, which port carries the commands such as USER, RETR and STOR?</p>
+          <div class="opts">
+            <button>20</button>
+            <button data-correct>21</button>
+            <button>22</button>
+            <button>443</button>
+          </div>
+          <div class="explain">Port 21 is the control connection for commands and replies. Port 20 is the server's data port in active mode. Port 22 is SSH/SFTP; 443 is HTTPS.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which statement about secure file transfer is correct?</p>
+          <div class="opts">
+            <button>SFTP is FTP running over SSL/TLS</button>
+            <button>FTP encrypts passwords but not files</button>
+            <button data-correct>SFTP runs over SSH on port 22, while FTPS is FTP protected by TLS</button>
+            <button>FTPS and SFTP are two names for the same protocol</button>
+          </div>
+          <div class="explain">FTPS = FTP + TLS (ports 21/990 plus data ports). SFTP = SSH File Transfer Protocol, a separate protocol on port 22. Plain FTP encrypts nothing, not even the password.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Uploading with a command-line FTP client, what is the difference between <code>lcd uploads</code> and <code>cd uploads</code>?</p>
+          <div class="opts">
+            <button data-correct><code>lcd</code> changes the local directory; <code>cd</code> changes the directory on the server</button>
+            <button>They are the same command</button>
+            <button><code>lcd</code> changes the server directory; <code>cd</code> the local one</button>
+            <button><code>lcd</code> lists files; <code>cd</code> deletes them</button>
+          </div>
+          <div class="explain"><code>lcd</code> is "local change directory" and sends nothing to the server; <code>cd</code> sends <code>CWD</code> on port 21 to change the server's directory. Swapping them is the classic exam trap.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Why is passive mode (PASV) the norm for FTP today?</p>
+          <div class="opts">
+            <button>It encrypts the password</button>
+            <button data-correct>The client opens the data connection, which works through client-side firewalls and NAT</button>
+            <button>It uses only port 21 for everything</button>
+            <button>It is faster because it uses UDP</button>
+          </div>
+          <div class="explain">In active mode the server connects back to the client from port 20, which firewalls and NAT usually block. In passive mode the client connects out to a port the server announces. Passive mode does not encrypt anything; for that you need FTPS or SFTP.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 8. SECURITY -->
@@ -1025,165 +1351,115 @@ class HttpRequest {
       </table></div>
       <div class="callout key"><span class="label">Key idea</span><p><strong>Never trust the client.</strong> The client runs on a machine the user controls, so any check done only in the client (a hidden field, a disabled button, JavaScript validation) can be bypassed. Every security decision must be enforced again on the server.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>If asked how to secure the TCP chat example, list: run it over TLS (<code>SSLServerSocket</code>), authenticate users instead of accepting any name, limit message size and rate, and log connections (one of the two features the original comment says is missing).</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Security Essentials for Client/Server Systems</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A web form disables the "Submit" button until the age field is over 18, using JavaScript. Is the age check secure?</p>
+          <div class="opts">
+            <button>Yes, because the button cannot be clicked</button>
+            <button>Yes, if the page uses HTTPS</button>
+            <button data-correct>No, the client can be bypassed, so the server must check the age again</button>
+            <button>No, because JavaScript cannot read form fields</button>
+          </div>
+          <div class="explain">"Never trust the client": a user controls their own machine and can send a request without the page at all. HTTPS protects the data in transit but does not stop the user from sending a forged value, so the check must also run on the server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which control mainly protects <strong>availability</strong>?</p>
+          <div class="opts">
+            <button>Encrypting traffic with TLS 1.3</button>
+            <button>Parameterised SQL queries</button>
+            <button>Output encoding</button>
+            <button data-correct>Redundant servers, load balancers and rate limiting</button>
+          </div>
+          <div class="explain">Availability is about the service staying up; redundancy, load balancing and rate limiting address outages, overload and denial-of-service. TLS is tempting but protects confidentiality and integrity, not uptime.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: the example socket programs in this course send their data in cleartext.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Plain <code>Socket</code> and <code>DatagramSocket</code> do no encryption, just like plain HTTP and FTP. To protect them in Java, use TLS with <code>SSLSocket</code> / <code>SSLServerSocket</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Why should methods such as TRACE be disabled on a public web server?</p>
+          <div class="opts">
+            <button>They make pages load slower</button>
+            <button data-correct>Unused features increase exposure; only needed services and methods should be enabled</button>
+            <button>TRACE is required for HTTPS</button>
+            <button>Browsers cannot display TRACE responses</button>
+          </div>
+          <div class="explain">Every enabled port, service or method is something an attacker can probe, so the rule is least privilege and minimal exposure. TRACE is a diagnostics method and has nothing to do with HTTPS.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- QUIZ -->
     <section id="quiz">
-      <h2><span class="num">9</span>Check your understanding</h2>
+      <h2><span class="num">9</span>Final review</h2>
       <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: whole course</h3><span class="quiz-score"></span></div>
+        <div class="quiz-head"><h3>Mixed questions: the whole course</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the communication?</p>
+          <p class="q-text"><span class="qn">Q1</span>A bank's browser client talks to an application server, which talks to a database on a private network. Which statement is correct?</p>
           <div class="opts">
-            <button>The server, by broadcasting its services</button>
-            <button data-correct>The client, by sending a request</button>
-            <button>Whichever side has more processing power</button>
-            <button>A router chooses the side</button>
+            <button>It is 2-tier, because there are two servers</button>
+            <button data-correct>It is 3-tier, and the database is hidden from clients</button>
+            <button>It is peer-to-peer, because servers talk to each other</button>
+            <button>It is N-tier only if it uses UDP</button>
           </div>
-          <div class="explain">The client is the active side: it sends a request. The server is passive: it listens on a port and only responds. Processing power has nothing to do with the roles.</div>
+          <div class="explain">Presentation, logic and data on separate tiers is 3-tier, and only the application server reaches the database. Counting "two servers" leads to the tempting 2-tier answer, but tiers count the client too.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>What does a port number identify?</p>
+          <p class="q-text"><span class="qn">Q2</span>Which combination is the best fit for transferring a confidential file between two servers today?</p>
           <div class="opts">
-            <button>A computer on the network</button>
-            <button data-correct>A specific service or endpoint on a host</button>
-            <button>The physical network card</button>
-            <button>The user who is logged in</button>
+            <button>FTP in active mode on ports 20/21</button>
+            <button>HTTP on port 80</button>
+            <button>UDP with a 10-second timeout</button>
+            <button data-correct>SFTP over SSH on port 22</button>
           </div>
-          <div class="explain">The IP address identifies the host; the port (0–65535) identifies the service on that host, such as 443 for HTTPS. The network card is identified by its MAC address.</div>
+          <div class="explain">SFTP encrypts everything over one SSH connection on port 22 and is the preferred secure choice. FTP sends even the password in cleartext, and a UDP timeout only detects loss; it does not deliver the file reliably or securely.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>Which service is the best fit for UDP?</p>
+          <p class="q-text"><span class="qn">Q3</span>True or false: HTTP is stateless, yet HTTP/1.1 keeps TCP connections open and reuses them.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Stateless means the server does not remember earlier requests by itself; persistent connections are a separate transport matter. Mixing up "stateless" and "connectionless" is the common mistake.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which Java classes would you use for a DNS-style query/answer service that tolerates loss?</p>
           <div class="opts">
-            <button>Downloading a software installer</button>
-            <button>Sending an email with SMTP</button>
-            <button data-correct>A live voice call</button>
-            <button>Logging in to online banking</button>
+            <button><code>ServerSocket</code> and <code>Socket</code></button>
+            <button data-correct><code>DatagramSocket</code> and <code>DatagramPacket</code></button>
+            <button><code>HttpClient</code> only</button>
+            <button><code>JOptionPane</code></button>
           </div>
-          <div class="explain">A voice call needs low delay and can tolerate a lost packet; waiting for a retransmission would cause gaps. The other three need every byte, delivered in order, so they use TCP.</div>
+          <div class="explain">A lossy, low-latency request/answer service fits UDP, which Java exposes through <code>DatagramSocket</code> and <code>DatagramPacket</code>. <code>ServerSocket</code>/<code>Socket</code> are TCP; <code>JOptionPane</code> is just a Swing dialog.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>The ephemeral (dynamic) port range is:</p>
+          <p class="q-text"><span class="qn">Q5</span>A server returns <strong>401 Unauthorized</strong> to a request for <code>/grades</code>. What should the client do?</p>
           <div class="opts">
-            <button>0–1023</button>
-            <button>1024–49151</button>
-            <button data-correct>49152–65535</button>
-            <button>1–255</button>
+            <button>Retry with POST instead of GET</button>
+            <button>Switch to FTP</button>
+            <button data-correct>Authenticate (log in) and send the request again</button>
+            <button>Nothing: the page does not exist</button>
           </div>
-          <div class="explain">0–1023 are well-known ports, 1024–49151 are registered ports, and 49152–65535 are the dynamic/ephemeral ports that the operating system assigns to the client side of a connection.</div>
+          <div class="explain">401 means "you have not proven who you are". 404 would mean the page does not exist, and 403 would mean you are known but not allowed, so logging in would not help there.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>Which server type generates dynamic content and runs business logic?</p>
+          <p class="q-text"><span class="qn">Q6</span>Which pairing of risk and control is correct?</p>
           <div class="opts">
-            <button>File server</button>
-            <button>Web server serving static files</button>
-            <button data-correct>Application server</button>
-            <button>Groupware server</button>
+            <button data-correct>Eavesdropping on the chat program: run it over TLS with <code>SSLServerSocket</code></button>
+            <button>Single point of failure: switch from TCP to UDP</button>
+            <button>SQL injection: use FTP passive mode</button>
+            <button>Congestion: disable HTTPS</button>
           </div>
-          <div class="explain">The application server builds content per request (your timetable, your balance) and holds the business rules. A web server in the classic split serves static files; a file server stores files; groupware supports collaboration.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>What is the main security benefit of 3-tier over 2-tier?</p>
-          <div class="opts">
-            <button>The client stores a copy of the database</button>
-            <button data-correct>Clients no longer connect to the database directly</button>
-            <button>It removes the need for passwords</button>
-            <button>It uses UDP instead of TCP</button>
-          </div>
-          <div class="explain">In 3-tier, only the application server talks to the database, so the database can be hidden on a private network and the business rules are enforced on a server the user cannot modify.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>In the Java TCP server, what does <code>welcomeSocket.accept()</code> do?</p>
-          <div class="opts">
-            <button>Sends a welcome message to the client</button>
-            <button data-correct>Waits until a client connects, then returns a new Socket for that client</button>
-            <button>Opens port 6789 for the first time</button>
-            <button>Accepts a UDP datagram</button>
-          </div>
-          <div class="explain"><code>accept()</code> blocks until a client connects and returns a dedicated <code>Socket</code> for it. The port was already opened by <code>new ServerSocket(6789)</code>. UDP has no accept; it uses <code>receive()</code>.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>Why does the UDP client call <code>setSoTimeout(10000)</code>?</p>
-          <div class="opts">
-            <button>To make the connection faster</button>
-            <button>To encrypt the packet for 10 seconds</button>
-            <button data-correct>So <code>receive()</code> gives up if the reply is lost, instead of waiting forever</button>
-            <button>Because UDP requires a handshake</button>
-          </div>
-          <div class="explain">UDP does not retransmit lost datagrams. Without a timeout, <code>receive()</code> would block forever if the reply never arrives. After 10 seconds it throws <code>SocketTimeoutException</code>, and the client reports the packet as lost.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>Why does the chat server create a new Handler thread for each client?</p>
-          <div class="opts">
-            <button>Threads encrypt the messages</button>
-            <button data-correct>So many clients can be served at the same time</button>
-            <button>Because Swing requires it</button>
-            <button>To use less memory than a single thread</button>
-          </div>
-          <div class="explain">Each Handler blocks on <code>readLine()</code> for its own client. If the main thread did that, no other client could connect. One thread per client (or a virtual thread in Java 21+) lets the server keep accepting.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>True or false: since HTTP/1.1, a new TCP connection is opened and closed for every single request by default.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">That was HTTP/1.0. HTTP/1.1 made persistent connections the default, and HTTP/2 and HTTP/3 multiplex many requests over one connection. HTTP is still <em>stateless</em>, which is a different property.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>HTTP/3 runs on top of which transport?</p>
-          <div class="opts">
-            <button>TCP with TLS 1.2</button>
-            <button data-correct>QUIC, which runs over UDP</button>
-            <button>SCTP</button>
-            <button>Raw IP with no transport</button>
-          </div>
-          <div class="explain">HTTP/3 (RFC 9114, 2022) uses QUIC, which runs over UDP and has TLS 1.3 built in. HTTP/1.1 and HTTP/2 use TCP.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>A server returns <strong>403</strong>. What does it mean?</p>
-          <div class="opts">
-            <button>The page was not found</button>
-            <button>The server crashed</button>
-            <button data-correct>The server understood the request but refuses to allow it</button>
-            <button>The page moved permanently</button>
-          </div>
-          <div class="explain">403 Forbidden: you are not permitted. 404 is Not Found, 500 is a server error, 301 is Moved Permanently. 401 would mean you have not authenticated yet.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>In FTP, which port carries the commands such as USER, RETR and STOR?</p>
-          <div class="opts">
-            <button>20</button>
-            <button data-correct>21</button>
-            <button>22</button>
-            <button>443</button>
-          </div>
-          <div class="explain">Port 21 is the control connection for commands and replies. Port 20 is the server's data port in active mode. Port 22 is SSH/SFTP; 443 is HTTPS.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>Which statement about secure file transfer is correct?</p>
-          <div class="opts">
-            <button>SFTP is FTP running over SSL/TLS</button>
-            <button>FTP encrypts passwords but not files</button>
-            <button data-correct>SFTP runs over SSH on port 22, while FTPS is FTP protected by TLS</button>
-            <button>FTPS and SFTP are two names for the same protocol</button>
-          </div>
-          <div class="explain">FTPS = FTP + TLS (ports 21/990 plus data ports). SFTP = SSH File Transfer Protocol, a separate protocol on port 22. Plain FTP encrypts nothing, not even the password.</div>
+          <div class="explain">TLS protects confidentiality, which is what eavesdropping threatens. A single point of failure needs redundancy, injection needs parameterised queries, and disabling HTTPS would only remove protection.</div>
         </div>
 
         <div class="quiz-done"></div>
-        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 

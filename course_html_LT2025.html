@@ -18,7 +18,7 @@
     <span class="eyebrow">Client/Server Architecture · Course Overview</span>
     <h1>Client/Server Architecture: Course Overview</h1>
     <p class="lead">The whole course on one page: how clients and servers talk, how systems are split into tiers, which protocols carry the messages, and how middleware, RPC and RMI hide the network from the programmer. Read this first, then go deeper in the Extended Edition.</p>
-    <div class="chips"><span class="chip">≈ 30 min read</span><span class="chip">12 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">LT-Informatics 2025–2026</span></div>
+    <div class="chips"><span class="chip">≈ 30 min read</span><span class="chip">30 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">LT-Informatics 2025–2026</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -75,6 +75,48 @@
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Saying "a server is a powerful computer". A server is any program that provides a service. A laptop running a small web server for testing is a server; a powerful workstation that only runs a browser is a client.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>When asked to compare client/server with peer-to-peer, say: in client/server the roles are fixed and resources are centralised; in peer-to-peer every node can be both client and server and resources are spread across the peers.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Foundations of the Client/Server Model</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the conversation?</p>
+          <div class="opts">
+            <button data-correct>The client sends a request</button>
+            <button>The server sends a message to every client</button>
+            <button>Either side; it is random</button>
+          </div>
+          <div class="explain">The client initiates; the server waits (listens) and responds. If both sides could start conversations as equals, that would be peer-to-peer.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: a server must be a powerful, dedicated machine.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. "Server" is a role played by a program. A laptop, a Raspberry Pi or a container can run a server; powerful hardware is only needed for heavy load.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Why do servers use threads, thread pools or event loops?</p>
+          <div class="opts">
+            <button>To encrypt every request</button>
+            <button>To make the client initiate the conversation</button>
+            <button data-correct>To handle many clients' requests concurrently</button>
+            <button>To replace the protocol</button>
+          </div>
+          <div class="explain">Many clients connect at the same time, so the server schedules work with threads, pools or event loops to serve them concurrently. Encryption is TLS's job, not the scheduler's, and the client initiates no matter how the server is organised.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which of these is a <strong>disadvantage</strong> of the client/server model?</p>
+          <div class="opts">
+            <button>Enhanced data sharing</button>
+            <button data-correct>Traffic congestion when too many requests arrive at once</button>
+            <button>Centralised management</button>
+            <button>Access control enforced at the server</button>
+          </div>
+          <div class="explain">Congestion is a disadvantage: a busy server or network link can be overloaded. The other three are advantages; "access control at the server" can look like extra work, but it is listed as improved security.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 2 ===================== -->
@@ -130,6 +172,47 @@
 
       <div class="callout example"><span class="label">Example</span><p>An online shop: the browser shows products (presentation), a Java or Node.js application computes prices, stock and discounts (logic), and PostgreSQL stores orders (data). That is 3-tier. Add a load balancer and a cache in front of several application servers and it becomes N-tier.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>"Why is 3-tier faster than 2-tier?" In 2-tier the client sends many raw SQL statements across the network. In 3-tier it sends one service request ("place order"), and the many SQL statements run between the application server and the database, which sit close together.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Server Types &amp; System Architectures</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In a 3-tier architecture, where does the business logic live?</p>
+          <div class="opts">
+            <button>On each client PC</button>
+            <button data-correct>On the application server (middle tier)</button>
+            <button>Inside the database tables</button>
+          </div>
+          <div class="explain">3-tier separates presentation (client), logic (application server) and data (database server). Moving logic off the client is what makes 3-tier easier to manage and reuse.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why does 2-tier usually perform worse than 3-tier over a network?</p>
+          <div class="opts">
+            <button>Because 2-tier cannot use SQL</button>
+            <button data-correct>Because the client sends many SQL statements across the network instead of one service request</button>
+            <button>Because 3-tier uses UDP</button>
+          </div>
+          <div class="explain">In 2-tier, every query travels between client and database. In 3-tier the client makes one request and the many queries run between application server and database, which are close together.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In a <strong>fat-client</strong> design, where does most of the application's logic run?</p>
+          <div class="opts">
+            <button data-correct>On the client, which also knows how the data is organised</button>
+            <button>On the server, with the client only calling services</button>
+            <button>In the network switches</button>
+            <button>Equally on both, by definition</button>
+          </div>
+          <div class="explain">"Fat" means "holds most of the logic", so a fat client does the work and knows the tables and columns. That is why every client must be updated when the logic changes. A browser-based web app is the opposite: a fat server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: adding a load balancer and a cache in front of several application servers turns a 3-tier design into an N-tier design.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. N-tier is 3-tier extended with specialised components such as load balancers, caches, message queues or microservices. It is still client, logic and data, just with more parts in the middle.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 3 ===================== -->
@@ -210,6 +293,48 @@ public class TCPClient {
         <li><strong>Receive and close:</strong> read the reply line, print it, close the socket.</li>
       </ol>
       <div class="callout tip"><span class="label">Tip</span><p><code>writeBytes</code> keeps only the low 8 bits of each character, so it is fine for plain ASCII but breaks Arabic or accented text. In new code use a <code>PrintWriter</code> or an <code>OutputStreamWriter</code> with <code>StandardCharsets.UTF_8</code>.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Core Communication Technologies</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the size of a UDP header?</p>
+          <div class="opts">
+            <button data-correct>8 bytes</button>
+            <button>20–60 bytes</button>
+            <button>128 bytes</button>
+          </div>
+          <div class="explain">UDP's header has only four 2-byte fields (source port, destination port, length, checksum) = 8 bytes. 20–60 bytes is TCP's header.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which port range is picked automatically for the <em>client</em> side of a connection?</p>
+          <div class="opts">
+            <button>0–1023</button>
+            <button>1024–49151</button>
+            <button data-correct>49152–65535</button>
+            <button>1–80</button>
+          </div>
+          <div class="explain">49152–65535 is the dynamic or ephemeral range, chosen by the operating system for the client end. 0–1023 are well-known ports for system services such as HTTP (80) and HTTPS (443), which belong on the server side.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In <code>TCPClient</code>, what goes wrong if the line is changed to <code>outToServer.writeBytes(sentence);</code> (no <code>+ '\n'</code>)?</p>
+          <div class="opts">
+            <button>The connection is refused</button>
+            <button>The server receives the text twice</button>
+            <button data-correct>The server's <code>readLine()</code> keeps waiting for a line ending, so both programs hang</button>
+            <button>Nothing; the newline is only cosmetic</button>
+          </div>
+          <div class="explain"><code>readLine()</code> returns only when it sees a line ending. Without the newline the server waits, and the client waits for a reply that never comes. The newline is part of the simple protocol, not decoration.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: TCP sets up a connection with a three-way handshake (SYN, SYN-ACK, ACK) before any data is sent.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. TCP is connection-oriented and handshakes first; that is part of its extra overhead. UDP is the one with no handshake: it just sends datagrams.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 4 ===================== -->
@@ -272,6 +397,47 @@ public class TCPClient {
       <h3>FTP</h3>
       <p><strong>FTP</strong> (File Transfer Protocol) transfers files between computers, classically from your computer to a web server. It uses two TCP connections: port <strong>21</strong> for the <em>control</em> connection (commands such as <code>USER</code>, <code>RETR</code>, <code>STOR</code>) and a separate <em>data</em> connection, which comes from port <strong>20</strong> in active mode. In passive mode, which most clients use today because it works through firewalls and NAT, the client connects to a random high port that the server announces.</p>
       <div class="callout warn"><span class="label">Updated</span><p>Plain FTP sends usernames and passwords unencrypted. Use <strong>SFTP</strong> (file transfer over SSH, port 22) or <strong>FTPS</strong> (FTP over TLS) instead. Modern browsers no longer support <code>ftp://</code> links.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Application Protocols (Case Studies)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which HTTP method is neither safe nor idempotent?</p>
+          <div class="opts">
+            <button>PUT</button>
+            <button>DELETE</button>
+            <button data-correct>POST</button>
+            <button>GET</button>
+          </div>
+          <div class="explain">Sending the same POST twice usually creates two resources (two orders), so it is not idempotent. PUT and DELETE are idempotent but not safe; GET is both.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Today, HTTP is best described as:</p>
+          <div class="opts">
+            <button>Stateful and connectionless</button>
+            <button data-correct>Stateless, with persistent (reused) connections since HTTP/1.1</button>
+            <button>Stateful, because cookies are part of the core protocol</button>
+          </div>
+          <div class="explain">The protocol itself remembers nothing between requests (stateless). The "connectionless" label is from HTTP/1.0; HTTP/1.1 keeps connections open by default. Cookies add state at the application level.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>On which port does FTP's control connection run?</p>
+          <div class="opts">
+            <button>20</button>
+            <button data-correct>21</button>
+            <button>22</button>
+          </div>
+          <div class="explain">Port 21 carries commands. Port 20 is the data connection in active mode. Port 22 is SSH, which also carries SFTP, the secure replacement for FTP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: DELETE is not idempotent, because the second identical DELETE returns 404.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Idempotence is about the server's final state, not the response code: after one or ten DELETEs the resource is gone. The different status code is what makes "true" tempting.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 5 ===================== -->
@@ -378,6 +544,52 @@ public class JDBCExampleModern {
         <p>No <code>Class.forName</code> and no manual <code>close()</code> calls. If an exception happens half-way, the connection is still closed, which the original version does not guarantee.</p>
       </details>
       <div class="callout warn"><span class="label">Common mistake</span><p>Building SQL by joining strings with user input (<code>"... WHERE name='" + name + "'"</code>). That allows SQL injection. Use a <code>PreparedStatement</code> with <code>?</code> placeholders; the Extended Edition shows how.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Middleware &amp; Advanced Distribution</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the main job of middleware?</p>
+          <div class="opts">
+            <button>To draw the user interface</button>
+            <button data-correct>To let processes on different, possibly heterogeneous, machines communicate without handling low-level network details</button>
+            <button>To replace the operating system</button>
+          </div>
+          <div class="explain">Middleware sits between applications and the OS/network: RPC, message queues, ORBs and database APIs like JDBC are all middleware.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In modern JDBC (4.0 and later), is <code>Class.forName("com.mysql.cj.jdbc.Driver")</code> required?</p>
+          <div class="opts">
+            <button>Yes, the connection fails without it</button>
+            <button data-correct>No, drivers on the classpath register themselves automatically</button>
+            <button>Only for PreparedStatement</button>
+          </div>
+          <div class="explain">Since JDBC 4.0 (Java 6), DriverManager finds drivers automatically through the service-provider mechanism. The line is harmless but optional. The class name also changed: <code>com.mysql.jdbc.Driver</code> is the old, deprecated one.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In the JDBC example, what does <code>while(rs.next())</code> do?</p>
+          <div class="opts">
+            <button>Runs the SQL query again for each row</button>
+            <button data-correct>Moves to the next row of the result set and stops when there are no more rows</button>
+            <button>Opens a new connection for every employee</button>
+            <button>Closes the ResultSet</button>
+          </div>
+          <div class="explain"><code>next()</code> advances the cursor one row and returns <code>false</code> after the last row, which ends the loop. The query was already run once by <code>executeQuery</code>; <code>next()</code> only walks through its results.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which middleware type delivers one published message to <em>every</em> subscriber of a topic?</p>
+          <div class="opts">
+            <button>RPC</button>
+            <button>An ORB such as CORBA</button>
+            <button>ODBC</button>
+            <button data-correct>Publish/subscribe, such as Kafka or MQTT</button>
+          </div>
+          <div class="explain">In publish/subscribe, publishers send to a topic and each subscriber receives a copy. A message queue (MOM) is close, but there each message is normally processed by one receiver; RPC and ORBs are synchronous calls, and ODBC is database access.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 6 ===================== -->
@@ -426,6 +638,48 @@ public interface Calculator extends Remote {
       </table></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Believing a remote call behaves exactly like a local one. It is slower by orders of magnitude, it can fail half-way, and parameters are copied, not shared. That is why <code>RemoteException</code> is a checked exception.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>"Difference between RPC and RMI?" RPC calls procedures and passes plain data; RMI is object-oriented, Java-only, can pass whole objects (serialized) and remote references, and uses a registry to find objects by name.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Remote Invocation (RPC &amp; RMI)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In RPC, what does the client stub do?</p>
+          <div class="opts">
+            <button>Executes the procedure on the client</button>
+            <button data-correct>Marshals the parameters into a message and sends it to the server</button>
+            <button>Stores the result in a database</button>
+          </div>
+          <div class="explain">The client stub is a local stand-in. It packs (marshals) the arguments, sends the request, waits, and unpacks the reply. The real procedure runs on the server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why does every method in the <code>Calculator</code> remote interface declare <code>throws RemoteException</code>?</p>
+          <div class="opts">
+            <button>Because <code>long</code> arithmetic can overflow</button>
+            <button data-correct>Because any remote call can fail for network reasons, and the caller must handle that</button>
+            <button>Because the registry requires one exception per method</button>
+            <button>It is optional decoration</button>
+          </div>
+          <div class="explain">A remote call crosses the network and can fail half-way, so RMI makes <code>RemoteException</code> a checked exception that callers must handle. Overflow is unrelated: a local <code>add</code> would not need it either.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>On which port does the RMI registry listen by default?</p>
+          <div class="opts">
+            <button>21</button>
+            <button>443</button>
+            <button data-correct>1099</button>
+            <button>8080</button>
+          </div>
+          <div class="explain">The RMI registry uses port 1099 by default; servers bind objects there by name and clients look them up. 21 is FTP control, 443 HTTPS and 8080 a common alternative HTTP port.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: CORBA is still included in the latest JDK.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. CORBA is legacy and was removed from the JDK in Java 11. Java RMI is still in the JDK, which is why the two are easy to confuse.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ===================== 7 ===================== -->
@@ -457,58 +711,12 @@ public interface Calculator extends Remote {
 
     <!-- ===================== 8 ===================== -->
     <section>
-      <h2><span class="num">8</span>Check your understanding</h2>
+      <h2><span class="num">8</span>Final review</h2>
       <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: the whole overview</h3><span class="quiz-score"></span></div>
+        <div class="quiz-head"><h3>Mixed questions: the whole overview</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the conversation?</p>
-          <div class="opts">
-            <button data-correct>The client sends a request</button>
-            <button>The server sends a message to every client</button>
-            <button>Either side; it is random</button>
-          </div>
-          <div class="explain">The client initiates; the server waits (listens) and responds. If both sides could start conversations as equals, that would be peer-to-peer.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>True or false: a server must be a powerful, dedicated machine.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">False. "Server" is a role played by a program. A laptop, a Raspberry Pi or a container can run a server; powerful hardware is only needed for heavy load.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>In a 3-tier architecture, where does the business logic live?</p>
-          <div class="opts">
-            <button>On each client PC</button>
-            <button data-correct>On the application server (middle tier)</button>
-            <button>Inside the database tables</button>
-          </div>
-          <div class="explain">3-tier separates presentation (client), logic (application server) and data (database server). Moving logic off the client is what makes 3-tier easier to manage and reuse.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>Why does 2-tier usually perform worse than 3-tier over a network?</p>
-          <div class="opts">
-            <button>Because 2-tier cannot use SQL</button>
-            <button data-correct>Because the client sends many SQL statements across the network instead of one service request</button>
-            <button>Because 3-tier uses UDP</button>
-          </div>
-          <div class="explain">In 2-tier, every query travels between client and database. In 3-tier the client makes one request and the many queries run between application server and database, which are close together.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>What is the size of a UDP header?</p>
-          <div class="opts">
-            <button data-correct>8 bytes</button>
-            <button>20–60 bytes</button>
-            <button>128 bytes</button>
-          </div>
-          <div class="explain">UDP's header has only four 2-byte fields (source port, destination port, length, checksum) = 8 bytes. 20–60 bytes is TCP's header.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>Which transport does HTTP/3 use?</p>
+          <p class="q-text"><span class="qn">Q1</span>Which transport does HTTP/3 use?</p>
           <div class="opts">
             <button>TCP, like HTTP/1.1</button>
             <button data-correct>QUIC, which runs over UDP</button>
@@ -516,70 +724,54 @@ public interface Calculator extends Remote {
           </div>
           <div class="explain">HTTP/3 runs on QUIC, which is built on UDP and adds its own reliability and TLS 1.3 encryption. This avoids TCP head-of-line blocking. HTTP/1.1 and HTTP/2 use TCP.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>Which HTTP method is neither safe nor idempotent?</p>
+          <p class="q-text"><span class="qn">Q2</span>A client sends one "place order" request; the application server then runs ten SQL statements against a nearby database. Which architecture is this?</p>
           <div class="opts">
-            <button>PUT</button>
-            <button>DELETE</button>
-            <button data-correct>POST</button>
-            <button>GET</button>
+            <button>2-tier</button>
+            <button data-correct>3-tier</button>
+            <button>Peer-to-peer</button>
+            <button>RPC</button>
           </div>
-          <div class="explain">Sending the same POST twice usually creates two resources (two orders), so it is not idempotent. PUT and DELETE are idempotent but not safe; GET is both.</div>
+          <div class="explain">One service request to a middle tier, which talks to the database, is 3-tier. In 2-tier the client itself would send all ten SQL statements across the network. RPC is a call mechanism, not an architecture.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>Today, HTTP is best described as:</p>
+          <p class="q-text"><span class="qn">Q3</span>Which protocol and port pair is correct?</p>
           <div class="opts">
-            <button>Stateful and connectionless</button>
-            <button data-correct>Stateless, with persistent (reused) connections since HTTP/1.1</button>
-            <button>Stateful, because cookies are part of the core protocol</button>
+            <button>SFTP on port 21</button>
+            <button>HTTPS on port 80</button>
+            <button>DNS on port 25</button>
+            <button data-correct>SSH and SFTP on port 22</button>
           </div>
-          <div class="explain">The protocol itself remembers nothing between requests (stateless). The "connectionless" label is from HTTP/1.0; HTTP/1.1 keeps connections open by default. Cookies add state at the application level.</div>
+          <div class="explain">SFTP runs over SSH on port 22. Port 21 is plain FTP control, HTTPS uses 443 (80 is plain HTTP), and 25 is SMTP; DNS uses 53.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>On which port does FTP's control connection run?</p>
-          <div class="opts">
-            <button>20</button>
-            <button data-correct>21</button>
-            <button>22</button>
-          </div>
-          <div class="explain">Port 21 carries commands. Port 20 is the data connection in active mode. Port 22 is SSH, which also carries SFTP, the secure replacement for FTP.</div>
+          <p class="q-text"><span class="qn">Q4</span>True or false: JDBC is an example of middleware.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. JDBC is SQL-oriented data-access middleware: it hides each database's network protocol behind a standard API, with a vendor driver doing the specific work.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>What is the main job of middleware?</p>
+          <p class="q-text"><span class="qn">Q5</span>Which transport is the best fit for a live voice call?</p>
           <div class="opts">
-            <button>To draw the user interface</button>
-            <button data-correct>To let processes on different, possibly heterogeneous, machines communicate without handling low-level network details</button>
-            <button>To replace the operating system</button>
+            <button data-correct>UDP, because a late packet is useless and retransmission would cause gaps</button>
+            <button>TCP, because every byte must arrive in order</button>
+            <button>FTP's data connection</button>
+            <button>HTTP POST</button>
           </div>
-          <div class="explain">Middleware sits between applications and the OS/network: RPC, message queues, ORBs and database APIs like JDBC are all middleware.</div>
+          <div class="explain">Voice needs low delay and tolerates a lost packet, so UDP fits. TCP's reliability sounds attractive, but waiting for retransmissions is exactly what makes a call stutter.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>In RPC, what does the client stub do?</p>
+          <p class="q-text"><span class="qn">Q6</span>In both RPC and HTTP, what does the client do first?</p>
           <div class="opts">
-            <button>Executes the procedure on the client</button>
-            <button data-correct>Marshals the parameters into a message and sends it to the server</button>
-            <button>Stores the result in a database</button>
+            <button>Waits for the server to contact it</button>
+            <button data-correct>Sends a request (a call or an HTTP request) that the server answers</button>
+            <button>Opens a database connection</button>
+            <button>Registers in the RMI registry</button>
           </div>
-          <div class="explain">The client stub is a local stand-in. It packs (marshals) the arguments, sends the request, waits, and unpacks the reply. The real procedure runs on the server.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>In modern JDBC (4.0 and later), is <code>Class.forName("com.mysql.cj.jdbc.Driver")</code> required?</p>
-          <div class="opts">
-            <button>Yes, the connection fails without it</button>
-            <button data-correct>No, drivers on the classpath register themselves automatically</button>
-            <button>Only for PreparedStatement</button>
-          </div>
-          <div class="explain">Since JDBC 4.0 (Java 6), DriverManager finds drivers automatically through the service-provider mechanism. The line is harmless but optional. The class name also changed: <code>com.mysql.jdbc.Driver</code> is the old, deprecated one.</div>
+          <div class="explain">Both follow the request-response pattern: the client initiates and the server responds. Registering in the RMI registry is something the <em>server</em> does with its objects, not the client.</div>
         </div>
 
         <div class="quiz-done"></div>
-        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 

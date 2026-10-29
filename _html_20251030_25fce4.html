@@ -268,8 +268,8 @@ public class BasicClient {
       <div class="callout warn"><span class="label">Common mistake</span><p>Forgetting <code>autoFlush</code> (the <code>true</code> in <code>new PrintWriter(out, true)</code>). Without it the reply waits in a buffer, the client's <code>readLine()</code> waits forever, and the program looks frozen.</p></div>
       <div class="callout tip"><span class="label">Tip</span><p>If <code>new ServerSocket(port)</code> fails (for example "Address already in use"), this template prints an error but <code>start()</code> then crashes with a <code>NullPointerException</code>. In real code, let the constructor throw the <code>IOException</code> instead of swallowing it.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: foundations</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Foundations of the Client/Server Model</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>What does <code>serverSocket.accept()</code> return?</p>
           <div class="opts">
@@ -480,8 +480,8 @@ public class MultiThreadedServer {
       </table></div>
       <div class="callout tip"><span class="label">Updated for modern Java</span><p>Since Java 21, <span class="term" title="Very lightweight threads managed by the JVM rather than the operating system; millions can exist at once">virtual threads</span> make the simple thread-per-client style scale again. Change one line, <code>threadPool = Executors.newVirtualThreadPerTaskExecutor();</code>, and every client gets its own cheap virtual thread.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: server types and tiers</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Server Types &amp; System Architectures</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>Which design is easiest to update when a business rule changes?</p>
           <div class="opts">
@@ -775,8 +775,8 @@ public class InetAddressExample {
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Expecting TCP to keep message boundaries. If the client writes "Hello" then "World", the server may read "HelloWorld" in one go or "Hel" + "loWorld". That is why these examples end every message with <code>'\n'</code> and read with <code>readLine()</code>: the newline marks where a message ends.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: communication technologies</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Core Communication Technologies</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>What are the three messages of the TCP handshake, in order?</p>
           <div class="opts">
@@ -1136,8 +1136,8 @@ public class DaytimeClient {
         </div>
       </div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: application protocols</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Application Protocols (Case Studies)</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>A client times out while sending <code>PUT /students/7</code> and automatically sends it again. Is that safe to do?</p>
           <div class="opts">
@@ -1422,8 +1422,8 @@ public class TransactionExample {
       </div>
       <div class="callout tip"><span class="label">Tip</span><p>The MySQL driver is not part of the JDK. Add the Connector/J <code>.jar</code> to the classpath (or the Maven dependency <code>com.mysql:mysql-connector-j</code>), otherwise you get <code>No suitable driver found</code>.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: middleware and JDBC</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Middleware &amp; Advanced Distribution</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>A sender must keep working even when the receiver is offline for an hour. Which middleware fits best?</p>
           <div class="opts">
@@ -1845,8 +1845,8 @@ public class StudentClient {
 
       <div class="callout exam"><span class="label">Exam tip</span><p>Be ready to list the steps to build an RMI application: (1) define a remote interface extending <code>Remote</code>, every method throwing <code>RemoteException</code>; (2) implement it, extending <code>UnicastRemoteObject</code>; (3) server creates the object and binds it in the registry; (4) client looks it up and calls methods on the stub. Compiling with <code>rmic</code> is no longer a step in current Java.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: RPC and RMI</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Remote Invocation (RPC &amp; RMI)</h3><span class="quiz-score"></span></div>
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>What is marshalling?</p>
           <div class="opts">

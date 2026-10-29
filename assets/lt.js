@@ -103,7 +103,10 @@
     heads.forEach(function (h) {
       if (!h.id) h.id = slug(h.textContent, used);
       var li = el('li'), a = el('a', { href: '#' + h.id });
-      a.textContent = h.getAttribute('data-toc') || h.textContent.trim();
+      var num = h.querySelector('.num'), rest = h.cloneNode(true), n = rest.querySelector('.num');
+      if (n) n.remove();
+      var text = h.getAttribute('data-toc') || rest.textContent.trim();
+      a.innerHTML = (num ? '<span class="toc-num">' + esc(num.textContent.trim()) + '</span>' : '') + '<span>' + esc(text) + '</span>';
       li.appendChild(a); ol.appendChild(li);
     });
     box.innerHTML = '<h2>On this page</h2>'; box.appendChild(ol);
@@ -177,6 +180,33 @@
     });
   }
 
+  // Colours code blocks that have no colour markup yet (Java, C, IDL, proto, Python, JS).
+  var KW = ('abstract assert boolean break byte case catch char class const continue default do double else enum extends final finally float for if implements import instanceof int interface long native new package private protected public return short static strictfp super switch synchronized this throw throws transient try void volatile while var record yield ' +
+    'module struct typedef sequence raises oneway inout attribute readonly octet wstring unsigned exception union ' +
+    'def elif except from as with lambda pass raise True False None and or not is async await function let const ' +
+    'service rpc returns message syntax repeated option program version').split(' ');
+  var KWSET = {}; KW.forEach(function (k) { KWSET[k] = 1; });
+  function highlight(code) {
+    var src = code.textContent;
+    if (!/[;{}()]/.test(src)) return;            // prose, HTTP messages, shell output: leave as is
+    var re = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])')|(@[A-Za-z]+)|\b(\d+(?:\.\d+)?[LlFfDd]?)\b|\b([A-Za-z_][A-Za-z0-9_]*)\b/g;
+    var out = '', last = 0, m;
+    while ((m = re.exec(src))) {
+      out += esc(src.slice(last, m.index)); last = re.lastIndex;
+      var cls = m[1] ? 'c' : m[2] ? 's' : m[3] ? 'k' : m[4] ? 'n' : KWSET[m[5]] ? 'k' : /^[A-Z][A-Za-z0-9]*[a-z]/.test(m[5]) ? 't' : '';
+      out += cls ? '<span class="' + cls + '">' + esc(m[0]) + '</span>' : esc(m[0]);
+    }
+    code.innerHTML = out + esc(src.slice(last));
+  }
+  function colourCode() {
+    document.querySelectorAll('.lt-main pre').forEach(function (pre) {
+      if (pre.classList.contains('no-hl') || pre.querySelector('span')) return;
+      var code = pre.querySelector('code');
+      if (!code) { code = el('code'); code.textContent = pre.textContent; pre.textContent = ''; pre.appendChild(code); }
+      highlight(code);
+    });
+  }
+
   function copyButtons() {
     document.querySelectorAll('.lt-main pre').forEach(function (pre) {
       if (pre.querySelector('.copy')) return;
@@ -209,6 +239,6 @@
     document.body.appendChild(el('footer', { class: 'lt-foot' }, '© ' + new Date().getFullYear() + ' LT Information · <a href="index.html">All courses</a>'));
   }
 
-  function init() { topBar(); toc(); quizzes(); tabs(); copyButtons(); pager(); footer(); }
+  function init() { topBar(); toc(); quizzes(); tabs(); colourCode(); copyButtons(); pager(); footer(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

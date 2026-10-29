@@ -34,7 +34,7 @@
     <span class="eyebrow">Network Programming · Web Protocols</span>
     <h1>HTTP &amp; HTTPS</h1>
     <p class="lead">HTTP is the language browsers, apps and APIs use to ask servers for things. HTTPS is the same language sent through an encrypted, authenticated TLS tunnel. Every web or mobile app you will build or secure speaks it, so it pays to know exactly what goes over the wire.</p>
-    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">15 quiz questions</span><span class="chip">Live API playground</span><span class="chip">Level: Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">55 quiz questions</span><span class="chip">Live API playground</span><span class="chip">Level: Intermediate</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -100,6 +100,31 @@
   "body": "quia et suscipit..."
 }</code></pre>
       <div class="callout tip"><span class="label">Tip</span><p>Open your browser's developer tools (F12 → <strong>Network</strong> tab), reload any page and click a request. You will see exactly these parts: method, URL, status, request headers, response headers and body. HTTP/2 and HTTP/3 send the same information in binary frames, but DevTools shows it in this familiar form.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>What HTTP is</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>True or false: HTTP is stateless, so the server automatically remembers your previous request.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">Stateless means the server does NOT remember earlier requests by itself. State is added with cookies or tokens that the client resends each time.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In <code>https://shop.example.com:443/products/42?color=red&amp;size=m#reviews</code>, which part is never sent to the server?</p>
+          <div class="opts"><button>The host <code>shop.example.com</code></button><button>The query string <code>?color=red&amp;size=m</code></button><button data-correct>The fragment <code>#reviews</code></button><button>The path <code>/products/42</code></button></div>
+          <div class="explain">The fragment is a position inside the page and is handled only by the browser. The query string is tempting because it looks like "extra", but it is part of the request target and the server receives it with the path.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Read this request:<br><code>GET /posts/1 HTTP/1.1</code><br><code>Host: jsonplaceholder.typicode.com</code><br><code>Accept: application/json</code><br>What is <code>/posts/1</code>?</p>
+          <div class="opts"><button data-correct>The request target: which resource on the server is wanted</button><button>The value of the Host header</button><button>The status code of the reply</button><button>The request body</button></div>
+          <div class="explain">The request line is method, target, version, so <code>/posts/1</code> names the resource. It is not the Host (that is the next line, the site name), and a GET like this has no body at all: the body would come after the empty line.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: the <code>Content-Type</code> header tells the receiver how to interpret the bytes of the body.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. HTTP itself does not care what the bytes mean; <code>Content-Type: application/json</code> or <code>text/html</code> says how to read them. The file extension in the URL does not decide this, even if it often matches.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -116,6 +141,31 @@
         <li><strong>Reuse or close.</strong> HTTP/1.1 keeps the connection open by default (<em>persistent connections</em>) so later requests skip steps 2–4. HTTP/2 and HTTP/3 send many requests in parallel over one connection.</li>
       </ol>
       <div class="callout example"><span class="label">Example</span><p>With a 50 ms round-trip time to the server: DNS (≈1 RTT) + TCP (1 RTT) + TLS 1.3 (1 RTT) + request/response (1 RTT) ≈ 200 ms before the first byte of HTML, even if the server answers instantly. That is why connection reuse, HTTP/3 (which merges the transport and TLS handshakes) and CDNs close to the user matter so much.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The life of a request</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>On a first visit to <code>https://example.com/page</code> over HTTP/1.1 or HTTP/2, what is the correct order?</p>
+          <div class="opts"><button>TCP handshake → DNS lookup → TLS handshake → send request</button><button>TLS handshake → DNS lookup → TCP handshake → send request</button><button>DNS lookup → TLS handshake → TCP handshake → send request</button><button data-correct>DNS lookup → TCP handshake → TLS handshake → send request</button></div>
+          <div class="explain">You need the IP (DNS) before you can connect (TCP), and TLS runs inside the open TCP connection before any HTTP is sent. Putting TLS before TCP is the tempting mistake: TLS messages need a transport connection to travel on.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The round-trip time to a server is 50 ms and the server answers instantly. Roughly how long until the first byte of HTML arrives on a brand-new HTTPS connection (DNS + TCP + TLS 1.3 + request/response)?</p>
+          <div class="opts"><button>About 50 ms</button><button>About 100 ms</button><button data-correct>About 200 ms</button><button>About 400 ms</button></div>
+          <div class="explain">Four round trips: DNS, TCP handshake, TLS 1.3 handshake (1 RTT) and the request/response itself, so 4 × 50 ms ≈ 200 ms. 100 ms forgets the handshakes; 400 ms assumes two RTTs per step, which was closer to TLS 1.2.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: with HTTP/1.1 persistent connections, a second request to the same server must repeat the DNS lookup and the TCP handshake.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. HTTP/1.1 keeps the connection open by default (keep-alive), so later requests skip DNS, TCP and TLS (steps 2–4). Only a new connection pays those costs again.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A normal DNS lookup usually travels over:</p>
+          <div class="opts"><button>TCP port 443</button><button data-correct>UDP port 53</button><button>TCP port 80</button><button>UDP port 443</button></div>
+          <div class="explain">DNS resolvers are normally asked over UDP port 53. UDP 443 is tempting because it is also UDP, but that is where QUIC (HTTP/3) runs; TCP 80 and 443 are plain HTTP and HTTPS.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -149,6 +199,36 @@
       <div class="callout example"><span class="label">Example: why PATCH is "not guaranteed"</span><p><code>PATCH /users/42 {"email":"a@b.com"}</code> sets a value, so repeating it changes nothing: idempotent in practice. But <code>PATCH /accounts/7 {"op":"increment","field":"balance","by":10}</code> adds 10 each time: not idempotent. The method allows both, so the specification cannot promise idempotency.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>"Idempotent" does not mean "returns the same response". The first <code>DELETE /posts/7</code> may return 200 and the second 404, yet DELETE is still idempotent because the server's <em>state</em> (post 7 is gone) is the same after both. Also, never use GET for actions that change data (<code>GET /deleteUser?id=5</code>): crawlers, link previews and prefetching will trigger it.</p></div>
       <div class="callout tip"><span class="label">Why it matters</span><p>When a network request times out, the client cannot know if the server processed it. Idempotent requests can be retried automatically and safely. Payment APIs make POST retryable by asking clients to send a unique <code>Idempotency-Key</code> header, so the server can recognise and ignore duplicates.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>HTTP request methods</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which HTTP method is considered "safe" (does not modify server state) and is used to retrieve data?</p>
+          <div class="opts"><button>POST</button><button>PUT</button><button data-correct>GET</button><button>DELETE</button></div>
+          <div class="explain">GET only reads. PUT and DELETE change state (though they are idempotent) and POST creates. Other safe methods are HEAD, OPTIONS and TRACE.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which HTTP method is NOT idempotent (multiple identical requests may create duplicate resources)?</p>
+          <div class="opts"><button>GET</button><button>PUT</button><button>DELETE</button><button data-correct>POST</button></div>
+          <div class="explain">Two identical POSTs to <code>/orders</code> create two orders. PUT replaces with the same content each time and DELETE leaves the resource deleted, so both end in the same state.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>To partially update a resource (e.g. change only the email field), the most appropriate method is:</p>
+          <div class="opts"><button>PUT</button><button data-correct>PATCH</button><button>POST</button><button>GET</button></div>
+          <div class="explain">PATCH sends only the changes. PUT replaces the whole resource, so fields you leave out may be erased.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which of these request lines is a design mistake?</p>
+          <div class="opts"><button data-correct><code>GET /deleteUser?id=5 HTTP/1.1</code></button><button><code>GET /users/42 HTTP/1.1</code></button><button><code>DELETE /posts/7 HTTP/1.1</code></button><button><code>PATCH /users/42 HTTP/1.1</code> with body <code>{"email":"new@example.com"}</code></button></div>
+          <div class="explain">GET must be safe (read-only). A GET that deletes data will be triggered by crawlers, link previews and prefetching. The PATCH line looks unusual but is correct: it is a partial update of one field.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: the first <code>DELETE /posts/7</code> returns 200 and the second returns 404, so DELETE is not idempotent.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Idempotency is about the server's final state, not the response. After one or ten DELETEs, post 7 is gone, so the state is the same. Different status codes do not break idempotency.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -165,6 +245,36 @@
         </tbody>
       </table></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>401 vs 403 is a classic question. <strong>401</strong>: "I don't know who you are" (missing or invalid credentials; log in). <strong>403</strong>: "I know who you are, and you are not allowed". And 4xx means <em>fix the request</em>, 5xx means <em>the server has a problem</em>; retrying a 4xx unchanged will not help.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Status codes</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A user who is not logged in requests <code>/account</code>. Which status code fits best?</p>
+          <div class="opts"><button>403 Forbidden</button><button data-correct>401 Unauthorized</button><button>404 Not Found</button><button>500 Internal Server Error</button></div>
+          <div class="explain">401 means "not authenticated": supply credentials. 403 is for a known user who lacks permission. 5xx would wrongly blame the server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A 5xx status code means:</p>
+          <div class="opts"><button>The request was malformed</button><button>The resource moved</button><button data-correct>The server failed to handle a possibly valid request</button><button>The request succeeded</button></div>
+          <div class="explain">5xx = server error (500, 502, 503, 504). Client errors are 4xx, redirects 3xx, success 2xx.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which status code tells the client "nothing changed, use your cached copy"?</p>
+          <div class="opts"><button data-correct>304 Not Modified</button><button>200 OK</button><button>302 Found</button><button>204 No Content</button></div>
+          <div class="explain">304 is the answer to a conditional request (e.g. <code>If-None-Match</code>) when the cached version is still current. 204 is tempting because it also has no body, but it means "success, nothing to return", not "use your cache".</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A server replies with a code you have never seen, <code>451</code>. What can the client still conclude?</p>
+          <div class="opts"><button>The server crashed; retry later</button><button>The resource has moved</button><button>The request succeeded</button><button data-correct>It is a client-error class: the request (or what it asks for) is the problem, not a server failure</button></div>
+          <div class="explain">The first digit gives the class, and 4xx means a client error. "Retry later" is the tempting choice, but that fits 5xx (such as 503), where the server is the problem.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: resending a request that got <code>400 Bad Request</code>, unchanged, is likely to succeed.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. 4xx means "fix the request"; the same request will get the same answer. Retrying unchanged makes sense only for temporary server-side failures such as 503 or 504.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -188,6 +298,31 @@
           <tr><td><code>Access-Control-Allow-Origin</code></td><td>Response</td><td>CORS: which other web origins may read this response (section 10).</td></tr>
         </tbody>
       </table></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Headers</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Read this response:<br><code>HTTP/1.1 201 Created</code><br><code>Location: /posts/101</code><br><code>Content-Type: application/json</code><br>What does <code>Location</code> mean here?</p>
+          <div class="opts"><button>A permanent redirect: never use the old URL again</button><button data-correct>The URL of the resource that was just created</button><button>The server's physical location</button><button>Which other origins may read the response</button></div>
+          <div class="explain">With 201 Created, <code>Location</code> points at the new resource. With a 3xx code the same header is the redirect target, which is why "redirect" is tempting, but this is not a 3xx. Cross-origin reading is CORS (<code>Access-Control-Allow-Origin</code>).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A client wants the server to answer in JSON. Which request header expresses that?</p>
+          <div class="opts"><button><code>Content-Type: application/json</code></button><button><code>Host: application/json</code></button><button><code>Cache-Control: json</code></button><button data-correct><code>Accept: application/json</code></button></div>
+          <div class="explain"><code>Accept</code> lists the formats the client can handle (content negotiation). <code>Content-Type</code> is the tempting one, but it describes the body that is being sent, not the format wanted back.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: header names are case-sensitive, so <code>content-type</code> and <code>Content-Type</code> are different headers.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Header names are case-insensitive. HTTP/2 and HTTP/3 even send them all in lowercase, and they still mean the same header.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>What does <code>Cache-Control: no-cache</code> mean?</p>
+          <div class="opts"><button>Never store the response anywhere</button><button data-correct>The response may be stored, but must be revalidated with the server before each use</button><button>Cache the response for one hour</button><button>Only proxies may cache it</button></div>
+          <div class="explain"><code>no-cache</code> means "check with the server first" (often answered with 304). The tempting reading "never store" is <code>no-store</code>.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -208,6 +343,31 @@
       </dl>
       <div class="callout analogy"><span class="label">Analogy</span><p>A cookie is a cloakroom ticket. The cloakroom (server) keeps your coat (session data); you only carry the ticket number and show it every time. Anyone who steals the ticket gets your coat, which is why session cookies must be <code>Secure</code> and <code>HttpOnly</code>.</p></div>
       <p>APIs used by mobile apps often send a <strong>token</strong> instead, in the header <code>Authorization: Bearer &lt;token&gt;</code>. Same idea: the state travels with each request.</p>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Cookies and state</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which cookie attribute prevents JavaScript from reading the cookie?</p>
+          <div class="opts"><button>Secure</button><button data-correct>HttpOnly</button><button>SameSite=Lax</button><button>Max-Age</button></div>
+          <div class="explain">HttpOnly hides the cookie from <code>document.cookie</code>, limiting XSS damage. Secure restricts it to HTTPS; SameSite controls cross-site sending (CSRF).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The server sends <code>Set-Cookie: session=abc123; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age=3600</code>. When does the browser stop sending this cookie?</p>
+          <div class="opts"><button>When the tab is closed</button><button>Never: cookies are permanent</button><button data-correct>After 3600 seconds (one hour)</button><button>After the next request</button></div>
+          <div class="explain"><code>Max-Age=3600</code> gives it a one-hour lifetime. "When the tab is closed" is tempting, but that describes a session cookie, which has neither Max-Age nor Expires.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which cookie attribute mainly protects against cross-site request forgery (CSRF)?</p>
+          <div class="opts"><button data-correct>SameSite</button><button>HttpOnly</button><button>Secure</button><button>Max-Age</button></div>
+          <div class="explain"><code>SameSite</code> controls whether the cookie is sent on requests started by other sites, which is what CSRF abuses. HttpOnly is tempting but protects against a different attack: JavaScript reading the cookie (XSS).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: modern browsers accept a cookie with <code>SameSite=None</code> only if it also has <code>Secure</code>.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. <code>SameSite=None</code> lets the cookie travel on cross-site requests, so browsers require it to be HTTPS-only. Without a SameSite attribute at all, browsers treat the cookie as <code>Lax</code>.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -224,6 +384,36 @@
       </table></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>HTTP/1.1 is a single-lane road: cars (requests) wait behind each other. HTTP/2 is a multi-lane road built on one bridge: if the bridge (TCP) closes for a moment, every lane stops. HTTP/3 gives each lane its own small bridge (QUIC streams), so one problem only stops one lane.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>"HTTP always uses TCP" is no longer true. HTTP/3 runs on QUIC over UDP. A browser usually learns that a server supports HTTP/3 from an <code>Alt-Svc</code> response header (or a DNS HTTPS record) and switches on the next connection. Also note: HTTP/2 Server Push has been removed from major browsers; use <code>103 Early Hints</code> instead.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>HTTP versions</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>HTTP/3 runs on top of:</p>
+          <div class="opts"><button>TCP with TLS 1.2</button><button data-correct>QUIC, which runs over UDP</button><button>SCTP</button><button>Raw IP</button></div>
+          <div class="explain">HTTP/3 (RFC 9114) uses QUIC over UDP, with TLS 1.3 built in. This removes TCP head-of-line blocking and speeds up connection setup.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What is the main improvement of HTTP/2 over HTTP/1.1?</p>
+          <div class="opts"><button>It switched to UDP</button><button data-correct>Many requests multiplexed as streams over one connection, with binary framing and header compression</button><button>It added the Host header</button><button>It removed status codes</button></div>
+          <div class="explain">HTTP/2 multiplexes streams on one TCP connection and compresses headers (HPACK). It still uses TCP; UDP arrived with HTTP/3. The Host header became mandatory in HTTP/1.1.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>How does a browser usually learn that a server supports HTTP/3?</p>
+          <div class="opts"><button>From an <code>Upgrade: h3</code> request header</button><button>From a <code>101 Switching Protocols</code> response</button><button data-correct>From an <code>Alt-Svc</code> response header (or a DNS HTTPS record)</button><button>From the <code>Host</code> header</button></div>
+          <div class="explain">The server advertises HTTP/3 with <code>Alt-Svc</code> (or a DNS HTTPS record) and the browser switches on the next connection. 101 is tempting, but it is used to upgrade an HTTP/1.1 connection, for example to WebSocket; it cannot move a TCP connection to QUIC.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: in HTTP/2, a single lost TCP packet can stall every stream on that connection.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. All HTTP/2 streams share one TCP connection, and TCP delivers bytes in order, so one gap holds everything back (TCP-level head-of-line blocking). HTTP/3 fixes this with independent QUIC streams.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which RFC is the current text of HTTP/1.1 message syntax?</p>
+          <div class="opts"><button>RFC 1945</button><button>RFC 9114</button><button>RFC 8446</button><button data-correct>RFC 9112</button></div>
+          <div class="explain">RFC 9112 (2022) is HTTP/1.1. RFC 1945 is the old HTTP/1.0, RFC 9114 is HTTP/3 and RFC 8446 is TLS 1.3. The meaning shared by all versions (methods, status codes) is in RFC 9110.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -245,6 +435,31 @@
       </table></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Saying "SSL". SSL 2.0 and 3.0 are broken and prohibited (SSL 3.0 since RFC 7568, 2015), and TLS 1.0/1.1 were deprecated in 2021 (RFC 8996). Today HTTPS means <strong>TLS 1.2 or TLS 1.3</strong> (RFC 8446). People still say "SSL certificate" out of habit; the certificates are used with TLS.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>What does HTTPS hide? The path, query string, headers, cookies and body are encrypted. It does <strong>not</strong> hide the server's IP address, and the domain name is usually still visible (in the DNS lookup and in the TLS SNI field) unless encrypted DNS and Encrypted Client Hello are used.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>HTTP vs HTTPS</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What does HTTPS add to HTTP to provide security?</p>
+          <div class="opts"><button>A compression layer</button><button data-correct>TLS encryption + authentication (the successor of SSL)</button><button>Faster caching</button><button>The UDP protocol</button></div>
+          <div class="explain">HTTPS = HTTP inside TLS, which gives confidentiality, integrity and server authentication via certificates. SSL is the obsolete predecessor; today it is TLS 1.2 or 1.3.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The default port for HTTPS is:</p>
+          <div class="opts"><button>80</button><button>8080</button><button data-correct>443</button><button>22</button></div>
+          <div class="explain">443 is HTTPS; 80 is plain HTTP; 8080 is a common alternative for development servers; 22 is SSH.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>On HTTPS, which of these can a network eavesdropper still normally see?</p>
+          <div class="opts"><button>The URL path and query string</button><button>The cookies</button><button data-correct>The server's IP address (and usually the domain name)</button><button>The request body</button></div>
+          <div class="explain">Path, query, headers, cookies and body are inside TLS. The IP is needed for routing, and the domain leaks through DNS and the SNI field unless encrypted DNS and Encrypted Client Hello are used.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: today an "SSL certificate" is actually used with TLS 1.2 or TLS 1.3, and SSL 3.0 itself is prohibited.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. SSL 2.0 and 3.0 are broken and prohibited (SSL 3.0 by RFC 7568), and TLS 1.0/1.1 were deprecated in 2021. The name "SSL certificate" survived out of habit; the same X.509 certificates are used with TLS.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -308,6 +523,36 @@
 
       <h3>Mixed content</h3>
       <p>An HTTPS page that loads a script, stylesheet or iframe over <code>http://</code> has <strong>mixed content</strong>. Browsers block such active content, because a modified script would control the whole secure page; images and media are upgraded to HTTPS automatically or blocked. Fix: load every resource over HTTPS.</p>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Inside HTTPS: TLS 1.3, certificates, HSTS</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>How many round trips does a full TLS 1.3 handshake need before the client can send its request?</p>
+          <div class="opts"><button>Zero</button><button data-correct>One</button><button>Two</button><button>Three</button></div>
+          <div class="explain">TLS 1.3 needs 1-RTT (TLS 1.2 needed 2). 0-RTT exists only when resuming an earlier session, and its early data can be replayed, so it is limited to safe requests.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In the TLS 1.3 handshake, how does the server prove that it really owns its certificate?</p>
+          <div class="opts"><button>Sending the certificate chain is enough on its own</button><button>Its <code>key_share</code> in ServerHello</button><button>The client looks the certificate up in DNS</button><button data-correct>CertificateVerify: it signs the handshake with the certificate's private key</button></div>
+          <div class="explain">Only the holder of the private key can produce the CertificateVerify signature. Sending the certificate is the tempting answer, but certificates are public: anyone can copy and send one.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What does the HSTS header tell the browser?</p>
+          <div class="opts"><button>Cache the page for one year</button><button data-correct>Use only HTTPS for this site for the given time</button><button>Allow other origins to read responses</button><button>Compress responses</button></div>
+          <div class="explain"><code>Strict-Transport-Security</code> makes the browser upgrade every request to HTTPS itself, defeating SSL-stripping attacks. Cross-origin reading is CORS, not HSTS.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: because TLS 1.3 uses an ephemeral key exchange, an attacker who steals the server's private key later can decrypt sessions they recorded earlier.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. That is exactly what forward secrecy prevents: the session keys came from one-time (ephemeral) Diffie-Hellman values that were thrown away, so the long-term private key does not reveal them.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>An HTTPS page contains <code>&lt;script src="http://cdn.example.com/app.js"&gt;</code>. What does a modern browser do?</p>
+          <div class="opts"><button data-correct>Blocks the script as active mixed content</button><button>Loads it normally; only the page itself must be HTTPS</button><button>Downgrades the whole page to HTTP</button><button>Loads it and shows a padlock</button></div>
+          <div class="explain">A script loaded over plain HTTP could be modified in transit and would then control the secure page, so browsers block active mixed content. Images and media may be upgraded automatically, which is why "loads it normally" is tempting, but scripts are not.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -316,6 +561,31 @@
       <pre><code><span class="t">Access-Control-Allow-Origin</span>: *</code></pre>
       <p>JSONPlaceholder sends exactly this, so the playground below works from a static GitHub Pages site. For "non-simple" requests (PUT, PATCH, DELETE, or a JSON <code>Content-Type</code>), the browser first sends an automatic <strong>preflight</strong> <code>OPTIONS</code> request to ask permission, then the real one.</p>
       <div class="callout warn"><span class="label">Common mistake</span><p>CORS is not a server security wall. It is a rule the <em>browser</em> follows to protect users. <code>curl</code>, Postman or a Java program ignore CORS completely. Protect APIs with authentication, not with CORS.</p></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>CORS</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Why can JavaScript on a GitHub Pages site read responses from JSONPlaceholder?</p>
+          <div class="opts"><button>GitHub Pages disables the same-origin policy</button><button>Because both use HTTPS</button><button data-correct>JSONPlaceholder sends <code>Access-Control-Allow-Origin</code> (CORS) headers</button><button>Because the requests use GET</button></div>
+          <div class="explain">The other server must opt in with CORS headers. HTTPS alone is not enough, and PUT/PATCH/DELETE work too because the server answers the preflight OPTIONS request.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which of these has the same origin as <code>https://lt.example.com</code>?</p>
+          <div class="opts"><button><code>http://lt.example.com</code></button><button><code>https://lt.example.com:8443</code></button><button data-correct><code>https://lt.example.com/http.html</code></button><button><code>https://example.com</code></button></div>
+          <div class="explain">An origin is scheme + host + port; the path does not matter. The first option changes the scheme, the second the port, and the last the host, so each of those is a different origin.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: CORS prevents <code>curl</code> or a Java program from calling an API that does not send <code>Access-Control-Allow-Origin</code>.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. CORS is a rule that browsers follow to protect users. curl, Postman and Java ignore it completely, which is why APIs must be protected with authentication, not CORS.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>From this page, which <code>fetch</code> makes the browser send a preflight <code>OPTIONS</code> request first?</p>
+          <div class="opts"><button>A simple GET with no custom headers</button><button>Loading an image with <code>&lt;img&gt;</code></button><button>Clicking a normal link</button><button data-correct>A request with method PUT (or with a JSON <code>Content-Type</code>)</button></div>
+          <div class="explain">Non-simple requests (PUT, PATCH, DELETE, or a JSON Content-Type) need permission first. A simple GET is tempting because it is also cross-origin, but simple requests are sent directly; only reading the response needs the CORS header.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -421,87 +691,77 @@
         <span class="t">System</span>.out.println(url.getHost() + <span class="s">" "</span> + url.getPath() + <span class="s">" "</span> + url.getQuery());
     }
 }</code></pre>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>HTTP from Java</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In <code>HttpClientDemo</code>, what does this line print for the POST to <code>https://jsonplaceholder.typicode.com/posts</code>?<br><code>System.out.println("POST -&gt; " + r2.statusCode());</code></p>
+          <div class="opts"><button><code>POST -&gt; 200</code></button><button data-correct><code>POST -&gt; 201</code></button><button><code>POST -&gt; 204</code></button><button><code>POST -&gt; 404</code></button></div>
+          <div class="explain">Creating a resource with POST returns 201 Created, as the comment in the code and the playground show. 200 is tempting because it is the general success code, but this API reports the creation precisely.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which line is outdated in new Java code?</p>
+          <div class="opts"><button><code>URI.create("https://example.com/a").toURL()</code></button><button><code>HttpClient.newBuilder().build()</code></button><button data-correct><code>new URL("https://example.com/a")</code></button><button><code>HttpRequest.newBuilder(URI.create("https://example.com/a"))</code></button></div>
+          <div class="explain">The <code>URL(String)</code> constructor is deprecated since Java 20 because it validates poorly. <code>URI.create(...).toURL()</code> is tempting to flag because it is longer, but it is the recommended replacement.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which checked exceptions must code that calls <code>client.send(request, BodyHandlers.ofString())</code> handle?</p>
+          <div class="opts"><button>Only <code>MalformedURLException</code></button><button>None: it throws only unchecked exceptions</button><button data-correct><code>IOException</code> and <code>InterruptedException</code></button><button><code>UnknownHostException</code> and <code>SQLException</code></button></div>
+          <div class="explain"><code>send</code> declares <code>IOException</code> (network failures) and <code>InterruptedException</code> (the waiting thread was interrupted), which is why the demo catches both. UnknownHostException is a subclass of IOException, but SQLException has nothing to do with HTTP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: <code>java.net.http.HttpClient</code> applies the browser's CORS rules, so it can only read responses from servers that send <code>Access-Control-Allow-Origin</code>.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. CORS is enforced only by browsers. A Java program can call any server; the lesson's tip says this explicitly.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>On Java 21+, what lets plain blocking <code>client.send(...)</code> calls scale to thousands of concurrent requests?</p>
+          <div class="opts"><button>Calling <code>System.gc()</code> after each request</button><button>Switching to <code>HttpURLConnection</code></button><button>Setting <code>.version(HTTP_2)</code></button><button data-correct>Running each call in a virtual thread</button></div>
+          <div class="explain">Virtual threads are cheap, so blocking in <code>send</code> costs little and thousands can wait at once. HTTP/2 is tempting because it multiplexes requests, but it does not make blocking threads cheaper; <code>sendAsync</code> is the other route.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
-      <h2><span class="num">13</span>Check your understanding</h2>
+      <h2><span class="num">13</span>Final review</h2>
       <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: HTTP methods, status codes and security</h3><span class="quiz-score"></span></div>
+        <div class="quiz-head"><h3>Final review: mixed questions from the whole lesson</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>Which HTTP method is considered "safe" (does not modify server state) and is used to retrieve data?</p>
-          <div class="opts"><button>POST</button><button>PUT</button><button data-correct>GET</button><button>DELETE</button></div>
-          <div class="explain">GET only reads. PUT and DELETE change state (though they are idempotent) and POST creates. Other safe methods are HEAD, OPTIONS and TRACE.</div>
+          <p class="q-text"><span class="qn">Q1</span>A mobile app's <code>PUT /profile</code> request times out and the app cannot tell whether the server processed it. What is true?</p>
+          <div class="opts"><button data-correct>Retrying is safe, because PUT is idempotent</button><button>Retrying will create a second profile</button><button>The app must switch to POST</button><button>The server must have answered 500</button></div>
+          <div class="explain">Sending the same PUT again leaves the server in the same state, so automatic retries are safe. "A second profile" is what could happen with POST, which is not idempotent.</div>
         </div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>What does HTTPS add to HTTP to provide security?</p>
-          <div class="opts"><button>A compression layer</button><button data-correct>TLS encryption + authentication (the successor of SSL)</button><button>Faster caching</button><button>The UDP protocol</button></div>
-          <div class="explain">HTTPS = HTTP inside TLS, which gives confidentiality, integrity and server authentication via certificates. SSL is the obsolete predecessor; today it is TLS 1.2 or 1.3.</div>
+          <p class="q-text"><span class="qn">Q2</span>A site redirects <code>http://</code> to <code>https://</code> with a 301 but sends no HSTS header. Which attack still works against the first plain-HTTP request?</p>
+          <div class="opts"><button>A CORS bypass</button><button data-correct>SSL stripping (a man-in-the-middle keeps the user on HTTP)</button><button>Head-of-line blocking</button><button>A 0-RTT replay</button></div>
+          <div class="explain">The first request leaves in clear text, so an attacker can intercept it and never pass on the redirect. HSTS (and the preload list) makes the browser use HTTPS itself. CORS is unrelated: it controls cross-origin reading, not encryption.</div>
         </div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>Which HTTP method is NOT idempotent (multiple identical requests may create duplicate resources)?</p>
-          <div class="opts"><button>GET</button><button>PUT</button><button>DELETE</button><button data-correct>POST</button></div>
-          <div class="explain">Two identical POSTs to <code>/orders</code> create two orders. PUT replaces with the same content each time and DELETE leaves the resource deleted, so both end in the same state.</div>
+          <p class="q-text"><span class="qn">Q3</span>True or false: HTTP/3 still uses TLS, because TLS 1.3 is built into QUIC.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. HTTP/3 runs over QUIC over UDP, and QUIC integrates the TLS 1.3 handshake, merging transport and TLS setup into one round trip. "UDP means no encryption" is the tempting mistake.</div>
         </div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>The default port for HTTPS is:</p>
-          <div class="opts"><button>80</button><button>8080</button><button data-correct>443</button><button>22</button></div>
-          <div class="explain">443 is HTTPS; 80 is plain HTTP; 8080 is a common alternative for development servers; 22 is SSH.</div>
+          <p class="q-text"><span class="qn">Q4</span>A login API wants to start a browser session. Which response fits best?</p>
+          <div class="opts"><button><code>401 Unauthorized</code> + <code>Set-Cookie: session=x9</code></button><button><code>200 OK</code> + <code>Cookie: session=x9</code></button><button><code>302 Found</code> + <code>Access-Control-Allow-Origin: *</code></button><button data-correct><code>200 OK</code> + <code>Set-Cookie: session=x9; Secure; HttpOnly; SameSite=Lax</code></button></div>
+          <div class="explain">The server stores state in the browser with <code>Set-Cookie</code>, protected by Secure, HttpOnly and SameSite. The <code>Cookie</code> option is tempting, but Cookie is the request header the browser sends back, not something a server sets.</div>
         </div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>To partially update a resource (e.g. change only the email field), the most appropriate method is:</p>
-          <div class="opts"><button>PUT</button><button data-correct>PATCH</button><button>POST</button><button>GET</button></div>
-          <div class="explain">PATCH sends only the changes. PUT replaces the whole resource, so fields you leave out may be erased.</div>
+          <p class="q-text"><span class="qn">Q5</span>The Java client is built with <code>.version(HttpClient.Version.HTTP_2)</code> but the server only speaks HTTP/1.1. What happens?</p>
+          <div class="opts"><button><code>send</code> throws an IOException</button><button data-correct>The client falls back to HTTP/1.1 and the request works</button><button>The client switches to HTTP/3</button><button>The server answers 505 HTTP Version Not Supported</button></div>
+          <div class="explain">HTTP/2 is negotiated (with ALPN over TLS); if the server does not support it, HttpClient uses HTTP/1.1, as the comment in the demo says. You can check what was used with <code>response.version()</code>.</div>
         </div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>A user who is not logged in requests <code>/account</code>. Which status code fits best?</p>
-          <div class="opts"><button>403 Forbidden</button><button data-correct>401 Unauthorized</button><button>404 Not Found</button><button>500 Internal Server Error</button></div>
-          <div class="explain">401 means "not authenticated": supply credentials. 403 is for a known user who lacks permission. 5xx would wrongly blame the server.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>A 5xx status code means:</p>
-          <div class="opts"><button>The request was malformed</button><button>The resource moved</button><button data-correct>The server failed to handle a possibly valid request</button><button>The request succeeded</button></div>
-          <div class="explain">5xx = server error (500, 502, 503, 504). Client errors are 4xx, redirects 3xx, success 2xx.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>HTTP/3 runs on top of:</p>
-          <div class="opts"><button>TCP with TLS 1.2</button><button data-correct>QUIC, which runs over UDP</button><button>SCTP</button><button>Raw IP</button></div>
-          <div class="explain">HTTP/3 (RFC 9114) uses QUIC over UDP, with TLS 1.3 built in. This removes TCP head-of-line blocking and speeds up connection setup.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>What is the main improvement of HTTP/2 over HTTP/1.1?</p>
-          <div class="opts"><button>It switched to UDP</button><button data-correct>Many requests multiplexed as streams over one connection, with binary framing and header compression</button><button>It added the Host header</button><button>It removed status codes</button></div>
-          <div class="explain">HTTP/2 multiplexes streams on one TCP connection and compresses headers (HPACK). It still uses TCP; UDP arrived with HTTP/3. The Host header became mandatory in HTTP/1.1.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>What does the HSTS header tell the browser?</p>
-          <div class="opts"><button>Cache the page for one year</button><button data-correct>Use only HTTPS for this site for the given time</button><button>Allow other origins to read responses</button><button>Compress responses</button></div>
-          <div class="explain"><code>Strict-Transport-Security</code> makes the browser upgrade every request to HTTPS itself, defeating SSL-stripping attacks. Cross-origin reading is CORS, not HSTS.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>Which cookie attribute prevents JavaScript from reading the cookie?</p>
-          <div class="opts"><button>Secure</button><button data-correct>HttpOnly</button><button>SameSite=Lax</button><button>Max-Age</button></div>
-          <div class="explain">HttpOnly hides the cookie from <code>document.cookie</code>, limiting XSS damage. Secure restricts it to HTTPS; SameSite controls cross-site sending (CSRF).</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>True or false: HTTP is stateless, so the server automatically remembers your previous request.</p>
+          <p class="q-text"><span class="qn">Q6</span>True or false: status <code>401</code> means "we know who you are, but you are not allowed".</p>
           <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">Stateless means the server does NOT remember earlier requests by itself. State is added with cookies or tokens that the client resends each time.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>How many round trips does a full TLS 1.3 handshake need before the client can send its request?</p>
-          <div class="opts"><button>Zero</button><button data-correct>One</button><button>Two</button><button>Three</button></div>
-          <div class="explain">TLS 1.3 needs 1-RTT (TLS 1.2 needed 2). 0-RTT exists only when resuming an earlier session, and its early data can be replayed, so it is limited to safe requests.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>Why can JavaScript on a GitHub Pages site read responses from JSONPlaceholder?</p>
-          <div class="opts"><button>GitHub Pages disables the same-origin policy</button><button>Because both use HTTPS</button><button data-correct>JSONPlaceholder sends <code>Access-Control-Allow-Origin</code> (CORS) headers</button><button>Because the requests use GET</button></div>
-          <div class="explain">The other server must opt in with CORS headers. HTTPS alone is not enough, and PUT/PATCH/DELETE work too because the server answers the preflight OPTIONS request.</div>
-        </div>
-        <div class="q">
-          <p class="q-text"><span class="qn">Q15</span>On HTTPS, which of these can a network eavesdropper still normally see?</p>
-          <div class="opts"><button>The URL path and query string</button><button>The cookies</button><button data-correct>The server's IP address (and usually the domain name)</button><button>The request body</button></div>
-          <div class="explain">Path, query, headers, cookies and body are inside TLS. The IP is needed for routing, and the domain leaks through DNS and the SNI field unless encrypted DNS and Encrypted Client Hello are used.</div>
+          <div class="explain">False. That describes 403 Forbidden. 401 Unauthorized means the client is not authenticated: credentials are missing or invalid, so it should log in.</div>
         </div>
 
         <div class="quiz-done"></div>

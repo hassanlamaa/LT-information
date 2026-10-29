@@ -22,7 +22,7 @@
     <span class="eyebrow">Cybersecurity · Chapter 1</span>
     <h1>Cybersecurity Fundamentals</h1>
     <p class="lead">Master the principles and practices of information security with real-world examples. This chapter has three lessons: the foundations (what we protect and why), the technical measures that do the protecting, and the risk-management thinking that decides where to spend effort.</p>
-    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">16 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">3 lessons</span></div>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">48 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">3 lessons</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -56,6 +56,31 @@
       <div class="callout analogy"><span class="label">Analogy</span><p>A physical shop worries about burglars at night. An online shop has "burglars" trying the door every second, from every country at once, and they can try thousands of stolen passwords per minute. Same goals (protect stock and customers), very different scale.</p></div>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Treating cybersecurity as "an IT problem". Cyberspace reflects society, so most incidents combine a technical flaw with a human or organisational one: a phished employee, a skipped patch, an unmanaged supplier account.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Cyberspace and security</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>True or false: cyberspace is a purely human creation, so its weaknesses come from human design decisions and mistakes.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Unlike nature, everything in cyberspace (servers, cables, protocols, accounts) was designed by people, so it also contains their mistakes. It is not "natural" risk you simply have to live with.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In cybersecurity, what is an <em>asset</em>?</p>
+          <div class="opts"><button>Only hardware such as servers and laptops</button><button data-correct>Anything of value: data, systems, services, people, reputation</button><button>A tool attackers use to break in</button><button>A security policy document</button></div>
+          <div class="explain">Assets are whatever the organisation values, including intangible things like reputation or the availability of a scheduling system. Limiting assets to hardware is the tempting mistake: data and services are usually worth far more than the machines.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>An online shop is breached after an employee is phished and a patch was skipped. What does this best illustrate?</p>
+          <div class="opts"><button>Cybersecurity is purely an IT department problem</button><button>A stronger firewall alone would have prevented it</button><button data-correct>Most incidents combine a technical flaw with a human or organisational one</button></div>
+          <div class="explain">Both a human failure (phishing) and an organisational/technical one (the skipped patch) were needed. Treating security as "just IT" or "just a better firewall" ignores the human side that the attacker actually used.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -87,6 +112,37 @@
 
       <details class="reveal"><summary>Scenario: a student changes his grade in the university database</summary><p><strong>Integrity.</strong> The data is still available and was not necessarily disclosed, but it is no longer accurate. If he also downloaded other students' grades, confidentiality was violated too.</p></details>
       <details class="reveal"><summary>Scenario: ransomware encrypts a clinic's files and the attackers publish patient records</summary><p><strong>Availability</strong> (files unusable) <strong>and confidentiality</strong> (records leaked). This "double extortion" pattern, encrypting <em>and</em> stealing, is now the normal ransomware model.</p></details>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The DIC criteria (the CIA triad)</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>The 2016 Mirai attack on Dyn made major websites unreachable for hours. Which criterion was mainly violated?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Non-repudiation</button></div>
+          <div class="explain">Nothing was read or changed; users simply could not reach the services. Denial of service is the textbook availability attack.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In the French acronym DIC, what does the "D" stand for?</p>
+          <div class="opts"><button>Data</button><button data-correct>Disponibilité (availability)</button><button>Detection</button><button>Defence</button></div>
+          <div class="explain">DIC = Disponibilité, Intégrité, Confidentialité: the same three criteria as the English CIA triad.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The 2017 Equifax breach exposed names, Social Security numbers and birth dates of about 147 million people. Which criterion was mainly violated?</p>
+          <div class="opts"><button data-correct>Confidentiality</button><button>Availability</button><button>Integrity</button><button>Non-repudiation</button></div>
+          <div class="explain">The victims lost control over who sees their data: confidentiality. The data was not mainly altered (integrity) and Equifax's services kept running (availability).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>The 2014 Sony Pictures attack destroyed data with wiper malware and leaked emails and unreleased films. Which assessment is correct?</p>
+          <div class="opts"><button>Only confidentiality was hit</button><button>Only availability was hit</button><button>No criterion, because nothing was sold</button><button data-correct>Integrity and availability (destroyed data) as well as confidentiality (leaks)</button></div>
+          <div class="explain">Real incidents often hit several criteria. Destroying data breaks integrity and availability; publishing emails and films breaks confidentiality. Picking just one is the tempting but incomplete answer.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -126,6 +182,43 @@
       <div class="callout warn"><span class="label">Common mistake</span><p>Confusing authentication with authorization. Logging in successfully (authentication) says nothing about what you are allowed to do. A logged-in student who can open the admin page is an <em>authorization</em> failure, the most common web flaw (OWASP "Broken Access Control").</p></div>
 
       <div class="callout key"><span class="label">Key takeaway</span><p>Cybersecurity begins with understanding the fundamental principles of availability, integrity and confidentiality, and extends to physical protection of infrastructure. These principles apply to all digital systems regardless of their specific purpose or technology.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Additional security functions</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A user types her username on a login page. Which function is that?</p>
+          <div class="opts"><button data-correct>Identification</button><button>Authentication</button><button>Authorization</button><button>Accountability</button></div>
+          <div class="explain">A username is a claim of identity. Authentication happens when she proves it (password, passkey). Authorization decides what she may do afterwards.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which mechanism best provides non-repudiation for a bank transfer?</p>
+          <div class="opts"><button>A password shared by the accounting team</button><button>A SHA-256 hash of the transfer</button><button data-correct>The customer's digital signature on the transfer</button><button>Encrypting the transfer with AES-256</button></div>
+          <div class="explain">Only the holder of the private key can produce the signature, so they cannot credibly deny it. A plain hash proves nothing about who made it, encryption gives confidentiality, and a shared password destroys accountability.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which authentication method resists phishing best?</p>
+          <div class="opts"><button>SMS one-time code</button><button>Push notification approval</button><button data-correct>Passkey / FIDO2 security key</button><button>Security questions</button></div>
+          <div class="explain">A passkey is cryptographically bound to the genuine website's domain, so a look-alike phishing site cannot obtain a usable login. SMS codes and push approvals can be relayed or tricked out of users.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: logging in with two different passwords counts as multi-factor authentication.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Both passwords are "something you know", the same factor category. MFA needs at least two different categories, for example a password plus a passkey on your phone (something you have).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>A logged-in student can open the admin page just by typing its URL. Which function failed?</p>
+          <div class="opts"><button>Authentication</button><button data-correct>Authorization</button><button>Identification</button><button>Non-repudiation</button></div>
+          <div class="explain">He proved who he is (authentication worked), but the system never checked what he is <em>allowed</em> to do: an authorization failure, OWASP's "Broken Access Control". Authentication is the tempting answer because the two are so often confused.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ================= LESSON 2 ================= -->
@@ -162,6 +255,37 @@
       </table></div>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>"Hashing encrypts the password." No: encryption is reversible with a key; a hash is one-way. And a plain fast hash (even SHA-256) is the wrong tool for passwords, because attackers can try billions of guesses per second. Use a deliberately slow password-hashing function such as Argon2id or bcrypt.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Logical security</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>You must choose a hash function to verify downloaded files today. Which one?</p>
+          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>DES</button></div>
+          <div class="explain">MD5 and SHA-1 have practical collision attacks and are deprecated. DES is an (obsolete) encryption algorithm, not a hash.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: SSL 3.0 and TLS 1.0 are still acceptable for protecting a modern website.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">All SSL versions and TLS 1.0/1.1 are deprecated because of known attacks. Use TLS 1.3 (or 1.2 with strong cipher suites).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What is the right way to store user passwords?</p>
+          <div class="opts"><button data-correct>A slow, salted password-hashing function such as Argon2id or bcrypt</button><button>A plain SHA-256 hash of the password</button><button>An MD5 hash of the password</button><button>AES encryption with the key kept on the same server</button></div>
+          <div class="explain">Password hashes must be deliberately slow so attackers cannot try billions of guesses per second. Plain SHA-256 is tempting because it is a "secure" hash, but it is far too fast for passwords; reversible encryption is worse still.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Why should DES no longer be used?</p>
+          <div class="opts"><button>It is a hash function, not a cipher</button><button data-correct>Its 56-bit key can be brute-forced</button><button>It only works with TLS 1.0</button><button>It is too slow on modern processors</button></div>
+          <div class="explain">DES keys were brute-forced in the late 1990s; use AES-128/256 or ChaCha20-Poly1305 instead. DES is an encryption algorithm, not a hash, so the first option is the classic mix-up.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -202,6 +326,37 @@
           <li>Poor segmentation of sensitive data, so one entry point reached many databases.</li>
         </ul>
         <p>This case highlights the critical importance of application security practices, especially timely patching. The same lesson repeated with <strong>Log4Shell</strong> (December 2021, a flaw in the widely used Log4j Java logging library) and the <strong>MOVEit Transfer</strong> mass data theft (2023, a SQL injection flaw exploited against many organisations at once).</p>
+      </div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Application security</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What was the root cause of the 2017 Equifax breach?</p>
+          <div class="opts"><button>A phishing email to the CEO</button><button data-correct>A known Apache Struts vulnerability left unpatched</button><button>A DDoS attack on its DNS provider</button><button>An insider selling data</button></div>
+          <div class="explain">A patch for the Struts flaw existed about two months before attackers used it. This is OWASP A06, Vulnerable and Outdated Components.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Changing <code>?id=101</code> to <code>?id=102</code> in a URL shows another customer's invoice. Which OWASP Top 10 (2021) category is this?</p>
+          <div class="opts"><button>Injection</button><button>Security Misconfiguration</button><button>Server-Side Request Forgery (SSRF)</button><button data-correct>Broken Access Control</button></div>
+          <div class="explain">The server never checks that invoice 102 belongs to the logged-in user: A01, Broken Access Control. It is not injection, because no code or query syntax was inserted; only an ID was changed.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A tester types <code>' OR '1'='1</code> into a login form. Which flaw is she testing for?</p>
+          <div class="opts"><button data-correct>Injection (SQL injection)</button><button>Cryptographic Failures</button><button>Insecure Design</button></div>
+          <div class="explain">The input tries to change the logic of the SQL query so the condition is always true: A03, Injection. It is fixed with parameterised queries and input validation, not with stronger cryptography.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: "security by design" means running a security test just before the software is released.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Security by design builds security in from the first requirement through threat modelling, secure coding, code review, testing and patching (a secure SDLC). A single test at the end is exactly the "bolt-on" approach it replaces.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -250,6 +405,37 @@
       <div class="callout tip"><span class="label">Ransomware and phishing trends</span><p>Today's ransomware is usually run as "ransomware-as-a-service" (developers rent the malware to affiliates) and uses <strong>double extortion</strong>: steal data, encrypt systems, then threaten to publish. Some groups skip encryption and only steal. The usual entry points are phishing, stolen credentials on remote-access services without MFA (as in the 2021 Colonial Pipeline attack), and unpatched internet-facing systems. Phishing itself has moved to AI-written, well-targeted emails, QR-code phishing, and "adversary-in-the-middle" kits that steal session cookies, which is why phishing-resistant MFA (passkeys/FIDO2) is now recommended.</p></div>
 
       <div class="callout key"><span class="label">Key insight</span><p>Global security is always that of the weakest link. Implementing encryption for data transfer is ineffective if the data can be accessed through unsecured platforms. A comprehensive approach must address all layers of the technology stack.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Operational security</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the correct order of the core incident-response steps?</p>
+          <div class="opts"><button>Containment → Detection → Recovery → Eradication</button><button data-correct>Detection → Containment → Eradication → Recovery</button><button>Recovery → Detection → Containment → Eradication</button><button>Eradication → Containment → Detection → Recovery</button></div>
+          <div class="explain">You must first confirm the incident (detection), stop it spreading (containment), remove the cause (eradication) and only then restore (recovery). Recovering before eradication risks restoring systems the attacker still controls.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Ransomware is spreading from one infected laptop. What is the right <em>containment</em> action?</p>
+          <div class="opts"><button>Restore every server from backup immediately</button><button>Write the lessons-learned report</button><button data-correct>Isolate the laptop from the network and disable the compromised accounts</button><button>Pay the ransom</button></div>
+          <div class="explain">Containment stops the spread: isolate machines, disable accounts. Restoring first is tempting but premature; until the cause is removed, restored systems can be re-infected. Lessons learned come at the very end.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What does the 3-2-1 backup rule say?</p>
+          <div class="opts"><button data-correct>3 copies of the data, on 2 different media, with 1 copy off-site</button><button>3 backups per day, kept for 2 weeks, on 1 server</button><button>3 administrators, 2 passwords, 1 vault</button><button>3 restore tests per year, 2 of them off-site, 1 audit</button></div>
+          <div class="explain">Three copies, two media types, one off-site. Current practice adds an offline or immutable copy and regular restore tests, because ransomware groups hunt for backups first.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: attackers entered Colonial Pipeline in 2021 through a remote-access account that had no MFA.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Stolen credentials for a remote-access service without MFA are one of the usual ransomware entry points, alongside phishing and unpatched internet-facing systems. It was not a zero-day exploit.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ================= LESSON 3 ================= -->
@@ -317,6 +503,43 @@
       </div>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>Calling an unpatched server "a threat". It is a <em>vulnerability</em>. The threat is whoever (or whatever) might exploit it.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Threats, vulnerabilities and risk</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>On a 1–5 scale, risk A has likelihood 2 and impact 5; risk B has likelihood 4 and impact 3. Using risk = likelihood × impact, which do you treat first?</p>
+          <div class="opts"><button>Risk A (score 10), because impact matters most</button><button data-correct>Risk B (score 12)</button><button>They are equal</button><button>Neither, risks cannot be compared</button></div>
+          <div class="explain">A = 2 × 5 = 10, B = 4 × 3 = 12. B scores higher, so it is the priority, although a very high-impact risk like A may still need a specific plan (for example insurance).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>An internet-facing server is missing a critical security patch. In risk terms, the missing patch is a…</p>
+          <div class="opts"><button>Threat</button><button data-correct>Vulnerability</button><button>Risk</button><button>Control</button></div>
+          <div class="explain">It is a weakness. The threat is the attacker or malware that could exploit it; the risk is the likelihood and impact of that happening.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A company buys cyber insurance to cover ransomware losses. Which risk treatment is that?</p>
+          <div class="opts"><button>Avoid</button><button>Mitigate</button><button data-correct>Transfer</button><button>Accept</button></div>
+          <div class="explain">Insurance shifts the financial impact to a third party. It does not reduce the likelihood of an attack, so it is usually combined with mitigation.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: NotPetya victims who paid the ransom got their files back.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">NotPetya was a wiper disguised as ransomware; recovery of the encrypted data was not possible even after payment. Offline backups were the only real remedy.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>After adding full-disk encryption, a stolen laptop still has likelihood 3 but impact drops to 2. What is the new score of 6 called?</p>
+          <div class="opts"><button>Inherent risk</button><button>The threat level</button><button>The vulnerability score</button><button data-correct>Residual risk</button></div>
+          <div class="explain">Residual risk is what remains after controls are applied: 3 × 2 = 6. Inherent risk is the tempting answer, but that was the score <em>before</em> the control (3 × 4 = 12).</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -332,6 +555,37 @@
       </table></div>
       <p>Two more types appear in exams: <strong>deterrent</strong> controls discourage attackers (warning banners, visible cameras) and <strong>compensating</strong> controls substitute when the ideal one is impossible (extra monitoring on a legacy system that cannot be patched).</p>
       <div class="callout exam"><span class="label">Exam tip</span><p>Classify on both axes: "CCTV camera" = <em>physical, detective</em> (and deterrent if visible). "Security awareness training" = <em>administrative, preventive</em>. "Restoring from backup" = <em>technical, corrective</em>.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Types of security controls</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>How is a CCTV camera in a server room best classified?</p>
+          <div class="opts"><button>Technical, preventive</button><button data-correct>Physical, detective</button><button>Administrative, corrective</button><button>Physical, corrective</button></div>
+          <div class="explain">A camera is physical and records or reveals intrusions (detective). A visible camera also deters, but it does not physically stop anyone entering.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>How is security awareness training classified?</p>
+          <div class="opts"><button data-correct>Administrative, preventive</button><button>Technical, detective</button><button>Physical, preventive</button><button>Administrative, corrective</button></div>
+          <div class="explain">Training is a policy/people measure (administrative) that aims to stop incidents before they happen (preventive). It is not corrective: it does not fix damage after an incident.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A legacy machine cannot be patched, so you add extra monitoring and network isolation around it. What type of control is that?</p>
+          <div class="opts"><button>Deterrent</button><button>Corrective</button><button data-correct>Compensating</button><button>Preventive</button></div>
+          <div class="explain">A compensating control substitutes when the ideal control (patching) is impossible. It is not deterrent: deterrents such as warning banners discourage attackers rather than replacing a missing control.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: restoring a server from backup is a technical, corrective control.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. It is a technical measure that fixes the damage after an incident (corrective). It is tempting to call backups preventive, but a backup does not stop the incident; restoring from it repairs the outcome.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -357,6 +611,37 @@
       <div class="cards">
         <div class="card"><h4>XZ Utils backdoor (2024)</h4><p>A backdoor was slipped into a widely used open-source compression library by a contributor who had gained maintainers' trust over a long period. It was caught by chance before reaching most stable Linux releases. Supply-chain risk includes open source.</p></div>
         <div class="card"><h4>CrowdStrike outage (2024)</h4><p>A faulty security-software update crashed about 8.5 million Windows machines worldwide, grounding flights and disrupting hospitals. No attacker involved: dependence on one supplier is itself an availability risk.</p></div>
+      </div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Global cyber risks</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>The SolarWinds Orion compromise (2020) is the classic example of which kind of attack?</p>
+          <div class="opts"><button>DDoS</button><button data-correct>Software supply chain attack</button><button>SQL injection</button><button>Insider theft</button></div>
+          <div class="explain">Attackers poisoned the vendor's build process, so customers installed the backdoor themselves through a trusted, signed update.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What does the 2024 XZ Utils backdoor teach about supply-chain risk?</p>
+          <div class="opts"><button>Only commercial vendors are a supply-chain risk</button><button>Supply-chain attacks always need a DDoS first</button><button data-correct>Supply-chain risk includes open-source components and their maintainers</button><button>It only affects Windows systems</button></div>
+          <div class="explain">A contributor gained maintainers' trust over a long period and slipped a backdoor into a widely used open-source library. Assuming open source is outside the supply chain is exactly the blind spot it exposed.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: the July 2024 CrowdStrike outage was caused by attackers exploiting a vulnerability.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. A faulty security-software update crashed about 8.5 million Windows machines; no attacker was involved. It shows that dependence on one supplier is itself an availability risk.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which EU law specifically raises cybersecurity requirements for critical sectors?</p>
+          <div class="opts"><button>HIPAA</button><button>GDPR</button><button>PCI DSS</button><button data-correct>NIS2</button></div>
+          <div class="explain">NIS2 targets essential and important sectors in the EU. GDPR is also EU law but is about personal-data protection; HIPAA is a US health law and PCI DSS is an industry standard for card data.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -392,107 +677,85 @@
       <div class="callout exam"><span class="label">Exam tip</span><p>Older material lists five CSF functions. CSF 2.0 (February 2024) has <strong>six</strong>; the new one is <strong>Govern</strong>, which sits at the centre of the other five.</p></div>
 
       <div class="callout key"><span class="label">Course conclusion</span><p>Cybersecurity requires a global, multidisciplinary approach that integrates technical measures with organisational, human, legal and ethical dimensions. No single solution can provide complete protection; effective security emerges from the thoughtful integration of people, processes and technology across all dimensions of the organisation.</p></div>
-    </section>
 
-    <section>
-      <h2><span class="num">11</span>Check your understanding</h2>
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: Cybersecurity fundamentals</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Security architecture dimensions and frameworks</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>The 2016 Mirai attack on Dyn made major websites unreachable for hours. Which criterion was mainly violated?</p>
-          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Non-repudiation</button></div>
-          <div class="explain">Nothing was read or changed; users simply could not reach the services. Denial of service is the textbook availability attack.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>In the French acronym DIC, what does the "D" stand for?</p>
-          <div class="opts"><button>Data</button><button data-correct>Disponibilité (availability)</button><button>Detection</button><button>Defence</button></div>
-          <div class="explain">DIC = Disponibilité, Intégrité, Confidentialité: the same three criteria as the English CIA triad.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>A user types her username on a login page. Which function is that?</p>
-          <div class="opts"><button data-correct>Identification</button><button>Authentication</button><button>Authorization</button><button>Accountability</button></div>
-          <div class="explain">A username is a claim of identity. Authentication happens when she proves it (password, passkey). Authorization decides what she may do afterwards.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>Which mechanism best provides non-repudiation for a bank transfer?</p>
-          <div class="opts"><button>A password shared by the accounting team</button><button>A SHA-256 hash of the transfer</button><button data-correct>The customer's digital signature on the transfer</button><button>Encrypting the transfer with AES-256</button></div>
-          <div class="explain">Only the holder of the private key can produce the signature, so they cannot credibly deny it. A plain hash proves nothing about who made it, encryption gives confidentiality, and a shared password destroys accountability.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>Which authentication method resists phishing best?</p>
-          <div class="opts"><button>SMS one-time code</button><button>Push notification approval</button><button data-correct>Passkey / FIDO2 security key</button><button>Security questions</button></div>
-          <div class="explain">A passkey is cryptographically bound to the genuine website's domain, so a look-alike phishing site cannot obtain a usable login. SMS codes and push approvals can be relayed or tricked out of users.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>What was the root cause of the 2017 Equifax breach?</p>
-          <div class="opts"><button>A phishing email to the CEO</button><button data-correct>A known Apache Struts vulnerability left unpatched</button><button>A DDoS attack on its DNS provider</button><button>An insider selling data</button></div>
-          <div class="explain">A patch for the Struts flaw existed about two months before attackers used it. This is OWASP A06, Vulnerable and Outdated Components.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>You must choose a hash function to verify downloaded files today. Which one?</p>
-          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>DES</button></div>
-          <div class="explain">MD5 and SHA-1 have practical collision attacks and are deprecated. DES is an (obsolete) encryption algorithm, not a hash.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>True or false: SSL 3.0 and TLS 1.0 are still acceptable for protecting a modern website.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">All SSL versions and TLS 1.0/1.1 are deprecated because of known attacks. Use TLS 1.3 (or 1.2 with strong cipher suites).</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>On a 1–5 scale, risk A has likelihood 2 and impact 5; risk B has likelihood 4 and impact 3. Using risk = likelihood × impact, which do you treat first?</p>
-          <div class="opts"><button>Risk A (score 10), because impact matters most</button><button data-correct>Risk B (score 12)</button><button>They are equal</button><button>Neither, risks cannot be compared</button></div>
-          <div class="explain">A = 2 × 5 = 10, B = 4 × 3 = 12. B scores higher, so it is the priority, although a very high-impact risk like A may still need a specific plan (for example insurance).</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>An internet-facing server is missing a critical security patch. In risk terms, the missing patch is a…</p>
-          <div class="opts"><button>Threat</button><button data-correct>Vulnerability</button><button>Risk</button><button>Control</button></div>
-          <div class="explain">It is a weakness. The threat is the attacker or malware that could exploit it; the risk is the likelihood and impact of that happening.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>How is a CCTV camera in a server room best classified?</p>
-          <div class="opts"><button>Technical, preventive</button><button data-correct>Physical, detective</button><button>Administrative, corrective</button><button>Physical, corrective</button></div>
-          <div class="explain">A camera is physical and records or reveals intrusions (detective). A visible camera also deters, but it does not physically stop anyone entering.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>Which function was added in NIST Cybersecurity Framework 2.0 (2024)?</p>
+          <p class="q-text"><span class="qn">Q1</span>Which function was added in NIST Cybersecurity Framework 2.0 (2024)?</p>
           <div class="opts"><button>Identify</button><button>Recover</button><button data-correct>Govern</button><button>Comply</button></div>
           <div class="explain">CSF 2.0 has six functions: Govern, Identify, Protect, Detect, Respond, Recover. Govern is new and covers strategy, roles, policy and supply-chain risk.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>The SolarWinds Orion compromise (2020) is the classic example of which kind of attack?</p>
-          <div class="opts"><button>DDoS</button><button data-correct>Software supply chain attack</button><button>SQL injection</button><button>Insider theft</button></div>
-          <div class="explain">Attackers poisoned the vendor's build process, so customers installed the backdoor themselves through a trusted, signed update.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>A company buys cyber insurance to cover ransomware losses. Which risk treatment is that?</p>
-          <div class="opts"><button>Avoid</button><button>Mitigate</button><button data-correct>Transfer</button><button>Accept</button></div>
-          <div class="explain">Insurance shifts the financial impact to a third party. It does not reduce the likelihood of an attack, so it is usually combined with mitigation.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q15</span>True or false: NotPetya victims who paid the ransom got their files back.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">NotPetya was a wiper disguised as ransomware; recovery of the encrypted data was not possible even after payment. Offline backups were the only real remedy.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q16</span>How did attackers first get into Target's network in 2013?</p>
+          <p class="q-text"><span class="qn">Q2</span>How did attackers first get into Target's network in 2013?</p>
           <div class="opts"><button>A zero-day in the point-of-sale terminals</button><button data-correct>Stolen credentials of an HVAC contractor</button><button>A malicious USB stick in a store</button><button>A misconfigured cloud bucket</button></div>
           <div class="explain">A third-party HVAC vendor's credentials gave the first foothold. Poor segmentation and unheeded alerts let attackers reach payment systems: a multi-dimensional failure.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>How many controls are in Annex A of ISO/IEC 27001:2022?</p>
+          <div class="opts"><button data-correct>93</button><button>114</button><button>133</button><button>6</button></div>
+          <div class="explain">The 2022 edition has 93 controls in four themes: organisational, people, physical and technological. 114 was the 2013 edition, which is the tempting outdated answer.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>An employee's laptop is connected to the office network. Under zero trust, which statement is true?</p>
+          <div class="opts"><button>It is trusted because it is inside the network</button><button>It needs no MFA while in the office</button><button>Only external users are checked</button><button data-correct>Each request is still authenticated, authorised and checked for device health</button></div>
+          <div class="explain">"Never trust, always verify" (NIST SP 800-207): being inside the network grants nothing. Trusting internal devices is the old perimeter model that zero trust replaces.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In the 2013 Target breach, security alerts were raised but nobody acted on them. Which dimension failed there?</p>
+          <div class="opts"><button>Technical</button><button>Legal and regulatory</button><button data-correct>Political and managerial</button></div>
+          <div class="explain">The monitoring tools worked (the technical part), but management did not act on their alerts: a managerial failure. The legal dimension came afterwards, with the settlements.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">11</span>Final review</h2>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Final review: Cybersecurity fundamentals</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A clinic laptop holding unencrypted patient files is stolen from a car. Identify the threat, the vulnerability and the best control.</p>
+          <div class="opts"><button>Threat: the unencrypted disk; vulnerability: the thief; control: CCTV</button><button data-correct>Threat: the thief; vulnerability: the unencrypted disk; control: full-disk encryption</button><button>Threat: the patient files; vulnerability: the car; control: insurance</button><button>Threat: the thief; vulnerability: the car; control: a firewall</button></div>
+          <div class="explain">The thief is the threat, the missing encryption is the weakness, and full-disk encryption (BitLocker/FileVault) reduces the impact. Swapping threat and vulnerability is the most common exam mistake; a firewall does nothing against physical theft.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which combination is entirely current (none of it deprecated)?</p>
+          <div class="opts"><button>TLS 1.0, 3DES, MD5</button><button>SSL 3.0, RC4, SHA-1</button><button>TLS 1.1, DES, CRC32</button><button data-correct>TLS 1.3, AES-256-GCM, SHA-256</button></div>
+          <div class="explain">TLS 1.3, AES-GCM and SHA-256 are all current. Each other set contains at least one broken item (SSL/TLS 1.0/1.1, DES/3DES/RC4, MD5/SHA-1), and CRC32 is not a security hash at all.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: a phished employee, a skipped patch and an unmanaged supplier account all show that security is only as strong as its weakest link.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Strong encryption or firewalls are wasted if one of these gaps lets the attacker in; that is why the course stresses people, processes and technology together.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A customer disputes a bank transfer. The bank shows who logged in, from which device, and the customer's signature on the transaction. Which two functions provide this evidence?</p>
+          <div class="opts"><button>Availability and integrity</button><button>Confidentiality and authorization</button><button data-correct>Traceability (audit trails) and non-repudiation (digital signatures)</button><button>Identification only</button></div>
+          <div class="explain">Audit trails record what happened and when; the digital signature ties the transfer to the customer's private key so they cannot credibly deny it. Authorization only decides what a user may do, it proves nothing afterwards.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>After a ransomware attack, restoring systems from clean backups belongs to which NIST CSF 2.0 function?</p>
+          <div class="opts"><button data-correct>Recover</button><button>Govern</button><button>Detect</button><button>Identify</button></div>
+          <div class="explain">Recover covers restoring assets and operations after an incident. Govern is the tempting newest function, but it covers strategy, roles and policy, not technical restoration.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>The 2023 MOVEit Transfer mass data theft exploited which kind of flaw, and which criterion did it mainly hit?</p>
+          <div class="opts"><button>A DDoS; availability</button><button data-correct>SQL injection; confidentiality</button><button>A wiper; integrity</button><button>Phishing; availability</button></div>
+          <div class="explain">Attackers used a SQL injection flaw (OWASP Injection) to steal data from many organisations at once: a confidentiality failure. It was not a wiper or DDoS; systems kept running while data was taken.</div>
         </div>
 
         <div class="quiz-done"></div>

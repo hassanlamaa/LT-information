@@ -81,6 +81,12 @@ a { color: var(--accent); text-underline-offset: 3px }
 .lt-toc a { display: block; padding: 6px 12px; margin-left: -2px; border-left: 2px solid transparent; color: var(--muted); text-decoration: none; line-height: 1.35 }
 .lt-toc a:hover { color: var(--ink) }
 .lt-toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 700 }
+.lt-toc a { display: flex; gap: 8px }
+.lt-toc .toc-num { flex: none; min-width: 1.6em; font: 600 .8rem/1.6 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums }
+code, pre, kbd, samp { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0 }
+/* Knowledge check at the end of each lesson section */
+.quiz.check { border: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--line)); background: linear-gradient(var(--accent-soft), var(--panel) 90px) }
+.quiz.check .quiz-head h3::before { content: "Knowledge check"; display: block; font: 700 .7rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px }
 .lt-main { min-width: 0; max-width: 780px }
 @media (max-width: 960px) {
   .lt-layout { grid-template-columns: minmax(0, 1fr); gap: 20px }

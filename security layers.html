@@ -23,7 +23,7 @@
     <span class="eyebrow">Cybersecurity · Security layers</span>
     <h1>Security Layers</h1>
     <p class="lead">Explore how different security domains interact and protect information systems. Understand the "weakest link" principle through interactive examples, scenarios and knowledge checks, and see how today's defence-in-depth and zero-trust thinking build on the same layered idea.</p>
-    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">Interactive layer explorer</span></div>
+    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">32 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">Interactive layer explorer</span></div>
     <div class="goals">
       <h2>Learning objectives</h2>
       <ul>
@@ -89,6 +89,37 @@
       </dl>
       <div class="callout analogy"><span class="label">Analogy</span><p>A bank branch has a locked door, a guard, cameras, a vault and a time lock. A robber has to beat all of them. But if the vault code is written on a sticky note, all the other layers barely matter: that note is the weakest link.</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Defence in depth and weakest link are two sides of the same idea. Defence in depth is the <em>strategy</em> (stack independent layers); weakest link is the <em>warning</em> (one neglected layer undoes the investment in the others).</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The layered model</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What does "defence in depth" mean?</p>
+          <div class="opts"><button>Buying the most expensive firewall</button><button data-correct>Several independent layers of controls, so one failure does not expose the asset</button><button>Encrypting data twice</button><button>Hiding the network from attackers</button></div>
+          <div class="explain">Defence in depth stacks different controls (application, operations, network, people) so an attacker must defeat several, and each layer can detect them.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which statement best describes zero trust?</p>
+          <div class="opts"><button>Trust everything inside the firewall</button><button>Never connect to the internet</button><button data-correct>Never trust by default; authenticate and authorise every request, wherever it comes from</button><button>Only trust users with admin rights</button></div>
+          <div class="explain">Zero trust (NIST SP 800-207) removes the idea of a trusted internal network, which is exactly what failed in the flat-network e-commerce scenario.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A bank branch has locked doors, a guard, cameras and a vault, but the vault code is on a sticky note. Which principle does the note illustrate?</p>
+          <div class="opts"><button>Zero trust</button><button>Defence in depth</button><button>Least privilege</button><button data-correct>The weakest link</button></div>
+          <div class="explain">One neglected gap undoes all the other layers: the weakest link. Defence in depth is the tempting answer, but that is the <em>strategy</em> of stacking layers; the sticky note is the <em>warning</em> about what defeats it.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: in the layered model, the innermost layer is the organisation-wide cybersecurity strategy.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The innermost layer is logical and application security, closest to the software and data. Cybersecurity integration (strategy, governance, people) is the outermost ring that ties the others together.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -114,14 +145,35 @@
       </div>
       <div class="callout warn"><span class="label">Common mistake</span><p>"We encrypt everything, so we are secure." Encryption only protects against people who do not have the key or a valid login. Most breaches use valid (stolen) credentials or an application flaw, and the application decrypts the data for them.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: Logical security</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Layer 1: Logical &amp; application security</h3><span class="quiz-score"></span></div>
+
         <div class="q">
           <p class="q-text"><span class="qn">Q1</span>A company has implemented strong encryption for all data but has not classified data by sensitivity level. Which logical security component is weak?</p>
           <div class="opts"><button>Cryptography</button><button data-correct>Data Classification</button><button>Access Control</button><button>Malware Detection</button></div>
           <div class="explain">Data classification is essential for applying appropriate protection measures based on sensitivity. Without it, all data gets the same protection level, which may be insufficient for confidential information or wasteful for normal data.</div>
         </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which layer does SQL injection in a web application mainly belong to?</p>
+          <div class="opts"><button data-correct>Logical &amp; application</button><button>Operational</button><button>Telecommunications</button><button>Cybersecurity integration</button></div>
+          <div class="explain">Injection is a flaw in the application code (OWASP Top 10, "Injection"). It is fixed by parameterised queries and input validation in the software.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In the hospital scenario, all doctors share one admin password. What does that most directly cause?</p>
+          <div class="opts"><button>Encryption of patient data stops working</button><button>Backups can no longer be restored</button><button data-correct>Accountability is lost and least privilege is broken</button><button>The Wi-Fi becomes insecure</button></div>
+          <div class="explain">With a shared account nobody can tell which doctor did what, and every doctor has admin rights they do not need. Encryption keeps working, which is exactly why it gives a false sense of security here.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: an attacker who phishes a valid login can usually read "encrypted" data, because the application decrypts it for logged-in users.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Encryption at rest protects against someone who steals the disk, not against a valid (stolen) login. That is why access control, MFA and least privilege matter as much as cryptography in this layer.</div>
+        </div>
+
         <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -152,14 +204,41 @@
       </div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Keeping the only backup on a network share that the same admin account can reach. Ransomware operators steal admin credentials and delete or encrypt backups before launching the encryption. Separate credentials and an offline/immutable copy are essential.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: Operational security</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Layer 2: Operational security</h3><span class="quiz-score"></span></div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>A company performs regular backups but has never tested restoring data from them. Which operational security principle is being violated?</p>
+          <p class="q-text"><span class="qn">Q1</span>A company performs regular backups but has never tested restoring data from them. Which operational security principle is being violated?</p>
           <div class="opts"><button>Configuration Management</button><button>Incident Management</button><button data-correct>Backup Verification</button><button>Log Management</button></div>
           <div class="explain">Backups without restoration testing are unreliable. The only way to ensure backups work is to periodically test restoration procedures. Many organisations discover their backups are corrupted or incomplete only during a real crisis.</div>
         </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A server is compromised because a published patch was never installed. Which layer failed?</p>
+          <div class="opts"><button>Logical &amp; application</button><button data-correct>Operational</button><button>Telecommunications</button><button>Physical</button></div>
+          <div class="explain">Patch and update management is a day-to-day operational task. The flaw was in the software, but the failure was in operations not applying the fix.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Backups run every night at 01:00. The server fails at 18:00 the same day. What can be lost, and which metric describes it?</p>
+          <div class="opts"><button data-correct>About 17 hours of changes; that is the RPO</button><button>About 17 hours of downtime; that is the RTO</button><button>Nothing, because a backup exists</button><button>24 hours of changes; that is the SLA</button></div>
+          <div class="explain">Everything written since 01:00 is not in the backup: 17 hours of data, which is what RPO (acceptable data loss in time) measures. RTO is the tempting answer, but it measures how long the service is down, not how much data is lost.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>The only backup sits on a network share that the domain admin account can reach. Why is this risky?</p>
+          <div class="opts"><button>Restores from a network share are always too slow</button><button>Backups must only ever be kept on tape</button><button data-correct>Attackers who steal the admin credentials can delete or encrypt it before launching ransomware</button><button>Log management cannot monitor network shares</button></div>
+          <div class="explain">Ransomware operators hunt for backups first. Separate credentials and an offline or immutable copy are the fix. Speed and media type are secondary; the real problem is that the attacker can reach the only copy.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: change management means changes are planned, approved, tested and reversible.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Its purpose is that "maintenance" never becomes the cause of an outage. Skipping it, as in the financial-firm scenario, turns routine work into an availability risk.</div>
+        </div>
+
         <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -199,14 +278,41 @@
       </div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Thinking TLS protects the data everywhere. TLS protects data <em>in transit</em> between two endpoints. Once it arrives on the server, protection depends on the other layers.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: Telecommunications security</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Layer 3: Telecommunications security</h3><span class="quiz-score"></span></div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>A company implements excellent encryption for data transmission but does not segment its internal network. Which telecommunications security principle is weak?</p>
+          <p class="q-text"><span class="qn">Q1</span>A company implements excellent encryption for data transmission but does not segment its internal network. Which telecommunications security principle is weak?</p>
           <div class="opts"><button>Transmission Security</button><button data-correct>Network Architecture</button><button>Access Controls</button><button>Network Management</button></div>
           <div class="explain">Network segmentation is a critical architectural security control that limits lateral movement if a system is compromised. Without segmentation, attackers who breach one system can easily access others on the same network, regardless of strong transmission encryption.</div>
         </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which is the most secure choice for an office Wi-Fi network today?</p>
+          <div class="opts"><button>WEP</button><button>WPA with TKIP</button><button>WPA2 with a password written on the wall</button><button data-correct>WPA3</button></div>
+          <div class="explain">WPA3 uses SAE, which resists offline password guessing. WEP and WPA-TKIP are broken; WPA2 is acceptable only with AES and a strong secret.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A network administrator still manages switches with Telnet. What should replace it?</p>
+          <div class="opts"><button>FTP</button><button data-correct>SSH</button><button>HTTP</button><button>SNMPv1</button></div>
+          <div class="explain">Telnet sends passwords in clear text. SSH encrypts and authenticates the session. The other options are also insecure clear-text protocols.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: because an e-commerce site uses TLS 1.3, its customer database is protected even if an internal workstation is infected.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">TLS only protects data in transit between browser and server. An infected internal machine on a flat network can reach the database directly: a network-architecture problem.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Routers are still monitored with SNMP v2c. What should replace it?</p>
+          <div class="opts"><button data-correct>SNMPv3 with authentication and encryption</button><button>SNMPv1</button><button>Telnet</button><button>FTP</button></div>
+          <div class="explain">SNMP v1/v2c send community strings in clear text; SNMPv3 adds authentication and encryption. SNMPv1 is the tempting "other version", but it is even older and just as insecure.</div>
+        </div>
+
         <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -250,14 +356,35 @@
         <p><strong>Outcome:</strong> an employee falls for a phishing email, giving attackers credentials that bypass the strong network security. Attackers then access design servers because of weak access controls, stealing proprietary manufacturing designs. Training plus phishing-resistant MFA (passkeys) would have broken the first step; least privilege on the design servers would have limited the second.</p>
       </div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: Cybersecurity integration</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Layer 4: Cybersecurity integration</h3><span class="quiz-score"></span></div>
+
         <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>A company has strong logical, operational and telecommunications security, but no employee security training programme. According to the "weakest link" principle, what is its overall security level?</p>
+          <p class="q-text"><span class="qn">Q1</span>A company has strong logical, operational and telecommunications security, but no employee security training programme. According to the "weakest link" principle, what is its overall security level?</p>
           <div class="opts"><button>Excellent: 3 out of 4 areas are strong</button><button>Good: the majority of areas are strong</button><button data-correct>Poor: one weak area compromises all</button><button>Cannot determine without more information</button></div>
           <div class="explain">The "weakest link" principle states that overall security is determined by the weakest component. Since human factors (lack of training) are among the most exploited weaknesses (phishing is a leading entry point), this gap can undermine all other controls. In practice, defence in depth can soften the damage, but the principle tells you where to invest next.</div>
         </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Risk X has probability 2 and dangerousness 5. Risk Y has probability 4 and dangerousness 3. Which score is higher?</p>
+          <div class="opts"><button>X, with 10</button><button data-correct>Y, with 12</button><button>They are equal at 7</button><button>X, with 25</button></div>
+          <div class="explain">Multiply, do not add: X = 2 × 5 = 10, Y = 4 × 3 = 12. Y is treated first.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In NIST CSF 2.0, which function corresponds most closely to Layer 4 (cybersecurity integration and strategy)?</p>
+          <div class="opts"><button>Detect</button><button>Recover</button><button data-correct>Govern</button><button>Protect</button></div>
+          <div class="explain">Govern, added in CSF 2.0 (2024), covers strategy, roles and responsibilities, policy and supply-chain risk: the organisation-wide integration this layer describes.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A department manager says: "Security is IT's job, not mine." What does Layer 4 say?</p>
+          <div class="opts"><button>He is right: security belongs to the IT department</button><button>Only the network team is responsible</button><button>Only external auditors are responsible</button><button data-correct>Security is everyone's responsibility, and leadership is accountable for it</button></div>
+          <div class="explain">Organisational responsibility is a core part of Layer 4: staff behaviour (for example clicking a phishing link) is often the weakest link. Leaving it to IT alone creates the silos this layer exists to remove.</div>
+        </div>
+
         <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -273,71 +400,79 @@
         </tbody>
       </table></div>
       <div class="callout key"><span class="label">Key idea</span><p>A strong design has preventive, detective <em>and</em> corrective controls in every layer. Prevention alone fails silently; detection without correction just watches the damage.</p></div>
-    </section>
 
-    <section>
-      <h2 id="quiz"><span class="num">7</span>Final quiz</h2>
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: Security layers</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Controls across the layers</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>Which layer does SQL injection in a web application mainly belong to?</p>
-          <div class="opts"><button data-correct>Logical &amp; application</button><button>Operational</button><button>Telecommunications</button><button>Cybersecurity integration</button></div>
-          <div class="explain">Injection is a flaw in the application code (OWASP Top 10, "Injection"). It is fixed by parameterised queries and input validation in the software.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>A server is compromised because a published patch was never installed. Which layer failed?</p>
-          <div class="opts"><button>Logical &amp; application</button><button data-correct>Operational</button><button>Telecommunications</button><button>Physical</button></div>
-          <div class="explain">Patch and update management is a day-to-day operational task. The flaw was in the software, but the failure was in operations not applying the fix.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>Which is the most secure choice for an office Wi-Fi network today?</p>
-          <div class="opts"><button>WEP</button><button>WPA with TKIP</button><button>WPA2 with a password written on the wall</button><button data-correct>WPA3</button></div>
-          <div class="explain">WPA3 uses SAE, which resists offline password guessing. WEP and WPA-TKIP are broken; WPA2 is acceptable only with AES and a strong secret.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>A network administrator still manages switches with Telnet. What should replace it?</p>
-          <div class="opts"><button>FTP</button><button data-correct>SSH</button><button>HTTP</button><button>SNMPv1</button></div>
-          <div class="explain">Telnet sends passwords in clear text. SSH encrypts and authenticates the session. The other options are also insecure clear-text protocols.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>What does "defence in depth" mean?</p>
-          <div class="opts"><button>Buying the most expensive firewall</button><button data-correct>Several independent layers of controls, so one failure does not expose the asset</button><button>Encrypting data twice</button><button>Hiding the network from attackers</button></div>
-          <div class="explain">Defence in depth stacks different controls (application, operations, network, people) so an attacker must defeat several, and each layer can detect them.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>Which statement best describes zero trust?</p>
-          <div class="opts"><button>Trust everything inside the firewall</button><button>Never connect to the internet</button><button data-correct>Never trust by default; authenticate and authorise every request, wherever it comes from</button><button>Only trust users with admin rights</button></div>
-          <div class="explain">Zero trust (NIST SP 800-207) removes the idea of a trusted internal network, which is exactly what failed in the flat-network e-commerce scenario.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>Risk X has probability 2 and dangerousness 5. Risk Y has probability 4 and dangerousness 3. Which score is higher?</p>
-          <div class="opts"><button>X, with 10</button><button data-correct>Y, with 12</button><button>They are equal at 7</button><button>X, with 25</button></div>
-          <div class="explain">Multiply, do not add: X = 2 × 5 = 10, Y = 4 × 3 = 12. Y is treated first.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>A SIEM raising an alert about many failed logins is which type of control?</p>
+          <p class="q-text"><span class="qn">Q1</span>A SIEM raising an alert about many failed logins is which type of control?</p>
           <div class="opts"><button>Administrative, preventive</button><button data-correct>Technical, detective</button><button>Physical, detective</button><button>Technical, corrective</button></div>
           <div class="explain">It is software (technical) and it notices an event in progress (detective). Account lockout after the alert would be preventive or corrective.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>True or false: because an e-commerce site uses TLS 1.3, its customer database is protected even if an internal workstation is infected.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">TLS only protects data in transit between browser and server. An infected internal machine on a flat network can reach the database directly: a network-architecture problem.</div>
+          <p class="q-text"><span class="qn">Q2</span>How is a locked server room with badge access classified?</p>
+          <div class="opts"><button data-correct>Physical, preventive</button><button>Physical, detective</button><button>Technical, preventive</button><button>Administrative, corrective</button></div>
+          <div class="explain">It is a physical barrier that stops entry before an incident (preventive). It is not detective: CCTV or door alarms would be the physical controls that notice an intrusion.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>In NIST CSF 2.0, which function corresponds most closely to Layer 4 (cybersecurity integration and strategy)?</p>
-          <div class="opts"><button>Detect</button><button>Recover</button><button data-correct>Govern</button><button>Protect</button></div>
-          <div class="explain">Govern, added in CSF 2.0 (2024), covers strategy, roles and responsibilities, policy and supply-chain risk: the organisation-wide integration this layer describes.</div>
+          <p class="q-text"><span class="qn">Q3</span>The primary server crashes and the service automatically fails over to a standby server. Which type of control is the failover?</p>
+          <div class="opts"><button>Technical, preventive</button><button>Administrative, detective</button><button data-correct>Technical, corrective</button></div>
+          <div class="explain">Failover is a technical measure that restores service after the failure has happened: corrective. It does not prevent the crash itself, which is why "preventive" is the tempting wrong answer.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: a design with strong preventive controls in every layer does not need detective controls.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Prevention eventually fails, and it fails silently. Without detective controls (SIEM, IDS, CCTV) nobody knows an attacker got through, and corrective controls are never triggered.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="quiz"><span class="num">7</span>Final review</h2>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Final review: Security layers</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>An employee is phished, malware spreads from her laptop across a flat network, and it exploits an unpatched database server. Which layers failed?</p>
+          <div class="opts"><button>Only Layer 1, because the database was attacked</button><button data-correct>Layer 4 (people), Layer 3 (flat network) and Layer 2 (patching)</button><button>Only Layer 3, because the network was flat</button><button>None, because the website used TLS</button></div>
+          <div class="explain">Three gaps lined up: no effective training or phishing-resistant MFA (Layer 4), no segmentation (Layer 3) and a missing patch (Layer 2). Blaming one layer is the tempting simplification; TLS only protected traffic in transit.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which control belongs to Layer 3 (telecommunications)?</p>
+          <div class="opts"><button>Code review</button><button>Restore testing</button><button data-correct>Network segmentation with VLANs and internal firewalls</button><button>Security awareness training</button></div>
+          <div class="explain">Segmentation limits lateral movement across the network. Code review is Layer 1, restore testing is Layer 2 and awareness training is Layer 4.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which pairing of layer and typical failure is correct?</p>
+          <div class="opts"><button>Layer 1: untested backups</button><button>Layer 2: SQL injection</button><button>Layer 3: shared admin password</button><button data-correct>Layer 4: untrained staff and security run in silos</button></div>
+          <div class="explain">Untrained staff and silos are integration failures. The others are swapped: untested backups are Layer 2, SQL injection and shared admin passwords are Layer 1.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: defence in depth and the weakest-link principle contradict each other.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. They are two sides of the same idea: defence in depth is the strategy (stack independent layers), and the weakest link is the warning (one neglected layer undoes the rest).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>ISO/IEC 27001:2022 groups its 93 Annex A controls into which four themes?</p>
+          <div class="opts"><button data-correct>Organisational, people, physical, technological</button><button>Identify, protect, detect, respond</button><button>Preventive, detective, corrective, deterrent</button><button>Logical, operational, telecommunications, integration</button></div>
+          <div class="explain">Those four themes map neatly onto the layers on this page. Identify/protect/detect/respond are NIST CSF functions, which is the tempting mix-up.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>In the risk worked example, which risk is treated first, and what is the main remedy?</p>
+          <div class="opts"><button>Unpatched VPN appliance (15): patch it</button><button data-correct>Staff phished (16): phishing-resistant MFA plus awareness training</button><button>Backups fail to restore (10): restore tests</button><button>Office Wi-Fi on WPA2 (6): move to WPA3</button></div>
+          <div class="explain">Phishing scores highest (4 × 4 = 16), so the budget goes there first; the VPN (15) comes next. Treating risks in score order is how the weakest-link principle becomes an action plan.</div>
         </div>
 
         <div class="quiz-done"></div>

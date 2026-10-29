@@ -28,7 +28,7 @@
     <span class="eyebrow">Remote Invocation · Practice</span>
     <h1>Extra Practice Zone: CORBA, RMI-IIOP and IDL</h1>
     <p class="lead">Test your understanding with scenario questions, fill-in-the-blanks, a matching game, an IDL writing task and new exercises on code fixing, IDL mapping and modern RPC. Every exercise has a worked answer: try first, then open it.</p>
-    <div class="chips"><span class="chip">≈ 40 min</span><span class="chip">15 exercises</span><span class="chip">10-question mixed quiz</span><span class="chip">Level: Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 40 min</span><span class="chip">15 exercises</span><span class="chip">10-question mixed quiz</span><span class="chip">3 knowledge checks</span><span class="chip">Level: Intermediate</span></div>
     <div class="goals">
       <h2>This practice checks that you can</h2>
       <ul>
@@ -166,6 +166,39 @@ account.transfer(<span class="n">100</span>, balance);
           <li><strong>IOR</strong> (Interoperable Object Reference), written as <code>IOR:0000…</code>.</li>
           <li><strong>Protocol Buffers</strong> (protobuf), in <code>.proto</code> files compiled by <code>protoc</code>.</li>
         </ol></details>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Protocols, references and naming</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>How are GIOP and IIOP related?</p>
+          <div class="opts">
+            <button data-correct>IIOP is GIOP mapped onto TCP/IP</button>
+            <button>GIOP is the Java-only version of IIOP</button>
+            <button>They are two unrelated vendor protocols</button>
+          </div>
+          <div class="explain">GIOP defines the message formats in the abstract; IIOP is GIOP carried over TCP/IP. "Java-only" is tempting, but that describes JRMP, not GIOP; both GIOP and IIOP are language-neutral.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A client receives the string <code>IOR:000000000000001…</code> by e-mail. What can it do with it?</p>
+          <div class="opts">
+            <button>Nothing until it is compiled with the IDL compiler</button>
+            <button data-correct>Convert it with <code>orb.string_to_object()</code> and narrow it to call the remote object</button>
+            <button>Use it as the Naming Service password</button>
+          </div>
+          <div class="explain">An IOR encodes the host, port and object key, so the ORB can turn it back into an object reference. IDL compilation is tempting, but that produces stubs from interface definitions; an IOR identifies one object, not an interface.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The Naming Service lets clients find an object by a human-readable name instead of handling a raw IOR string.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The Naming Service (CosNaming) maps names such as "Hello" to object references, which clients get with <code>resolve_str</code>. It is tempting to think the client still needs the IOR, but the service hands it over behind the scenes.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ========== Matching ========== -->
@@ -185,6 +218,39 @@ account.transfer(<span class="n">100</span>, balance);
       <details class="reveal"><summary>Worked answer: matching</summary>
         <p>[1] ORB Core · [2] DSI · [3] Interface Repository · [4] POA · [5] DII · [6] Implementation Repository.</p>
         <p>The usual traps: DII (client side) vs DSI (server side), and Interface Repository (describes <em>types</em>) vs Implementation Repository (describes <em>how to start servers</em>).</p></details>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>CORBA components</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A server object sits idle and its process is not running. A client call arrives. Which repository knows how to locate and start that server?</p>
+          <div class="opts">
+            <button>Interface Repository</button>
+            <button>Dynamic Skeleton Interface</button>
+            <button data-correct>Implementation Repository</button>
+          </div>
+          <div class="explain">The Implementation Repository describes how to start servers on demand. The Interface Repository is the tempting wrong answer: it describes interface <em>types</em> (operations and parameters), not how to launch processes.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>DSI is the client-side way to build requests at run time without a stub.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. That is DII. DSI (Dynamic Skeleton Interface) is the <em>server-side</em> counterpart: it lets a server receive requests without a pre-compiled skeleton.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which component handles servant activation and generates object references on the server?</p>
+          <div class="opts">
+            <button>ORB Core</button>
+            <button data-correct>Portable Object Adapter (POA)</button>
+            <button>Dynamic Invocation Interface (DII)</button>
+          </div>
+          <div class="explain">The POA mediates between the ORB and the servants: it activates them and creates their references. The ORB core is tempting, but its job is routing requests between objects, not managing servants.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ========== IDL challenge ========== -->
@@ -211,6 +277,39 @@ account.transfer(<span class="n">100</span>, balance);
     };
 };</code></pre>
         <p>Points to check: the exception is declared <em>before</em> it is used; <code>raises</code> lists it in brackets; every declaration ends with a semicolon, including the closing <code>};</code> of the interface and module. In Java, <code>location</code> becomes <code>String location()</code> and <code>getTemp()</code> becomes <code>float getTemp() throws SensorError</code>.</p></details>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>IDL attributes and exceptions</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Where must <code>exception SensorError {};</code> appear in the IDL file?</p>
+          <div class="opts">
+            <button data-correct>Before the operation that names it in <code>raises</code></button>
+            <button>Anywhere, even after the closing <code>};</code> of the module</button>
+            <button>Inside the <code>getTemp()</code> brackets</button>
+          </div>
+          <div class="explain">IDL names must be declared before they are used, so the exception comes before the interface that raises it. "Anywhere" is tempting if you are used to Java, where declaration order inside a class does not matter.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which line correctly declares that <code>getTemp</code> may throw <code>SensorError</code>?</p>
+          <div class="opts">
+            <button><code>float getTemp() throws SensorError;</code></button>
+            <button><code>float getTemp() raises SensorError;</code></button>
+            <button data-correct><code>float getTemp() raises (SensorError);</code></button>
+          </div>
+          <div class="explain">IDL uses the keyword <code>raises</code> with the exception names in brackets. <code>throws</code> is the Java keyword, and <code>raises</code> without brackets is a syntax error.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In Java, <code>readonly attribute string location;</code> becomes a method called <code>getLocation()</code>.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The Java mapping uses the attribute name with no <code>get</code>/<code>set</code> prefix, so it becomes <code>String location()</code>. It is tempting to answer True because JavaBeans getters use <code>get</code>, but the IDL mapping does not.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ========== New exercises ========== -->

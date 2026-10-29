@@ -19,7 +19,7 @@
     <span class="eyebrow">Cybersecurity · Lesson 1</span>
     <h1>The CIA Triad</h1>
     <p class="lead">Confidentiality, Integrity and Availability: the foundation of cybersecurity. Almost every security control, policy and exam question can be traced back to protecting one of these three properties, so this page builds them up carefully with real incidents and practice scenarios.</p>
-    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Foundation</span></div>
+    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">34 quiz questions</span><span class="chip">Level: Foundation</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -69,6 +69,37 @@
 
       <div class="callout key"><span class="label">Key idea</span><p>For any security incident, ask three questions. Did the wrong people <strong>see</strong> it? (C) Was it <strong>changed</strong> without authorisation? (I) Could the right people <strong>use</strong> it when they needed to? (A)</p></div>
       <p>The opposite of CIA is sometimes taught as the <strong>DAD</strong> triad, the attacker's goals: <strong>D</strong>isclosure (breaks C), <strong>A</strong>lteration (breaks I), <strong>D</strong>estruction or denial (breaks A).</p>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The cornerstone of information security</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which word in the DAD triad is the opposite of integrity?</p>
+          <div class="opts"><button>Disclosure</button><button data-correct>Alteration</button><button>Destruction</button><button>Denial</button></div>
+          <div class="explain">DAD = Disclosure (vs confidentiality), Alteration (vs integrity), Destruction/Denial (vs availability).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which of these is <em>not</em> one of the three CIA properties?</p>
+          <div class="opts"><button>Confidentiality</button><button>Availability</button><button>Integrity</button><button data-correct>Authentication</button></div>
+          <div class="explain">The three properties are confidentiality, integrity and availability. Authentication is a <em>control</em> (proving who you are) that mainly supports confidentiality. Do not confuse it with <em>authenticity</em>, which appears later as an extension of CIA.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A hacker replaces a university's homepage with a defacement message. The site stays online and no private data is read. Using the three key questions, which property is mainly broken?</p>
+          <div class="opts"><button data-correct>Integrity</button><button>Confidentiality</button><button>Availability</button></div>
+          <div class="explain">The content was <strong>changed</strong> without authorisation: integrity. It is tempting to say availability, but the site is still reachable; and nothing secret was disclosed, so confidentiality holds.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: in the DAD triad, "Disclosure" is the attacker's goal against confidentiality.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. DAD is the attacker's mirror of CIA: Disclosure breaks confidentiality, Alteration breaks integrity, and Destruction or denial breaks availability. Disclosure is not about integrity: the data is seen, not changed.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -111,6 +142,43 @@
       </div>
 
       <div class="callout warn"><span class="label">Common mistake</span><p>"Confidentiality" and "privacy" are related but not identical. Confidentiality is a security property (only authorised parties can read the data). Privacy is about an individual's rights over personal data: whether it should be collected and used at all. A company can keep data perfectly confidential and still violate privacy by collecting it without consent.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Confidentiality</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A hospital implements a system where patient records can only be accessed by authorised medical staff using secure login credentials. Which CIA principle does this primarily address?</p>
+          <div class="opts"><button data-correct>Confidentiality</button><button>Integrity</button><button>Availability</button><button>All of the above</button></div>
+          <div class="explain">Restricting who can view records is confidentiality. Access control can incidentally help integrity, but the primary purpose here is preventing unauthorised disclosure.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which pair of controls protects confidentiality of data both at rest and in transit?</p>
+          <div class="opts"><button>RAID and UPS</button><button data-correct>Disk encryption (AES-256) and TLS 1.3</button><button>Checksums and version control</button><button>Load balancer and failover</button></div>
+          <div class="explain">AES-based disk or database encryption covers data at rest; TLS covers data in transit. The other pairs protect availability or integrity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: a non-disclosure agreement (NDA) is a technical confidentiality control.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. An NDA is a legal contract, so it is an <em>administrative</em> control. It protects confidentiality, which is why the statement is tempting, but encryption and access control lists are the technical ones.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A nurse with a valid hospital login opens a celebrity's medical record out of curiosity, with no clinical reason. What is the correct assessment?</p>
+          <div class="opts"><button>No breach: she is an authorised user</button><button>An integrity breach, because the record was opened</button><button>An availability breach</button><button data-correct>A confidentiality breach: she has no need to know</button></div>
+          <div class="explain">Confidentiality includes insiders. Having a login does not authorise her to read every record; need to know and least privilege decide that. Nothing was changed (so not integrity) and the record is still usable (so not availability).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>A company encrypts its customer database and restricts access perfectly, but it collected the data without the customers' consent. What is the problem?</p>
+          <div class="opts"><button>A confidentiality breach</button><button>No problem, since the data is encrypted</button><button data-correct>A privacy violation, even though confidentiality is intact</button><button>An availability failure</button></div>
+          <div class="explain">Confidentiality (only authorised parties can read the data) is fully respected here. Privacy is about whether the data should be collected and used at all, so this is a privacy violation, not a confidentiality breach.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -162,6 +230,43 @@ Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
         <p>Discovered in 2010, Stuxnet was a sophisticated computer worm that targeted industrial control systems, specifically the Siemens controllers driving centrifuges at Iran's Natanz uranium-enrichment facility. Unlike most malware, which targets confidentiality or availability, Stuxnet was designed to compromise integrity.</p>
         <p><strong>Integrity attack:</strong> Stuxnet subtly altered the programming of the centrifuge controllers, changing their rotation speeds, while replaying normal readings to the monitoring systems. The centrifuges physically degraded and failed while operators believed they were functioning normally.</p>
         <p><strong>Lesson:</strong> integrity attacks can be more dangerous than confidentiality breaches because they can cause physical damage while remaining undetected. Critical infrastructure needs special integrity protection, such as signed controller code and independent monitoring.</p>
+      </div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Integrity</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A financial institution uses cryptographic hash functions to ensure that transaction data has not been altered during transmission. Which CIA principle is being protected?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Authentication</button></div>
+          <div class="explain">Hashes detect changes, so they protect integrity. In practice the hash must be keyed (HMAC) or signed; otherwise an attacker who changes the data can recompute it. Hashing does not hide data, so it is not confidentiality.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Stuxnet changed centrifuge speeds while showing operators normal readings. Which property did it mainly attack?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Utility</button></div>
+          <div class="explain">It altered controller logic and falsified sensor data. The physical damage that followed reduced availability, but the attack mechanism was integrity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which hash algorithm should you use today to protect the integrity of software downloads?</p>
+          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>CRC32</button></div>
+          <div class="explain">MD5 and SHA-1 have practical collision attacks; CRC32 only detects accidental errors. SHA-256 (or SHA-3) is the current standard.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which mechanism provides integrity <em>and</em> non-repudiation?</p>
+          <div class="opts"><button>Checksum</button><button>HMAC with a shared key</button><button data-correct>Digital signature</button><button>AES encryption</button></div>
+          <div class="explain">An HMAC proves integrity, but both parties hold the same key, so either could have produced it. Only a signature made with one person's private key ties the message to that person.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>A Linux distribution publishes an ISO and its SHA-256 value on the same website. An attacker takes over that website. Why can a matching hash no longer be trusted?</p>
+          <div class="opts"><button data-correct>The attacker can replace both the file and the published hash</button><button>SHA-256 has practical collision attacks</button><button>Hashes only detect accidental corruption</button><button>The hash was encrypted with the wrong key</button></div>
+          <div class="explain">A hash is only as trustworthy as the place you got it from: the attacker simply recomputes it for the modified file. That is why distributions also sign their hash lists. SHA-256 itself has no practical collisions; that weakness belongs to MD5 and SHA-1.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -215,6 +320,43 @@ Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
         <div class="card"><h4>CrowdStrike outage (July 2024)</h4><p>A faulty update to security software crashed about 8.5 million Windows computers, disrupting airlines, banks and hospitals. No attacker: availability failures are not always malicious.</p></div>
       </div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Thinking backups are only an availability control. A backup also restores <em>integrity</em> after tampering, but if it is unencrypted and stolen, it becomes a <em>confidentiality</em> problem. Protect backups like production data.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Availability</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>An e-commerce website implements load balancers and redundant servers to handle high traffic during holiday sales. Which CIA principle is the primary focus?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Authorization</button></div>
+          <div class="explain">Load balancing and redundancy keep the service usable under load or failure: availability.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The 2016 Dyn attack was launched mainly from…</p>
+          <div class="opts"><button>Hacked corporate servers</button><button data-correct>IoT devices such as cameras and DVRs infected with Mirai</button><button>Phishing emails to Dyn staff</button><button>A malicious insider</button></div>
+          <div class="explain">Mirai logged into IoT devices using default passwords and turned them into a botnet that flooded Dyn's DNS servers.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A service promises 99.9% uptime. Roughly how much downtime per year does that allow?</p>
+          <div class="opts"><button>About 5 minutes</button><button>About 52 minutes</button><button data-correct>About 8.8 hours</button><button>About 3.7 days</button></div>
+          <div class="explain">0.1% of 8,760 hours = 8.76 hours. 52 minutes is 99.99%; 5 minutes is 99.999%; 3.65 days is 99%.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Management says: "We can afford to lose at most one hour of data." Which metric have they just defined?</p>
+          <div class="opts"><button>RTO</button><button>The uptime percentage (the "nines")</button><button>The load-balancing ratio</button><button data-correct>RPO</button></div>
+          <div class="explain">Recovery Point Objective is the acceptable data loss measured in time, so backups must run at least hourly. RTO is the tempting answer, but it measures how long the service may be <em>down</em>, not how much data may be lost.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: availability failures are always caused by attackers.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The 2017 AWS S3 outage was a mistyped command and the July 2024 CrowdStrike outage was a faulty software update. Hardware failure, human error and natural disasters threaten availability as much as DDoS and ransomware do.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -232,6 +374,37 @@ Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
       </table></div>
       <p>Effective cybersecurity requires finding the right balance among these three principles based on the specific needs and risk profile of each organisation and system. A hospital emergency system favours availability (a doctor must never be locked out in an emergency); a military intelligence system favours confidentiality; a payment ledger favours integrity.</p>
       <div class="callout exam"><span class="label">Exam tip</span><p>Some older material (including an earlier version of this table) said that encryption decreases integrity. That is wrong. Encryption on its own does not change integrity; modern authenticated encryption actively protects it. The real cost of encryption is to <em>availability</em> if keys are lost or systems become slower.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>The interrelationship of CIA principles</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>True or false: encrypting data reduces its integrity.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">Encryption does not damage integrity, and authenticated encryption (AES-GCM, ChaCha20-Poly1305) actively detects tampering. Its main risk is to availability if keys are lost.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which system should most strongly favour availability, even at some cost in strict access controls?</p>
+          <div class="opts"><button>A military intelligence database</button><button>A payment ledger</button><button data-correct>A hospital emergency system</button></div>
+          <div class="explain">A doctor must never be locked out in an emergency, so the hospital system favours availability. The intelligence database favours confidentiality and the payment ledger favours integrity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A company copies its customer database to several extra servers in different regions. What is the most likely effect?</p>
+          <div class="opts"><button data-correct>Availability increases, but confidentiality may decrease because there are more copies to protect</button><button>Confidentiality increases because the data is spread out</button><button>Integrity is guaranteed automatically</button><button>Nothing changes for any property</button></div>
+          <div class="explain">Redundancy raises availability, but every extra copy is more attack surface, so confidentiality can suffer. Integrity is neutral at best: the copies must be kept synchronised, it is not guaranteed.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>What is the main way strong encryption can <em>hurt</em> availability?</p>
+          <div class="opts"><button>It alters the data so it becomes inaccurate</button><button>It makes the data readable by attackers</button><button>It disables backups</button><button data-correct>Lost keys can make the data unrecoverable</button></div>
+          <div class="explain">If the key is lost, the encrypted data cannot be used: an availability cost (plus a small processing overhead). The first option repeats the old myth that encryption damages integrity; it does not.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -254,6 +427,43 @@ Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
         </tbody>
       </table></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Possession and utility are the two properties students forget. Use them for scenarios where data was not read and not changed but the owner still lost something: control (possession) or usefulness (utility).</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Beyond CIA</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A laptop with a fully encrypted disk is stolen. Nobody can read the data. In the Parkerian hexad, which property was still lost?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Possession (control)</button><button>Integrity</button><button>Authenticity</button></div>
+          <div class="explain">Encryption preserved confidentiality, but the owner no longer controls the device and data. That is exactly what Parker's "possession" captures.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>An attacker sends an invoice email that looks exactly like it came from a real supplier. Which extension of CIA is violated?</p>
+          <div class="opts"><button>Availability</button><button data-correct>Authenticity</button><button>Utility</button><button>Possession</button></div>
+          <div class="explain">The message is not genuinely from who it claims. Email authentication (SPF, DKIM, DMARC) and verification procedures protect authenticity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Your backups exist, but the only decryption key was lost in the ransomware attack. In the Parkerian hexad, which property is violated?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Utility</button><button>Authenticity</button></div>
+          <div class="explain">The data is intact and still in your possession but is useless without the key: a loss of utility. (In plain CIA terms you would call it availability.)</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A customer signs a contract with their private key and later claims they never signed it. Which property lets the company prove otherwise?</p>
+          <div class="opts"><button>Confidentiality</button><button>Availability</button><button>Possession</button><button data-correct>Non-repudiation</button></div>
+          <div class="explain">A digital signature made with the customer's private key, backed by trustworthy logs and timestamps, means they cannot credibly deny signing: non-repudiation. Possession is tempting but describes control over data, not proof of who acted.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>True or false: Donn Parker's hexad (1998) adds possession, authenticity and utility to the three CIA properties.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The hexad keeps confidentiality, integrity and availability and adds possession (control), authenticity and utility, giving six properties. Non-repudiation is often added to CIA too, but it is not one of Parker's six.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -268,92 +478,45 @@ Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
     </section>
 
     <section>
-      <h2><span class="num">8</span>Test your understanding</h2>
+      <h2><span class="num">8</span>Final review</h2>
+
       <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: The CIA triad</h3><span class="quiz-score"></span></div>
+        <div class="quiz-head"><h3>Final review: The CIA triad</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>A hospital implements a system where patient records can only be accessed by authorised medical staff using secure login credentials. Which CIA principle does this primarily address?</p>
-          <div class="opts"><button data-correct>Confidentiality</button><button>Integrity</button><button>Availability</button><button>All of the above</button></div>
-          <div class="explain">Restricting who can view records is confidentiality. Access control can incidentally help integrity, but the primary purpose here is preventing unauthorised disclosure.</div>
+          <p class="q-text"><span class="qn">Q1</span>Ransomware has encrypted your file servers. Which single control best restores both availability and integrity of the data?</p>
+          <div class="opts"><button>TLS 1.3 on all connections</button><button>Non-disclosure agreements</button><button data-correct>Offline or immutable backups that are regularly restore-tested</button><button>A load balancer</button></div>
+          <div class="explain">Clean backups that ransomware cannot reach bring the data back (availability) in its original state (integrity). TLS protects data in transit and a load balancer spreads traffic; neither recovers encrypted files.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>A financial institution uses cryptographic hash functions to ensure that transaction data has not been altered during transmission. Which CIA principle is being protected?</p>
-          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Authentication</button></div>
-          <div class="explain">Hashes detect changes, so they protect integrity. In practice the hash must be keyed (HMAC) or signed; otherwise an attacker who changes the data can recompute it. Hashing does not hide data, so it is not confidentiality.</div>
+          <p class="q-text"><span class="qn">Q2</span>A former employee's account was never disabled, and it is used to download the customer list. Which property is violated, and which control would have prevented it?</p>
+          <div class="opts"><button>Availability; load balancing</button><button data-correct>Confidentiality; disabling accounts at exit and least privilege</button><button>Integrity; SHA-256 hashes</button><button>Utility; RAID</button></div>
+          <div class="explain">Data reached someone no longer authorised to see it: confidentiality. Exit procedures and least privilege close that door. Hashes detect changes (integrity), not disclosure.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>An e-commerce website implements load balancers and redundant servers to handle high traffic during holiday sales. Which CIA principle is the primary focus?</p>
-          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Authorization</button></div>
-          <div class="explain">Load balancing and redundancy keep the service usable under load or failure: availability.</div>
+          <p class="q-text"><span class="qn">Q3</span>True or false: a single control can affect more than one CIA property, sometimes in opposite directions.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. MFA increases confidentiality and integrity but may decrease availability (lockouts, a lost phone). That is why the trade-off table matters: you balance the three, you do not maximise one in isolation.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>Stuxnet changed centrifuge speeds while showing operators normal readings. Which property did it mainly attack?</p>
-          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Utility</button></div>
-          <div class="explain">It altered controller logic and falsified sensor data. The physical damage that followed reduced availability, but the attack mechanism was integrity.</div>
+          <p class="q-text"><span class="qn">Q4</span>An attacker silently changes a grade in the university database and nobody notices for months. Which pair of controls would best <em>detect</em> the change?</p>
+          <div class="opts"><button>Encryption and NDAs</button><button>A UPS and RAID</button><button>Load balancing and a CDN</button><button data-correct>Audit trails and integrity checks (hashes, version history)</button></div>
+          <div class="explain">Integrity attacks are dangerous because the data keeps being trusted; logs and integrity checks make the change visible. Encryption and NDAs protect confidentiality, while UPS, RAID and load balancing protect availability.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>Which hash algorithm should you use today to protect the integrity of software downloads?</p>
-          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>CRC32</button></div>
-          <div class="explain">MD5 and SHA-1 have practical collision attacks; CRC32 only detects accidental errors. SHA-256 (or SHA-3) is the current standard.</div>
+          <p class="q-text"><span class="qn">Q5</span>Which of these incidents was caused by human error rather than an attacker?</p>
+          <div class="opts"><button>The 2016 Dyn DDoS</button><button data-correct>The 2017 AWS S3 outage</button><button>Stuxnet</button><button>The 2015 Anthem breach</button></div>
+          <div class="explain">A mistyped command during routine debugging removed far more S3 servers than intended. Dyn (Mirai botnet), Stuxnet (a state-level worm) and Anthem (a cyberattack) all had attackers behind them.</div>
         </div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>Which mechanism provides integrity <em>and</em> non-repudiation?</p>
-          <div class="opts"><button>Checksum</button><button>HMAC with a shared key</button><button data-correct>Digital signature</button><button>AES encryption</button></div>
-          <div class="explain">An HMAC proves integrity, but both parties hold the same key, so either could have produced it. Only a signature made with one person's private key ties the message to that person.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>A laptop with a fully encrypted disk is stolen. Nobody can read the data. In the Parkerian hexad, which property was still lost?</p>
-          <div class="opts"><button>Confidentiality</button><button data-correct>Possession (control)</button><button>Integrity</button><button>Authenticity</button></div>
-          <div class="explain">Encryption preserved confidentiality, but the owner no longer controls the device and data. That is exactly what Parker's "possession" captures.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>True or false: encrypting data reduces its integrity.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">Encryption does not damage integrity, and authenticated encryption (AES-GCM, ChaCha20-Poly1305) actively detects tampering. Its main risk is to availability if keys are lost.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>The 2016 Dyn attack was launched mainly from…</p>
-          <div class="opts"><button>Hacked corporate servers</button><button data-correct>IoT devices such as cameras and DVRs infected with Mirai</button><button>Phishing emails to Dyn staff</button><button>A malicious insider</button></div>
-          <div class="explain">Mirai logged into IoT devices using default passwords and turned them into a botnet that flooded Dyn's DNS servers.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>A service promises 99.9% uptime. Roughly how much downtime per year does that allow?</p>
-          <div class="opts"><button>About 5 minutes</button><button>About 52 minutes</button><button data-correct>About 8.8 hours</button><button>About 3.7 days</button></div>
-          <div class="explain">0.1% of 8,760 hours = 8.76 hours. 52 minutes is 99.99%; 5 minutes is 99.999%; 3.65 days is 99%.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q11</span>An attacker sends an invoice email that looks exactly like it came from a real supplier. Which extension of CIA is violated?</p>
-          <div class="opts"><button>Availability</button><button data-correct>Authenticity</button><button>Utility</button><button>Possession</button></div>
-          <div class="explain">The message is not genuinely from who it claims. Email authentication (SPF, DKIM, DMARC) and verification procedures protect authenticity.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q12</span>Which pair of controls protects confidentiality of data both at rest and in transit?</p>
-          <div class="opts"><button>RAID and UPS</button><button data-correct>Disk encryption (AES-256) and TLS 1.3</button><button>Checksums and version control</button><button>Load balancer and failover</button></div>
-          <div class="explain">AES-based disk or database encryption covers data at rest; TLS covers data in transit. The other pairs protect availability or integrity.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q13</span>Your backups exist, but the only decryption key was lost in the ransomware attack. In the Parkerian hexad, which property is violated?</p>
-          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Utility</button><button>Authenticity</button></div>
-          <div class="explain">The data is intact and still in your possession but is useless without the key: a loss of utility. (In plain CIA terms you would call it availability.)</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q14</span>Which word in the DAD triad is the opposite of integrity?</p>
-          <div class="opts"><button>Disclosure</button><button data-correct>Alteration</button><button>Destruction</button><button>Denial</button></div>
-          <div class="explain">DAD = Disclosure (vs confidentiality), Alteration (vs integrity), Destruction/Denial (vs availability).</div>
+          <p class="q-text"><span class="qn">Q6</span>A phishing email steals an employee's password and the attacker reads her mailbox. Which property is broken, and which control best prevents a repeat?</p>
+          <div class="opts"><button>Availability; add a UPS</button><button>Integrity; CRC32 checksums</button><button data-correct>Confidentiality; phishing-resistant MFA such as passkeys (FIDO2)</button><button>Utility; RAID</button></div>
+          <div class="explain">The wrong person read private data: confidentiality. Passkeys are bound to the real website, so a stolen password alone no longer gets in. Checksums only catch accidental corruption and do nothing against a valid login.</div>
         </div>
 
         <div class="quiz-done"></div>

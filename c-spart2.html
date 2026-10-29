@@ -33,7 +33,7 @@
     <span class="eyebrow">Client/Server Architecture · Part 2</span>
     <h1>Client/Server Part 2: How It Works</h1>
     <p class="lead">What actually happens between clicking a link and seeing a page? This lesson follows one request from a web client to a web server and back, then weighs the strengths and weaknesses of the client/server model and the kinds of servers that make the web work.</p>
-    <div class="chips"><span class="chip">≈ 25 min read</span><span class="chip">10 quiz questions</span><span class="chip">Level: Introductory</span><span class="chip">Interactive demo</span></div>
+    <div class="chips"><span class="chip">≈ 25 min read</span><span class="chip">22 quiz questions</span><span class="chip">Level: Introductory</span><span class="chip">Interactive demo</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -84,6 +84,54 @@
       </figure>
       <div class="callout analogy"><span class="label">Analogy</span><p>A library. You (the client) fill in a request slip with a book's call number (the URL). The librarian (the server) fetches the book from the stacks (storage) and hands it over. You read it at your own desk in your own way (presentation). The library does not care how you read; you do not care how the shelves are organised.</p></div>
       <div class="callout key"><span class="label">Key idea</span><p>Separation of duties: the <strong>server stores</strong>, the <strong>client presents</strong>. That split is what lets each side be improved, replaced or scaled on its own.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Introduction to Client/Server Architecture</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the primary role of a web client?</p>
+          <div class="opts">
+            <button>Store documents and data</button>
+            <button data-correct>Send requests for documents to a web server</button>
+            <button>Process database transactions</button>
+            <button>Manage network security</button>
+          </div>
+          <div class="explain">A web client's main function is to send requests to a web server and display (render) the content it receives. Storing documents is the server's job; processing transactions belongs to transaction and database servers.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which protocol is primarily used for communication between web clients and servers?</p>
+          <div class="opts">
+            <button>FTP (File Transfer Protocol)</button>
+            <button>SMTP (Simple Mail Transfer Protocol)</button>
+            <button data-correct>HTTP (Hypertext Transfer Protocol)</button>
+            <button>TCP (Transmission Control Protocol)</button>
+          </div>
+          <div class="explain">HTTP (in practice HTTPS) is the application-layer protocol of the web. TCP is a transport-layer protocol that carries HTTP/1.1 and HTTP/2, but it is not the web's own protocol; HTTP/3 does not even use TCP. FTP transfers files and SMTP sends mail.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In a distributed architecture, the client and the server:</p>
+          <div class="opts">
+            <button>Must always run on the same machine</button>
+            <button data-correct>May run on completely separate machines</button>
+            <button>Must be written in the same programming language</button>
+            <button>Must be updated at the same time</button>
+          </div>
+          <div class="explain">Distributed means the parts can run on different machines and cooperate over a network. Because they only share a protocol, they can use different languages and be updated independently.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In the URL <code>https://www.example.edu/history.html</code>, which part is the server's name?</p>
+          <div class="opts">
+            <button><code>https</code></button>
+            <button><code>/history.html</code></button>
+            <button data-correct><code>www.example.edu</code></button>
+            <button>The whole URL</button>
+          </div>
+          <div class="explain"><code>www.example.edu</code> names the server to contact. <code>https</code> is the protocol and <code>/history.html</code> is the path to the document on that server; it is tempting to pick the path because it looks like "the page", but the path only says <em>which</em> document, not <em>where</em>.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 2. PROCESS -->
@@ -131,6 +179,49 @@
       <div class="callout warn"><span class="label">Common mistake</span><p>Thinking one click means one request. A typical page needs dozens of requests: the HTML first, then every image, stylesheet, font and script it mentions. That is why HTTP/2 and HTTP/3, which carry many requests at once over one connection, make pages load faster than HTTP/1.1.</p></div>
       <div class="callout tip"><span class="label">Try it</span><p>Open your browser's developer tools (F12), choose the <strong>Network</strong> tab and reload any page. Each row is one request/response pair. The "Protocol" column shows <code>h2</code> (HTTP/2) or <code>h3</code> (HTTP/3).</p></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>If asked "describe how a client obtains a web page", write the three classic steps (select link → connect and request → server sends, client renders), then add DNS lookup and HTTPS to show you know how it works today.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>How Client/Server Communication Works</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Before the browser can connect to <code>www.example.edu</code>, what must happen first?</p>
+          <div class="opts">
+            <button>The server sends the HTML</button>
+            <button data-correct>A DNS lookup turns the name into an IP address</button>
+            <button>The browser renders the page</button>
+            <button>The FTP control connection is opened</button>
+          </div>
+          <div class="explain">Computers connect to IP addresses, not names. DNS resolves the name first; only then can the browser open a TCP (or QUIC) connection and send the HTTP request.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>The status line <code>HTTP/1.1 200 OK</code> means:</p>
+          <div class="opts">
+            <button>The client has an error in its request</button>
+            <button>The page has moved to a new address</button>
+            <button data-correct>The request succeeded and the document follows</button>
+            <button>The server is overloaded</button>
+          </div>
+          <div class="explain">2xx codes mean success; 200 OK is the normal answer to a successful GET. Client errors are 4xx (such as 404), redirects are 3xx (such as 301), and an overloaded server answers 503.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: a web page normally arrives as one single response containing the HTML, images and styles together.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">The first response is the HTML. The browser then sends separate requests for each image, stylesheet, script and font the HTML refers to. HTTP/2 and HTTP/3 speed this up by carrying many of these requests in parallel on one connection.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which step proves the server's identity and sets up encryption keys before the HTTP request is sent?</p>
+          <div class="opts">
+            <button data-correct>The TLS handshake (TLS 1.3)</button>
+            <button>The DNS lookup</button>
+            <button>The render step</button>
+            <button>The extra requests for images and CSS</button>
+          </div>
+          <div class="explain">TLS is the "Secure" stage: the server shows its certificate and both sides agree on keys. DNS only turns the name into an IP address; it does not prove who the server is or encrypt anything.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 3. PROS CONS -->
@@ -184,6 +275,49 @@
         </tbody>
       </table></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>Pair each disadvantage with a mitigation. "Single point of failure, mitigated by redundant servers and load balancing" scores better than just "single point of failure".</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Advantages and Disadvantages</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is a key disadvantage of the client/server model?</p>
+          <div class="opts">
+            <button>Enhanced data sharing</button>
+            <button>Centralized management</button>
+            <button data-correct>Single point of failure</button>
+            <button>Location independence</button>
+          </div>
+          <div class="explain">If the only server fails, the service it provides becomes unavailable to every client. The other three options are advantages of the model.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What is the main advantage of centralized management in client/server architecture?</p>
+          <div class="opts">
+            <button data-correct>Easier administration, maintenance, and backups</button>
+            <button>Faster processing on client machines</button>
+            <button>Lower hardware costs</button>
+            <button>Eliminates the need for network infrastructure</button>
+          </div>
+          <div class="explain">With data and services in one place, administrators back up, patch and control access once instead of on every machine. It does not lower hardware cost (servers cost money) and it still needs a network.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which is the best way to reduce the single-point-of-failure risk?</p>
+          <div class="opts">
+            <button>Install a faster client browser</button>
+            <button>Switch from HTTPS to HTTP</button>
+            <button data-correct>Run several servers behind a load balancer, with replicated data</button>
+            <button>Store all data only on client machines</button>
+          </div>
+          <div class="explain">Redundancy removes the single point: if one server fails, the load balancer sends requests to the others. Client speed and HTTP versus HTTPS do not affect server availability, and moving data to clients gives up the benefits of client/server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: in a peer-to-peer network, every machine can act as both client and server.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. In P2P every peer requests and provides resources (for example BitTorrent). In client/server the roles are fixed. The tempting "false" comes from thinking a machine must pick one role; P2P is exactly the case where it does not.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- 4. SERVERS -->
@@ -248,50 +382,12 @@
       </table></div>
       <div class="callout analogy"><span class="label">Analogy</span><p>A web server is a shop assistant handing you pre-packed items from a shelf. An application server is a cook who prepares your order to your specification, fetching ingredients (data) from the store room (database).</p></div>
       <div class="callout tip"><span class="label">In practice</span><p>Real deployments usually put both together: Nginx in front serves static files and handles HTTPS, and forwards dynamic requests to the application server behind it. This setup is called a <strong>reverse proxy</strong>.</p></div>
-    </section>
 
-    <!-- 5. QUIZ -->
-    <section id="quiz">
-      <h2><span class="num">5</span>Knowledge Check</h2>
-      <p>Test your understanding of client/server architecture. Each answer shows why it is right.</p>
-      <div class="quiz">
-        <div class="quiz-head"><h3>Quiz: how client/server works</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Different Types of Servers</h3><span class="quiz-score"></span></div>
 
         <div class="q">
-          <p class="q-text"><span class="qn">Q1</span>What is the primary role of a web client?</p>
-          <div class="opts">
-            <button>Store documents and data</button>
-            <button data-correct>Send requests for documents to a web server</button>
-            <button>Process database transactions</button>
-            <button>Manage network security</button>
-          </div>
-          <div class="explain">A web client's main function is to send requests to a web server and display (render) the content it receives. Storing documents is the server's job; processing transactions belongs to transaction and database servers.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q2</span>Which protocol is primarily used for communication between web clients and servers?</p>
-          <div class="opts">
-            <button>FTP (File Transfer Protocol)</button>
-            <button>SMTP (Simple Mail Transfer Protocol)</button>
-            <button data-correct>HTTP (Hypertext Transfer Protocol)</button>
-            <button>TCP (Transmission Control Protocol)</button>
-          </div>
-          <div class="explain">HTTP (in practice HTTPS) is the application-layer protocol of the web. TCP is a transport-layer protocol that carries HTTP/1.1 and HTTP/2, but it is not the web's own protocol; HTTP/3 does not even use TCP. FTP transfers files and SMTP sends mail.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q3</span>What is a key disadvantage of the client/server model?</p>
-          <div class="opts">
-            <button>Enhanced data sharing</button>
-            <button>Centralized management</button>
-            <button data-correct>Single point of failure</button>
-            <button>Location independence</button>
-          </div>
-          <div class="explain">If the only server fails, the service it provides becomes unavailable to every client. The other three options are advantages of the model.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q4</span>Which type of server is specifically designed to handle dynamic content?</p>
+          <p class="q-text"><span class="qn">Q1</span>Which type of server is specifically designed to handle dynamic content?</p>
           <div class="opts">
             <button>File Server</button>
             <button>Database Server</button>
@@ -300,70 +396,97 @@
           </div>
           <div class="explain">A web application server generates content per request by combining data with templates and running business logic. Database servers store and query data; transaction servers guarantee all-or-nothing operations; file servers store files.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q5</span>What is the main advantage of centralized management in client/server architecture?</p>
+          <p class="q-text"><span class="qn">Q2</span>A university portal shows each student their own grades, built from a database at request time. This is:</p>
           <div class="opts">
-            <button data-correct>Easier administration, maintenance, and backups</button>
-            <button>Faster processing on client machines</button>
-            <button>Lower hardware costs</button>
-            <button>Eliminates the need for network infrastructure</button>
+            <button>Static content, served by a file server</button>
+            <button data-correct>Dynamic content, built by a web application server</button>
+            <button>Static content, because the page is HTML</button>
+            <button>Groupware content</button>
           </div>
-          <div class="explain">With data and services in one place, administrators back up, patch and control access once instead of on every machine. It does not lower hardware cost (servers cost money) and it still needs a network.</div>
+          <div class="explain">The page is different for every student and is built per request, so it is dynamic content from an application server. Being HTML does not make it static: static means the same file is sent unchanged to everyone, like a logo or a PDF timetable.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q6</span>In a distributed architecture, the client and the server:</p>
+          <p class="q-text"><span class="qn">Q3</span>Which server type guarantees that a payment is completed fully or not at all?</p>
           <div class="opts">
-            <button>Must always run on the same machine</button>
-            <button data-correct>May run on completely separate machines</button>
-            <button>Must be written in the same programming language</button>
-            <button>Must be updated at the same time</button>
+            <button>File server</button>
+            <button>Web server</button>
+            <button>Groupware server</button>
+            <button data-correct>Transaction server</button>
           </div>
-          <div class="explain">Distributed means the parts can run on different machines and cooperate over a network. Because they only share a protocol, they can use different languages and be updated independently.</div>
+          <div class="explain">A transaction server treats each operation as an all-or-nothing transaction, the basis of OLTP systems such as payments and bookings. A web server only delivers files over HTTP and gives no such guarantee.</div>
         </div>
-
         <div class="q">
-          <p class="q-text"><span class="qn">Q7</span>Before the browser can connect to <code>www.example.edu</code>, what must happen first?</p>
-          <div class="opts">
-            <button>The server sends the HTML</button>
-            <button data-correct>A DNS lookup turns the name into an IP address</button>
-            <button>The browser renders the page</button>
-            <button>The FTP control connection is opened</button>
-          </div>
-          <div class="explain">Computers connect to IP addresses, not names. DNS resolves the name first; only then can the browser open a TCP (or QUIC) connection and send the HTTP request.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q8</span>The status line <code>HTTP/1.1 200 OK</code> means:</p>
-          <div class="opts">
-            <button>The client has an error in its request</button>
-            <button>The page has moved to a new address</button>
-            <button data-correct>The request succeeded and the document follows</button>
-            <button>The server is overloaded</button>
-          </div>
-          <div class="explain">2xx codes mean success; 200 OK is the normal answer to a successful GET. Client errors are 4xx (such as 404), redirects are 3xx (such as 301), and an overloaded server answers 503.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q9</span>True or false: a web page normally arrives as one single response containing the HTML, images and styles together.</p>
-          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
-          <div class="explain">The first response is the HTML. The browser then sends separate requests for each image, stylesheet, script and font the HTML refers to. HTTP/2 and HTTP/3 speed this up by carrying many of these requests in parallel on one connection.</div>
-        </div>
-
-        <div class="q">
-          <p class="q-text"><span class="qn">Q10</span>Which is the best way to reduce the single-point-of-failure risk?</p>
-          <div class="opts">
-            <button>Install a faster client browser</button>
-            <button>Switch from HTTPS to HTTP</button>
-            <button data-correct>Run several servers behind a load balancer, with replicated data</button>
-            <button>Store all data only on client machines</button>
-          </div>
-          <div class="explain">Redundancy removes the single point: if one server fails, the load balancer sends requests to the others. Client speed and HTTP versus HTTPS do not affect server availability, and moving data to clients gives up the benefits of client/server.</div>
+          <p class="q-text"><span class="qn">Q4</span>True or false: when Nginx sits in front of an application server, serving static files and forwarding dynamic requests, it is acting as a reverse proxy.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. This common setup is called a reverse proxy: Nginx handles HTTPS and static files itself and passes dynamic requests to the application server behind it. It does not mean Nginx has become the application server; the business logic still runs behind it.</div>
         </div>
 
         <div class="quiz-done"></div>
-        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
+    </section>
+
+    <!-- 5. QUIZ -->
+    <section id="quiz">
+      <h2><span class="num">5</span>Final review</h2>
+      <p>Mixed questions from the whole lesson. Each section above also ends with its own knowledge check. Each answer shows why it is right.</p>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Mixed questions: the whole lesson</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A user clicks a link. Put these in the right order: (a) DNS lookup, (b) HTTP request, (c) render, (d) TCP/QUIC connect and TLS.</p>
+          <div class="opts">
+            <button>b, a, d, c</button>
+            <button data-correct>a, d, b, c</button>
+            <button>a, b, d, c</button>
+            <button>d, a, b, c</button>
+          </div>
+          <div class="explain">The name must be resolved first (DNS), then the browser connects and secures the channel, then it sends the HTTP request, and finally renders the response. Sending the request before connecting is the tempting mistake: there is no channel to send it on yet.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which pair correctly matches a disadvantage with its mitigation?</p>
+          <div class="opts">
+            <button>Traffic congestion: install a faster browser</button>
+            <button>Attractive target: switch to plain HTTP</button>
+            <button data-correct>Traffic congestion: caching, CDNs and load balancing</button>
+            <button>Server cost: store all data on clients</button>
+          </div>
+          <div class="explain">Caching, CDNs and load balancing spread or absorb the load, which directly reduces congestion. Moving data to the clients may look like it saves server cost, but it throws away central management and data sharing, the reasons for using client/server at all.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: because the server stores and the client presents, a browser can gain a new feature such as dark mode without any change to web servers.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. The separation of duties lets each side progress independently, as long as both keep speaking HTTP. "False" would only be right if the two sides were tightly coupled, which a shared protocol avoids.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which server answers a request for <code>logo.png</code> most directly in a typical deployment?</p>
+          <div class="opts">
+            <button data-correct>The web server, as static content</button>
+            <button>The application server, after a database query</button>
+            <button>The transaction server</button>
+            <button>The DNS server</button>
+          </div>
+          <div class="explain">A logo is the same file for everyone, so the web server sends it as-is. The application server is only needed when the response must be built per request; DNS only resolves names and never returns files.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In the browser's Network tab, a row shows protocol <code>h3</code>. Which transport carried it?</p>
+          <div class="opts">
+            <button>TCP</button>
+            <button>FTP</button>
+            <button data-correct>QUIC over UDP</button>
+            <button>SMTP</button>
+          </div>
+          <div class="explain"><code>h3</code> is HTTP/3, which runs on QUIC over UDP. TCP is the tempting answer because HTTP/1.1 and HTTP/2 (<code>h2</code>) use it, but HTTP/3 was designed to avoid TCP's head-of-line blocking.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>True or false: if the only web server fails, the whole network stops working.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The network still works; the <em>service</em> that server provided becomes unavailable to every client. That is the single point of failure, fixed with redundant servers behind a load balancer.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 

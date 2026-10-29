@@ -24,7 +24,7 @@
     <span class="eyebrow">Client/Server Architecture · Practice</span>
     <h1>Tiers: Knowledge Check</h1>
     <p class="lead">A quick revision of the tier models (1, 2, 3 and N), followed by a quiz. Read the recap first, then answer each question: you get the explanation straight away.</p>
-    <div class="chips"><span class="chip">≈ 15 min</span><span class="chip">17 quiz questions</span><span class="chip">Level: Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 15 min</span><span class="chip">26 quiz questions</span><span class="chip">Level: Intermediate</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -58,6 +58,39 @@
       </ul>
       <div class="callout analogy"><span class="label">Analogy</span><p>A restaurant: the waiter and dining room are the presentation tier, the kitchen is the application tier, the storeroom is the data tier. Customers never walk into the storeroom; they ask the waiter. That is exactly why 3-tier is more secure than 2-tier.</p></div>
       <p>For the full lesson, see <a href="teirsexplanations.html">Architecture Tiers Explained</a>.</p>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Quick recap</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Several layers can share one tier.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. A layer is a logical grouping of code and a tier is where it is deployed, so a 1-tier program holds all three layers. Answering False mixes the two words up: the course convention is layer = logical, tier = physical.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In the restaurant analogy, customers never walk into the storeroom; they ask the waiter. Which rule does this stand for?</p>
+          <div class="opts">
+            <button>The kitchen is the presentation tier</button>
+            <button data-correct>The client never reaches the data tier directly; it goes through the other tiers</button>
+            <button>The storeroom is where the business rules are applied</button>
+          </div>
+          <div class="explain">Customers (clients) only deal with the waiter, and the kitchen fetches from the storeroom: the database is never exposed to the client, which is why 3-tier is more secure. The kitchen is the application tier, not the presentation tier, and the storeroom only stores things.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>An office has a desktop app on each PC that queries a shared SQL Server directly. Which tier model is this?</p>
+          <div class="opts">
+            <button>1-tier</button>
+            <button>3-tier</button>
+            <button data-correct>2-tier</button>
+          </div>
+          <div class="explain">A thick client talking straight to a database server is the classic 2-tier model. It is not 3-tier, because there is no application server in the middle, and not 1-tier, because the data lives on another machine.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -89,6 +122,39 @@
         <figcaption>Figure 1. Classic 3-tier: each tier talks only to the tier next to it.</figcaption>
       </figure>
       <div class="callout example"><span class="label">Example</span><p>A student portal: the browser shows the grades page (presentation), a Java or Node.js server checks you are logged in and may only see your own grades (application), and a PostgreSQL database stores the grades (data).</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Classic 3-tier example</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the student portal example, which tier makes sure you can see only your own grades?</p>
+          <div class="opts">
+            <button>Presentation tier: the browser hides the other students' rows</button>
+            <button>Data tier: PostgreSQL stores the grades</button>
+            <button data-correct>Application tier: the Java or Node.js server</button>
+          </div>
+          <div class="explain">Checking who you are and what you may see is a business rule, so the application server enforces it. Hiding rows in the browser is tempting, but anything in the browser can be bypassed; the data tier only stores the grades.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In classic 3-tier, the presentation tier may skip the application tier and query the data tier directly when it needs more speed.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Each tier talks only to the tier next to it (Figure 1). Letting the client reach the database would expose it and bypass the rules, which removes the main benefit of 3-tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In Figure 1, what travels between the application tier and the data tier?</p>
+          <div class="opts">
+            <button>HTTPS requests from the browser</button>
+            <button data-correct>SQL queries</button>
+            <button>HTML pages for the user</button>
+          </div>
+          <div class="explain">The application tier sends SQL queries to the database. HTTPS requests are tempting, but they travel between the browser and the application tier, one step higher.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>
@@ -104,6 +170,39 @@
       </table></div>
       <div class="callout exam"><span class="label">Exam tip</span><p>If a question asks "where does the business logic live?", the expected answers are: 1-tier, in the single program; 2-tier, in the client; 3-tier, on the application server; N-tier, spread over several service tiers.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>A website is not 2-tier just because there is "a browser and a server". The browser talks to an application server, which talks to the database: three tiers.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>Tier comparison</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>According to the comparison table, where is the logic in a 2-tier system?</p>
+          <div class="opts">
+            <button data-correct>Mainly in the client, with some in the database (stored procedures)</button>
+            <button>On a separate application server</button>
+            <button>Split across multiple services</button>
+          </div>
+          <div class="explain">2-tier has only a client and a database server, so the logic sits mainly in the client, sometimes partly in stored procedures. A separate application server is the 3-tier answer, and multiple services is N-tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Fault isolation is one of the main advantages of N-tier.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Because the work is split across separate services and tiers, one failing part need not bring down the rest. It is tempting to say False because N-tier is "very complex", but complexity is the cost, not the absence of this benefit.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A team says: "Our system is a browser and a server, so it is 2-tier." The server is a web app that reads a MySQL database. What is correct?</p>
+          <div class="opts">
+            <button>They are right: browser plus server is 2-tier</button>
+            <button>It is 1-tier, because the web app and database are on one cloud account</button>
+            <button data-correct>It is 3-tier: browser, then application server, then database</button>
+          </div>
+          <div class="explain">The browser talks to the web application, which talks to the database: three tiers. "Browser plus server" is the common mistake from the table section; 2-tier means the client talks to the database directly.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <section>

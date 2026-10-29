@@ -27,7 +27,7 @@
     <span class="eyebrow">Remote Invocation · Chapter 4 (continued)</span>
     <h1>RMI-IIOP, CORBA and Java IDL</h1>
     <p class="lead">CORBA was the industry's big attempt to let objects written in any language, on any operating system, call each other over a network. You will learn how its ORB, IDL and IIOP protocol work, how Java plugged into it with Java IDL and RMI-IIOP, and why today's systems use gRPC and REST instead.</p>
-    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">5 knowledge checks</span><span class="chip">13-question final exam</span><span class="chip">Level: Intermediate</span></div>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">7 knowledge checks</span><span class="chip">13-question final exam</span><span class="chip">Level: Intermediate</span></div>
     <div class="goals">
       <h2>By the end you can</h2>
       <ul>
@@ -100,18 +100,35 @@
       </ul>
       <div class="callout exam"><span class="label">Exam tip</span><p>Java IDL = write IDL, generate Java (IDL-first). RMI-IIOP = write Java, run it over IIOP (Java-first). Both aim at the same thing: interoperability with CORBA objects in other languages.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check 4.9.3</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.3 RMI-IIOP and Java IDL</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q</span>What is the primary benefit of RMI-IIOP?</p>
-          <div class="opts">
-            <button>A) It replaces RMI with a faster transport.</button>
-            <button data-correct>B) It allows RMI objects to interoperate with CORBA objects written in any language.</button>
-            <button>C) It removes the need for stub generation.</button>
-            <button>D) It only works between Java applications.</button>
-          </div>
+          <p class="q-text"><span class="qn">Q1</span>What is the primary benefit of RMI-IIOP?</p>
+          <div class="opts"><button>It replaces RMI with a faster transport.</button><button data-correct>It allows RMI objects to interoperate with CORBA objects written in any language.</button><button>It removes the need for stub generation.</button><button>It only works between Java applications.</button></div>
           <div class="explain">Running RMI over IIOP lets Java objects be called by, and call, CORBA objects in C++, COBOL, Python and so on. It was not faster than JRMP, it still needed stubs and ties (from <code>rmic -iiop</code>), and its whole point was to go beyond Java-only communication.</div>
         </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>After <code>idlj -fall Hello.idl</code>, which generated file is the server skeleton that your servant class extends?</p>
+          <div class="opts"><button><code>_HelloStub.java</code></button><button data-correct><code>HelloPOA.java</code></button><button><code>HelloHolder.java</code></button><button><code>HelloOperations.java</code></button></div>
+          <div class="explain"><code>HelloPOA.java</code> is the skeleton; the servant extends it. <code>_HelloStub.java</code> is the client stub, the Holder wraps <code>out</code>/<code>inout</code> parameters, and <code>HelloOperations</code> is part of the Java interface.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What is IIOP?</p>
+          <div class="opts"><button data-correct>GIOP messages carried over TCP/IP</button><button>Java RMI's own wire protocol</button><button>An XML format for web services</button><button>The IDL-to-Java compiler</button></div>
+          <div class="explain">IIOP is GIOP over TCP/IP, CORBA's standard wire protocol since CORBA 2.0, so ORBs from different vendors interoperate. JRMP is RMI's protocol, SOAP is XML, and idlj is the compiler.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Java IDL is "IDL-first" and RMI-IIOP is "Java-first".</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. With Java IDL you write the IDL and generate Java from it. With RMI-IIOP you write ordinary RMI Java interfaces and run them over IIOP (and <code>rmic -idl</code> could even produce IDL from them).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which RMI feature does IIOP not support, so RMI-IIOP code had to unexport objects explicitly?</p>
+          <div class="opts"><button>Remote interfaces</button><button>Exceptions</button><button data-correct>Distributed garbage collection</button><button>Method parameters</button></div>
+          <div class="explain">IIOP has no distributed garbage collection, so RMI-IIOP programs could not rely on it. Interfaces, exceptions and parameters all work over IIOP.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -170,18 +187,35 @@
         <figcaption>Figure 1. A static CORBA invocation. The numbers match the five steps above. Client and server ORBs may come from different vendors because both speak IIOP.</figcaption>
       </figure>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: CORBA basics</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.4 OMG CORBA: Introduction</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q</span>What does ORB stand for in CORBA?</p>
-          <div class="opts">
-            <button data-correct>A) Object Request Broker</button>
-            <button>B) Object Remote Bridge</button>
-            <button>C) Operation Routing Buffer</button>
-            <button>D) Open Request Bus</button>
-          </div>
+          <p class="q-text"><span class="qn">Q1</span>What does ORB stand for in CORBA?</p>
+          <div class="opts"><button data-correct>Object Request Broker</button><button>Object Remote Bridge</button><button>Operation Routing Buffer</button><button>Open Request Bus</button></div>
           <div class="explain">ORB = Object Request Broker, the "broker" that carries requests between client and object. It also gives CORBA its name: Common Object Request Broker Architecture.</div>
         </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In CORBA, what is a servant?</p>
+          <div class="opts"><button>The client-side proxy for a remote object</button><button data-correct>The programming-language object that actually implements a CORBA interface on the server</button><button>The naming daemon</button><button>The wire protocol between ORBs</button></div>
+          <div class="explain">A servant is, for example, the Java object whose methods do the real work. The client-side proxy is the stub, the naming daemon is <code>orbd</code>, and the wire protocol is IIOP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In CORBA, the client must already know the server's host and port; the ORB does not help locate objects.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Location transparency is the point: the ORB handles location, activation and communication. The client usually resolves a name in the Naming Service and never needs the address.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In step 2 of a CORBA invocation, the client resolves the name <code>"Bank"</code>. What does it get back?</p>
+          <div class="opts"><button>A serialized copy of the servant</button><button>The <code>Bank.idl</code> file</button><button data-correct>An IOR, which the ORB wraps in a stub</button><button>Only a TCP port number</button></div>
+          <div class="explain">The Naming Service returns the object reference (an IOR). The client ORB wraps it in a stub, and the client then calls methods on that stub as if the object were local.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which three jobs does the ORB handle for the client?</p>
+          <div class="opts"><button>Compilation, linking and deployment</button><button>Encryption, logging and billing</button><button>Rendering, storage and caching</button><button data-correct>Location, activation and communication</button></div>
+          <div class="explain">The ORB finds the object (location), starts its server if needed (activation) and moves the request and reply (communication), like the switchboard operator in the analogy.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -212,18 +246,35 @@
       <div class="callout tip"><span class="label">Memory trick</span><p><strong>I</strong>nvocation is what a client does → DI<strong>I</strong> is client side. <strong>S</strong>keletons live on the <strong>S</strong>erver → D<strong>S</strong>I is server side.</p></div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Mixing up the two repositories. The <strong>Interface</strong> Repository describes <em>what</em> an interface looks like (types). The <strong>Implementation</strong> Repository describes <em>where and how</em> to start the server that implements it.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: architecture</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.5 CORBA Architecture: Core Components</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q</span>Which component allows a CORBA server to be implemented without compiling IDL-specific skeletons (dynamic dispatch)?</p>
-          <div class="opts">
-            <button>A) Dynamic Invocation Interface (DII)</button>
-            <button data-correct>B) Dynamic Skeleton Interface (DSI)</button>
-            <button>C) Interface Repository</button>
-            <button>D) ORB Interface</button>
-          </div>
+          <p class="q-text"><span class="qn">Q1</span>Which component allows a CORBA server to be implemented without compiling IDL-specific skeletons (dynamic dispatch)?</p>
+          <div class="opts"><button>Dynamic Invocation Interface (DII)</button><button data-correct>Dynamic Skeleton Interface (DSI)</button><button>Interface Repository</button><button>ORB Interface</button></div>
           <div class="explain">DSI is the server-side dynamic mechanism: one generic method receives every request and inspects it at run time. DII is the tempting wrong answer, but it is the client-side counterpart (dynamic requests without stubs).</div>
         </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A request arrives for a server that is not running. Which component holds the information needed to start it on demand?</p>
+          <div class="opts"><button>Interface Repository</button><button data-correct>Implementation Repository</button><button>Dynamic Invocation Interface</button><button>IDL stub</button></div>
+          <div class="explain">The Implementation Repository records where and how to start servers. The Interface Repository only describes what interfaces look like (types and operations).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The Object Adapter is a client-side component that builds requests at run time.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. The Object Adapter (in practice the POA) is on the server side: it activates servants, creates object references and dispatches each request to the right servant. Building requests at run time is DII, on the client.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>An object browser must call interfaces it has never seen at compile time. What does it use on the client side?</p>
+          <div class="opts"><button>IDL stubs generated by idlj</button><button>The Dynamic Skeleton Interface</button><button data-correct>DII, with the Interface Repository to discover the operations</button><button>The Implementation Repository</button></div>
+          <div class="explain">Dynamic invocation on the client is DII; the Interface Repository tells it which operations and parameter types exist. Static stubs need the interface at compile time, and DSI is server side.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In CORBA 2.2 (1998), the original BOA was replaced by:</p>
+          <div class="opts"><button data-correct>The POA (Portable Object Adapter)</button><button>The ORB core</button><button>The DSI</button><button>IIOP</button></div>
+          <div class="explain">The Basic Object Adapter was replaced by the Portable Object Adapter, which is what servers use in practice.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -279,18 +330,35 @@
         <li><strong>User exceptions</strong>: declared in IDL with <code>exception</code> and listed in an operation's <code>raises(...)</code> clause, like <code>InsufficientFunds</code>. In Java they are checked exceptions.</li>
       </ul>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: IDL</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.6 Interface Definition Language (IDL)</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q</span>What does the IDL direction <code>inout</code> indicate?</p>
-          <div class="opts">
-            <button>A) Parameter is only passed client→server.</button>
-            <button>B) Parameter is only server→client.</button>
-            <button data-correct>C) Parameter is passed both directions (client→server and server→client).</button>
-            <button>D) Parameter is ignored.</button>
-          </div>
+          <p class="q-text"><span class="qn">Q1</span>What does the IDL direction <code>inout</code> indicate?</p>
+          <div class="opts"><button>Parameter is only passed client→server.</button><button>Parameter is only server→client.</button><button data-correct>Parameter is passed both directions (client→server and server→client).</button><button>Parameter is ignored.</button></div>
           <div class="explain"><code>inout</code> sends the client's value to the server, and the server's (possibly modified) value back to the client. A is <code>in</code>, B is <code>out</code>.</div>
         </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Reading <code>Bank.idl</code>: what Java return type does <code>long balance();</code> get?</p>
+          <div class="opts"><button><code>long</code></button><button data-correct><code>int</code></button><button><code>Integer</code></button><button><code>short</code></button></div>
+          <div class="explain">IDL <code>long</code> is 32-bit, so it maps to Java <code>int</code>. A 64-bit Java <code>long</code> would need IDL <code>long long</code>. This is the classic trap.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Reading <code>Bank.idl</code>: what kind of exception is <code>InsufficientFunds</code>?</p>
+          <div class="opts"><button>A system exception raised by the ORB</button><button>An unchecked Java exception</button><button data-correct>A user exception, declared in IDL and mapped to a checked Java exception</button><button>An HTTP error status</button></div>
+          <div class="explain">It is declared with <code>exception</code> and listed in <code>withdraw</code>'s <code>raises(...)</code> clause, so it is a user exception; in Java it becomes a checked exception. System exceptions like <code>COMM_FAILURE</code> are unchecked and never listed in <code>raises</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>An <code>out</code> parameter of IDL type <code>long</code> is mapped in Java to an <code>IntHolder</code>, because Java cannot return a changed <code>int</code> through a parameter.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. Java passes primitives by value, so <code>out</code> and <code>inout</code> parameters are wrapped in Holder objects. The server sets <code>holder.value</code> and the client reads it after the call.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What does IDL <code>sequence&lt;T&gt;</code> map to in Java?</p>
+          <div class="opts"><button data-correct><code>T[]</code></button><button><code>List&lt;T&gt;</code></button><button><code>Vector</code></button><button><code>String</code></button></div>
+          <div class="explain">A sequence is a variable-length array, mapped to a plain Java array <code>T[]</code>.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -360,6 +428,37 @@ java HelloClient -ORBInitialPort <span class="n">1050</span> -ORBInitialHost loc
 <span class="c"># → Hello from CORBA</span></code></pre></div>
       </div>
       <div class="callout warn"><span class="label">Common mistake</span><p>Using a plain Java cast <code>(Hello) ref</code> instead of <code>HelloHelper.narrow(ref)</code>. The object returned by the ORB is a generic CORBA reference, so the cast fails with <code>ClassCastException</code>. <code>narrow</code> checks the type with the remote object and builds the right stub.</p></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.7 Worked Example: a Java IDL Hello Application</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Reading <code>HelloServer.java</code>: what is <code>HelloImpl</code>?</p>
+          <div class="opts"><button>The client stub</button><button data-correct>The servant: it extends the generated skeleton <code>HelloPOA</code> and implements <code>sayHello()</code></button><button>The Naming Service</button><button>The ORB itself</button></div>
+          <div class="explain">The servant is the Java object that really implements the IDL interface. It extends the skeleton <code>HelloPOA</code> generated by idlj and is activated in the root POA.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Reading <code>HelloClient.java</code>: why does it call <code>HelloHelper.narrow(ns.resolve_str("Hello"))</code> instead of using <code>(Hello)</code>?</p>
+          <div class="opts"><button>A cast would work equally well; narrow is only a style choice</button><button>narrow encrypts the object reference</button><button data-correct>The ORB returns a generic CORBA reference; narrow checks the type and builds the right stub, while a plain cast fails with ClassCastException</button><button>narrow starts the naming service</button></div>
+          <div class="explain">What comes back from the Naming Service is a generic <code>org.omg.CORBA.Object</code>. <code>narrow</code> checks with the remote object that it really is a <code>Hello</code> and returns a typed stub.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Reading the run commands: in which order do you start the programs?</p>
+          <div class="opts"><button data-correct><code>orbd</code>, then <code>HelloServer</code>, then <code>HelloClient</code></button><button><code>HelloClient</code>, then <code>HelloServer</code>, then <code>orbd</code></button><button><code>HelloServer</code>, then <code>orbd</code>, then <code>HelloClient</code></button><button>Only <code>HelloClient</code>; it starts the others</button></div>
+          <div class="explain">The server must bind its reference in a running Naming Service, and the client must find a bound name, so the naming daemon starts first, then the server, then the client. All use port 1050 here.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>This lab compiles and runs unchanged on a standard JDK 17.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Java IDL (<code>org.omg.*</code>, idlj, orbd) was removed from the JDK in Java 11. You need JDK 8, 9 or 10, or an external ORB library such as JacORB on newer Java.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What does <code>orb.run()</code> do at the end of <code>HelloServer</code>?</p>
+          <div class="opts"><button>It starts the client</button><button>It compiles the IDL file</button><button>It binds the name "Hello"</button><button data-correct>It keeps the server waiting for and serving incoming requests</button></div>
+          <div class="explain">The line's comment says it: <code>orb.run()</code> blocks and lets the ORB dispatch incoming requests. The name was already bound by <code>ns.rebind</code>.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ========== Advantages ========== -->
@@ -384,18 +483,35 @@ java HelloClient -ORBInitialPort <span class="n">1050</span> -ORBInitialHost loc
       <p><strong>Middleware</strong> (CORBA, RMI, message-oriented middleware such as IBM MQ, .NET remoting and today gRPC or Kafka) connects applications. CORBA is <strong>distributed object middleware</strong>: it excels at cross-platform, cross-language communication between objects.</p>
       <div class="callout example"><span class="label">Example</span><p>A bank keeps its 1990s C++ account system running. It wraps it as a CORBA <code>Account</code> object. A new Java teller application and a Python reporting script both call it through IIOP without anyone rewriting the C++ code.</p></div>
 
-      <div class="quiz">
-        <div class="quiz-head"><h3>Knowledge check: advantages</h3><span class="quiz-score"></span></div>
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.8 Advantages of CORBA and its Role as Middleware</h3><span class="quiz-score"></span></div>
         <div class="q">
-          <p class="q-text"><span class="qn">Q</span>Which statement best describes a key advantage of CORBA?</p>
-          <div class="opts">
-            <button>A) It only works on Windows.</button>
-            <button data-correct>B) It allows objects written in different languages (C++, Java, Python) to communicate transparently.</button>
-            <button>C) It is a programming language, not a middleware.</button>
-            <button>D) It requires all objects to run on the same machine.</button>
-          </div>
+          <p class="q-text"><span class="qn">Q1</span>Which statement best describes a key advantage of CORBA?</p>
+          <div class="opts"><button>It only works on Windows.</button><button data-correct>It allows objects written in different languages (C++, Java, Python) to communicate transparently.</button><button>It is a programming language, not a middleware.</button><button>It requires all objects to run on the same machine.</button></div>
           <div class="explain">Language and platform independence is CORBA's main purpose. It runs on many operating systems, it is middleware (IDL describes interfaces but is not a programming language), and objects are distributed across machines.</div>
         </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which of these is a reason CORBA declined?</p>
+          <div class="opts"><button>It was tied to one programming language</button><button>It had no naming service</button><button data-correct>IIOP uses dynamic ports, which are hard to pass through firewalls and proxies</button><button>It could only run on one operating system</button></div>
+          <div class="explain">Dynamic ports, a complex specification and differences between vendor ORBs pushed people toward simpler HTTP-based options. Language and OS independence were CORBA's strengths, and it had a standard Naming Service.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Wrapping a legacy C++ system as a CORBA object lets Java and Python clients call it without rewriting the C++ code.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. That is the bank example: the old C++ account system becomes a CORBA <code>Account</code> object, and new clients in other languages call it over IIOP.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which kind of middleware is CORBA?</p>
+          <div class="opts"><button>Message-oriented middleware</button><button data-correct>Distributed object middleware</button><button>A database server</button><button>A web server</button></div>
+          <div class="explain">CORBA connects distributed objects across platforms and languages. Message-oriented middleware (such as IBM MQ) sends messages through queues instead of calling methods on objects.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What does location transparency mean?</p>
+          <div class="opts"><button data-correct>Objects can move to another machine without changing the clients</button><button>All objects must run on the same machine</button><button>The client must know every server's IP address</button><button>Network traffic is visible to everyone</button></div>
+          <div class="explain">Clients use names and object references, not addresses, so an object can move and clients keep working.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
       </div>
     </section>
 
@@ -441,6 +557,37 @@ java HelloClient -ORBInitialPort <span class="n">1050</span> -ORBInitialHost loc
           <tr><td>Status</td><td>Legacy-ish</td><td>Legacy</td><td>Legacy niche</td><td>Current</td><td>Current</td></tr>
         </tbody>
       </table></div>
+
+      <div class="quiz check">
+        <div class="quiz-head"><h3>4.9.9 CORBA Today and Modern Alternatives</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which gRPC concept corresponds to CORBA's CDR encoding?</p>
+          <div class="opts"><button>JSON</button><button data-correct>Protobuf binary encoding</button><button>HTTP/2</button><button>TLS</button></div>
+          <div class="explain">CDR is how CORBA encodes data on the wire; in gRPC that job is done by the Protocol Buffers binary encoding. HTTP/2 + TLS correspond to IIOP over TCP, and JSON is the REST equivalent.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Reading <code>bank.proto</code>: how does the gRPC <code>Withdraw</code> report insufficient funds, where IDL used <code>raises (InsufficientFunds)</code>?</p>
+          <div class="opts"><button>It raises <code>InsufficientFunds</code> declared in a raises clause</button><button>It returns a balance of -1 by convention</button><button data-correct>It returns a status code such as <code>FAILED_PRECONDITION</code> with error details</button><button>It closes the TCP connection</button></div>
+          <div class="explain">gRPC has no user exceptions in the interface; errors come back as a status code plus error details, as the comment in the .proto file notes. In REST the equivalent is an HTTP 4xx/5xx with a body.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Like IDL operations, gRPC methods can declare <code>out</code> and <code>inout</code> parameters.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Every gRPC method takes one request message and returns one reply message, which is simpler than IDL's parameter directions.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which of these is still part of the JDK today?</p>
+          <div class="opts"><button data-correct>Java RMI</button><button>RMI-IIOP</button><button>Java IDL (<code>org.omg.*</code>)</button><button>The <code>idlj</code> compiler</button></div>
+          <div class="explain">Core Java RMI is still included. RMI-IIOP, Java IDL and idlj were all removed in Java 11 (JEP 320).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In the mapping table, what replaces "IIOP over TCP" in gRPC?</p>
+          <div class="opts"><button>JRMP</button><button>UDP with XDR</button><button>SOAP over SMTP</button><button data-correct>HTTP/2 + TLS</button></div>
+          <div class="explain">gRPC calls travel over HTTP/2, secured with TLS. JRMP is Java RMI's protocol and UDP with XDR is classic Sun RPC.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset</button></p>
+      </div>
     </section>
 
     <!-- ========== Final exam ========== -->
