@@ -1,87 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Client/Server Architecture & IT Security — Course</title>
-  <style>
-    :root {
-      --bg: #0f1220;
-      --panel: #171a2b;
-      --text: #eaeaf2;
-      --muted: #b7b8c9;
-      --accent: #7aa2ff;
-      --accent-2: #5fe3c0;
-      --border: #262a41;
-      --code-bg: #0b0d18;
-    }
-    html, body { height: 100%; background: var(--bg); color: var(--text); }
-    body { margin: 0; font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    .wrap { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
-    nav { background: var(--panel); border-right: 1px solid var(--border); position: sticky; top: 0; align-self: start; height: 100vh; overflow: auto; }
-    .brand { padding: 20px 18px; border-bottom: 1px solid var(--border); }
-    .brand h1 { font-size: 18px; margin: 0 0 6px 0; color: var(--accent); }
-    .brand p { margin: 0; font-size: 13px; color: var(--muted); }
-    .toc { list-style: none; padding: 12px 10px 40px; margin: 0; }
-    .toc a { display: block; padding: 10px 12px; margin: 2px 8px; text-decoration: none; color: var(--text); border-radius: 8px; }
-    .toc a:hover { background: #1d2140; color: white; }
-    .toc .sub a { padding-left: 24px; font-size: 14px; color: var(--muted); }
-    main { padding: 36px; }
-    h2 { margin: 24px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-    h3 { margin: 18px 0 8px; color: var(--accent); }
-    p, li { color: var(--text); }
-    .lead { color: var(--muted); max-width: 80ch; }
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 18px; margin: 16px 0; }
-    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
-    pre { background: var(--code-bg); color: #e6e6f0; padding: 16px; border-radius: 10px; border: 1px solid var(--border); overflow: auto; }
-    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #1a1f38; color: var(--accent-2); border: 1px solid var(--border); font-size: 12px; }
-    .table { width: 100%; border-collapse: collapse; }
-    .table th, .table td { border: 1px solid var(--border); padding: 10px; text-align: left; }
-    .table th { background: #1a1f38; }
-    .footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
-    a.inline { color: var(--accent); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Client/Server Architecture &amp; IT Security · LT Information</title>
+<meta name="description" content="The client/server model from first principles: request/response, ports, TCP and UDP, server types, 2/3/N-tier designs, Java socket programs, and HTTP and FTP case studies with their modern secure versions.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .diagram svg .box { fill: var(--panel); stroke: var(--line); stroke-width: 2 }
+  .diagram svg .box.hi { fill: var(--accent-soft); stroke: var(--accent) }
+  .diagram svg .wire { stroke: var(--muted); stroke-width: 2; fill: none }
+  .diagram svg .wire.alt { stroke: var(--accent); stroke-dasharray: 6 4 }
+  .diagram svg .tip { fill: var(--muted) }
+  .diagram svg .tip.alt { fill: var(--accent) }
+  .diagram svg .small { font-size: 13px; fill: var(--muted) }
+  .lt-main p code, .lt-main li code, .lt-main dd code, .lt-main td code { overflow-wrap: anywhere }
+</style>
 </head>
 <body>
-<div class="wrap">
-  <nav>
-    <div class="brand">
-      <h1>Client/Server Architecture</h1>
-      <p>Modernized course (cleaned from extracted text)</p>
+
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Client/Server Architecture · Course</span>
+    <h1>Client/Server Architecture &amp; IT Security</h1>
+    <p class="lead">Almost every service you use, from a banking app to a university portal, is a client talking to a server. This course explains how that conversation works, how real systems are split into tiers, how to write client and server programs in Java, and how HTTP and FTP do it in practice, including their secure modern versions.</p>
+    <div class="chips"><span class="chip">≈ 60 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">Language: Java</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Explain the client/server model and the request/response cycle, using the terms protocol, IP address, port and socket correctly.</li>
+        <li>Choose between TCP and UDP for a given service and name common well-known ports.</li>
+        <li>Compare 2-tier, 3-tier and N-tier architectures and justify which one fits a system.</li>
+        <li>Read and write simple TCP and UDP programs and a multithreaded server in Java.</li>
+        <li>Describe how HTTP and FTP work, which versions are current, and why HTTPS, FTPS and SFTP replaced the plaintext versions.</li>
+      </ul>
     </div>
-    <ul class="toc">
-      <li><a href="#intro">0. Syllabus</a></li>
-      <li><a href="#ch1">1. Principles</a></li>
-      <li class="sub">
-        <a href="#ch1-comm">1.1 Communication</a>
-        <a href="#ch1-pros-cons">1.2 Pros & Cons</a>
-      </li>
-      <li><a href="#ch2">2. Communication & Protocols</a></li>
-      <li><a href="#ch3">3. Server Types & Roles</a></li>
-      <li><a href="#ch4">4. Architectures (2/3/N-tier)</a></li>
-      <li><a href="#ch5">5. Programming Examples</a></li>
-      <li class="sub">
-        <a href="#tcp">TCP Socket Example</a>
-        <a href="#udp">UDP Socket Example</a>
-        <a href="#daytime">DayTime Example</a>
-        <a href="#chat">GUI Chat Example</a>
-      </li>
-      <li><a href="#ch6">6. HTTP Protocol (Case Study)</a></li>
-      <li><a href="#ch7">7. FTP Protocol (Case Study)</a></li>
-    </ul>
-  </nav>
-  <main>
+  </div>
+</section>
+
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <!-- 0. SYLLABUS -->
     <section id="intro">
-      <h2>0. Syllabus</h2>
-      <p class="lead">This course introduces the principles of client/server architecture, core network protocols, multi-tier designs, and hands-on programming with sockets. It is a cleaned and reorganized version derived from the provided extracted text, with improved structure and added learning aids.</p>
-      <div class="grid">
+      <h2><span class="num">0</span>Syllabus</h2>
+      <p>This course introduces the principles of client/server architecture, the core network protocols it relies on, multi-tier designs, and hands-on programming with sockets. Each chapter starts with plain-English explanations, then moves to definitions, examples and exam-style points. A quiz at the end checks the whole course.</p>
+      <div class="cards">
         <div class="card">
-          <h3>Learning Outcomes</h3>
+          <h3>Learning outcomes</h3>
           <ul>
             <li>Explain client/server models and request/response communication.</li>
             <li>Differentiate TCP vs UDP and identify common ports and services.</li>
-            <li>Compare 2-tier, 3-tier, and n-tier architectures.</li>
+            <li>Compare 2-tier, 3-tier, and N-tier architectures.</li>
             <li>Implement simple TCP/UDP programs and a multithreaded server.</li>
             <li>Understand HTTP/FTP flows and essential security considerations.</li>
           </ul>
@@ -91,352 +62,481 @@
           <ul>
             <li>Basic programming (Java or similar).</li>
             <li>Networking fundamentals (IP, ports, routing basics).</li>
-            <li>Familiarity with command line and compiling code.</li>
+            <li>Familiarity with the command line and compiling code.</li>
           </ul>
         </div>
       </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Chapter</th><th>Topic</th><th>What you practise</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Principles</td><td>Vocabulary, request/response, pros and cons</td></tr>
+          <tr><td>2</td><td>Communication &amp; protocols</td><td>Ports, TCP vs UDP, sockets</td></tr>
+          <tr><td>3</td><td>Server types &amp; roles</td><td>Matching a server type to a job</td></tr>
+          <tr><td>4</td><td>Architectures</td><td>2-tier, 3-tier, N-tier trade-offs</td></tr>
+          <tr><td>5</td><td>Programming examples</td><td>TCP, UDP, DayTime and chat programs in Java</td></tr>
+          <tr><td>6</td><td>HTTP case study</td><td>Methods, status codes, versions, HTTPS</td></tr>
+          <tr><td>7</td><td>FTP case study</td><td>Control/data channels, modes, FTPS vs SFTP</td></tr>
+          <tr><td>8</td><td>Security essentials</td><td>Applying IT security to client/server systems</td></tr>
+        </tbody>
+      </table></div>
     </section>
 
+    <!-- 1. PRINCIPLES -->
     <section id="ch1">
-      <h2>1. Principles</h2>
-      <p><span class="pill">Definition</span> Client/Server is a distributed model where <strong>clients</strong> request services and <strong>servers</strong> provide them. Clients handle presentation/UI, while servers centralize data and services.</p>
+      <h2><span class="num">1</span>Principles</h2>
+      <p>Client/server is a <span class="term" title="A system whose parts run on different computers and cooperate over a network">distributed</span> model where <strong>clients</strong> request services and <strong>servers</strong> provide them. Clients usually handle presentation (the user interface), while servers centralise data and services so that many clients can share them.</p>
+      <dl class="defs">
+        <dt>Client</dt><dd>A program that starts the conversation by sending a request, for example a web browser, a mobile banking app or an email app. It is the <em>active</em> side.</dd>
+        <dt>Server</dt><dd>A program that waits ("listens") for requests and answers them, for example a web server or a database server. It is the <em>passive</em> side. The word also describes the machine that runs such programs.</dd>
+        <dt>Service</dt><dd>The job the server offers: serving web pages, storing files, running queries, delivering mail.</dd>
+      </dl>
+      <div class="callout key"><span class="label">Key idea</span><p>"Client" and "server" are <strong>roles</strong>, not types of hardware. A laptop can run a server program, and a big server can act as a client when it asks another server (for example a database) for data.</p></div>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A restaurant. You (the client) read the menu and place an order. The kitchen (the server) waits for orders, prepares them and sends the dish back. The menu and the way you order are the <em>protocol</em>. The kitchen serves many tables at once, and if the kitchen closes, nobody eats: that is the single point of failure.</p></div>
+
+      <h3 id="ch1-comm">1.1 Communication (request/response)</h3>
+      <p>Every client/server exchange follows the same cycle: the client sends a <strong>request</strong>, the server processes it, and the server returns a <strong>response</strong>.</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 600 170" role="img" aria-label="Client sends a request to the server, server sends a response back">
+          <defs>
+            <marker id="ah1" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip" points="0 0, 10 4, 0 8"/></marker>
+            <marker id="ah1b" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip alt" points="0 0, 10 4, 0 8"/></marker>
+          </defs>
+          <rect class="box hi" x="20" y="45" width="150" height="80" rx="12"/>
+          <text x="95" y="82" text-anchor="middle" font-weight="700">Client</text>
+          <text class="small" x="95" y="104" text-anchor="middle">browser, app</text>
+          <rect class="box hi" x="430" y="45" width="150" height="80" rx="12"/>
+          <text x="505" y="82" text-anchor="middle" font-weight="700">Server</text>
+          <text class="small" x="505" y="104" text-anchor="middle">listens on a port</text>
+          <path class="wire" d="M175 70 L425 70" marker-end="url(#ah1)"/>
+          <text x="300" y="60" text-anchor="middle">1. Request</text>
+          <path class="wire alt" d="M425 100 L175 100" marker-end="url(#ah1b)"/>
+          <text x="300" y="125" text-anchor="middle">3. Response</text>
+          <text class="small" x="505" y="150" text-anchor="middle">2. Process</text>
+        </svg>
+        <figcaption>Figure 1. The request/response cycle. The client always speaks first; the server only answers.</figcaption>
+      </figure>
+      <ul>
+        <li>Client sends a request → server processes → server returns a response.</li>
+        <li><strong>Protocol</strong>: the agreed rules for the conversation: message format, order and meaning (HTTP, FTP, SMTP, etc.). Without a shared protocol the two sides cannot understand each other.</li>
+        <li><strong>IP address</strong>: identifies a host (a machine) on the network, for example <code>192.168.1.10</code> (IPv4) or <code>2001:db8::10</code> (IPv6).</li>
+        <li><strong>Port</strong>: a 16-bit number (0–65535) that identifies a service endpoint on that host. The IP address finds the building; the port finds the apartment.</li>
+        <li><strong>Scheduling</strong>: servers prioritise, queue and limit requests (for example with rate limits and thread pools) to protect their resources when many clients arrive at once.</li>
+      </ul>
       <div class="card">
-        <h3 id="ch1-comm">1.1 Communication (Request/Response)</h3>
-        <ul>
-          <li>Client sends a request &rarr; Server processes &rarr; Server returns a response.</li>
-          <li><strong>Protocol</strong>: agreed rules (HTTP, FTP, SMTP, etc.).</li>
-          <li><strong>IP Address</strong>: identifies hosts; <strong>Port</strong>: identifies service endpoints.</li>
-          <li><strong>Scheduling</strong>: servers prioritize and limit requests to protect resources.</li>
-        </ul>
-        <div class="card">
-          <strong>Scenario: Online Banking</strong>
-          <ol>
-            <li>Browser (client) sends login to a web server.</li>
-            <li>Web server queries database servers (may chain to others).</li>
-            <li>Application server applies business logic.</li>
-            <li>Web server responds with account data.</li>
-          </ol>
-        </div>
+        <h3>Scenario: online banking</h3>
+        <ol class="steps">
+          <li><strong>The browser (client)</strong> sends your login to the bank's web server over HTTPS.</li>
+          <li><strong>The web server</strong> passes the request on; behind it, database servers are queried (and they may chain to other servers).</li>
+          <li><strong>The application server</strong> applies business logic: is the password right, is the account locked, which accounts may this user see?</li>
+          <li><strong>The web server</strong> responds with your account data, formatted as a page.</li>
+        </ol>
+        <p>Notice that one user action triggered several client/server exchanges. The web server was a server to your browser and a client to the application and database servers.</p>
       </div>
-      <div class="card" id="ch1-pros-cons">
-        <h3>1.2 Advantages &amp; Disadvantages</h3>
-        <table class="table">
-          <thead>
-            <tr><th>Advantages</th><th>Disadvantages</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Centralized management (backup, security, admin)</td><td>Server cost and complexity</td></tr>
-            <tr><td>Scalability &amp; flexible resource growth</td><td>Single point of failure (server outages)</td></tr>
-            <tr><td>Enhanced data sharing &amp; access control</td><td>Potential congestion with many clients</td></tr>
-          </tbody>
-        </table>
-      </div>
+
+      <h3 id="ch1-pros-cons">1.2 Advantages &amp; disadvantages</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Advantages</th><th>Disadvantages</th></tr></thead>
+        <tbody>
+          <tr><td>Centralised management (backup, security, administration in one place)</td><td>Server cost and complexity (hardware, licences, skilled staff)</td></tr>
+          <tr><td>Scalability and flexible resource growth (add CPU, RAM or more servers)</td><td>Single point of failure: if the only server goes down, its service is unavailable to every client</td></tr>
+          <tr><td>Enhanced data sharing and access control (one copy of the data, one place to set permissions)</td><td>Potential congestion when many clients send requests at the same time</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Saying "if the server fails, the whole network fails". The <em>network</em> keeps working; the <em>service</em> that server provided becomes unavailable. Real systems reduce this risk with redundancy: several servers behind a load balancer, database replicas, and backups in another location.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>When asked for advantages and disadvantages, give a matched pair and a mitigation. Example: "Centralisation makes backups easy, but creates a single point of failure; this is reduced with redundant servers and load balancing."</p></div>
     </section>
 
+    <!-- 2. COMMUNICATION & PROTOCOLS -->
     <section id="ch2">
-      <h2>2. Communication &amp; Protocols</h2>
-      <div class="card">
-        <h3>Ports (Well-known examples)</h3>
-        <ul>
-          <li>HTTP 80, HTTPS 443, FTP 21/20, SMTP 25, POP3 110, IMAP 143</li>
-          <li>Registered: 1024–49151, Dynamic: 49152–65535</li>
-        </ul>
-      </div>
-      <div class="grid">
+      <h2><span class="num">2</span>Communication &amp; Protocols</h2>
+      <p>A client reaches a service with three pieces of information: the server's <strong>IP address</strong>, the <strong>port</strong> of the service, and the <strong>transport protocol</strong> (TCP or UDP). The combination of IP address + port + protocol on each side is called a <span class="term" title="One end of a two-way network connection: IP address plus port number">socket</span>. Programs read from and write to sockets the way they read and write files.</p>
+
+      <h3>Ports (well-known examples)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Service</th><th>Port</th><th>Transport</th><th>Secure version today</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP</td><td>80</td><td>TCP</td><td>HTTPS on 443 (TCP, and UDP for HTTP/3)</td></tr>
+          <tr><td>HTTPS</td><td>443</td><td>TCP / UDP (QUIC)</td><td>Already encrypted with TLS</td></tr>
+          <tr><td>FTP</td><td>21 (control), 20 (data, active mode)</td><td>TCP</td><td>FTPS (990 implicit) or SFTP (22)</td></tr>
+          <tr><td>SSH / SFTP</td><td>22</td><td>TCP</td><td>Encrypted by design</td></tr>
+          <tr><td>SMTP</td><td>25 (server to server)</td><td>TCP</td><td>587 with STARTTLS, or 465 implicit TLS, for mail submission</td></tr>
+          <tr><td>POP3</td><td>110</td><td>TCP</td><td>POP3S on 995</td></tr>
+          <tr><td>IMAP</td><td>143</td><td>TCP</td><td>IMAPS on 993</td></tr>
+          <tr><td>DNS</td><td>53</td><td>UDP (TCP for large replies and zone transfers)</td><td>DNS over TLS 853, DNS over HTTPS 443</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li><strong>Well-known ports: 0–1023.</strong> Reserved for standard services. On Linux and macOS, a normal user cannot open a server on them without extra privileges.</li>
+        <li><strong>Registered ports: 1024–49151.</strong> Assigned by IANA to specific applications (for example 3306 MySQL, 5432 PostgreSQL, 8080 alternative HTTP).</li>
+        <li><strong>Dynamic (ephemeral) ports: 49152–65535.</strong> Picked automatically by the operating system for the <em>client</em> side of a connection.</li>
+      </ul>
+      <div class="callout example"><span class="label">Example</span><p>When your browser opens <code>https://example.com</code>, the connection might be <code>192.168.1.20:51344 → 93.184.215.14:443</code>. The server port (443) is fixed and well known; the client port (51344) is ephemeral and changes every time.</p></div>
+
+      <h3>TCP and UDP</h3>
+      <div class="cards">
         <div class="card">
           <h3>TCP</h3>
           <ul>
             <li>Reliable, connection-oriented, in-order delivery.</li>
-            <li>Use cases: Web, Email, File transfer (HTTP, HTTPS, FTP, SMTP…)</li>
-            <li>Header ~20 bytes + options; flow control, congestion control.</li>
+            <li>Use cases: web, email, file transfer (HTTP/1.1 and HTTP/2, FTP, SMTP, SSH…).</li>
+            <li>Header 20 bytes minimum, up to 60 with options; flow control and congestion control.</li>
           </ul>
         </div>
         <div class="card">
           <h3>UDP</h3>
           <ul>
-            <li>Unreliable, connectionless, fast; per-datagram delivery.</li>
-            <li>Use cases: DNS, VoIP, streaming, SNMP, DHCP.</li>
-            <li>Header 8 bytes; apps handle ordering and reliability if needed.</li>
+            <li>Unreliable (best effort), connectionless, fast; each datagram travels on its own.</li>
+            <li>Use cases: DNS, VoIP, live streaming, online games, SNMP, DHCP, and QUIC (which carries HTTP/3).</li>
+            <li>Header 8 bytes; applications handle ordering and reliability if they need them.</li>
           </ul>
         </div>
       </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+        <tbody>
+          <tr><td>Connection</td><td>Set up first with a three-way handshake (SYN, SYN-ACK, ACK)</td><td>None: just send</td></tr>
+          <tr><td>Reliability</td><td>Lost segments are retransmitted</td><td>Lost datagrams stay lost</td></tr>
+          <tr><td>Order</td><td>Bytes arrive in the order sent</td><td>Datagrams may arrive out of order</td></tr>
+          <tr><td>Data unit</td><td>Byte stream (no message boundaries)</td><td>Separate messages (datagrams)</td></tr>
+          <tr><td>Header size</td><td>20–60 bytes</td><td>8 bytes</td></tr>
+          <tr><td>Speed / latency</td><td>Slower to start, steady</td><td>Lower latency, no handshake</td></tr>
+          <tr><td>Java classes</td><td><code>Socket</code>, <code>ServerSocket</code></td><td><code>DatagramSocket</code>, <code>DatagramPacket</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout analogy"><span class="label">Analogy</span><p>TCP is a phone call: you dial, the other person answers, and you both know if the line drops. UDP is sending postcards: each one is independent, cheap and fast, but some may never arrive and they can arrive in any order.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>"UDP is useless because it is unreliable." UDP is chosen exactly when a late packet is worse than a lost one (a voice call cannot wait for a retransmission) or when the application adds its own reliability. QUIC, the transport under HTTP/3, is built on UDP and adds reliability and encryption itself.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>For "TCP or UDP?" questions, name the deciding property: needs every byte in order (file, web page, email) → TCP; needs low delay and tolerates loss (voice, live video, games, simple DNS lookups) → UDP.</p></div>
     </section>
 
+    <!-- 3. SERVER TYPES -->
     <section id="ch3">
-      <h2>3. Server Types &amp; Roles</h2>
-      <div class="grid">
-        <div class="card"><h3>File Server</h3><p>Centralized file storage and retrieval.</p></div>
-        <div class="card"><h3>Database Server</h3><p>DBMS services; clients send SQL; server executes queries.</p></div>
-        <div class="card"><h3>Transaction Server</h3><p>Groups SQL into atomic transactions (OLTP).</p></div>
-        <div class="card"><h3>Groupware Server</h3><p>Collaboration tools (calendars, shared docs, meetings).</p></div>
-        <div class="card"><h3>Web Server</h3><p>Serves HTTP static content.</p></div>
-        <div class="card"><h3>Application Server</h3><p>Generates dynamic content; business logic layer.</p></div>
+      <h2><span class="num">3</span>Server Types &amp; Roles</h2>
+      <p>Servers are classified by the <em>service</em> they provide. One physical machine can host several of these roles, and one role can be spread over many machines.</p>
+      <div class="cards">
+        <div class="card"><h3>File server</h3><p>Centralised file storage and retrieval. Clients open, save and share files over protocols such as SMB (Windows shares) or NFS.</p></div>
+        <div class="card"><h3>Database server</h3><p>Runs a DBMS. Clients send SQL; the server executes the queries and returns only the result rows. Examples: PostgreSQL, MySQL, Oracle, Microsoft SQL Server.</p></div>
+        <div class="card"><h3>Transaction server</h3><p>Groups SQL statements into atomic transactions: all succeed or none do. This is the basis of OLTP (Online Transaction Processing), such as card payments and seat bookings.</p></div>
+        <div class="card"><h3>Groupware server</h3><p>Collaboration tools: shared calendars, mail, shared documents, online meetings. Examples: Microsoft Exchange, or cloud suites such as Microsoft 365 and Google Workspace.</p></div>
+        <div class="card"><h3>Web server</h3><p>Speaks HTTP and serves static content (HTML, CSS, images) from disk. Examples: Nginx, Apache HTTP Server, Microsoft IIS.</p></div>
+        <div class="card"><h3>Application server</h3><p>Generates dynamic content and runs the business logic layer. Examples: Apache Tomcat, WildFly, or a Node.js, Spring Boot or Django application.</p></div>
       </div>
+      <dl class="defs">
+        <dt>Transaction</dt><dd>A group of operations treated as one unit. Example: "take 100 from account A and add 100 to account B" must never half-happen.</dd>
+        <dt>ACID</dt><dd>The four guarantees of a transaction: Atomicity (all or nothing), Consistency (rules stay true), Isolation (concurrent transactions do not interfere), Durability (once committed, it survives a crash).</dd>
+        <dt>Static vs dynamic content</dt><dd>Static content is the same file for everyone (a logo). Dynamic content is built per request (your account balance).</dd>
+      </dl>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Need</th><th>Server type</th></tr></thead>
+        <tbody>
+          <tr><td>Staff share a folder of reports</td><td>File server</td></tr>
+          <tr><td>Search 2 million student records with SQL</td><td>Database server</td></tr>
+          <tr><td>Process thousands of card payments per second safely</td><td>Transaction server (OLTP)</td></tr>
+          <tr><td>Team calendar and meeting rooms</td><td>Groupware server</td></tr>
+          <tr><td>Serve the university's public HTML pages and images</td><td>Web server</td></tr>
+          <tr><td>Show each student their own timetable</td><td>Application server</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Tip</span><p>The line between web server and application server is blurred today: Nginx often serves static files <em>and</em> forwards dynamic requests to an application server behind it (a "reverse proxy"). In exams, keep the classic split: web server = static, application server = dynamic + business logic.</p></div>
     </section>
 
+    <!-- 4. ARCHITECTURES -->
     <section id="ch4">
-      <h2>4. Architectures (2-Tier, 3-Tier, N-Tier)</h2>
-      <div class="card">
-        <h3>2-Tier</h3>
-        <p>Client (UI + some logic) &rarr; Database server (data + logic). Simple, high performance locally, but limited scalability.</p>
-      </div>
-      <div class="card">
-        <h3>3-Tier</h3>
-        <p>Client (presentation) &rarr; Application server (business logic) &rarr; Database server (data). Better scalability and security.</p>
-      </div>
-      <div class="card">
-        <h3>N-Tier</h3>
-        <p>Multiple middle-tier components (microservices/components). Improved maintainability and load distribution.</p>
-      </div>
+      <h2><span class="num">4</span>Architectures (2-Tier, 3-Tier, N-Tier)</h2>
+      <p>An application has three kinds of work: <strong>presentation</strong> (what the user sees), <strong>business logic</strong> (the rules) and <strong>data</strong> (storage). A <span class="term" title="A separately deployed part of the system, usually on its own machine or process">tier</span> is a part of the system that runs separately, usually on its own machine. The architectures differ in where they put these three kinds of work.</p>
+
+      <h3>2-tier</h3>
+      <div class="flow"><span class="node">Client: UI + some logic</span><span class="arrow">⇄</span><span class="node hi">Database server: data + logic</span></div>
+      <p>The client talks directly to the database server. Simple, with high performance on a local network, but limited scalability: every client holds a database connection, business rules are duplicated in every client, and updating logic means updating every installed client.</p>
+      <p><em>Example:</em> a desktop stock-control program in a small shop that connects straight to a database on the back-office PC.</p>
+
+      <h3>3-tier</h3>
+      <div class="flow"><span class="node">Client: presentation</span><span class="arrow">⇄</span><span class="node hi">Application server: business logic</span><span class="arrow">⇄</span><span class="node">Database server: data</span></div>
+      <p>A middle tier holds the business logic. Better scalability and security: the database is no longer exposed to clients, the logic lives in one place, and the middle tier can be duplicated behind a load balancer.</p>
+      <p><em>Example:</em> a university portal: browser → web/application server → student database.</p>
+
+      <h3>N-tier</h3>
+      <div class="flow"><span class="node">Client</span><span class="arrow">⇄</span><span class="node">Web tier</span><span class="arrow">⇄</span><span class="node hi">Services / microservices</span><span class="arrow">⇄</span><span class="node">Cache</span><span class="arrow">⇄</span><span class="node">Databases</span></div>
+      <p>Multiple middle-tier components (services, microservices, caches, message queues). Improved maintainability and load distribution, because each part can be scaled, updated and secured separately, at the cost of more network hops and more operational complexity.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th>2-tier</th><th>3-tier</th><th>N-tier</th></tr></thead>
+        <tbody>
+          <tr><td>Where is business logic?</td><td>Client and/or database</td><td>Application server</td><td>Spread across several services</td></tr>
+          <tr><td>Scalability</td><td>Low</td><td>Good</td><td>Very good</td></tr>
+          <tr><td>Security</td><td>Database exposed to clients</td><td>Database hidden behind middle tier</td><td>Each tier isolated; more to secure</td></tr>
+          <tr><td>Maintenance</td><td>Update every client</td><td>Update one middle tier</td><td>Update services independently</td></tr>
+          <tr><td>Complexity / cost</td><td>Lowest</td><td>Medium</td><td>Highest</td></tr>
+          <tr><td>Typical use</td><td>Small LAN apps</td><td>Most web applications</td><td>Large-scale and cloud systems</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Mixing up <strong>tiers</strong> and <strong>layers</strong>. Layers are a logical split in the code (presentation, logic, data classes). Tiers are a physical split into separately running parts. A 3-layer program can still run as a single tier on one machine.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"Why is 3-tier more secure than 2-tier?" Answer: clients never connect to the database directly; only the application server does, so the database can sit on a private network and the business rules are enforced on a machine the user does not control.</p></div>
     </section>
 
+    <!-- 5. PROGRAMMING -->
     <section id="ch5">
-      <h2>5. Programming Examples</h2>
-      <p class="lead">Below are curated examples auto-extracted from your source where possible and lightly cleaned.</p>
+      <h2><span class="num">5</span>Programming Examples</h2>
+      <p>The classic examples from the course notes, cleaned up so they compile, with corrections marked in comments. All of them use <code>java.net</code>, which is still the standard socket API in current Java (JDK 21 and 25 are the long-term-support releases).</p>
+      <div class="callout key"><span class="label">Key idea</span><p>Every TCP server follows the same pattern: <strong>create a ServerSocket on a port → accept() a client → get input/output streams → read request, write response → close</strong>. The client mirrors it: <strong>create a Socket to host:port → write → read → close</strong>.</p></div>
+      <ol class="steps">
+        <li><strong>new ServerSocket(port)</strong> reserves the port and starts listening.</li>
+        <li><strong>accept()</strong> blocks (waits) until a client connects, then returns a new <code>Socket</code> for that one client.</li>
+        <li><strong>getInputStream() / getOutputStream()</strong> give byte streams; wrap them in readers and writers to work with text lines.</li>
+        <li><strong>close()</strong> the client socket when done; the ServerSocket keeps listening for the next client.</li>
+      </ol>
 
-      <div class="card" id="tcp">
-        <h3>TCP Socket Example</h3>
-        <p>A simple server that uppercases input and a client that sends a line and prints the response.</p>
-        <pre><code>import java.io.*;
+      <h3 id="tcp">TCP socket example</h3>
+      <p>A simple server that uppercases one line of input, and a client that sends a line and prints the response. Run the server first, then the client in a second terminal.</p>
+      <p class="code-title">TCPServer.java</p>
+<pre><code>import java.io.*;
 import java.net.*;
 
 public class TCPServer {
+    public static void main(String args[]) throws Exception {
+        String clientSentence;
+        String capitalizedSentence;
+        ServerSocket welcomeSocket = new ServerSocket(6789);
 
-public static void main(String args[]) throws Exception {
+        while (true) {
+            Socket connectionSocket = welcomeSocket.accept();   <span class="c">// waits for a client</span>
+            BufferedReader inFromClient = new BufferedReader(new
+                InputStreamReader(connectionSocket.getInputStream()));
+            DataOutputStream outToClient = new
+                DataOutputStream(connectionSocket.getOutputStream());
 
-String clientSentence;
-String capitalizedSentence;
-ServerSocket welcomeSocket = new ServerSocket(6789);
-
-while(true) {
-
-Socket connectionSocket = welcomeSocket.accept();
-BufferedReader inFromClient = new BufferedReader(new
-
-InputStreamReader(connectionSocket.getInputStream()));
-
-DataOutputStream outToClient = new
-
-DataOutputStream(connectionSocket.getOutputStream());
-clientSentence = inFromClient.readLine();
-capitalizedSentence = clientSentence.toUpperCase() + '\n';
-outToClient.writeBytes(capitalizedSentence);
-
+            clientSentence = inFromClient.readLine();
+            capitalizedSentence = clientSentence.toUpperCase() + '\n';
+            outToClient.writeBytes(capitalizedSentence);
+            connectionSocket.close();   <span class="c">// added: release this client's socket</span>
+        }
+    }
 }</code></pre>
-        <pre><code>import java.io.*;
+      <p class="code-title">TCPClient.java</p>
+<pre><code>import java.io.*;
 import java.net.*;
 
 public class TCPClient {
+    public static void main(String argv[]) throws Exception {
+        String sentence;
+        String modifiedSentence;
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+        Socket clientSocket = new Socket("localhost", 6789);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new
+            InputStreamReader(clientSocket.getInputStream()));
 
-public static void main(String argv[]) throws Exception {
-
-String sentence;
-String modifiedSentence;
-BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-
-Socket clientSocket = new Socket("localhost", 6789);
-
-9
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-BufferedReader inFromServer = new BufferedReader(new
-
-InputStreamReader(clientSocket.getInputStream()));
-
-sentence = inFromUser.readLine();
-outToServer.writeBytes(sentence + '\n');
-modifiedSentence = inFromServer.readLine();
-System.out.println(modifiedSentence);
-clientSocket.close();
-
+        sentence = inFromUser.readLine();
+        outToServer.writeBytes(sentence + '\n');
+        modifiedSentence = inFromServer.readLine();
+        System.out.println("FROM SERVER: " + modifiedSentence);
+        clientSocket.close();
+    }
 }</code></pre>
-      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Forgetting the <code>'\n'</code>. <code>readLine()</code> waits until it sees a line ending, so if the client sends text without one, both programs hang. Also note that <code>DataOutputStream.writeBytes()</code> keeps only the low byte of each character, so it is safe for plain ASCII only. For any language (Arabic, French accents) use <code>new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), true)</code>.</p></div>
+      <details class="reveal"><summary>Modern version with try-with-resources and UTF-8</summary>
+<pre><code>try (ServerSocket server = new ServerSocket(6789)) {
+    while (true) {
+        try (Socket s = server.accept();
+             var in  = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
+             var out = new PrintWriter(new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8), true)) {
+            String line = in.readLine();
+            if (line != null) out.println(line.toUpperCase());
+        }   <span class="c">// streams and socket are closed automatically, even after an exception</span>
+    }
+}</code></pre>
+      </details>
 
-      <div class="card" id="udp">
-        <h3>UDP Socket Example</h3>
-        <pre><code>import java.io.*;
+      <h3 id="udp">UDP socket example</h3>
+      <p>The same uppercase service over UDP. There is no <code>accept()</code> and no connection: the server simply receives a <span class="term" title="A self-contained UDP message carrying its own destination address and port">datagram</span>, reads the sender's address and port from it, and sends a datagram back.</p>
+      <p class="code-title">UDPServer.java</p>
+<pre><code>import java.io.*;
 import java.net.*;
+
 class UDPServer {
+    public static void main(String args[]) throws Exception {
+        try {
+            DatagramSocket serverSocket = new DatagramSocket(9876);
+            byte[] receiveData = new byte[1024];
+            byte[] sendData  = new byte[1024];
 
-public static void main(String args[]) throws Exception
-{
-try
-{
+            while (true) {
+                receiveData = new byte[1024];
+                DatagramPacket receivePacket =
+                    new DatagramPacket(receiveData, receiveData.length);
+                System.out.println("Waiting for datagram packet");
+                serverSocket.receive(receivePacket);
 
-14
+                <span class="c">// corrected: use only the bytes actually received, not the whole 1024-byte buffer</span>
+                String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                InetAddress IPAddress = receivePacket.getAddress();
+                int port = receivePacket.getPort();
+                System.out.println("From: " + IPAddress + ":" + port);
+                System.out.println("Message: " + sentence);
 
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-DatagramSocket serverSocket = new DatagramSocket(9876);
-byte[] receiveData = new byte[1024];
-byte[] sendData  = new byte[1024];
-while(true)
-{
-
-receiveData = new byte[1024];
-DatagramPacket receivePacket =
-
-new DatagramPacket(receiveData, receiveData.length);
-
-System.out.println ("Waiting for datagram packet");
-serverSocket.receive(receivePacket);
-String sentence = new String(receivePacket.getData());
-InetAddress IPAddress = receivePacket.getAddress();
-int port = receivePacket.getPort();
-System.out.println ("From: " + IPAddress + ":" + port);
-System.out.println ("Message: " + sentence);
-String capitalizedSentence = sentence.toUpperCase();
-sendData = capitalizedSentence.getBytes();
-DatagramPacket sendPacket =
-
-new DatagramPacket(sendData, sendData.length, IPAddress,
-
-port);
-serverSocket.send(sendPacket);
-
+                String capitalizedSentence = sentence.toUpperCase();
+                sendData = capitalizedSentence.getBytes();
+                DatagramPacket sendPacket =
+                    new DatagramPacket(sendData, sendData.length, IPAddress, port);
+                serverSocket.send(sendPacket);
+            }
+        } catch (SocketException ex) {
+            System.out.println("UDP Port 9876 is occupied.");
+            System.exit(1);
+        }
+    }
 }</code></pre>
-        <pre><code>import java.io.*;
+      <p class="code-title">UDPClient.java</p>
+<pre><code>import java.io.*;
 import java.net.*;
+
 class UDPClient {
+    public static void main(String args[]) throws Exception {
+        try {
+            String serverHostname = new String("127.0.0.1");
+            if (args.length &gt; 0)
+                serverHostname = args[0];
 
-public static void main(String args[]) throws Exception
-{
-try {
+            BufferedReader inFromUser =
+                new BufferedReader(new InputStreamReader(System.in));
+            DatagramSocket clientSocket = new DatagramSocket();
+            InetAddress IPAddress = InetAddress.getByName(serverHostname);
+            System.out.println("Attempting to connect to " + IPAddress +
+                               " via UDP port 9876");
 
-String serverHostname = new String ("127.0.0.1");
-if (args.length &gt; 0)
+            byte[] sendData = new byte[1024];
+            byte[] receiveData = new byte[1024];
 
-serverHostname = args[0];
-BufferedReader inFromUser =
-new BufferedReader(new InputStreamReader(System.in));
-DatagramSocket clientSocket = new DatagramSocket();
-InetAddress IPAddress = InetAddress.getByName(serverHostname);
-System.out.println ("Attemping to connect to " + IPAddress +
+            System.out.print("Enter Message: ");
+            String sentence = inFromUser.readLine();
+            sendData = sentence.getBytes();
+            System.out.println("Sending " + sendData.length + " bytes to server.");
+            DatagramPacket sendPacket =
+                new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+            clientSocket.send(sendPacket);
 
-") via UDP port 9876");
-byte[] sendData = new byte[1024];
-byte[] receiveData = new byte[1024];
-System.out.print("Enter Message: ");
+            DatagramPacket receivePacket =
+                new DatagramPacket(receiveData, receiveData.length);
+            System.out.println("Waiting for return packet");
+            clientSocket.setSoTimeout(10000);   <span class="c">// wait at most 10 s: UDP may lose the reply</span>
 
-15
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-String sentence = inFromUser.readLine();
-sendData = sentence.getBytes();
-System.out.println ("Sending data to " + sendData.length +
-
-" bytes to server.");
-DatagramPacket sendPacket =
-
-new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-
-clientSocket.send(sendPacket);
-DatagramPacket receivePacket =
-
-new DatagramPacket(receiveData, receiveData.length);
-
-System.out.println ("Waiting for return packet");
-clientSocket.setSoTimeout(10000);
-try {
-
-clientSocket.receive(receivePacket);
-String modifiedSentence =
-
-new String(receivePacket.getData());
-
-InetAddress returnIPAddress = receivePacket.getAddress();
-int port = receivePacket.getPort();
-System.out.println ("From server at: " + returnIPAddress +
-
-":" + port);
-
-System.out.println("Message: " + modifiedSentence);
+            try {
+                clientSocket.receive(receivePacket);
+                String modifiedSentence =
+                    new String(receivePacket.getData(), 0, receivePacket.getLength());
+                InetAddress returnIPAddress = receivePacket.getAddress();
+                int port = receivePacket.getPort();
+                System.out.println("From server at: " + returnIPAddress + ":" + port);
+                System.out.println("Message: " + modifiedSentence);
+            } catch (SocketTimeoutException ste) {
+                System.out.println("Timeout Occurred: Packet assumed lost");
+            }
+            clientSocket.close();
+        } catch (UnknownHostException ex) {
+            System.err.println(ex);
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
 }</code></pre>
-      </div>
+      <div class="callout example"><span class="label">Why the timeout matters</span><p>With TCP, a lost segment is resent automatically. With UDP, if the reply is lost, <code>receive()</code> would wait forever. <code>setSoTimeout(10000)</code> makes it give up after 10 seconds and throw <code>SocketTimeoutException</code>, which is how a UDP client detects loss.</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Step</th><th>TCP program</th><th>UDP program</th></tr></thead>
+        <tbody>
+          <tr><td>Server setup</td><td><code>new ServerSocket(6789)</code></td><td><code>new DatagramSocket(9876)</code></td></tr>
+          <tr><td>Wait for client</td><td><code>accept()</code> returns a Socket</td><td><code>receive(packet)</code> returns data + sender address</td></tr>
+          <tr><td>Reply address</td><td>Implicit: same connection</td><td>Explicit: taken from the received packet</td></tr>
+          <tr><td>Data</td><td>Streams (readers/writers)</td><td>Byte arrays in packets</td></tr>
+          <tr><td>Loss handling</td><td>Done by TCP</td><td>Done by the program (timeout, retry)</td></tr>
+        </tbody>
+      </table></div>
 
-      <div class="card" id="daytime">
-        <h3>DayTime Protocol (TCP)</h3>
-        <pre><code>import java.io.IOException;
+      <h3 id="daytime">DayTime protocol (TCP)</h3>
+      <p>The smallest useful server: when a client connects, it sends the current date and time and closes the connection. The real Daytime protocol (RFC 867) uses port 13; the example uses <strong>9090</strong> because ports below 1024 need administrator rights on most systems.</p>
+      <p class="code-title">DateServer.java</p>
+<pre><code>import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
+import java.time.ZonedDateTime;
+
 /**
-* A TCP server that runs on port 9090.  When a client connects, it
-* sends the client the current date and time, then closes the
-* connection with that client.  Arguably just about the simplest
-* server you can write.
-*/
+ * A TCP server that runs on port 9090.  When a client connects, it
+ * sends the client the current date and time, then closes the
+ * connection with that client.  Arguably just about the simplest
+ * server you can write.
+ */
 public class DateServer {
-
-public static void main(String[] args) throws IOException {
-
-ServerSocket listener = new ServerSocket(9090);
-try {
-
-while (true) {
-
-Socket socket = listener.accept();
-try {
-
-PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-out.println(new Date().toString());
-
-} finally {
-
-socket.close();
-
+    public static void main(String[] args) throws IOException {
+        ServerSocket listener = new ServerSocket(9090);
+        try {
+            while (true) {
+                Socket socket = listener.accept();
+                try {
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    <span class="c">// original: out.println(new Date().toString());  java.util.Date is legacy;</span>
+                    <span class="c">// java.time (Java 8+) is the current date/time API.</span>
+                    out.println(ZonedDateTime.now().toString());
+                } finally {
+                    socket.close();
+                }
+            }
+        } finally {
+            listener.close();
+        }
+    }
 }</code></pre>
-        <pre><code>import java.io.BufferedReader;
+      <p class="code-title">DateClient.java</p>
+<pre><code>import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import javax.swing.JOptionPane;
+
 public class DateClient {
-
-/**
-* Runs the client as an application.  First it displays a dialog
-* box asking for the IP address or hostname of a host running
-* the date server, then connects to it and displays the date that
-
-21
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-* it serves.
-*/
-public static void main(String[] args) throws IOException {
-String serverAddress = JOptionPane.showInputDialog(
-
-"Enter IP Address of a machine that is\n" +
-"running the date service on port 9090:");
-Socket s = new Socket(serverAddress, 9090);
-BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-String answer = input.readLine();
-JOptionPane.showMessageDialog(null, answer);
-System.exit(0);
-
+    /**
+     * Runs the client as an application.  First it displays a dialog
+     * box asking for the IP address or hostname of a host running
+     * the date server, then connects to it and displays the date that
+     * it serves.
+     */
+    public static void main(String[] args) throws IOException {
+        String serverAddress = JOptionPane.showInputDialog(
+            "Enter IP Address of a machine that is\n" +
+            "running the date service on port 9090:");
+        Socket s = new Socket(serverAddress, 9090);
+        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        String answer = input.readLine();
+        JOptionPane.showMessageDialog(null, answer);
+        s.close();   <span class="c">// added</span>
+        System.exit(0);
+    }
 }</code></pre>
-      </div>
+      <div class="callout tip"><span class="label">Tip</span><p>The <code>try … finally { socket.close(); }</code> pattern in DateServer guarantees the socket is closed even if writing fails. Since Java 7 the shorter form is <code>try (Socket socket = listener.accept()) { … }</code>, which closes it automatically.</p></div>
 
-      <div class="card" id="chat">
-        <h3>GUI Chat (Multithreaded)</h3>
-        <pre><code>import java.io.BufferedReader;
+      <h3 id="chat">GUI chat (multithreaded)</h3>
+      <p>The servers above handle one client at a time: while one client is being served, the others wait. A chat server must serve many clients <em>at the same time</em>, so it starts a new <span class="term" title="An independent path of execution inside one program; threads run concurrently">thread</span> for each client. The main thread only accepts connections; each <code>Handler</code> thread talks to one client.</p>
+      <p>The chat uses its own tiny text protocol:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Message</th><th>Sent by</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>SUBMITNAME</code></td><td>Server</td><td>"Send me a screen name." Repeated until the name is unique.</td></tr>
+          <tr><td>(a name)</td><td>Client</td><td>The requested screen name.</td></tr>
+          <tr><td><code>NAMEACCEPTED</code></td><td>Server</td><td>Name registered; the client may now send messages.</td></tr>
+          <tr><td>(any text)</td><td>Client</td><td>A chat message to broadcast.</td></tr>
+          <tr><td><code>MESSAGE name: text</code></td><td>Server</td><td>A broadcast message to display.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="code-title">ChatServer.java</p>
+<pre><code>import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-**/
+/**
  * A multithreaded chat room server.  When a client connects the
  * server requests a screen name by sending the client the
  * text "SUBMITNAME", and keeps requesting a name until
@@ -444,396 +544,665 @@ import java.util.HashSet;
  * name, the server acknowledges with "NAMEACCEPTED".  Then
  * all messages from that client will be broadcast to all other
  * clients that have submitted a unique screen name.  The
- * broadcast messages are prefixed with "MESSAGE."
-*
+ * broadcast messages are prefixed with "MESSAGE ".
+ *
  * Because this is just a teaching example to illustrate a simple
  * chat server, there are a few features that have been left out.
  * Two are very useful and belong in production code:
-*
-1 .
-        * send clean disconnect messages to the server.
-*
-2 .
-/*
-public class ChatServer}
-
-The protocol should be enhanced so that the client can
-
-The server should do some logging.
-
-     *
-
-     *
-
-**/
  *
-
-The port that the server listens on.
-
-22
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-/*
-
-private static final int PORT = 9001;
-
-**/
+ *     1. The protocol should be enhanced so that the client can
+ *        send clean disconnect messages to the server.
  *
- *
- *
-/*
-
-The set of all names of clients in the chat room.  Maintained
-so that we can check that new clients are not registering name
-already in use.
-
-private static HashSet&lt;String&gt; names = new HashSet&lt;String;()&lt;
-
-**/
- *
- *
-/*
-
-The set of all the print writers for all the clients.  This
-set is kept so we can easily broadcast messages.
-
-private static HashSet&lt;PrintWriter&gt; writers = new HashSet&lt;PrintWriter;()&lt;
-
-**/
- *
- *
-/*
-
-The appplication main method, which just listens on a port and
-spawns handler threads.
-
-public static void main(String[] args) throws Exception}
-System.out.println("The chat server is running;(".
-ServerSocket listener = new ServerSocket(PORT;(
-try}
-
-while (true} (
-
-new Handler(listener.accept()).start;()
-
-{
- {
-
-{
-{
-
-**/
- *
- *
- *
-/*
-
-finally}
-listener.close;()
-
-A handler thread class.  Handlers are spawned from the listening
-loop and are responsible for a dealing with a single client
-and broadcasting its messages.
-
-private static class Handler extends Thread}
-
-private String name;
-private Socket socket;
-private BufferedReader in;
-private PrintWriter out;
-
-**/
- *
- *
-/*
-
-{
-
-Constructs a handler thread, squirreling away the socket.
-All the interesting work is done in the run method.
-
-public Handler(Socket socket} (
-
-this.socket = socket;
-
-23
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-**/
- *
- *
- *
- *
- *
-/*
-
- //
-
- //
- //
- //
- //
-
-{
-
-{
-{
-{
-
- //
- //
- //
-
- //
- //
-
-{
-
-{
-
-Services this thread's client by repeatedly requesting a
-screen name until a unique one has been submitted, then
-acknowledges the name and registers the output stream for
-the client in a global set, then repeatedly gets inputs and
-broadcasts them.
-
-public void run} ()
-
-try}
-
-Create character streams for the socket.
-
-in = new BufferedReader(new InputStreamReader)
-
-socket.getInputStream;((()
-
-out = new PrintWriter(socket.getOutputStream(), true;(
-
-Request a name from this client.  Keep requesting until
-a name is submitted that is not already used.  Note that
-checking for the existence of a name and adding the name
-must be done while locking the set of names.
-
-while (true} (
-
-out.println("SUBMITNAME;("
-name = in.readLine;()
-if (name == null} (
-
-return;
-
-synchronized (names} (
-
-if (!names.contains(name} ((
-
-names.add(name;(
-break;
-
-Now that a successful name has been chosen, add the
-socket's print writer to the set of all writers so
-this client can receive broadcast messages.
-
-out.println("NAMEACCEPTED;("
-writers.add(out;(
-
-Accept messages from this client and broadcast them.
-Ignore other clients that cannot be broadcasted to.
-
-while (true} (
-
-String input = in.readLine;()
-if (input == null} (
-
-return;
-
-for (PrintWriter writer : writers} (
-
-writer.println("MESSAGE " + name + ": " + input;(
-
-24
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-catch (IOException e} (
-System.out.println(e;(
-finally}
-
-This client is going down!  Remove its name and its print
-writer from the sets, and close its socket.
-
-if (name != null} (
-
-names.remove(name;(
-
-if (out != null} (
-
-writers.remove(out;(
-
-try}
-
-socket.close;()
-catch (IOException e} (
-
-{
- {
-
- {
- //
- //
-
-{
-
-{
-
- {
-{
-{
-{
-{
+ *     2. The server should do some logging.
+ */
+public class ChatServer {
+
+    /** The port that the server listens on. */
+    private static final int PORT = 9001;
+
+    /**
+     * The set of all names of clients in the chat room.  Maintained
+     * so that we can check that new clients are not registering name
+     * already in use.
+     * Corrected: the original used a plain HashSet, which is not thread-safe.
+     */
+    private static final Set&lt;String&gt; names = ConcurrentHashMap.newKeySet();
+
+    /**
+     * The set of all the print writers for all the clients.  This
+     * set is kept so we can easily broadcast messages.
+     * Corrected: a plain HashSet can throw ConcurrentModificationException
+     * when one thread broadcasts while another adds or removes a client.
+     */
+    private static final Set&lt;PrintWriter&gt; writers = ConcurrentHashMap.newKeySet();
+
+    /**
+     * The application main method, which just listens on a port and
+     * spawns handler threads.
+     */
+    public static void main(String[] args) throws Exception {
+        System.out.println("The chat server is running.");
+        ServerSocket listener = new ServerSocket(PORT);
+        try {
+            while (true) {
+                new Handler(listener.accept()).start();
+            }
+        } finally {
+            listener.close();
+        }
+    }
+
+    /**
+     * A handler thread class.  Handlers are spawned from the listening
+     * loop and are responsible for dealing with a single client
+     * and broadcasting its messages.
+     */
+    private static class Handler extends Thread {
+        private String name;
+        private Socket socket;
+        private BufferedReader in;
+        private PrintWriter out;
+
+        /**
+         * Constructs a handler thread, squirreling away the socket.
+         * All the interesting work is done in the run method.
+         */
+        public Handler(Socket socket) {
+            this.socket = socket;
+        }
+
+        /**
+         * Services this thread's client by repeatedly requesting a
+         * screen name until a unique one has been submitted, then
+         * acknowledges the name and registers the output stream for
+         * the client in a global set, then repeatedly gets inputs and
+         * broadcasts them.
+         */
+        public void run() {
+            try {
+                // Create character streams for the socket.
+                in = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                // Request a name from this client.  Keep requesting until
+                // a name is submitted that is not already used.  Checking and
+                // adding must happen as ONE atomic step: the original did this
+                // inside synchronized (names) { ... }; add() on a concurrent
+                // set does the same and returns false if the name exists.
+                while (true) {
+                    out.println("SUBMITNAME");
+                    name = in.readLine();
+                    if (name == null) {
+                        return;
+                    }
+                    if (names.add(name)) {
+                        break;
+                    }
+                }
+
+                // Now that a successful name has been chosen, add the
+                // socket's print writer to the set of all writers so
+                // this client can receive broadcast messages.
+                out.println("NAMEACCEPTED");
+                writers.add(out);
+
+                // Accept messages from this client and broadcast them.
+                while (true) {
+                    String input = in.readLine();
+                    if (input == null) {
+                        return;
+                    }
+                    for (PrintWriter writer : writers) {
+                        writer.println("MESSAGE " + name + ": " + input);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            } finally {
+                // This client is going down!  Remove its name and its print
+                // writer from the sets, and close its socket.
+                if (name != null) {
+                    names.remove(name);
+                }
+                if (out != null) {
+                    writers.remove(out);
+                }
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
 }</code></pre>
-        <pre><code>import java.awt.event.ActionEvent;
+      <p class="code-title">ChatClient.java</p>
+<pre><code>import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
-* A simple Swing-based client for the chat server.  Graphically
-* it is a frame with a text field for entering messages and a
-* textarea to see the whole dialog.
-*
-* The client follows the Chat Protocol which is as follows.
-* When the server sends "SUBMITNAME" the client replies with the
-* desired screen name.  The server will keep sending "SUBMITNAME"
-* requests as long as the client submits screen names that are
-* already in use.  When the server sends a line beginning
-* with "NAMEACCEPTED" the client is now allowed to start
-* sending the server arbitrary strings to be broadcast to all
-* chatters connected to the server.  When the server sends a
-* line beginning with "MESSAGE " then all characters following
-
-25
-
-Ibrahim Sayed AhmadClient Server / Prepared by: Ibrahim Sayed Ahmad
-LT- Informatics
-
-* this string should be displayed in its message area.
-*/
+ * A simple Swing-based client for the chat server.  Graphically
+ * it is a frame with a text field for entering messages and a
+ * textarea to see the whole dialog.
+ *
+ * The client follows the Chat Protocol which is as follows.
+ * When the server sends "SUBMITNAME" the client replies with the
+ * desired screen name.  The server will keep sending "SUBMITNAME"
+ * requests as long as the client submits screen names that are
+ * already in use.  When the server sends a line beginning
+ * with "NAMEACCEPTED" the client is now allowed to start
+ * sending the server arbitrary strings to be broadcast to all
+ * chatters connected to the server.  When the server sends a
+ * line beginning with "MESSAGE " then all characters following
+ * this string should be displayed in its message area.
+ */
 public class ChatClient {
 
-BufferedReader in;
-PrintWriter out;
-JFrame frame = new JFrame("Chatter");
-JTextField textField = new JTextField(40);
-JTextArea messageArea = new JTextArea(8, 40);
+    BufferedReader in;
+    PrintWriter out;
+    JFrame frame = new JFrame("Chatter");
+    JTextField textField = new JTextField(40);
+    JTextArea messageArea = new JTextArea(8, 40);
 
-/**
-* Constructs the client by laying out the GUI and registering a
-* listener with the textfield so that pressing Return in the
-* listener sends the textfield contents to the server.  Note
-* however that the textfield is initially NOT editable, and
-* only becomes editable AFTER the client receives the NAMEACCEPTED
-* message from the server.
-*/
-public ChatClient() {
+    /**
+     * Constructs the client by laying out the GUI and registering a
+     * listener with the textfield so that pressing Return in the
+     * listener sends the textfield contents to the server.  Note
+     * however that the textfield is initially NOT editable, and
+     * only becomes editable AFTER the client receives the NAMEACCEPTED
+     * message from the server.
+     */
+    public ChatClient() {
+        // Layout GUI
+        textField.setEditable(false);
+        messageArea.setEditable(false);
+        frame.getContentPane().add(textField, "North");
+        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
+        frame.pack();
 
-// Layout GUI
-textField.setEditable(false);
-messageArea.setEditable(false);
-frame.getContentPane().add(textField, "North");
-frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-frame.pack();
+        // Add Listeners
+        textField.addActionListener(new ActionListener() {
+            /**
+             * Responds to pressing the enter key in the textfield by sending
+             * the contents of the text field to the server.    Then clear
+             * the text area in preparation for the next message.
+             */
+            public void actionPerformed(ActionEvent e) {
+                out.println(textField.getText());
+                textField.setText("");
+            }
+        });
+    }
 
-// Add Listeners
-textField.addActionListener(new ActionListener() {
+    /** Prompt for and return the address of the server. */
+    private String getServerAddress() {
+        return JOptionPane.showInputDialog(frame,
+            "Enter IP Address of the Server:",
+            "Welcome to the Chatter", JOptionPane.QUESTION_MESSAGE);
+    }
 
-/**
-* Responds to pressing the enter key in the textfield by sending
-* the contents of the text field to the server.    Then clear
-* the text area in preparation for the next message.
-*/
-public void actionPerformed(ActionEvent e) {
+    /** Prompt for and return the desired screen name. */
+    private String getName() {
+        return JOptionPane.showInputDialog(frame,
+            "Choose a screen name:",
+            "Screen name selection", JOptionPane.PLAIN_MESSAGE);
+    }
 
-out.println(textField.getText());
-textField.setText("");
+    /** Connects to the server then enters the processing loop. */
+    private void run() throws IOException {
+        Socket socket = new Socket(getServerAddress(), 9001);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(), true);
 
-}
-});
+        // Process all messages from server, according to the protocol.
+        while (true) {
+            String line = in.readLine();
+            if (line == null) break;                       // server closed
+            if (line.startsWith("SUBMITNAME")) {
+                out.println(getName());
+            } else if (line.startsWith("NAMEACCEPTED")) {
+                SwingUtilities.invokeLater(() -&gt; textField.setEditable(true));
+            } else if (line.startsWith("MESSAGE")) {
+                String text = line.substring(8) + "\n";
+                // Swing components must be updated on the event thread.
+                SwingUtilities.invokeLater(() -&gt; messageArea.append(text));
+            }
+        }
+        socket.close();
+    }
 
+    /** Runs the client as an application with a closeable frame. */
+    public static void main(String[] args) throws Exception {
+        ChatClient client = new ChatClient();
+        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        client.frame.setVisible(true);
+        client.run();
+    }
 }</code></pre>
-      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Handling clients inside the <code>accept()</code> loop without threads. The second user then cannot connect until the first leaves. The fix is one thread (or one task in a thread pool) per client. Since Java 21, <strong>virtual threads</strong> make this cheap even for thousands of clients: <code>Thread.ofVirtual().start(handler)</code> or <code>Executors.newVirtualThreadPerTaskExecutor()</code>.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Be ready to explain <em>why</em> the name check must be atomic: two clients could both ask for "Ali" at the same moment; if "check" and "add" are separate steps, both checks pass and both get the name. A <code>synchronized</code> block or a concurrent set's <code>add()</code> (which returns <code>false</code> if the element exists) prevents this race condition.</p></div>
+      <div class="callout tip"><span class="label">Note on Swing</span><p>Swing (<code>javax.swing</code>) is still part of the JDK and fine for learning, but it is considered legacy for new desktop apps; JavaFX or a web front end is more common today. The networking code is identical either way.</p></div>
     </section>
 
+    <!-- 6. HTTP -->
     <section id="ch6">
-      <h2>6. HTTP Protocol (Case Study)</h2>
-      <div class="card">
-        <h3>Key Ideas</h3>
-        <ul>
-          <li>Application-level protocol over TCP (default port 80).</li>
-          <li>Connectionless and stateless; media-type independent via MIME.</li>
-          <li>Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE, CONNECT.</li>
-          <li>Status codes: 1xx info, 2xx success, 3xx redirection, 4xx client error, 5xx server error.</li>
-        </ul>
+      <h2><span class="num">6</span>HTTP Protocol (Case Study)</h2>
+      <p><strong>HTTP</strong> (HyperText Transfer Protocol) is the application-level protocol of the web. A client (usually a browser) sends a <em>request</em> naming a resource and a method; the server answers with a <em>status code</em>, headers and usually a body.</p>
+      <h3>Key ideas</h3>
+      <ul>
+        <li>Application-level protocol. HTTP/1.1 and HTTP/2 run over TCP (default port 80, or 443 for HTTPS); HTTP/3 runs over QUIC, which uses UDP port 443.</li>
+        <li><strong>Stateless</strong>: each request is independent and the server does not remember earlier requests by itself. Applications add state with cookies, sessions and tokens.</li>
+        <li><strong>"Connectionless"</strong> describes HTTP/1.0, which opened a new TCP connection for every request and closed it after the response. Since HTTP/1.1, connections are <strong>persistent</strong> (kept open and reused) by default, and HTTP/2 and HTTP/3 send many requests in parallel over one connection.</li>
+        <li>Media-type independent via MIME types: any data can be sent as long as the <code>Content-Type</code> header says what it is (<code>text/html</code>, <code>image/png</code>, <code>application/json</code>).</li>
+        <li>Methods: GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE, CONNECT, and PATCH (added in RFC 5789).</li>
+        <li>Status codes: 1xx informational, 2xx success, 3xx redirection, 4xx client error, 5xx server error.</li>
+      </ul>
+
+      <h3>A real exchange</h3>
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="http-req" aria-selected="true">Request</button><button role="tab" aria-controls="http-res">Response</button></div>
+        <div role="tabpanel" id="http-req">
+<pre><code>GET /courses/index.html HTTP/1.1      <span class="c">← request line: method, path, version</span>
+Host: www.example.edu                 <span class="c">← required in HTTP/1.1</span>
+User-Agent: Mozilla/5.0
+Accept: text/html
+                                      <span class="c">← blank line ends the headers</span></code></pre>
+        </div>
+        <div role="tabpanel" id="http-res">
+<pre><code>HTTP/1.1 200 OK                       <span class="c">← status line</span>
+Content-Type: text/html; charset=utf-8
+Content-Length: 1532
+Cache-Control: max-age=600
+
+&lt;!DOCTYPE html&gt;&lt;html&gt; … &lt;/html&gt;      <span class="c">← body</span></code></pre>
+        </div>
       </div>
-      <div class="card">
-        <h3>Minimal HTTP Server (from source)</h3>
-        <pre><code>public static void main(String[] args) {
 
-try {
+      <h3>Methods</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Method</th><th>Purpose</th><th>Safe?</th><th>Idempotent?</th></tr></thead>
+        <tbody>
+          <tr><td>GET</td><td>Retrieve a resource</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>HEAD</td><td>Like GET but headers only (check size, date, existence)</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>POST</td><td>Submit data / create something (form, upload)</td><td>No</td><td>No</td></tr>
+          <tr><td>PUT</td><td>Create or fully replace a resource at a URL</td><td>No</td><td>Yes</td></tr>
+          <tr><td>PATCH</td><td>Partially update a resource</td><td>No</td><td>Not necessarily</td></tr>
+          <tr><td>DELETE</td><td>Delete a resource</td><td>No</td><td>Yes</td></tr>
+          <tr><td>OPTIONS</td><td>Ask which methods are allowed (used by CORS pre-flight)</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>TRACE</td><td>Echo the request back (diagnostics); usually disabled for security</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>CONNECT</td><td>Open a tunnel through a proxy (used for HTTPS via proxies)</td><td>No</td><td>No</td></tr>
+        </tbody>
+      </table></div>
+      <dl class="defs">
+        <dt>Safe</dt><dd>The request does not change anything on the server.</dd>
+        <dt>Idempotent</dt><dd>Sending the same request twice has the same effect as sending it once. Deleting the same file twice still leaves it deleted; posting the same order twice creates two orders.</dd>
+      </dl>
 
-System.out.println("\n\n\t\tThe HTTP Server is running..");
-System.out.println("\n\n\t\tStop server using Ctrl + C");
-ServerSocket soc=new ServerSocket(8000);
-while(true)
-{
+      <h3>Status codes</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Class</th><th>Meaning</th><th>Common examples</th></tr></thead>
+        <tbody>
+          <tr><td>1xx</td><td>Informational</td><td>100 Continue, 101 Switching Protocols (WebSocket upgrade)</td></tr>
+          <tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 204 No Content</td></tr>
+          <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 302 Found, 304 Not Modified</td></tr>
+          <tr><td>4xx</td><td>Client error</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 429 Too Many Requests</td></tr>
+          <tr><td>5xx</td><td>Server error</td><td>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</td></tr>
+        </tbody>
+      </table></div>
 
-Socket inSoc=soc.accept();
-HttpRequest request;
-try {
+      <h3>HTTP versions today</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Version</th><th>Year</th><th>Transport</th><th>What changed</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP/1.0</td><td>1996</td><td>TCP</td><td>One request per connection</td></tr>
+          <tr><td>HTTP/1.1</td><td>1997 (current text RFC 9112, 2022)</td><td>TCP</td><td>Persistent connections, required <code>Host</code> header, chunked transfer; still universal</td></tr>
+          <tr><td>HTTP/2</td><td>2015 (RFC 9113, 2022)</td><td>TCP, in practice always with TLS</td><td>Binary framing, many requests multiplexed on one connection, header compression</td></tr>
+          <tr><td>HTTP/3</td><td>2022 (RFC 9114)</td><td>QUIC over UDP, TLS 1.3 built in</td><td>Faster connection setup, no head-of-line blocking when a packet is lost; supported by all major browsers</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">HTTPS</span><p>HTTPS is HTTP sent inside a <strong>TLS</strong> (Transport Layer Security) connection, on port 443. TLS encrypts the traffic, proves the server's identity with a certificate, and detects tampering. The current version is <strong>TLS 1.3</strong> (2018); TLS 1.2 is still accepted; TLS 1.0 and 1.1 are deprecated (RFC 8996, 2021), and the old name "SSL" refers to versions that are all broken. Browsers now mark plain-HTTP pages as "Not secure".</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>"401 and 403 mean the same thing." <strong>401 Unauthorized</strong> means "you have not proven who you are" (log in). <strong>403 Forbidden</strong> means "I know who you are, and you are not allowed".</p></div>
 
-request = new HttpRequest(inSoc);
-request.process();
-} catch (Exception ex) {
-
-System.out.println("Error1");
-
+      <h3>Minimal HTTP server (from source)</h3>
+      <p>The course notes show the main loop of a hand-written HTTP server on port 8000. Each accepted socket is wrapped in an <code>HttpRequest</code> object that reads the request and writes the response.</p>
+      <p class="code-title">Main loop, as in the course notes</p>
+<pre><code>public static void main(String[] args) {
+    try {
+        System.out.println("\n\n\t\tThe HTTP Server is running..");
+        System.out.println("\n\n\t\tStop server using Ctrl + C");
+        ServerSocket soc = new ServerSocket(8000);
+        while (true)
+        {
+            Socket inSoc = soc.accept();
+            HttpRequest request;
+            try {
+                request = new HttpRequest(inSoc);
+                request.process();
+            } catch (Exception ex) {
+                System.out.println("Error1");
+            }
+        }
+    } catch (Exception ex) {
+        System.out.println("Error2");
+    }
 }</code></pre>
-        <pre><code>try {
-
-request = new HttpRequest(inSoc);
-request.process();
+      <p>The heart of it is these five lines: build a request handler for the client socket, process it, and report errors without crashing the server.</p>
+<pre><code>try {
+    request = new HttpRequest(inSoc);
+    request.process();
 } catch (Exception ex) {
-
-System.out.println("Error1");
-
+    System.out.println("Error1");
 }</code></pre>
-      </div>
+      <p>The notes do not include <code>HttpRequest</code>. Here is a minimal version so the server actually runs; open <code>http://localhost:8000/</code> in a browser to test it.</p>
+      <p class="code-title">HttpRequest.java (minimal, added)</p>
+<pre><code>import java.io.*;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
+class HttpRequest {
+    private final Socket socket;
+
+    HttpRequest(Socket socket) { this.socket = socket; }
+
+    void process() throws IOException {
+        try (Socket s = socket;
+             BufferedReader in = new BufferedReader(
+                 new InputStreamReader(s.getInputStream(), StandardCharsets.US_ASCII));
+             OutputStream out = s.getOutputStream()) {
+
+            String requestLine = in.readLine();          <span class="c">// e.g. "GET /index.html HTTP/1.1"</span>
+            if (requestLine == null) return;
+            String line;
+            while ((line = in.readLine()) != null &amp;&amp; !line.isEmpty()) {
+                <span class="c">// skip the headers until the blank line</span>
+            }
+
+            String status, body;
+            if (requestLine.startsWith("GET ")) {
+                status = "200 OK";
+                body = "&lt;h1&gt;It works&lt;/h1&gt;";
+            } else {
+                status = "405 Method Not Allowed";
+                body = "&lt;h1&gt;405 Method Not Allowed&lt;/h1&gt;";
+            }
+            byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+            String head = "HTTP/1.1 " + status + "\r\n"
+                        + "Content-Type: text/html; charset=utf-8\r\n"
+                        + "Content-Length: " + bytes.length + "\r\n"
+                        + "Connection: close\r\n\r\n";      <span class="c">// HTTP lines end with CRLF</span>
+            out.write(head.getBytes(StandardCharsets.US_ASCII));
+            out.write(bytes);
+        }
+    }
+}</code></pre>
+      <div class="callout warn"><span class="label">Security note</span><p>Do not copy parts of the request (such as the path) straight into the HTML response: an attacker can put a script in the URL and it will run in the victim's browser (reflected cross-site scripting, XSS). Real servers also limit header size and time out slow clients.</p></div>
+      <div class="callout tip"><span class="label">Current Java APIs</span><p>For real work you rarely write HTTP by hand. Java includes <code>java.net.http.HttpClient</code> (Java 11+, supports HTTP/2), a built-in lightweight server <code>com.sun.net.httpserver.HttpServer</code>, and the <code>jwebserver</code> command (Java 18+) that serves a folder over HTTP for testing. The legacy <code>HttpURLConnection</code> still works but is no longer the recommended client.</p></div>
     </section>
 
+    <!-- 7. FTP -->
     <section id="ch7">
-      <h2>7. FTP Protocol (Case Study)</h2>
-      <div class="card">
-        <p>FTP is used to transfer files between hosts. Control on port 21, data typically on port 20. Supports ASCII and binary modes, with commands like <code>put</code>, <code>get</code>, <code>cd</code>, <code>lcd</code>, <code>mput</code>, <code>mget</code>, and more.</p>
+      <h2><span class="num">7</span>FTP Protocol (Case Study)</h2>
+      <p>FTP (File Transfer Protocol, 1971, current standard RFC 959 from 1985) is used to transfer files between hosts. Its unusual feature is that it uses <strong>two separate TCP connections</strong>:</p>
+      <ul>
+        <li><strong>Control connection, port 21</strong>: stays open for the whole session and carries commands and replies (login, change directory, "send me this file").</li>
+        <li><strong>Data connection</strong>: opened for each file transfer or directory listing. In <strong>active mode</strong> the server connects back to the client <em>from port 20</em>. In <strong>passive mode</strong> (PASV) the client connects to a random high port that the server announces; passive mode is the norm today because client-side firewalls and NAT block incoming connections.</li>
+      </ul>
+      <figure class="diagram">
+        <svg viewBox="0 0 600 190" role="img" aria-label="FTP control connection on port 21 and separate data connection">
+          <defs>
+            <marker id="ah2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip" points="0 0, 10 4, 0 8"/></marker>
+            <marker id="ah2b" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip alt" points="0 0, 10 4, 0 8"/></marker>
+          </defs>
+          <rect class="box hi" x="20" y="40" width="150" height="110" rx="12"/>
+          <text x="95" y="100" text-anchor="middle" font-weight="700">FTP client</text>
+          <rect class="box hi" x="430" y="40" width="150" height="110" rx="12"/>
+          <text x="505" y="100" text-anchor="middle" font-weight="700">FTP server</text>
+          <path class="wire" d="M175 70 L425 70" marker-end="url(#ah2)"/>
+          <text x="300" y="60" text-anchor="middle">Control: port 21 (commands)</text>
+          <path class="wire alt" d="M425 125 L175 125" marker-end="url(#ah2b)"/>
+          <text x="300" y="150" text-anchor="middle">Data: port 20 (active) or high port (passive)</text>
+        </svg>
+        <figcaption>Figure 2. FTP keeps commands and file data on separate connections ("out-of-band" control).</figcaption>
+      </figure>
+      <p>FTP supports <strong>ASCII mode</strong> (text files; line endings are converted between systems) and <strong>binary mode</strong> (exact byte copy; use it for images, archives, executables). Common client commands: <code>put</code>, <code>get</code>, <code>cd</code>, <code>lcd</code>, <code>mput</code>, <code>mget</code>, and more.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Client command</th><th>What it does</th><th>Protocol command sent on port 21</th></tr></thead>
+        <tbody>
+          <tr><td><code>open host</code></td><td>Connect and log in</td><td><code>USER</code>, <code>PASS</code></td></tr>
+          <tr><td><code>get file</code></td><td>Download one file</td><td><code>RETR file</code></td></tr>
+          <tr><td><code>put file</code></td><td>Upload one file</td><td><code>STOR file</code></td></tr>
+          <tr><td><code>mget *.txt</code> / <code>mput *.txt</code></td><td>Download / upload many files</td><td>Several <code>RETR</code> / <code>STOR</code></td></tr>
+          <tr><td><code>cd dir</code></td><td>Change directory on the <em>server</em></td><td><code>CWD dir</code></td></tr>
+          <tr><td><code>lcd dir</code></td><td>Change directory on the <em>local</em> machine</td><td>(none: local only)</td></tr>
+          <tr><td><code>ls</code> / <code>dir</code></td><td>List server directory</td><td><code>LIST</code> or <code>NLST</code></td></tr>
+          <tr><td><code>pwd</code></td><td>Show server directory</td><td><code>PWD</code></td></tr>
+          <tr><td><code>binary</code> / <code>ascii</code></td><td>Choose transfer mode</td><td><code>TYPE I</code> / <code>TYPE A</code></td></tr>
+          <tr><td><code>bye</code> / <code>quit</code></td><td>End the session</td><td><code>QUIT</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout example"><span class="label">Example</span><p>Uploading a report with a classic command-line client: <code>ftp files.example.edu</code> → log in → <code>binary</code> → <code>lcd C:\reports</code> → <code>cd uploads</code> → <code>put q3.pdf</code> → <code>bye</code>. The <code>lcd</code>/<code>cd</code> pair is a favourite exam question: one is local, one is remote.</p></div>
+
+      <h3>FTP security: FTP vs FTPS vs SFTP</h3>
+      <p>Plain FTP sends <strong>everything in cleartext</strong>, including the username and password. Anyone who can capture traffic on the path (public Wi-Fi, a compromised router) can read them. For this reason plain FTP should not be used across untrusted networks, and Chrome and Firefox removed built-in FTP support in 2021.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>FTP</th><th>FTPS</th><th>SFTP</th></tr></thead>
+        <tbody>
+          <tr><td>What it is</td><td>Original protocol</td><td>FTP inside TLS (same commands, encrypted)</td><td>SSH File Transfer Protocol: a different protocol that runs over SSH</td></tr>
+          <tr><td>Ports</td><td>21 + data ports</td><td>21 with <code>AUTH TLS</code> (explicit) or 990 (implicit) + data ports</td><td>22 only, a single connection</td></tr>
+          <tr><td>Encryption</td><td>None</td><td>TLS</td><td>SSH</td></tr>
+          <tr><td>Authentication</td><td>Password in cleartext</td><td>Password and/or certificate, encrypted</td><td>Password or SSH key pair</td></tr>
+          <tr><td>Firewall friendliness</td><td>Poor (extra data ports)</td><td>Poor (encrypted data ports are hard for firewalls to track)</td><td>Good (one port)</td></tr>
+          <tr><td>Use today</td><td>Legacy only, inside trusted networks</td><td>Where FTP compatibility is required</td><td>Preferred choice for secure file transfer</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>"SFTP is FTP with SSL." No: that is <strong>FTPS</strong>. <strong>SFTP</strong> is part of the SSH family, unrelated to FTP apart from its purpose, and uses port 22.</p></div>
+    </section>
+
+    <!-- 8. SECURITY -->
+    <section id="ch8">
+      <h2><span class="num">8</span>Security Essentials for Client/Server Systems</h2>
+      <p>The IT security side of this course applies the CIA triad (Confidentiality, Integrity, Availability) to each part of the model. A server is valuable because many clients depend on it, which also makes it the main target.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Risk</th><th>Where it appears in this course</th><th>Control</th></tr></thead>
+        <tbody>
+          <tr><td>Eavesdropping (confidentiality)</td><td>Plain HTTP, FTP, and the example socket programs send cleartext</td><td>Encrypt in transit: HTTPS with TLS 1.3, SFTP, <code>SSLSocket</code> in Java</td></tr>
+          <tr><td>Tampering (integrity)</td><td>Anyone on the path can modify cleartext traffic</td><td>TLS detects modification; validate all input on the server</td></tr>
+          <tr><td>Outage or overload (availability)</td><td>Single point of failure, congestion, denial-of-service attacks</td><td>Redundant servers, load balancers, rate limiting (scheduling), backups</td></tr>
+          <tr><td>Direct database access</td><td>2-tier architecture</td><td>3-tier: only the application server reaches the database, on a private network</td></tr>
+          <tr><td>Injection and XSS</td><td>Servers that trust client input</td><td>Parameterised SQL queries, output encoding, never trust the client</td></tr>
+          <tr><td>Unnecessary exposure</td><td>Open ports and enabled methods such as TRACE</td><td>Firewall: open only needed ports; disable unused services; least privilege</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">Key idea</span><p><strong>Never trust the client.</strong> The client runs on a machine the user controls, so any check done only in the client (a hidden field, a disabled button, JavaScript validation) can be bypassed. Every security decision must be enforced again on the server.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>If asked how to secure the TCP chat example, list: run it over TLS (<code>SSLServerSocket</code>), authenticate users instead of accepting any name, limit message size and rate, and log connections (one of the two features the original comment says is missing).</p></div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz">
+      <h2><span class="num">9</span>Check your understanding</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: whole course</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the communication?</p>
+          <div class="opts">
+            <button>The server, by broadcasting its services</button>
+            <button data-correct>The client, by sending a request</button>
+            <button>Whichever side has more processing power</button>
+            <button>A router chooses the side</button>
+          </div>
+          <div class="explain">The client is the active side: it sends a request. The server is passive: it listens on a port and only responds. Processing power has nothing to do with the roles.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What does a port number identify?</p>
+          <div class="opts">
+            <button>A computer on the network</button>
+            <button data-correct>A specific service or endpoint on a host</button>
+            <button>The physical network card</button>
+            <button>The user who is logged in</button>
+          </div>
+          <div class="explain">The IP address identifies the host; the port (0–65535) identifies the service on that host, such as 443 for HTTPS. The network card is identified by its MAC address.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which service is the best fit for UDP?</p>
+          <div class="opts">
+            <button>Downloading a software installer</button>
+            <button>Sending an email with SMTP</button>
+            <button data-correct>A live voice call</button>
+            <button>Logging in to online banking</button>
+          </div>
+          <div class="explain">A voice call needs low delay and can tolerate a lost packet; waiting for a retransmission would cause gaps. The other three need every byte, delivered in order, so they use TCP.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>The ephemeral (dynamic) port range is:</p>
+          <div class="opts">
+            <button>0–1023</button>
+            <button>1024–49151</button>
+            <button data-correct>49152–65535</button>
+            <button>1–255</button>
+          </div>
+          <div class="explain">0–1023 are well-known ports, 1024–49151 are registered ports, and 49152–65535 are the dynamic/ephemeral ports that the operating system assigns to the client side of a connection.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which server type generates dynamic content and runs business logic?</p>
+          <div class="opts">
+            <button>File server</button>
+            <button>Web server serving static files</button>
+            <button data-correct>Application server</button>
+            <button>Groupware server</button>
+          </div>
+          <div class="explain">The application server builds content per request (your timetable, your balance) and holds the business rules. A web server in the classic split serves static files; a file server stores files; groupware supports collaboration.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>What is the main security benefit of 3-tier over 2-tier?</p>
+          <div class="opts">
+            <button>The client stores a copy of the database</button>
+            <button data-correct>Clients no longer connect to the database directly</button>
+            <button>It removes the need for passwords</button>
+            <button>It uses UDP instead of TCP</button>
+          </div>
+          <div class="explain">In 3-tier, only the application server talks to the database, so the database can be hidden on a private network and the business rules are enforced on a server the user cannot modify.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>In the Java TCP server, what does <code>welcomeSocket.accept()</code> do?</p>
+          <div class="opts">
+            <button>Sends a welcome message to the client</button>
+            <button data-correct>Waits until a client connects, then returns a new Socket for that client</button>
+            <button>Opens port 6789 for the first time</button>
+            <button>Accepts a UDP datagram</button>
+          </div>
+          <div class="explain"><code>accept()</code> blocks until a client connects and returns a dedicated <code>Socket</code> for it. The port was already opened by <code>new ServerSocket(6789)</code>. UDP has no accept; it uses <code>receive()</code>.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Why does the UDP client call <code>setSoTimeout(10000)</code>?</p>
+          <div class="opts">
+            <button>To make the connection faster</button>
+            <button>To encrypt the packet for 10 seconds</button>
+            <button data-correct>So <code>receive()</code> gives up if the reply is lost, instead of waiting forever</button>
+            <button>Because UDP requires a handshake</button>
+          </div>
+          <div class="explain">UDP does not retransmit lost datagrams. Without a timeout, <code>receive()</code> would block forever if the reply never arrives. After 10 seconds it throws <code>SocketTimeoutException</code>, and the client reports the packet as lost.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>Why does the chat server create a new Handler thread for each client?</p>
+          <div class="opts">
+            <button>Threads encrypt the messages</button>
+            <button data-correct>So many clients can be served at the same time</button>
+            <button>Because Swing requires it</button>
+            <button>To use less memory than a single thread</button>
+          </div>
+          <div class="explain">Each Handler blocks on <code>readLine()</code> for its own client. If the main thread did that, no other client could connect. One thread per client (or a virtual thread in Java 21+) lets the server keep accepting.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>True or false: since HTTP/1.1, a new TCP connection is opened and closed for every single request by default.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">That was HTTP/1.0. HTTP/1.1 made persistent connections the default, and HTTP/2 and HTTP/3 multiplex many requests over one connection. HTTP is still <em>stateless</em>, which is a different property.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>HTTP/3 runs on top of which transport?</p>
+          <div class="opts">
+            <button>TCP with TLS 1.2</button>
+            <button data-correct>QUIC, which runs over UDP</button>
+            <button>SCTP</button>
+            <button>Raw IP with no transport</button>
+          </div>
+          <div class="explain">HTTP/3 (RFC 9114, 2022) uses QUIC, which runs over UDP and has TLS 1.3 built in. HTTP/1.1 and HTTP/2 use TCP.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>A server returns <strong>403</strong>. What does it mean?</p>
+          <div class="opts">
+            <button>The page was not found</button>
+            <button>The server crashed</button>
+            <button data-correct>The server understood the request but refuses to allow it</button>
+            <button>The page moved permanently</button>
+          </div>
+          <div class="explain">403 Forbidden: you are not permitted. 404 is Not Found, 500 is a server error, 301 is Moved Permanently. 401 would mean you have not authenticated yet.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>In FTP, which port carries the commands such as USER, RETR and STOR?</p>
+          <div class="opts">
+            <button>20</button>
+            <button data-correct>21</button>
+            <button>22</button>
+            <button>443</button>
+          </div>
+          <div class="explain">Port 21 is the control connection for commands and replies. Port 20 is the server's data port in active mode. Port 22 is SSH/SFTP; 443 is HTTPS.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>Which statement about secure file transfer is correct?</p>
+          <div class="opts">
+            <button>SFTP is FTP running over SSL/TLS</button>
+            <button>FTP encrypts passwords but not files</button>
+            <button data-correct>SFTP runs over SSH on port 22, while FTPS is FTP protected by TLS</button>
+            <button>FTPS and SFTP are two names for the same protocol</button>
+          </div>
+          <div class="explain">FTPS = FTP + TLS (ports 21/990 plus data ports). SFTP = SSH File Transfer Protocol, a separate protocol on port 22. Plain FTP encrypts nothing, not even the password.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
       </div>
     </section>
 
-    <div class="footer">
-      Built from your extracted text file and reorganized into a modern single-page course.
-    </div>
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>Client and server are roles: the client sends requests, the server listens on a port and responds, following an agreed protocol.</li>
+        <li>An IP address finds the host; a port finds the service. Well-known ports are 0–1023; clients use ephemeral ports 49152–65535.</li>
+        <li>TCP is reliable, ordered and connection-oriented; UDP is fast, connectionless and best effort. HTTP/3 runs on QUIC over UDP.</li>
+        <li>Server types: file, database, transaction (OLTP), groupware, web (static) and application (dynamic, business logic).</li>
+        <li>2-tier is simple but exposes the database; 3-tier adds a business-logic tier for scalability and security; N-tier splits further into services.</li>
+        <li>Java servers: <code>ServerSocket</code> → <code>accept()</code> → streams → close; UDP uses <code>DatagramSocket</code> and timeouts; multiple clients need threads.</li>
+        <li>HTTP is stateless, uses methods and status codes, and today runs as HTTP/1.1, HTTP/2 and HTTP/3, almost always inside TLS 1.3 (HTTPS).</li>
+        <li>FTP uses a control connection (21) and data connections; it is cleartext, so use SFTP (22) or FTPS instead.</li>
+      </ul></div>
+    </section>
+
   </main>
 </div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

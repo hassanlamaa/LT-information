@@ -1,1183 +1,969 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Network Programming - Slide Deck</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        .slide-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .slides {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-            height: 100%;
-        }
-        
-        .slide {
-            min-width: 100vw;
-            height: 100vh;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .slide-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            padding: 20px;
-        }
-        
-        .slide-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .slide-title {
-            color: #4cc9f0;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        
-        .slide-subtitle {
-            color: #a5b4fc;
-            font-size: 1.8rem;
-            font-weight: 300;
-        }
-        
-        .slide-number {
-            position: absolute;
-            bottom: 30px;
-            right: 50px;
-            color: #64748b;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .slide-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: rgba(100, 116, 139, 0.3);
-        }
-        
-        .slide-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4cc9f0, #a5b4fc);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        h2 {
-            color: #4cc9f0;
-            font-size: 2.8rem;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #4cc9f0;
-            padding-bottom: 10px;
-        }
-        
-        h3 {
-            color: #a5b4fc;
-            font-size: 2rem;
-            margin: 25px 0 15px;
-        }
-        
-        p {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: #cbd5e1;
-        }
-        
-        ul, ol {
-            padding-left: 40px;
-            margin-bottom: 30px;
-        }
-        
-        li {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: #cbd5e1;
-        }
-        
-        .code-block {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-            border-left: 6px solid #4cc9f0;
-            overflow-x: auto;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-        
-        .code-header {
-            color: #a5b4fc;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .code-title {
-            font-weight: 600;
-        }
-        
-        pre {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 30px 0;
-        }
-        
-        .comparison-box {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 12px;
-            padding: 25px;
-            border: 3px solid;
-            transition: transform 0.3s ease;
-        }
-        
-        .comparison-box:hover {
-            transform: translateY(-5px);
-        }
-        
-        .comparison-box.tcp {
-            border-color: #10b981;
-        }
-        
-        .comparison-box.udp {
-            border-color: #f59e0b;
-        }
-        
-        .comparison-title {
-            color: #fff;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .highlight {
-            color: #4cc9f0;
-            font-weight: 600;
-        }
-        
-        .emoji {
-            font-size: 1.8rem;
-            margin-right: 10px;
-        }
-        
-        .key-point {
-            background: rgba(76, 201, 240, 0.1);
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-            border-left: 6px solid #4cc9f0;
-        }
-        
-        .key-point h4 {
-            color: #4cc9f0;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-        
-        .visual-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-        
-        .visual-card {
-            background: rgba(30, 41, 59, 0.8);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            border: 2px solid #4cc9f0;
-        }
-        
-        .visual-icon {
-            font-size: 3rem;
-            color: #4cc9f0;
-            margin-bottom: 20px;
-        }
-        
-        .visual-title {
-            color: #a5b4fc;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-        
-        .navigation {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 100;
-        }
-        
-        .nav-btn {
-            background: rgba(76, 201, 240, 0.2);
-            color: #4cc9f0;
-            border: 2px solid #4cc9f0;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .nav-btn:hover {
-            background: rgba(76, 201, 240, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .presenter-mode {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-        
-        .presenter-btn {
-            background: rgba(165, 180, 252, 0.2);
-            color: #a5b4fc;
-            border: 2px solid #a5b4fc;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .presenter-btn:hover {
-            background: rgba(165, 180, 252, 0.4);
-        }
-        
-        .presenter-notes {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            padding: 20px;
-            border-top: 3px solid #4cc9f0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            max-height: 30vh;
-            overflow-y: auto;
-        }
-        
-        .presenter-notes.show {
-            transform: translateY(0);
-        }
-        
-        .notes-title {
-            color: #4cc9f0;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .notes-content {
-            color: #cbd5e1;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-        
-        .footer-note {
-            text-align: center;
-            margin-top: 30px;
-            color: #64748b;
-            font-size: 1.2rem;
-            font-style: italic;
-        }
-        
-        @media (max-width: 1024px) {
-            .slide-title {
-                font-size: 2.8rem;
-            }
-            
-            h2 {
-                font-size: 2.2rem;
-            }
-            
-            p, li {
-                font-size: 1.3rem;
-            }
-            
-            .comparison-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .slide {
-                padding: 20px;
-            }
-            
-            .slide-title {
-                font-size: 2.2rem;
-            }
-            
-            h2 {
-                font-size: 1.8rem;
-            }
-            
-            .nav-btn {
-                padding: 10px 16px;
-                font-size: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Java Network Programming: Slides · LT Information</title>
+<meta name="description" content="A 15-slide deck on Java network programming: InetAddress, sockets, TCP vs UDP, echo servers, exceptions, timeouts, HttpClient and virtual threads, with speaker notes and a quiz.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .lt-main :not(pre) > code { overflow-wrap: anywhere }
+  .slide-nav { flex-wrap: wrap }
+  .slide-nav .counter { font: 700 .9rem var(--mono); color: var(--muted); min-width: 9ch; text-align: center }
+  .slide-nav .grow { flex: 1 }
+  .slide-nav .btn:disabled { opacity: .45; cursor: default; filter: none }
+  .slide .slide-no { display: block; font: 600 .74rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px }
+  .slide h3 { margin-top: 0 }
+  .slide .callout.notes { margin-top: 18px }
+  .slide-title { font: 800 clamp(1.7rem, 4vw, 2.4rem)/1.1 var(--display); letter-spacing: -.02em; margin: 0 0 8px }
+  .dg-life { stroke: var(--line); stroke-width: 3 }
+  .dg-msg { stroke: var(--accent); stroke-width: 2; fill: none }
+  .dg-data { stroke: var(--ok); stroke-width: 2; fill: none; stroke-dasharray: 5 4 }
+  .dg-head { fill: var(--accent) }
+  .dg-headok { fill: var(--ok) }
+  .dg-box { fill: var(--sunk); stroke: var(--line) }
+  .dg-small { font-size: 12px }
+</style>
 </head>
 <body>
-    <div class="slide-container">
-        <div class="slides" id="slides">
-            <!-- Slide 1: Title -->
-            <div class="slide">
-                <div class="slide-content">
-                    <div class="slide-header">
-                        <h1 class="slide-title">Java Network Programming</h1>
-                        <div class="slide-subtitle">Mastering InetAddress & Socket Programming</div>
-                    </div>
-                    
-                    <div class="visual-grid">
-                        <div class="visual-card">
-                            <div class="visual-icon">🌐</div>
-                            <div class="visual-title">Network Fundamentals</div>
-                            <p>IP addresses, ports, and protocols</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">💻</div>
-                            <div class="visual-title">Client-Server Architecture</div>
-                            <p>Communication between applications</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">⚡</div>
-                            <div class="visual-title">Real-World Applications</div>
-                            <p>Web servers, chat apps, file transfer</p>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-note">
-                        Press right arrow or space to navigate | Created for Java Developers
-                    </div>
-                </div>
-                <div class="slide-number">1</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-1">
-                    <div class="notes-title">Presenter Notes - Slide 1</div>
-                    <div class="notes-content">
-                        <p><strong>Welcome students!</strong> Start by explaining the importance of network programming in today's connected world.</p>
-                        <p><strong>Key points to mention:</strong></p>
-                        <ul>
-                            <li>Every modern application uses networking</li>
-                            <li>Java provides robust networking APIs</li>
-                            <li>We'll focus on practical, real-world examples</li>
-                        </ul>
-                        <p><strong>Icebreaker question:</strong> "How many networked applications have you used today?"</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 2: Learning Objectives -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Learning Objectives</h2>
-                    
-                    <div class="key-point">
-                        <h4>By the end of this session, you will be able to:</h4>
-                    </div>
-                    
-                    <ul>
-                        <li><span class="emoji">🎯</span> Understand the role of <span class="highlight">InetAddress</span> class in Java networking</li>
-                        <li><span class="emoji">🔍</span> Resolve hostnames and IP addresses using static methods</li>
-                        <li><span class="emoji">⚖️</span> Differentiate between TCP and UDP protocols</li>
-                        <li><span class="emoji">🔌</span> Create client-server applications using sockets</li>
-                        <li><span class="emoji">🏗️</span> Implement reliable TCP connections with Socket and ServerSocket</li>
-                        <li><span class="emoji">🛡️</span> Handle network exceptions effectively</li>
-                    </ul>
-                    
-                    <div class="key-point">
-                        <h4>Prerequisites:</h4>
-                        <p>Basic Java knowledge, understanding of object-oriented programming, familiarity with exceptions</p>
-                    </div>
-                </div>
-                <div class="slide-number">2</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-2">
-                    <div class="notes-title">Presenter Notes - Slide 2</div>
-                    <div class="notes-content">
-                        <p><strong>Emphasize practical skills:</strong> Students should leave ready to build real network applications.</p>
-                        <p><strong>TCP vs UDP analogy:</strong> TCP is like a phone call (reliable, ordered), UDP is like sending postcards (fast, no guarantees).</p>
-                        <p><strong>Common misconception:</strong> Many beginners think networking is too complex. Reassure them that Java makes it manageable.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 3: The InetAddress Class -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>The InetAddress Class</h2>
-                    
-                    <p><span class="emoji">📍</span> Java's representation of an IP address - both IPv4 and IPv6</p>
-                    
-                    <div class="key-point">
-                        <h4>Key Characteristics:</h4>
-                        <ul>
-                            <li>No public constructor - use static factory methods</li>
-                            <li>Immutable and thread-safe</li>
-                            <li>Handles both hostname resolution and IP address representation</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <div class="code-title">Creating InetAddress Instances</div>
-                        </div>
-                        <pre><code class="language-java">// Get local machine address
-InetAddress localHost = InetAddress.getLocalHost();
 
-// Resolve hostname to IP
-InetAddress google = InetAddress.getByName("google.com");
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Network Programming · Slides</span>
+    <h1>Java Network Programming: Slides</h1>
+    <p class="lead">A slide-by-slide walk through Java networking: how a program finds another computer (<code>InetAddress</code>), how two programs talk through sockets, when to choose TCP or UDP, and how to write servers that survive errors and many clients. Every slide has speaker notes that explain it in plain English.</p>
+    <div class="chips"><span class="chip">15 slides</span><span class="chip">≈ 30 min</span><span class="chip">14 quiz questions</span><span class="chip">Level: Intermediate</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Resolve hostnames and IP addresses with <code>InetAddress</code> and handle <code>UnknownHostException</code></li>
+        <li>Explain sockets, ports and the TCP three-way handshake, and choose between TCP and UDP</li>
+        <li>Write a TCP echo server and client with <code>Socket</code>/<code>ServerSocket</code>, and a UDP echo pair with <code>DatagramSocket</code></li>
+        <li>Use timeouts and try-with-resources correctly, and scale a server with virtual threads (Java 21)</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-// Get all addresses for a host
-InetAddress[] allAddresses = 
-    InetAddress.getAllByName("www.google.com");
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
 
-// Create from IP string
-InetAddress fromIP = InetAddress.getByName("8.8.8.8");</code></pre>
-                    </div>
-                </div>
-                <div class="slide-number">3</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-3">
-                    <div class="notes-title">Presenter Notes - Slide 3</div>
-                    <div class="notes-content">
-                        <p><strong>Demo opportunity:</strong> Show live code execution. Ask students to predict outputs before running.</p>
-                        <p><strong>Important:</strong> Emphasize that InetAddress doesn't have a constructor. This is a design pattern (factory method).</p>
-                        <p><strong>Discussion point:</strong> Why do you think InetAddress is immutable? (Thread safety, caching benefits)</p>
-                        <p><strong>Common error:</strong> Forgetting to handle UnknownHostException.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 4: InetAddress Methods -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>InetAddress: Key Methods</h2>
-                    
-                    <div class="visual-grid">
-                        <div class="visual-card">
-                            <div class="visual-icon">🏠</div>
-                            <div class="visual-title">getLocalHost()</div>
-                            <p>Returns address of local machine</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">🔤</div>
-                            <div class="visual-title">getByName(String)</div>
-                            <p>Resolves hostname to IP address</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">📚</div>
-                            <div class="visual-title">getAllByName(String)</div>
-                            <p>Returns all IPs for a hostname</p>
-                        </div>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <div class="code-title">Practical Example</div>
-                        </div>
-                        <pre><code class="language-java">import java.net.*;
+    <section>
+      <h2><span class="num">1</span>How to use this deck</h2>
+      <p>The deck shows one slide at a time. Move with the <strong>Previous</strong> and <strong>Next</strong> buttons, or with the <kbd>←</kbd> and <kbd>→</kbd> arrow keys (<kbd>Home</kbd> and <kbd>End</kbd> jump to the first and last slide). On a phone, swipe left or right on the slide. The address bar shows <code>#slide-N</code>, so you can bookmark or share a single slide.</p>
+      <p>For revision, press <strong>Show all slides</strong> to see the whole deck as one long page you can scroll or print.</p>
+      <div class="callout tip"><span class="label">Study tip</span><p>Read the slide, then try to explain it out loud before opening the speaker notes. If your explanation matches the notes, move on; if not, read the notes twice. The full written guide is on the previous lesson, <a href="socket%20first.html">Java Network Programming: Guide</a>.</p></div>
+    </section>
 
-public class InetAddressDemo {
-    public static void main(String[] args) {
-        try {
-            InetAddress local = InetAddress.getLocalHost();
-            System.out.println("Local Host: " + local);
-            
-            System.out.println("Host Name: " + local.getHostName());
-            System.out.println("IP Address: " + local.getHostAddress());
-            
-            // Test reachability (may require admin on some systems)
-            boolean reachable = local.isReachable(5000);
-            System.out.println("Is reachable: " + reachable);
-            
-        } catch (Exception e) {
+    <section>
+      <h2><span class="num">2</span>The slide deck</h2>
+
+      <div class="slide-nav" role="group" aria-label="Slide controls">
+        <button class="btn ghost" type="button" id="slide-prev" aria-label="Previous slide">← Previous</button>
+        <span class="counter" id="slide-counter" aria-live="polite">Slide 1 / 15</span>
+        <button class="btn" type="button" id="slide-next" aria-label="Next slide">Next →</button>
+        <span class="grow"></span>
+        <button class="btn ghost" type="button" id="slide-all" aria-pressed="false">Show all slides</button>
+      </div>
+
+      <div id="deck">
+
+      <!-- Slide 1 -->
+      <article class="slide" id="slide-1" aria-label="Slide 1">
+        <span class="slide-no">Slide 1</span>
+        <p class="slide-title">Java Network Programming</p>
+        <p class="lead">Mastering InetAddress and socket programming</p>
+        <div class="cards">
+          <div class="card"><h4>Network fundamentals</h4><p>IP addresses, ports and protocols</p></div>
+          <div class="card"><h4>Client-server architecture</h4><p>Communication between applications</p></div>
+          <div class="card"><h4>Real-world applications</h4><p>Web servers, chat apps, file transfer</p></div>
+        </div>
+        <p><small>Use the arrow keys or the buttons to move through the deck. Created for Java developers.</small></p>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p>Almost every program you use today talks to another computer: your browser, WhatsApp, a banking app, a game, even a smart TV. <strong>Network programming</strong> means writing the code that sends and receives that data.</p>
+          <ul>
+            <li>Every modern application uses networking.</li>
+            <li>Java ships with a robust networking API in the <code>java.net</code> package (plus <code>java.net.http</code> since Java 11), so you do not need any extra library for the basics.</li>
+            <li>We focus on practical, runnable examples you can try on one laptop using <code>localhost</code>.</li>
+          </ul>
+          <p><strong>Icebreaker:</strong> "How many networked applications have you used today?" Most people count ten or more before lunch.</p>
+        </div>
+      </article>
+
+      <!-- Slide 2 -->
+      <article class="slide" id="slide-2" aria-label="Slide 2">
+        <span class="slide-no">Slide 2</span>
+        <h3>Learning objectives</h3>
+        <p><strong>By the end of this session, you will be able to:</strong></p>
+        <ul>
+          <li>Understand the role of the <code>InetAddress</code> class in Java networking</li>
+          <li>Resolve hostnames and IP addresses using static methods</li>
+          <li>Differentiate between the TCP and UDP protocols</li>
+          <li>Create client-server applications using sockets</li>
+          <li>Implement reliable TCP connections with <code>Socket</code> and <code>ServerSocket</code></li>
+          <li>Handle network exceptions effectively</li>
+        </ul>
+        <p><strong>Prerequisites:</strong> basic Java, object-oriented programming, and familiarity with exceptions (<code>try</code>/<code>catch</code>, checked exceptions).</p>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Emphasise practical skills:</strong> students should leave able to build a real (small) network application, not just recite definitions.</p>
+          <p><strong>TCP vs UDP analogy:</strong> TCP is like a <em>phone call</em>: you first connect, then everything you say arrives in order, and you notice if the line drops. UDP is like <em>sending postcards</em>: each one travels on its own, quickly, with no guarantee it arrives or arrives in order.</p>
+          <p><strong>Common misconception:</strong> many beginners think networking is too complex. Java hides the hard parts (packets, retransmission, routing); you mostly read and write streams, just like reading a file.</p>
+        </div>
+      </article>
+
+      <!-- Slide 3 -->
+      <article class="slide" id="slide-3" aria-label="Slide 3">
+        <span class="slide-no">Slide 3</span>
+        <h3>The InetAddress class</h3>
+        <p><code>java.net.InetAddress</code> is Java's representation of an IP address, both IPv4 (subclass <code>Inet4Address</code>) and IPv6 (subclass <code>Inet6Address</code>).</p>
+        <p><strong>Key characteristics:</strong></p>
+        <ul>
+          <li>No public constructor: you obtain instances through static factory methods.</li>
+          <li>Immutable (its value never changes after creation), and therefore safe to share between threads.</li>
+          <li>Handles both hostname resolution (name → IP, using DNS) and IP address representation.</li>
+        </ul>
+        <p class="code-title">CreateInetAddress.java</p>
+<pre><code><span class="k">import</span> java.net.<span class="t">InetAddress</span>;
+<span class="k">import</span> java.net.<span class="t">UnknownHostException</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">CreateInetAddress</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">UnknownHostException</span> {
+        <span class="c">// Get local machine address</span>
+        <span class="t">InetAddress</span> localHost = <span class="t">InetAddress</span>.getLocalHost();
+
+        <span class="c">// Resolve hostname to IP (performs a DNS lookup)</span>
+        <span class="t">InetAddress</span> google = <span class="t">InetAddress</span>.getByName(<span class="s">"google.com"</span>);
+
+        <span class="c">// Get all addresses for a host (IPv4 and IPv6)</span>
+        <span class="t">InetAddress</span>[] allAddresses = <span class="t">InetAddress</span>.getAllByName(<span class="s">"www.google.com"</span>);
+
+        <span class="c">// Create from IP string (no DNS lookup needed for a literal IP)</span>
+        <span class="t">InetAddress</span> fromIP = <span class="t">InetAddress</span>.getByName(<span class="s">"8.8.8.8"</span>);
+
+        <span class="t">System</span>.out.println(localHost + <span class="s">" | "</span> + google + <span class="s">" | "</span>
+                + allAddresses.length + <span class="s">" addresses | "</span> + fromIP);
+    }
+}</code></pre>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Demo opportunity:</strong> run the code live and ask students to predict the output first. Printing an <code>InetAddress</code> shows <code>hostname/IP</code>, for example <code>google.com/142.250.185.78</code>. For a literal IP the hostname part is empty: <code>/8.8.8.8</code>.</p>
+          <p><strong>Important:</strong> <code>InetAddress</code> has no constructor; you call a static method instead. This design pattern is called a <span class="term" title="A static method that creates and returns an object, instead of calling new">factory method</span>. It lets Java return the right subclass (IPv4 or IPv6) and reuse cached lookups.</p>
+          <p><strong>Discussion point:</strong> why is <code>InetAddress</code> immutable? Because it is shared: Java caches DNS results and hands the same object to many threads. If one thread could change it, every other thread would see a wrong address. Immutability gives thread safety and makes caching safe.</p>
+          <p><strong>Common error:</strong> forgetting to handle <code>UnknownHostException</code>. It is a checked exception, so the code will not compile until you catch it or declare <code>throws</code>.</p>
+        </div>
+      </article>
+
+      <!-- Slide 4 -->
+      <article class="slide" id="slide-4" aria-label="Slide 4">
+        <span class="slide-no">Slide 4</span>
+        <h3>InetAddress: key methods</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Method</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>getLocalHost()</code></td><td>Returns the address of the local machine</td></tr>
+            <tr><td><code>getByName(String)</code></td><td>Resolves a hostname (or IP string) to one IP address</td></tr>
+            <tr><td><code>getAllByName(String)</code></td><td>Returns all IP addresses for a hostname</td></tr>
+            <tr><td><code>getHostName()</code></td><td>Returns the hostname (may do a reverse DNS lookup)</td></tr>
+            <tr><td><code>getHostAddress()</code></td><td>Returns the IP address as text, for example <code>"192.168.1.10"</code></td></tr>
+            <tr><td><code>isReachable(int ms)</code></td><td>Tests whether the host answers within the timeout</td></tr>
+          </tbody>
+        </table></div>
+        <p class="code-title">InetAddressDemo.java (practical example)</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.net.<span class="t">InetAddress</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">InetAddressDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) {
+        <span class="k">try</span> {
+            <span class="t">InetAddress</span> local = <span class="t">InetAddress</span>.getLocalHost();
+            <span class="t">System</span>.out.println(<span class="s">"Local Host: "</span> + local);
+            <span class="t">System</span>.out.println(<span class="s">"Host Name: "</span> + local.getHostName());
+            <span class="t">System</span>.out.println(<span class="s">"IP Address: "</span> + local.getHostAddress());
+
+            <span class="c">// Test reachability (ICMP needs admin/root rights on most systems)</span>
+            <span class="k">boolean</span> reachable = local.isReachable(<span class="n">5000</span>);
+            <span class="t">System</span>.out.println(<span class="s">"Is reachable: "</span> + reachable);
+        } <span class="k">catch</span> (<span class="t">IOException</span> e) {   <span class="c">// also catches UnknownHostException</span>
             e.printStackTrace();
         }
     }
 }</code></pre>
-                    </div>
-                </div>
-                <div class="slide-number">4</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-4">
-                    <div class="notes-title">Presenter Notes - Slide 4</div>
-                    <div class="notes-content">
-                        <p><strong>Important distinction:</strong> getByName() vs getAllByName() - when would you use each?</p>
-                        <p><strong>Real-world scenario:</strong> Load balancing websites use multiple IP addresses for the same hostname.</p>
-                        <p><strong>Warning:</strong> isReachable() may not work on all systems due to firewall/security settings.</p>
-                        <p><strong>Exercise idea:</strong> Have students write a program that lists all IPs for their university's website.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 5: Socket Programming Basics -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Socket Programming Basics</h2>
-                    
-                    <p><span class="emoji">🔌</span> Sockets are endpoints for two-way communication between machines</p>
-                    
-                    <div class="key-point">
-                        <h4>Socket = IP Address + Port Number</h4>
-                        <p>Example: 192.168.1.10:8080 (IP:Port)</p>
-                    </div>
-                    
-                    <div class="comparison-grid">
-                        <div class="comparison-box">
-                            <div class="comparison-title">Client Socket</div>
-                            <ul>
-                                <li>Initiates connection to server</li>
-                                <li>Created with remote IP and port</li>
-                                <li>java.net.Socket class</li>
-                                <li>Example: Web browser connecting to a website</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="comparison-box">
-                            <div class="comparison-title">Server Socket</div>
-                            <ul>
-                                <li>Listens for incoming connections</li>
-                                <li>Binds to specific port</li>
-                                <li>java.net.ServerSocket class</li>
-                                <li>Example: Web server waiting for requests</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="slide-number">5</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-5">
-                    <div class="notes-title">Presenter Notes - Slide 5</div>
-                    <div class="notes-content">
-                        <p><strong>Analogy:</strong> Sockets are like electrical sockets - they provide a point of connection.</p>
-                        <p><strong>Visual aid:</strong> Draw the client-server relationship on a whiteboard.</p>
-                        <p><strong>Port numbers explained:</strong> Like apartment numbers in a building (IP address).</p>
-                        <p><strong>Common ports to mention:</strong> 80 (HTTP), 443 (HTTPS), 22 (SSH), 25 (SMTP).</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 6: TCP vs UDP -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>TCP vs UDP: Choosing the Right Protocol</h2>
-                    
-                    <div class="comparison-grid">
-                        <div class="comparison-box tcp">
-                            <div class="comparison-title">TCP<br>Transmission Control Protocol</div>
-                            <ul>
-                                <li><span class="highlight">Connection-oriented</span> - requires handshake</li>
-                                <li><span class="highlight">Reliable</span> - guarantees delivery</li>
-                                <li><span class="highlight">In-order</span> delivery</li>
-                                <li>Flow control and congestion control</li>
-                                <li>Higher overhead, slower</li>
-                                <li><strong>Use cases:</strong> Web, email, file transfer</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="comparison-box udp">
-                            <div class="comparison-title">UDP<br>User Datagram Protocol</div>
-                            <ul>
-                                <li><span class="highlight">Connectionless</span> - no handshake</li>
-                                <li><span class="highlight">Unreliable</span> - no delivery guarantees</li>
-                                <li><span class="highlight">No ordering</span> guarantees</li>
-                                <li>No flow control</li>
-                                <li>Lower overhead, faster</li>
-                                <li><strong>Use cases:</strong> DNS, VoIP, gaming, streaming</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="key-point">
-                        <h4>Simple Rule:</h4>
-                        <p>Need reliability? Use TCP. Need speed? Use UDP. Need both? Implement reliability on top of UDP.</p>
-                    </div>
-                </div>
-                <div class="slide-number">6</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-6">
-                    <div class="notes-title">Presenter Notes - Slide 6</div>
-                    <div class="notes-content">
-                        <p><strong>Real-world examples:</strong></p>
-                        <ul>
-                            <li>TCP: Loading a webpage (need all data in order)</li>
-                            <li>UDP: Video call (better to skip a frame than wait for retransmission)</li>
-                        </ul>
-                        <p><strong>Fun fact:</strong> DNS uses UDP for queries but falls back to TCP for large responses.</p>
-                        <p><strong>Discussion:</strong> Why would online games use UDP despite its unreliability?</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 7: TCP Socket Programming -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>TCP Socket Programming in Java</h2>
-                    
-                    <p><span class="emoji">🔧</span> Two key classes: <span class="highlight">Socket</span> (client) and <span class="highlight">ServerSocket</span> (server)</p>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <div class="code-title">TCP Connection Lifecycle</div>
-                        </div>
-                        <pre><code class="language-java">// Server Side
-ServerSocket serverSocket = new ServerSocket(12345);
-Socket clientSocket = serverSocket.accept(); // Waits here
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>getByName() vs getAllByName():</strong> use <code>getByName()</code> when you just need one address to connect to. Use <code>getAllByName()</code> when you want every address, for example to try the next one if the first fails, or to list IPv4 and IPv6 addresses.</p>
+          <p><strong>Real-world scenario:</strong> large websites publish several IP addresses for the same hostname to spread load across servers (DNS load balancing), so <code>getAllByName()</code> often returns more than one result.</p>
+          <p><strong>Warning:</strong> <code>isReachable()</code> may not work on all systems. It sends an ICMP echo ("ping") only if the program has the privilege to do so; otherwise it tries a TCP connection to port 7 (the echo port). Firewalls often block both, so <code>false</code> does not prove the host is down.</p>
+          <p><strong>Exercise idea:</strong> write a program that lists all IP addresses of your university's website.</p>
+        </div>
+      </article>
 
-// Client Side  
-Socket socket = new Socket("localhost", 12345);
+      <!-- Slide 5 -->
+      <article class="slide" id="slide-5" aria-label="Slide 5">
+        <span class="slide-no">Slide 5</span>
+        <h3>Socket programming basics</h3>
+        <p>A <span class="term" title="One endpoint of a two-way communication link between two programs on a network">socket</span> is an endpoint for two-way communication between machines.</p>
+        <div class="callout key"><span class="label">Key idea</span><p><strong>Socket address = IP address + port number.</strong> Example: <code>192.168.1.10:8080</code> (IP:port). A TCP connection is identified by both ends: client IP:port and server IP:port.</p></div>
+        <div class="cards">
+          <div class="card"><h4>Client socket</h4><ul>
+            <li>Initiates the connection to the server</li>
+            <li>Created with the remote IP and port</li>
+            <li><code>java.net.Socket</code> class</li>
+            <li>Example: a web browser connecting to a website</li></ul></div>
+          <div class="card"><h4>Server socket</h4><ul>
+            <li>Listens for incoming connections</li>
+            <li>Binds to a specific port</li>
+            <li><code>java.net.ServerSocket</code> class</li>
+            <li>Example: a web server waiting for requests</li></ul></div>
+        </div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Analogy:</strong> sockets are like electrical sockets: a standard point of connection. Once plugged in, data flows both ways.</p>
+          <p><strong>Port numbers explained:</strong> the IP address is the building; the port is the apartment number. The IP gets the data to the right computer; the port gets it to the right program on that computer.</p>
+          <p><strong>Port ranges:</strong> well-known 0–1023 (system services), registered 1024–49151, dynamic/ephemeral 49152–65535 (picked automatically for the client side of a connection).</p>
+          <p><strong>Common ports to mention:</strong> 80 (HTTP), 443 (HTTPS), 22 (SSH), 25 (SMTP), 53 (DNS).</p>
+          <p><strong>Visual aid:</strong> draw the client on the left, the server on the right, and the connection between their two sockets.</p>
+        </div>
+      </article>
 
-// Both sides can now communicate via:
-// socket.getInputStream()
-// socket.getOutputStream()
+      <!-- Slide 6 -->
+      <article class="slide" id="slide-6" aria-label="Slide 6">
+        <span class="slide-no">Slide 6</span>
+        <h3>TCP vs UDP: choosing the right protocol</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>TCP (Transmission Control Protocol)</th><th>UDP (User Datagram Protocol)</th></tr></thead>
+          <tbody>
+            <tr><td>Connection</td><td>Connection-oriented: requires a handshake</td><td>Connectionless: no handshake</td></tr>
+            <tr><td>Reliability</td><td>Reliable: lost data is retransmitted</td><td>Unreliable: no delivery guarantee</td></tr>
+            <tr><td>Ordering</td><td>In-order delivery</td><td>No ordering guarantee</td></tr>
+            <tr><td>Control</td><td>Flow control and congestion control</td><td>No flow control</td></tr>
+            <tr><td>Data unit</td><td>Byte stream (no message boundaries)</td><td>Datagrams (each message separate)</td></tr>
+            <tr><td>Overhead</td><td>Higher overhead, more latency</td><td>Lower overhead, lower latency</td></tr>
+            <tr><td>Java classes</td><td><code>Socket</code>, <code>ServerSocket</code></td><td><code>DatagramSocket</code>, <code>DatagramPacket</code></td></tr>
+            <tr><td>Use cases</td><td>Web (HTTP/1.1, HTTP/2), email, file transfer, SSH</td><td>DNS, VoIP, gaming, live streaming, HTTP/3 (via QUIC)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout key"><span class="label">Simple rule</span><p>Need reliability? Use TCP. Need low latency? Use UDP. Need both? Implement reliability on top of UDP. That is exactly what <strong>QUIC</strong> does, and HTTP/3 runs on QUIC over UDP.</p></div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Real-world examples:</strong></p>
+          <ul>
+            <li>TCP: loading a web page. You need every byte, in order, or the page is broken.</li>
+            <li>UDP: a video call. It is better to skip a late frame than to freeze the call waiting for a retransmission.</li>
+          </ul>
+          <p><strong>Fun fact:</strong> DNS uses UDP for normal queries but falls back to TCP for large responses (and for zone transfers).</p>
+          <p><strong>Update:</strong> "the web uses TCP" is no longer the whole story. HTTP/1.1 and HTTP/2 use TCP, but HTTP/3 (RFC 9114) uses QUIC, which runs over UDP and adds its own reliability and TLS 1.3 encryption.</p>
+          <p><strong>Discussion:</strong> why would online games use UDP despite its unreliability? Because an old position update is useless once a newer one exists; waiting for a retransmission would only add lag.</p>
+        </div>
+      </article>
 
-// Always close sockets when done!
-socket.close();
-serverSocket.close();</code></pre>
-                    </div>
-                    
-                    <div class="key-point">
-                        <h4>Important Notes:</h4>
-                        <ul>
-                            <li>ServerSocket.accept() blocks until a client connects</li>
-                            <li>Each client connection creates a new Socket instance</li>
-                            <li>Always use try-with-resources or finally block to close sockets</li>
-                            <li>Handle exceptions: UnknownHostException, IOException, SocketException</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="slide-number">7</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-7">
-                    <div class="notes-title">Presenter Notes - Slide 7</div>
-                    <div class="notes-content">
-                        <p><strong>Blocking nature:</strong> accept() and read() block the thread. Mention this leads to multi-threading needs for real servers.</p>
-                        <p><strong>Resource management:</strong> Always close sockets! Show what happens if you don't (resource leaks).</p>
-                        <p><strong>Demo:</strong> Create a simple echo server and client. Show communication in real-time.</p>
-                        <p><strong>Common mistake:</strong> Not flushing output streams, causing data to stay in buffer.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 8: Complete TCP Example -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Complete TCP Example: Echo Server</h2>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <div class="code-title">Echo Server Implementation</div>
-                        </div>
-                        <pre><code class="language-java">import java.net.*;
-import java.io.*;
+      <!-- Slide 7 (new) -->
+      <article class="slide" id="slide-7" aria-label="Slide 7">
+        <span class="slide-no">Slide 7</span>
+        <h3>How a TCP connection starts: the three-way handshake</h3>
+        <figure class="diagram">
+          <svg viewBox="0 0 360 250" role="img" aria-label="TCP three-way handshake between client and server: SYN, SYN-ACK, ACK, then data">
+            <defs>
+              <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-head"/></marker>
+              <marker id="ahok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-headok"/></marker>
+            </defs>
+            <rect x="10" y="8" width="100" height="30" rx="6" class="dg-box"/>
+            <text x="60" y="28" text-anchor="middle" font-weight="700">Client</text>
+            <rect x="250" y="8" width="100" height="30" rx="6" class="dg-box"/>
+            <text x="300" y="28" text-anchor="middle" font-weight="700">Server</text>
+            <line x1="60" y1="38" x2="60" y2="245" class="dg-life"/>
+            <line x1="300" y1="38" x2="300" y2="245" class="dg-life"/>
+            <line x1="62" y1="65" x2="298" y2="95" class="dg-msg" marker-end="url(#ah)"/>
+            <text x="180" y="70" text-anchor="middle" class="dg-small">1. SYN (seq = x)</text>
+            <line x1="298" y1="115" x2="62" y2="145" class="dg-msg" marker-end="url(#ah)"/>
+            <text x="180" y="120" text-anchor="middle" class="dg-small">2. SYN-ACK (seq = y, ack = x+1)</text>
+            <line x1="62" y1="165" x2="298" y2="195" class="dg-msg" marker-end="url(#ah)"/>
+            <text x="180" y="170" text-anchor="middle" class="dg-small">3. ACK (ack = y+1)</text>
+            <line x1="62" y1="225" x2="298" y2="225" class="dg-data" marker-end="url(#ahok)" marker-start="url(#ahok)"/>
+            <text x="180" y="218" text-anchor="middle" class="dg-small">Connection open: data both ways</text>
+          </svg>
+          <figcaption>Figure 1. The TCP three-way handshake. In Java it happens inside <code>new Socket(host, port)</code> on the client and <code>accept()</code> on the server.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><strong>SYN:</strong> the client asks to open a connection and sends its starting sequence number.</li>
+          <li><strong>SYN-ACK:</strong> the server agrees, acknowledges the client's number and sends its own.</li>
+          <li><strong>ACK:</strong> the client acknowledges the server's number. Both sides now agree the connection is open.</li>
+        </ol>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p>The handshake is why TCP is called <em>connection-oriented</em>: before any data moves, both sides agree on starting <span class="term" title="Numbers TCP uses to count bytes so it can reorder them and detect missing data">sequence numbers</span>. Those numbers are what let TCP put data back in order and notice gaps to retransmit.</p>
+          <p><strong>In Java you never send SYN yourself.</strong> The operating system does it. <code>new Socket("localhost", 12345)</code> returns only after the handshake succeeds; if nothing is listening on that port the server's OS replies with a reset and Java throws <code>ConnectException: Connection refused</code>.</p>
+          <p>Closing uses a separate exchange of FIN and ACK segments, one in each direction. UDP has no handshake at all, which is one reason it has lower latency.</p>
+        </div>
+      </article>
 
-public class EchoServer {
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(12345);
-        System.out.println("Echo Server started on port 12345");
-        
-        while (true) {
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Client connected: " + 
-                             clientSocket.getInetAddress());
-            
-            // Handle client in new thread for multiple clients
-            new Thread(() -> handleClient(clientSocket)).start();
+      <!-- Slide 8 -->
+      <article class="slide" id="slide-8" aria-label="Slide 8">
+        <span class="slide-no">Slide 8</span>
+        <h3>TCP socket programming in Java</h3>
+        <p>Two key classes: <code>Socket</code> (client, and each accepted connection on the server) and <code>ServerSocket</code> (server, listening).</p>
+        <p class="code-title">TCP connection lifecycle (fragment, server and client shown together)</p>
+<pre><code><span class="c">// Server side</span>
+<span class="k">try</span> (<span class="t">ServerSocket</span> serverSocket = <span class="k">new</span> <span class="t">ServerSocket</span>(<span class="n">12345</span>);
+     <span class="t">Socket</span> clientSocket = serverSocket.accept()) {   <span class="c">// waits here</span>
+    <span class="c">// talk to the client via clientSocket.getInputStream() / getOutputStream()</span>
+}   <span class="c">// both sockets are closed automatically here</span>
+
+<span class="c">// Client side (another program)</span>
+<span class="k">try</span> (<span class="t">Socket</span> socket = <span class="k">new</span> <span class="t">Socket</span>(<span class="s">"localhost"</span>, <span class="n">12345</span>)) {
+    <span class="c">// both sides can now communicate via:</span>
+    <span class="c">// socket.getInputStream()</span>
+    <span class="c">// socket.getOutputStream()</span>
+}   <span class="c">// socket closed automatically, even if an exception was thrown</span></code></pre>
+        <p><strong>Important notes:</strong></p>
+        <ul>
+          <li><code>ServerSocket.accept()</code> blocks until a client connects.</li>
+          <li>Each client connection creates a new <code>Socket</code> instance on the server.</li>
+          <li>Always close sockets: use try-with-resources (preferred since Java 7) rather than a manual <code>finally</code> block.</li>
+          <li>Handle exceptions: <code>UnknownHostException</code>, <code>IOException</code>, <code>SocketException</code>.</li>
+        </ul>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Blocking nature:</strong> <code>accept()</code> and <code>read()</code> block (pause) the thread until something happens. A server with one thread can therefore serve only one client at a time, which is why real servers use multiple threads (slide 9) or virtual threads (slide 12).</p>
+          <p><strong>Resource management:</strong> always close sockets. Every open socket holds an operating-system file descriptor and a port; if you forget, a long-running server eventually fails with "Too many open files". <span class="term" title="A try statement that declares resources in parentheses; Java closes them automatically, in reverse order, when the block ends">try-with-resources</span> closes them for you, even when an exception is thrown.</p>
+          <p><strong>Demo:</strong> run an echo server and client side by side and type messages to show communication in real time.</p>
+          <p><strong>Common mistake:</strong> not flushing output streams, so data stays in the buffer and the other side waits forever. Use <code>new PrintWriter(..., true)</code> (auto-flush on <code>println</code>) or call <code>flush()</code>.</p>
+        </div>
+      </article>
+
+      <!-- Slide 9 -->
+      <article class="slide" id="slide-9" aria-label="Slide 9">
+        <span class="slide-no">Slide 9</span>
+        <h3>Complete TCP example: echo server and client</h3>
+        <p class="code-title">EchoServer.java</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">BufferedReader</span>;
+<span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.io.<span class="t">InputStreamReader</span>;
+<span class="k">import</span> java.io.<span class="t">OutputStreamWriter</span>;
+<span class="k">import</span> java.io.<span class="t">PrintWriter</span>;
+<span class="k">import</span> java.net.<span class="t">ServerSocket</span>;
+<span class="k">import</span> java.net.<span class="t">Socket</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">EchoServer</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span> {
+        <span class="k">try</span> (<span class="t">ServerSocket</span> serverSocket = <span class="k">new</span> <span class="t">ServerSocket</span>(<span class="n">12345</span>)) {
+            <span class="t">System</span>.out.println(<span class="s">"Echo Server started on port 12345"</span>);
+            <span class="k">while</span> (<span class="k">true</span>) {
+                <span class="t">Socket</span> clientSocket = serverSocket.accept();
+                <span class="t">System</span>.out.println(<span class="s">"Client connected: "</span> + clientSocket.getInetAddress());
+                <span class="c">// Handle each client in a new thread so many clients can connect</span>
+                <span class="k">new</span> <span class="t">Thread</span>(() -&gt; handleClient(clientSocket)).start();
+            }
         }
     }
-    
-    private static void handleClient(Socket socket) {
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(
-                socket.getOutputStream(), true)) {
-            
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println("Received: " + inputLine);
-                out.println("Echo: " + inputLine);
+
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> handleClient(<span class="t">Socket</span> socket) {
+        <span class="k">try</span> (socket;   <span class="c">// Java 9+: closes the socket when done</span>
+             <span class="t">BufferedReader</span> in = <span class="k">new</span> <span class="t">BufferedReader</span>(<span class="k">new</span> <span class="t">InputStreamReader</span>(
+                     socket.getInputStream(), <span class="t">StandardCharsets</span>.UTF_8));
+             <span class="t">PrintWriter</span> out = <span class="k">new</span> <span class="t">PrintWriter</span>(<span class="k">new</span> <span class="t">OutputStreamWriter</span>(
+                     socket.getOutputStream(), <span class="t">StandardCharsets</span>.UTF_8), <span class="k">true</span>)) {
+            <span class="t">String</span> inputLine;
+            <span class="k">while</span> ((inputLine = in.readLine()) != <span class="k">null</span>) {
+                <span class="t">System</span>.out.println(<span class="s">"Received: "</span> + inputLine);
+                out.println(<span class="s">"Echo: "</span> + inputLine);
             }
-        } catch (IOException e) {
-            System.err.println("Error handling client: " + e.getMessage());
+        } <span class="k">catch</span> (<span class="t">IOException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Error handling client: "</span> + e.getMessage());
         }
     }
 }</code></pre>
-                    </div>
-                    
-                    <div class="key-point">
-                        <h4>Key Features Shown:</h4>
-                        <p>• Multi-threaded server (handles multiple clients) • Proper resource management • Clean separation of concerns</p>
-                    </div>
-                </div>
-                <div class="slide-number">8</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-8">
-                    <div class="notes-title">Presenter Notes - Slide 8</div>
-                    <div class="notes-content">
-                        <p><strong>Multi-threading importance:</strong> Without threads, server can only handle one client at a time.</p>
-                        <p><strong>Try-with-resources:</strong> Show how it automatically closes sockets and streams.</p>
-                        <p><strong>Security note:</strong> Real servers need input validation and size limits to prevent DoS attacks.</p>
-                        <p><strong>Extension idea:</strong> Add logging, timeout handling, or protocol commands.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 9: Exception Handling -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Network Exception Handling</h2>
-                    
-                    <p><span class="emoji">⚠️</span> Network operations can fail in many ways - always handle exceptions!</p>
-                    
-                    <div class="visual-grid">
-                        <div class="visual-card">
-                            <div class="visual-icon">🔍</div>
-                            <div class="visual-title">UnknownHostException</div>
-                            <p>Hostname cannot be resolved to IP address</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">🚫</div>
-                            <div class="visual-title">ConnectException</div>
-                            <p>Connection refused by remote host</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">⏰</div>
-                            <div class="visual-title">SocketTimeoutException</div>
-                            <p>Connection or read timeout expired</p>
-                        </div>
-                    </div>
-                    
-                    <div class="code-block">
-                        <div class="code-header">
-                            <div class="code-title">Best Practice: Robust Error Handling</div>
-                        </div>
-                        <pre><code class="language-java">try {
-    InetAddress address = InetAddress.getByName("example.com");
-    Socket socket = new Socket(address, 80);
-    socket.setSoTimeout(5000); // 5 second timeout
-    
-    // ... communication code ...
-    
-} catch (UnknownHostException e) {
-    System.err.println("Cannot resolve hostname: " + e.getMessage());
-    // Suggest checking network/DNS
-} catch (SocketTimeoutException e) {
-    System.err.println("Connection timed out");
-    // Retry logic or notify user
-} catch (IOException e) {
-    System.err.println("Network error: " + e.getMessage());
-    // General network failure
-} finally {
-    // Always clean up resources
-}</code></pre>
-                    </div>
-                </div>
-                <div class="slide-number">9</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-9">
-                    <div class="notes-title">Presenter Notes - Slide 9</div>
-                    <div class="notes-content">
-                        <p><strong>Importance of timeouts:</strong> Without timeouts, clients can hang indefinitely.</p>
-                        <p><strong>Recovery strategies:</strong> Retry logic, fallback servers, caching previous results.</p>
-                        <p><strong>User experience:</strong> Don't just print stack traces - give user-friendly messages.</p>
-                        <p><strong>Real-world scenario:</strong> Mobile apps need to handle network drops gracefully.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 10: Practical Applications -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Practical Applications & Best Practices</h2>
-                    
-                    <div class="key-point">
-                        <h4>Where You'll Use These Skills:</h4>
-                        <ul>
-                            <li><span class="highlight">Web Servers</span> - HTTP servers, REST APIs</li>
-                            <li><span class="highlight">Chat Applications</span> - Real-time messaging</li>
-                            <li><span class="highlight">File Transfer</span> - FTP clients/servers</li>
-                            <li><span class="highlight">Monitoring Tools</span> - Network diagnostics</li>
-                            <li><span class="highlight">IoT Devices</span> - Smart device communication</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="comparison-grid">
-                        <div class="comparison-box">
-                            <div class="comparison-title">Best Practices ✅</div>
-                            <ul>
-                                <li>Always close resources in finally block</li>
-                                <li>Use timeouts to prevent hanging</li>
-                                <li>Validate all network input</li>
-                                <li>Log network events for debugging</li>
-                                <li>Handle exceptions gracefully</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="comparison-box">
-                            <div class="comparison-title">Common Pitfalls ❌</div>
-                            <ul>
-                                <li>Forgetting to flush output streams</li>
-                                <li>Blocking UI thread with network calls</li>
-                                <li>Not handling partial reads/writes</li>
-                                <li>Ignoring character encoding issues</li>
-                                <li>Hardcoding port numbers</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="slide-number">10</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-10">
-                    <div class="notes-title">Presenter Notes - Slide 10</div>
-                    <div class="notes-content">
-                        <p><strong>Career relevance:</strong> These skills are needed for backend development, DevOps, and full-stack roles.</p>
-                        <p><strong>Security emphasis:</strong> Network code is vulnerable to attacks. Always validate input!</p>
-                        <p><strong>Next steps:</strong> Mention NIO (Non-blocking I/O) for high-performance servers.</p>
-                        <p><strong>Final thought:</strong> "The internet runs on sockets - now you know how to build it!"</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 11: Quick Quiz -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Quick Knowledge Check</h2>
-                    
-                    <div class="key-point">
-                        <h4>Test Your Understanding:</h4>
-                    </div>
-                    
-                    <ol>
-                        <li>Which method returns ALL IP addresses for a hostname?
-                            <div style="margin-left: 30px; margin-top: 10px; color: #a5b4fc;">
-                                A) getLocalHost() &nbsp; B) getByName() &nbsp; 
-                                <span class="highlight">C) getAllByName()</span> &nbsp; D) getHostAddress()
-                            </div>
-                        </li>
-                        
-                        <li style="margin-top: 25px;">TCP is to UDP as ______ is to ______
-                            <div style="margin-left: 30px; margin-top: 10px; color: #a5b4fc;">
-                                A) Reliable / Unreliable &nbsp; B) Fast / Slow &nbsp; 
-                                C) Simple / Complex &nbsp; D) Old / New
-                            </div>
-                        </li>
-                        
-                        <li style="margin-top: 25px;">What exception is thrown for unresolved hostnames?
-                            <div style="margin-left: 30px; margin-top: 10px; color: #a5b4fc;">
-                                A) IOException &nbsp; B) NetworkException &nbsp; 
-                                <span class="highlight">C) UnknownHostException</span> &nbsp; D) ResolutionException
-                            </div>
-                        </li>
-                        
-                        <li style="margin-top: 25px;">Which class listens for incoming TCP connections?
-                            <div style="margin-left: 30px; margin-top: 10px; color: #a5b4fc;">
-                                A) Socket &nbsp; <span class="highlight">B) ServerSocket</span> &nbsp; 
-                                C) DatagramSocket &nbsp; D) NetworkSocket
-                            </div>
-                        </li>
-                    </ol>
-                    
-                    <div class="key-point" style="margin-top: 30px;">
-                        <h4>Answers: 1-C, 2-A, 3-C, 4-B</h4>
-                        <p>How did you do? Review any topics you found challenging.</p>
-                    </div>
-                </div>
-                <div class="slide-number">11</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-11">
-                    <div class="notes-title">Presenter Notes - Slide 11</div>
-                    <div class="notes-content">
-                        <p><strong>Interactive moment:</strong> Have students raise hands for each answer.</p>
-                        <p><strong>Discussion:</strong> Go through why the wrong answers are incorrect.</p>
-                        <p><strong>Remediation:</strong> If many struggle with a concept, offer to review it.</p>
-                        <p><strong>Confidence check:</strong> Ask "Who feels ready to write a simple client-server app?"</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 12: Resources & Next Steps -->
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Resources & Next Steps</h2>
-                    
-                    <div class="key-point">
-                        <h4>Further Learning:</h4>
-                        <ul>
-                            <li><span class="highlight">Official Java Documentation</span> - Oracle's networking tutorial</li>
-                            <li><span class="highlight">Books</span> - "Java Network Programming" by Elliotte Rusty Harold</li>
-                            <li><span class="highlight">Online Courses</span> - Coursera, Udemy networking courses</li>
-                            <li><span class="highlight">Practice Projects</span> - Build a chat app, file server, or game</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="visual-grid">
-                        <div class="visual-card">
-                            <div class="visual-icon">🏗️</div>
-                            <div class="visual-title">Project Ideas</div>
-                            <p>Multi-user chat server<br>File transfer utility<br>Port scanner tool</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">🚀</div>
-                            <div class="visual-title">Advanced Topics</div>
-                            <p>NIO & Selectors<br>SSL/TLS encryption<br>HTTP/2, WebSockets</p>
-                        </div>
-                        
-                        <div class="visual-card">
-                            <div class="visual-icon">👥</div>
-                            <div class="visual-title">Community</div>
-                            <p>Stack Overflow<br>GitHub projects<br>Java user groups</p>
-                        </div>
-                    </div>
-                    
-                    <div class="footer-note" style="margin-top: 40px;">
-                        <h3 style="color: #4cc9f0; text-align: center;">Thank You!</h3>
-                        <p style="text-align: center; font-size: 1.3rem;">Questions? Let's build something amazing with Java networking! 🚀</p>
-                    </div>
-                </div>
-                <div class="slide-number">12</div>
-                <div class="slide-progress">
-                    <div class="slide-progress-bar"></div>
-                </div>
-                <div class="presenter-notes" id="notes-12">
-                    <div class="notes-title">Presenter Notes - Slide 12</div>
-                    <div class="notes-content">
-                        <p><strong>Final encouragement:</strong> Networking seems complex but becomes intuitive with practice.</p>
-                        <p><strong>Q&A preparation:</strong> Anticipate common questions:</p>
-                        <ul>
-                            <li>How do I handle multiple clients efficiently? (NIO)</li>
-                            <li>What about security? (SSL/TLS)</li>
-                            <li>How do I debug network issues? (Wireshark, logging)</li>
-                        </ul>
-                        <p><strong>Contact information:</strong> Share your email/GitHub for follow-up questions.</p>
-                        <p><strong>Final words:</strong> "The network is the computer - now go program it!"</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="navigation">
-            <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>◀ Previous</button>
-            <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next ▶</button>
-        </div>
-        
-        <div class="presenter-mode">
-            <button class="presenter-btn" onclick="toggleNotes()">📝 Presenter Notes</button>
-        </div>
-        
-        <div class="presenter-notes" id="global-notes"></div>
-    </div>
+        <p class="code-title">EchoClient.java</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">BufferedReader</span>;
+<span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.io.<span class="t">InputStreamReader</span>;
+<span class="k">import</span> java.io.<span class="t">OutputStreamWriter</span>;
+<span class="k">import</span> java.io.<span class="t">PrintWriter</span>;
+<span class="k">import</span> java.net.<span class="t">Socket</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-    <script>
-        // Slide management
-        let currentSlide = 0;
-        const totalSlides = document.querySelectorAll('.slide').length;
-        const slidesContainer = document.getElementById('slides');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const progressBar = document.querySelector('.slide-progress-bar');
-        
-        function updateSlide() {
-            // Update slide position
-            slidesContainer.style.transform = `translateX(-${currentSlide * 100}vw)`;
-            
-            // Update buttons
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === totalSlides - 1;
-            
-            // Update progress bar
-            const progress = ((currentSlide + 1) / totalSlides) * 100;
-            progressBar.style.width = `${progress}%`;
-            
-            // Update presenter notes
-            updatePresenterNotes();
-        }
-        
-        function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateSlide();
+<span class="k">public</span> <span class="k">class</span> <span class="t">EchoClient</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span> {
+        <span class="k">try</span> (<span class="t">Socket</span> socket = <span class="k">new</span> <span class="t">Socket</span>(<span class="s">"localhost"</span>, <span class="n">12345</span>);
+             <span class="t">BufferedReader</span> in = <span class="k">new</span> <span class="t">BufferedReader</span>(<span class="k">new</span> <span class="t">InputStreamReader</span>(
+                     socket.getInputStream(), <span class="t">StandardCharsets</span>.UTF_8));
+             <span class="t">PrintWriter</span> out = <span class="k">new</span> <span class="t">PrintWriter</span>(<span class="k">new</span> <span class="t">OutputStreamWriter</span>(
+                     socket.getOutputStream(), <span class="t">StandardCharsets</span>.UTF_8), <span class="k">true</span>);
+             <span class="t">BufferedReader</span> keyboard = <span class="k">new</span> <span class="t">BufferedReader</span>(<span class="k">new</span> <span class="t">InputStreamReader</span>(
+                     <span class="t">System</span>.in, <span class="t">StandardCharsets</span>.UTF_8))) {
+            <span class="t">System</span>.out.println(<span class="s">"Connected. Type a line (Ctrl+D / Ctrl+Z to quit):"</span>);
+            <span class="t">String</span> line;
+            <span class="k">while</span> ((line = keyboard.readLine()) != <span class="k">null</span>) {
+                out.println(line);                  <span class="c">// send (auto-flushed)</span>
+                <span class="t">System</span>.out.println(in.readLine());  <span class="c">// wait for "Echo: ..."</span>
             }
         }
-        
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
+    }
+}</code></pre>
+        <p><strong>Key features shown:</strong> multi-threaded server (handles multiple clients) · proper resource management with try-with-resources · explicit UTF-8 encoding · clean separation of concerns (accept loop vs per-client handler).</p>
+        <div class="callout example"><span class="label">Run it</span><p>Terminal 1: <code>java EchoServer.java</code>. Terminal 2: <code>java EchoClient.java</code>, then type <code>hello</code> and see <code>Echo: hello</code>. (Java 11+ can run a single source file directly.)</p></div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Multi-threading importance:</strong> without a thread per client, the server would be stuck inside one client's <code>readLine()</code> loop and could not <code>accept()</code> anyone else.</p>
+          <p><strong>Try-with-resources:</strong> show how it automatically closes sockets and streams in reverse order, even if an exception is thrown. The server socket itself is also in a try-with-resources block, so it is closed if <code>accept()</code> fails.</p>
+          <p><strong>Encoding:</strong> <code>InputStreamReader</code> without a charset uses the platform default, which differs between machines (Java 18+ defaults to UTF-8, older versions do not). Always pass <code>StandardCharsets.UTF_8</code> so Arabic, French accents and emoji survive the trip.</p>
+          <p><strong>Security note:</strong> real servers need input validation and size limits (for example a maximum line length and a read timeout) to prevent denial-of-service attacks where a client sends endless data or never sends anything.</p>
+          <p><strong>Extension ideas:</strong> add logging, timeout handling (<code>setSoTimeout</code>), or protocol commands such as <code>QUIT</code>.</p>
+        </div>
+      </article>
+
+      <!-- Slide 10 (new) -->
+      <article class="slide" id="slide-10" aria-label="Slide 10">
+        <span class="slide-no">Slide 10</span>
+        <h3>UDP in Java: DatagramSocket and DatagramPacket</h3>
+        <p>With UDP there is no connection and no stream. You put bytes into a <code>DatagramPacket</code>, address it, and <code>send()</code> it through a <code>DatagramSocket</code>. The receiver calls <code>receive()</code>, which blocks until one whole datagram arrives.</p>
+        <p class="code-title">UdpEchoServer.java</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.net.<span class="t">DatagramPacket</span>;
+<span class="k">import</span> java.net.<span class="t">DatagramSocket</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">UdpEchoServer</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span> {
+        <span class="k">try</span> (<span class="t">DatagramSocket</span> socket = <span class="k">new</span> <span class="t">DatagramSocket</span>(<span class="n">9876</span>)) {
+            <span class="t">System</span>.out.println(<span class="s">"UDP echo server on port 9876"</span>);
+            <span class="k">byte</span>[] buf = <span class="k">new</span> <span class="k">byte</span>[<span class="n">1024</span>];
+            <span class="k">while</span> (<span class="k">true</span>) {
+                <span class="t">DatagramPacket</span> request = <span class="k">new</span> <span class="t">DatagramPacket</span>(buf, buf.length);
+                socket.receive(request);   <span class="c">// blocks until a datagram arrives</span>
+                <span class="t">String</span> text = <span class="k">new</span> <span class="t">String</span>(request.getData(), <span class="n">0</span>, request.getLength(),
+                        <span class="t">StandardCharsets</span>.UTF_8);
+                <span class="k">byte</span>[] reply = (<span class="s">"Echo: "</span> + text).getBytes(<span class="t">StandardCharsets</span>.UTF_8);
+                <span class="c">// Reply to whoever sent the request (address and port are in the packet)</span>
+                socket.send(<span class="k">new</span> <span class="t">DatagramPacket</span>(reply, reply.length,
+                        request.getAddress(), request.getPort()));
             }
         }
-        
-        function updatePresenterNotes() {
-            const notesElement = document.getElementById('global-notes');
-            const currentNotes = document.getElementById(`notes-${currentSlide + 1}`);
-            
-            if (currentNotes) {
-                notesElement.innerHTML = currentNotes.innerHTML;
+    }
+}</code></pre>
+        <p class="code-title">UdpEchoClient.java</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.net.<span class="t">DatagramPacket</span>;
+<span class="k">import</span> java.net.<span class="t">DatagramSocket</span>;
+<span class="k">import</span> java.net.<span class="t">InetAddress</span>;
+<span class="k">import</span> java.net.<span class="t">SocketTimeoutException</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">UdpEchoClient</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span> {
+        <span class="k">try</span> (<span class="t">DatagramSocket</span> socket = <span class="k">new</span> <span class="t">DatagramSocket</span>()) {   <span class="c">// any free local port</span>
+            socket.setSoTimeout(<span class="n">2000</span>);                         <span class="c">// wait at most 2 s for a reply</span>
+            <span class="t">InetAddress</span> server = <span class="t">InetAddress</span>.getByName(<span class="s">"localhost"</span>);
+            <span class="k">byte</span>[] data = <span class="s">"Hello UDP"</span>.getBytes(<span class="t">StandardCharsets</span>.UTF_8);
+            socket.send(<span class="k">new</span> <span class="t">DatagramPacket</span>(data, data.length, server, <span class="n">9876</span>));
+
+            <span class="k">byte</span>[] buf = <span class="k">new</span> <span class="k">byte</span>[<span class="n">1024</span>];
+            <span class="t">DatagramPacket</span> reply = <span class="k">new</span> <span class="t">DatagramPacket</span>(buf, buf.length);
+            <span class="k">try</span> {
+                socket.receive(reply);
+                <span class="t">System</span>.out.println(<span class="k">new</span> <span class="t">String</span>(reply.getData(), <span class="n">0</span>, reply.getLength(),
+                        <span class="t">StandardCharsets</span>.UTF_8));
+            } <span class="k">catch</span> (<span class="t">SocketTimeoutException</span> e) {
+                <span class="t">System</span>.out.println(<span class="s">"No reply within 2 s: the request or the reply was lost."</span>);
             }
         }
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            switch(e.key) {
-                case 'ArrowRight':
-                case ' ':
-                case 'PageDown':
-                    e.preventDefault();
-                    nextSlide();
-                    break;
-                case 'ArrowLeft':
-                case 'PageUp':
-                    e.preventDefault();
-                    prevSlide();
-                    break;
-                case 'Home':
-                    e.preventDefault();
-                    currentSlide = 0;
-                    updateSlide();
-                    break;
-                case 'End':
-                    e.preventDefault();
-                    currentSlide = totalSlides - 1;
-                    updateSlide();
-                    break;
-                case '1':
-                    if (e.ctrlKey) {
-                        e.preventDefault();
-                        toggleNotes();
-                    }
-                    break;
-            }
-        });
-        
-        // Presenter notes toggle
-        function toggleNotes() {
-            const notes = document.getElementById('global-notes');
-            notes.classList.toggle('show');
+    }
+}</code></pre>
+        <div class="callout warn"><span class="label">Common mistake</span><p>Using <code>new String(packet.getData())</code> without <code>0, packet.getLength()</code>. The buffer is 1024 bytes, but the datagram may be 9; without the length you print the leftover bytes too.</p></div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p>Compare this with the TCP echo pair: there is no <code>accept()</code>, no streams and no <code>ServerSocket</code>. One <code>DatagramSocket</code> on the server talks to every client, because each packet carries the sender's address and port.</p>
+          <p>Because UDP can lose packets, the client sets a timeout with <code>setSoTimeout</code>; otherwise <code>receive()</code> could wait forever. A real UDP application decides what to do on timeout: retry, skip, or report an error. That decision is "reliability on top of UDP".</p>
+          <p>Each datagram is a separate message: if the client sends "A" then "B", the server receives two packets, possibly in the order B, A, or only one of them.</p>
+        </div>
+      </article>
+
+      <!-- Slide 11 -->
+      <article class="slide" id="slide-11" aria-label="Slide 11">
+        <span class="slide-no">Slide 11</span>
+        <h3>Network exception handling</h3>
+        <p>Network operations can fail in many ways: always handle exceptions.</p>
+        <div class="cards">
+          <div class="card"><h4>UnknownHostException</h4><p>The hostname cannot be resolved to an IP address (DNS failure or typo).</p></div>
+          <div class="card"><h4>ConnectException</h4><p>Connection refused by the remote host (nothing listening on that port, or a firewall rejected it).</p></div>
+          <div class="card"><h4>SocketTimeoutException</h4><p>A connect or read timeout expired.</p></div>
+        </div>
+        <p class="code-title">RobustClient.java (best practice: robust error handling)</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">BufferedReader</span>;
+<span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.io.<span class="t">InputStreamReader</span>;
+<span class="k">import</span> java.io.<span class="t">OutputStreamWriter</span>;
+<span class="k">import</span> java.io.<span class="t">PrintWriter</span>;
+<span class="k">import</span> java.net.<span class="t">ConnectException</span>;
+<span class="k">import</span> java.net.<span class="t">InetAddress</span>;
+<span class="k">import</span> java.net.<span class="t">InetSocketAddress</span>;
+<span class="k">import</span> java.net.<span class="t">Socket</span>;
+<span class="k">import</span> java.net.<span class="t">SocketTimeoutException</span>;
+<span class="k">import</span> java.net.<span class="t">UnknownHostException</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">RobustClient</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) {
+        <span class="k">try</span> (<span class="t">Socket</span> socket = <span class="k">new</span> <span class="t">Socket</span>()) {           <span class="c">// closed automatically</span>
+            <span class="t">InetAddress</span> address = <span class="t">InetAddress</span>.getByName(<span class="s">"example.com"</span>);
+            socket.connect(<span class="k">new</span> <span class="t">InetSocketAddress</span>(address, <span class="n">80</span>), <span class="n">5000</span>); <span class="c">// 5 s CONNECT timeout</span>
+            socket.setSoTimeout(<span class="n">5000</span>);                                <span class="c">// 5 s READ timeout</span>
+
+            <span class="t">PrintWriter</span> out = <span class="k">new</span> <span class="t">PrintWriter</span>(<span class="k">new</span> <span class="t">OutputStreamWriter</span>(
+                    socket.getOutputStream(), <span class="t">StandardCharsets</span>.UTF_8));
+            <span class="t">BufferedReader</span> in = <span class="k">new</span> <span class="t">BufferedReader</span>(<span class="k">new</span> <span class="t">InputStreamReader</span>(
+                    socket.getInputStream(), <span class="t">StandardCharsets</span>.UTF_8));
+            out.print(<span class="s">"HEAD / HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n"</span>);
+            out.flush();
+            <span class="t">System</span>.out.println(<span class="s">"Server says: "</span> + in.readLine());  <span class="c">// e.g. HTTP/1.1 200 OK</span>
+        } <span class="k">catch</span> (<span class="t">UnknownHostException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Cannot resolve hostname: "</span> + e.getMessage());
+            <span class="c">// Suggest checking network/DNS</span>
+        } <span class="k">catch</span> (<span class="t">SocketTimeoutException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Connection or read timed out"</span>);
+            <span class="c">// Retry logic or notify user</span>
+        } <span class="k">catch</span> (<span class="t">ConnectException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Connection refused: is the server running?"</span>);
+        } <span class="k">catch</span> (<span class="t">IOException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Network error: "</span> + e.getMessage());
+            <span class="c">// General network failure</span>
         }
-        
-        // Initialize
-        updateSlide();
-        Prism.highlightAll();
-        
-        // Touch/swipe support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            
-            if (touchEndX < touchStartX - swipeThreshold) {
-                // Swipe left - next slide
-                nextSlide();
-            }
-            
-            if (touchEndX > touchStartX + swipeThreshold) {
-                // Swipe right - previous slide
-                prevSlide();
+        <span class="c">// No finally needed: try-with-resources already closed the socket</span>
+    }
+}</code></pre>
+        <div class="callout warn"><span class="label">Correction</span><p><code>setSoTimeout(ms)</code> is a <strong>read</strong> timeout: it limits how long <code>read()</code>/<code>readLine()</code> waits. It does not limit connecting. To limit the connection attempt, create an unconnected <code>Socket</code> and call <code>connect(new InetSocketAddress(host, port), ms)</code>. <code>new Socket(host, port)</code> uses the operating system's default connect timeout, which can be over a minute.</p></div>
+        <div class="callout exam"><span class="label">Exam tip</span><p>Catch order matters: catch specific exceptions before <code>IOException</code>. <code>UnknownHostException</code>, <code>SocketTimeoutException</code> and <code>ConnectException</code> are all subclasses of <code>IOException</code>; if <code>catch (IOException e)</code> came first, the later blocks would be unreachable and the code would not compile.</p></div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Importance of timeouts:</strong> without timeouts, clients can hang indefinitely, for example when a server accepts the connection and then never answers.</p>
+          <p><strong>Recovery strategies:</strong> retry (with a growing delay between attempts), switch to a fallback server, or show cached previous results.</p>
+          <p><strong>User experience:</strong> do not just print stack traces; give user-friendly messages such as "Cannot reach the server. Check your connection."</p>
+          <p><strong>Real-world scenario:</strong> mobile apps must handle network drops gracefully when the phone switches from Wi-Fi to mobile data.</p>
+        </div>
+      </article>
+
+      <!-- Slide 12 (new) -->
+      <article class="slide" id="slide-12" aria-label="Slide 12">
+        <span class="slide-no">Slide 12</span>
+        <h3>Modern Java: virtual threads and HttpClient</h3>
+        <p><strong>Many clients:</strong> one platform thread per client (slide 9) works, but each platform thread is an operating-system thread with its own large stack, so thousands of clients become expensive. Java 21 added <span class="term" title="Lightweight threads managed by the JVM; millions can exist, and a blocked one does not hold an OS thread">virtual threads</span>: you keep the simple blocking style, and the JVM runs huge numbers of them on a few OS threads.</p>
+        <p class="code-title">VirtualThreadEchoServer.java (Java 21+)</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">BufferedReader</span>;
+<span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.io.<span class="t">InputStreamReader</span>;
+<span class="k">import</span> java.io.<span class="t">OutputStreamWriter</span>;
+<span class="k">import</span> java.io.<span class="t">PrintWriter</span>;
+<span class="k">import</span> java.net.<span class="t">ServerSocket</span>;
+<span class="k">import</span> java.net.<span class="t">Socket</span>;
+<span class="k">import</span> java.nio.charset.<span class="t">StandardCharsets</span>;
+<span class="k">import</span> java.util.concurrent.<span class="t">ExecutorService</span>;
+<span class="k">import</span> java.util.concurrent.<span class="t">Executors</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">VirtualThreadEchoServer</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span> {
+        <span class="k">try</span> (<span class="t">ServerSocket</span> server = <span class="k">new</span> <span class="t">ServerSocket</span>(<span class="n">12345</span>);
+             <span class="t">ExecutorService</span> pool = <span class="t">Executors</span>.newVirtualThreadPerTaskExecutor()) {
+            <span class="k">while</span> (<span class="k">true</span>) {
+                <span class="t">Socket</span> client = server.accept();
+                pool.submit(() -&gt; handle(client));   <span class="c">// one cheap virtual thread per client</span>
             }
         }
-        
-        // Auto-advance timer (optional - for self-running presentations)
-        // let autoAdvance = setInterval(nextSlide, 30000); // 30 seconds per slide
-        
-        // Function to stop auto-advance on interaction
-        document.addEventListener('click', () => {
-            // clearInterval(autoAdvance);
-        });
-    </script>
+    }
+
+    <span class="k">static</span> <span class="k">void</span> handle(<span class="t">Socket</span> socket) {
+        <span class="k">try</span> (socket;
+             <span class="t">BufferedReader</span> in = <span class="k">new</span> <span class="t">BufferedReader</span>(<span class="k">new</span> <span class="t">InputStreamReader</span>(
+                     socket.getInputStream(), <span class="t">StandardCharsets</span>.UTF_8));
+             <span class="t">PrintWriter</span> out = <span class="k">new</span> <span class="t">PrintWriter</span>(<span class="k">new</span> <span class="t">OutputStreamWriter</span>(
+                     socket.getOutputStream(), <span class="t">StandardCharsets</span>.UTF_8), <span class="k">true</span>)) {
+            <span class="t">String</span> line;
+            <span class="k">while</span> ((line = in.readLine()) != <span class="k">null</span>) {
+                out.println(<span class="s">"Echo: "</span> + line);
+            }
+        } <span class="k">catch</span> (<span class="t">IOException</span> e) {
+            <span class="t">System</span>.err.println(<span class="s">"Client error: "</span> + e.getMessage());
+        }
+    }
+}</code></pre>
+        <p><strong>Talking HTTP:</strong> you can speak HTTP over a raw <code>Socket</code> (slide 11), but for real code use <code>java.net.http.HttpClient</code> (Java 11+). It supports HTTP/1.1 and HTTP/2, HTTPS, timeouts, and async requests.</p>
+        <p class="code-title">HttpClientDemo.java (Java 11+)</p>
+<pre><code><span class="k">import</span> java.io.<span class="t">IOException</span>;
+<span class="k">import</span> java.net.URI;
+<span class="k">import</span> java.net.http.<span class="t">HttpClient</span>;
+<span class="k">import</span> java.net.http.<span class="t">HttpRequest</span>;
+<span class="k">import</span> java.net.http.<span class="t">HttpResponse</span>;
+<span class="k">import</span> java.time.<span class="t">Duration</span>;
+
+<span class="k">public</span> <span class="k">class</span> <span class="t">HttpClientDemo</span> {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">IOException</span>, <span class="t">InterruptedException</span> {
+        <span class="t">HttpClient</span> client = <span class="t">HttpClient</span>.newBuilder()
+                .connectTimeout(<span class="t">Duration</span>.ofSeconds(<span class="n">5</span>))
+                .build();
+        <span class="t">HttpRequest</span> request = <span class="t">HttpRequest</span>.newBuilder(URI.create(<span class="s">"https://example.com/"</span>))
+                .timeout(<span class="t">Duration</span>.ofSeconds(<span class="n">10</span>))
+                .GET()
+                .build();
+        <span class="t">HttpResponse</span>&lt;<span class="t">String</span>&gt; response = client.send(request, <span class="t">HttpResponse</span>.<span class="t">BodyHandlers</span>.ofString());
+        <span class="t">System</span>.out.println(<span class="s">"Status: "</span> + response.statusCode());
+        <span class="t">System</span>.out.println(<span class="s">"Protocol: "</span> + response.version());   <span class="c">// HTTP_1_1 or HTTP_2</span>
+    }
+}</code></pre>
+        <div class="callout warn"><span class="label">Outdated code to avoid</span><p><code>new URL("https://...")</code> is deprecated since Java 20. Use <code>URI.create("https://...")</code>, and call <code>.toURL()</code> on it if an older API needs a <code>URL</code>.</p></div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p>Think of platform threads as full-time employees (expensive, limited number) and virtual threads as tasks on a to-do list that a few employees pick up whenever another task is waiting. When a virtual thread blocks in <code>readLine()</code>, the JVM parks it and uses the OS thread for someone else.</p>
+          <p>The alternative for very high performance is <strong>NIO</strong> (<code>java.nio.channels</code>: <code>Selector</code>, <code>SocketChannel</code>), where one thread watches many connections. NIO is powerful but harder to write; virtual threads give most of the benefit with the simple code you already know.</p>
+          <p><code>ExecutorService</code> is <code>AutoCloseable</code> since Java 19, which is why it can sit in the try-with-resources header.</p>
+        </div>
+      </article>
+
+      <!-- Slide 13 -->
+      <article class="slide" id="slide-13" aria-label="Slide 13">
+        <span class="slide-no">Slide 13</span>
+        <h3>Practical applications and best practices</h3>
+        <p><strong>Where you will use these skills:</strong></p>
+        <ul>
+          <li>Web servers: HTTP servers, REST APIs</li>
+          <li>Chat applications: real-time messaging</li>
+          <li>File transfer: FTP/SFTP clients and servers</li>
+          <li>Monitoring tools: network diagnostics</li>
+          <li>IoT devices: smart device communication</li>
+        </ul>
+        <div class="pros-cons">
+          <div class="pros"><h4>Best practices</h4><ul>
+            <li>Always close resources, using try-with-resources (it replaces the old <code>finally</code> pattern)</li>
+            <li>Use timeouts to prevent hanging (connect timeout and read timeout)</li>
+            <li>Validate all network input, and limit its size</li>
+            <li>Log network events for debugging</li>
+            <li>Handle exceptions gracefully</li>
+            <li>Use TLS (<code>SSLSocket</code> or HTTPS) for anything sensitive</li></ul></div>
+          <div class="cons"><h4>Common pitfalls</h4><ul>
+            <li>Forgetting to flush output streams</li>
+            <li>Blocking the UI thread with network calls</li>
+            <li>Not handling partial reads/writes</li>
+            <li>Ignoring character encoding issues (always state UTF-8)</li>
+            <li>Hardcoding port numbers</li></ul></div>
+        </div>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Career relevance:</strong> these skills are needed for backend development, DevOps, and full-stack roles; even if you later use frameworks, they are built on exactly these sockets.</p>
+          <p><strong>Security emphasis:</strong> network code is exposed to anyone who can reach the port, so it is a target for attacks. Always validate input and never trust what the other side sends.</p>
+          <p><strong>Partial reads:</strong> TCP is a byte stream, so one <code>write</code> of 1000 bytes may arrive as two reads of 600 and 400. Your protocol needs a way to mark message ends (a newline, as in our echo server, or a length prefix).</p>
+          <p><strong>Next steps:</strong> NIO (non-blocking I/O) for high-performance servers, and virtual threads (Java 21) for simple code that still scales.</p>
+          <p><strong>Final thought:</strong> "The internet runs on sockets; now you know how to build it."</p>
+        </div>
+      </article>
+
+      <!-- Slide 14 -->
+      <article class="slide" id="slide-14" aria-label="Slide 14">
+        <span class="slide-no">Slide 14</span>
+        <h3>Quick knowledge check</h3>
+        <p><strong>Test your understanding:</strong></p>
+        <ol>
+          <li>Which method returns ALL IP addresses for a hostname?<br>A) <code>getLocalHost()</code> &nbsp; B) <code>getByName()</code> &nbsp; C) <code>getAllByName()</code> &nbsp; D) <code>getHostAddress()</code></li>
+          <li>TCP is to UDP as ______ is to ______<br>A) Reliable / Unreliable &nbsp; B) Fast / Slow &nbsp; C) Simple / Complex &nbsp; D) Old / New</li>
+          <li>What exception is thrown for unresolved hostnames?<br>A) <code>IOException</code> &nbsp; B) <code>NetworkException</code> &nbsp; C) <code>UnknownHostException</code> &nbsp; D) <code>ResolutionException</code></li>
+          <li>Which class listens for incoming TCP connections?<br>A) <code>Socket</code> &nbsp; B) <code>ServerSocket</code> &nbsp; C) <code>DatagramSocket</code> &nbsp; D) <code>NetworkSocket</code></li>
+        </ol>
+        <details class="reveal"><summary>Show the answers</summary>
+          <p><strong>1-C, 2-A, 3-C, 4-B.</strong> How did you do? Review any topics you found challenging. The full scored quiz is below the deck.</p>
+        </details>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Interactive moment:</strong> have students raise hands for each answer before revealing.</p>
+          <p><strong>Discussion:</strong> go through why the wrong answers are incorrect. For Q2, "Fast / Slow" is tempting but backwards (UDP usually has lower latency), and Q3's <code>NetworkException</code> and <code>ResolutionException</code> do not exist in <code>java.net</code>.</p>
+          <p><strong>Remediation:</strong> if many struggle with a concept, review that slide again.</p>
+          <p><strong>Confidence check:</strong> ask "Who feels ready to write a simple client-server app?"</p>
+        </div>
+      </article>
+
+      <!-- Slide 15 -->
+      <article class="slide" id="slide-15" aria-label="Slide 15">
+        <span class="slide-no">Slide 15</span>
+        <h3>Resources and next steps</h3>
+        <p><strong>Further learning:</strong></p>
+        <ul>
+          <li>Official Java documentation: Oracle's networking tutorial and the <code>java.net</code> / <code>java.net.http</code> API docs</li>
+          <li>Book: <em>Java Network Programming</em> by Elliotte Rusty Harold (O'Reilly)</li>
+          <li>Online courses: Coursera, Udemy networking courses</li>
+          <li>Practice projects: build a chat app, file server, or game</li>
+        </ul>
+        <div class="cards">
+          <div class="card"><h4>Project ideas</h4><p>Multi-user chat server<br>File transfer utility<br>Port scanner tool (only on your own machines)</p></div>
+          <div class="card"><h4>Advanced topics</h4><p>NIO and Selectors<br>Virtual threads (Java 21)<br>SSL/TLS encryption (TLS 1.3)<br>HTTP/2, HTTP/3, WebSockets</p></div>
+          <div class="card"><h4>Community</h4><p>Stack Overflow<br>GitHub projects<br>Java user groups</p></div>
+        </div>
+        <p class="slide-title">Thank you!</p>
+        <p>Questions? Let's build something with Java networking.</p>
+        <div class="callout analogy notes"><span class="label">Speaker notes</span>
+          <p><strong>Final encouragement:</strong> networking seems complex but becomes intuitive with practice. Run every example on this deck at least once.</p>
+          <p><strong>Q&amp;A preparation:</strong> anticipate common questions:</p>
+          <ul>
+            <li>How do I handle multiple clients efficiently? (Threads per client; virtual threads in Java 21; NIO for the highest scale.)</li>
+            <li>What about security? (SSL/TLS: <code>SSLSocket</code>, or HTTPS through <code>HttpClient</code>. Today that means TLS 1.2 or 1.3; the old SSL versions are insecure.)</li>
+            <li>How do I debug network issues? (Wireshark, logging, and tools such as <code>netstat</code>/<code>ss</code>, <code>nc</code>, <code>curl</code>.)</li>
+          </ul>
+          <p><strong>Contact information:</strong> share your email/GitHub for follow-up questions.</p>
+          <p><strong>Final words:</strong> "The network is the computer; now go program it!"</p>
+        </div>
+      </article>
+
+      </div><!-- /deck -->
+    </section>
+
+    <section>
+      <h2><span class="num">3</span>Check your understanding</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: Java network programming</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which method returns ALL IP addresses for a hostname?</p>
+          <div class="opts">
+            <button>getLocalHost()</button>
+            <button>getByName()</button>
+            <button data-correct>getAllByName()</button>
+            <button>getHostAddress()</button>
+          </div>
+          <div class="explain"><code>getAllByName()</code> returns an <code>InetAddress[]</code> with every address DNS gives (often several IPv4 and IPv6 addresses). <code>getByName()</code> returns only one; <code>getHostAddress()</code> just formats an address you already have as text.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>TCP is to UDP as ______ is to ______.</p>
+          <div class="opts">
+            <button data-correct>Reliable / Unreliable</button>
+            <button>Fast / Slow</button>
+            <button>Simple / Complex</button>
+            <button>Old / New</button>
+          </div>
+          <div class="explain">TCP guarantees delivery and order; UDP does not. "Fast / Slow" is backwards: UDP usually has lower latency because it skips the handshake and retransmissions.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What exception is thrown for unresolved hostnames?</p>
+          <div class="opts">
+            <button>IOException</button>
+            <button>NetworkException</button>
+            <button data-correct>UnknownHostException</button>
+            <button>ResolutionException</button>
+          </div>
+          <div class="explain"><code>java.net.UnknownHostException</code> (a subclass of <code>IOException</code>) is thrown when DNS cannot resolve the name. <code>NetworkException</code> and <code>ResolutionException</code> do not exist in <code>java.net</code>.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which class listens for incoming TCP connections?</p>
+          <div class="opts">
+            <button>Socket</button>
+            <button data-correct>ServerSocket</button>
+            <button>DatagramSocket</button>
+            <button>NetworkSocket</button>
+          </div>
+          <div class="explain"><code>ServerSocket</code> binds to a port and its <code>accept()</code> method returns a new <code>Socket</code> for each client. <code>DatagramSocket</code> is for UDP, and <code>NetworkSocket</code> does not exist.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What does <code>socket.setSoTimeout(5000)</code> limit?</p>
+          <div class="opts">
+            <button>How long connecting to the server may take</button>
+            <button data-correct>How long a read on the socket may block before throwing SocketTimeoutException</button>
+            <button>How long the socket stays open in total</button>
+            <button>How long the server waits before closing idle clients automatically</button>
+          </div>
+          <div class="explain"><code>setSoTimeout</code> is a read timeout. To limit connecting, use <code>socket.connect(new InetSocketAddress(host, port), ms)</code>. Nothing closes the socket automatically; your code decides what to do when the exception is thrown.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>What does <code>serverSocket.accept()</code> do?</p>
+          <div class="opts">
+            <button>Returns immediately with null if no client is waiting</button>
+            <button data-correct>Blocks until a client connects, then returns a new Socket for that client</button>
+            <button>Sends a SYN packet to the client</button>
+            <button>Reads the first line the client sends</button>
+          </div>
+          <div class="explain"><code>accept()</code> blocks (waits) until the handshake with a client completes, then returns a dedicated <code>Socket</code>. The client initiates the handshake, not the server, and reading data is a separate step.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>What is the correct order of the TCP three-way handshake?</p>
+          <div class="opts">
+            <button>ACK, SYN, SYN-ACK</button>
+            <button data-correct>SYN, SYN-ACK, ACK</button>
+            <button>SYN, ACK, FIN</button>
+            <button>HELLO, KEY, FINISHED</button>
+          </div>
+          <div class="explain">The client sends SYN, the server answers SYN-ACK, the client confirms with ACK. FIN is used to close a connection; "hello/finished" messages belong to the TLS handshake, which runs after TCP's.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Which Java classes do you use for UDP?</p>
+          <div class="opts">
+            <button>Socket and ServerSocket</button>
+            <button data-correct>DatagramSocket and DatagramPacket</button>
+            <button>HttpClient and HttpRequest</button>
+            <button>InetAddress and URL</button>
+          </div>
+          <div class="explain">UDP sends independent datagrams: you fill a <code>DatagramPacket</code> and send it with a <code>DatagramSocket</code>. <code>Socket</code>/<code>ServerSocket</code> are TCP.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>Which port range is used for dynamic (ephemeral) client ports?</p>
+          <div class="opts">
+            <button>0–1023</button>
+            <button>1024–49151</button>
+            <button data-correct>49152–65535</button>
+            <button>1–1000</button>
+          </div>
+          <div class="explain">IANA defines 0–1023 as well-known (system services such as 80, 443, 22), 1024–49151 as registered, and 49152–65535 as dynamic/private ports picked automatically for clients. (Some operating systems use a slightly different ephemeral range by default.)</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>True or false: HTTP always runs over TCP.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">HTTP/1.1 and HTTP/2 use TCP, but HTTP/3 (RFC 9114) runs over QUIC, which is built on UDP and adds its own reliability and TLS 1.3 encryption.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>Why is try-with-resources preferred for sockets?</p>
+          <div class="opts">
+            <button>It makes the connection faster</button>
+            <button>It retries the connection automatically on failure</button>
+            <button data-correct>It closes the socket and streams automatically, even if an exception is thrown</button>
+            <button>It is required by the compiler for all network code</button>
+          </div>
+          <div class="explain">Resources declared in <code>try (...)</code> are closed automatically, in reverse order, however the block ends. This prevents leaked sockets and file descriptors. It does not retry, and the compiler does not force it.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>A server must handle 10,000 mostly idle clients with simple blocking code. Which Java 21 feature fits best?</p>
+          <div class="opts">
+            <button>One platform thread per client with <code>new Thread()</code></button>
+            <button data-correct>Virtual threads, for example <code>Executors.newVirtualThreadPerTaskExecutor()</code></button>
+            <button>Calling <code>accept()</code> in a loop with no threads</button>
+            <button>Switching every client to UDP</button>
+          </div>
+          <div class="explain">Virtual threads are cheap, so one per client scales to many thousands while keeping blocking code. 10,000 platform threads would cost a lot of memory; no threads would serve one client at a time; switching to UDP changes the protocol, not the threading problem.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>Why must the TCP client call <code>flush()</code> (or use an auto-flushing <code>PrintWriter</code>)?</p>
+          <div class="opts">
+            <button>To close the connection cleanly</button>
+            <button data-correct>Because buffered data is not sent until the buffer is flushed, so the server could wait forever</button>
+            <button>To convert text to UTF-8</button>
+            <button>To perform the TCP handshake</button>
+          </div>
+          <div class="explain">Writers buffer output for efficiency. Until the buffer fills or is flushed, nothing is sent. <code>new PrintWriter(out, true)</code> flushes on every <code>println</code>.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>Which is the modern replacement for <code>new URL("https://example.com")</code> (deprecated since Java 20)?</p>
+          <div class="opts">
+            <button data-correct><code>URI.create("https://example.com").toURL()</code></button>
+            <button><code>InetAddress.getByName("https://example.com")</code></button>
+            <button><code>new Socket("https://example.com", 443)</code></button>
+            <button><code>URL.parse("https://example.com")</code></button>
+          </div>
+          <div class="explain">Build a <code>URI</code> first (it validates the syntax) and convert with <code>toURL()</code> when an older API needs a URL; <code>HttpClient</code> takes the <code>URI</code> directly. <code>InetAddress</code> and <code>Socket</code> expect a hostname, not a URL with a scheme, and <code>URL.parse</code> is not a standard Java method.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li><code>InetAddress</code> represents an IP address; get one with <code>getLocalHost()</code>, <code>getByName()</code> or <code>getAllByName()</code>, and handle <code>UnknownHostException</code>.</li>
+        <li>A socket endpoint is IP + port. TCP (<code>Socket</code>/<code>ServerSocket</code>) is connection-oriented, reliable and ordered; UDP (<code>DatagramSocket</code>/<code>DatagramPacket</code>) is connectionless and faster but unreliable.</li>
+        <li>TCP connections start with the SYN, SYN-ACK, ACK handshake, which Java performs inside <code>new Socket()</code> and <code>accept()</code>.</li>
+        <li>Close everything with try-with-resources, state UTF-8 explicitly, flush output, and set both a connect timeout and a read timeout (<code>setSoTimeout</code>).</li>
+        <li>Serve many clients with a thread per client, preferably virtual threads (Java 21); use <code>HttpClient</code> (Java 11+) for HTTP and <code>URI</code> instead of the deprecated <code>new URL(String)</code>.</li>
+      </ul></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
+<script>
+(function () {
+  'use strict';
+  var deck = document.getElementById('deck');
+  if (!deck) return;
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var prev = document.getElementById('slide-prev');
+  var next = document.getElementById('slide-next');
+  var counter = document.getElementById('slide-counter');
+  var allBtn = document.getElementById('slide-all');
+  var index = 0, showAll = false;
+
+  function fromHash() {
+    var m = /^#slide-(\d+)$/.exec(location.hash);
+    if (!m) return -1;
+    var n = parseInt(m[1], 10) - 1;
+    return n >= 0 && n < slides.length ? n : -1;
+  }
+
+  function render(updateHash) {
+    slides.forEach(function (s, k) { s.hidden = !showAll && k !== index; });
+    prev.disabled = showAll || index === 0;
+    next.disabled = showAll || index === slides.length - 1;
+    counter.textContent = showAll ? 'All ' + slides.length + ' slides' : 'Slide ' + (index + 1) + ' / ' + slides.length;
+    allBtn.setAttribute('aria-pressed', showAll ? 'true' : 'false');
+    allBtn.textContent = showAll ? 'One slide at a time' : 'Show all slides';
+    if (updateHash && !showAll && history.replaceState) {
+      history.replaceState(null, '', '#slide-' + (index + 1));
+    }
+  }
+
+  function keepInView() {
+    var top = deck.parentNode.getBoundingClientRect().top;
+    if (top < 0 || top > innerHeight * 0.6) deck.parentNode.scrollIntoView({ block: 'start' });
+  }
+
+  function go(n) {
+    index = Math.max(0, Math.min(slides.length - 1, n));
+    render(true);
+    keepInView();
+  }
+
+  prev.addEventListener('click', function () { go(index - 1); });
+  next.addEventListener('click', function () { go(index + 1); });
+  allBtn.addEventListener('click', function () {
+    showAll = !showAll;
+    render(!showAll);
+  });
+
+  function deckOnScreen() {
+    var r = deck.getBoundingClientRect();
+    return r.bottom > 0 && r.top < innerHeight;
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (showAll || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    var t = e.target, tag = t && t.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+    if (!deckOnScreen()) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+  });
+
+  // Swipe on touch screens (horizontal only, ignores vertical scrolling)
+  var sx = 0, sy = 0, inScroller = false;
+  deck.addEventListener('touchstart', function (e) {
+    sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY;
+    // Code blocks, tables and diagrams scroll sideways on phones: do not treat that as a swipe
+    inScroller = !!(e.target.closest && e.target.closest('pre, .table-wrap, .diagram'));
+  }, { passive: true });
+  deck.addEventListener('touchend', function (e) {
+    if (showAll || inScroller) return;
+    var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      var sel = window.getSelection && String(window.getSelection());
+      if (sel) return; // user was selecting code, not swiping
+      go(dx < 0 ? index + 1 : index - 1);
+    }
+  }, { passive: true });
+
+  window.addEventListener('hashchange', function () {
+    var n = fromHash();
+    if (n >= 0 && (n !== index || showAll)) { showAll = false; index = n; render(false); keepInView(); }
+  });
+
+  var start = fromHash();
+  if (start >= 0) { index = start; render(false); keepInView(); }
+  else render(false);
+})();
+</script>
 </body>
 </html>

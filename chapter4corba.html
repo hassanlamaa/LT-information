@@ -1,390 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>🌐 RMI‑IIOP & CORBA Deep Dive | Interactive Course + Final Quiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f0f4f8;
-      color: #0a2c3b;
-      line-height: 1.5;
-      padding: 2rem 1.5rem;
-    }
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 2.3rem;
-      font-weight: 700;
-      background: linear-gradient(145deg, #144e68, #2a8eb3);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    h2 {
-      font-size: 1.7rem;
-      font-weight: 600;
-      margin: 1.8rem 0 1rem;
-      border-left: 6px solid #3b8db0;
-      padding-left: 1rem;
-      color: #134b5e;
-    }
-    h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin: 1rem 0 0.6rem;
-      color: #1e6f8c;
-    }
-    .card {
-      background: white;
-      border-radius: 2rem;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
-      padding: 1.6rem;
-      margin-bottom: 2rem;
-      border: 1px solid #d9e4ec;
-      transition: all 0.2s;
-    }
-    .code-block {
-      background: #0e2a36;
-      color: #d4f0fc;
-      padding: 1rem;
-      border-radius: 1.2rem;
-      font-family: 'Menlo', 'Monaco', monospace;
-      font-size: 0.85rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    .highlight {
-      background: #e9f2f9;
-      padding: 0.2rem 0.5rem;
-      border-radius: 10px;
-      font-weight: 500;
-    }
-    .knowledge-check {
-      background: #eef3fa;
-      border-radius: 1.5rem;
-      padding: 1rem 1.5rem;
-      margin-top: 1.5rem;
-      border-left: 5px solid #2c9b8e;
-    }
-    .quiz-option {
-      margin: 0.6rem 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    button {
-      background: #1d6f8b;
-      border: none;
-      color: white;
-      font-weight: 600;
-      padding: 0.6rem 1.3rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 0.5rem;
-    }
-    button:hover { background: #0f556d; transform: translateY(-1px); }
-    .feedback {
-      margin-top: 0.8rem;
-      padding: 0.6rem;
-      border-radius: 1rem;
-      font-weight: 500;
-    }
-    .correct-feedback { background: #e0f2e9; color: #0f5c3e; border-left: 4px solid #2ecc71; }
-    .wrong-feedback { background: #ffe6e6; color: #b13e3e; border-left: 4px solid #e74c3c; }
-    .final-quiz {
-      background: #fef7e0;
-      border: 2px solid #f3c26b;
-    }
-    .arch-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .arch-card {
-      background: #fafcfd;
-      border-radius: 1.2rem;
-      padding: 0.8rem;
-      flex: 1 1 200px;
-      border: 1px solid #cbdbe0;
-      text-align: center;
-    }
-    footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #3e7c91;
-    }
-    hr { margin: 1rem 0; border-color: #d4e0e8; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chapter 4: RMI-IIOP &amp; CORBA · LT Information</title>
+<meta name="description" content="CORBA, IIOP, OMG IDL, the ORB and object adapters, Java IDL and RMI-IIOP: how language-independent distributed objects work, why they are now legacy, and what replaced them.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .diagram svg { display: block; width: 100%; min-width: 540px }
+  .diagram svg .box { fill: var(--sunk); stroke: var(--line); stroke-width: 1.5 }
+  .diagram svg .hi { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5 }
+  .diagram svg .life { stroke: var(--muted); stroke-dasharray: 4 5; stroke-width: 1.2 }
+  .diagram svg .msg { stroke: var(--accent); stroke-width: 2; fill: none }
+  .diagram svg .ret { stroke: var(--ok); stroke-width: 2; fill: none; stroke-dasharray: 7 4 }
+  .diagram svg .ah { fill: var(--accent) }
+  .diagram svg .ah2 { fill: var(--ok) }
+  .diagram svg .sm { font-size: 12px }
+  .diagram svg .b { font-weight: 700; font-size: 13px }
+  .diagram svg .mut { fill: var(--muted) }
+</style>
 </head>
 <body>
-<div class="container">
-  <h1><i class="fas fa-globe"></i> RMI‑IIOP · CORBA · Java IDL</h1>
-  <p style="margin-bottom: 1.5rem; font-size: 1.1rem;"><i class="fas fa-book"></i> Deep interactive course on IIOP, CORBA architecture, IDL, and language‑independent distributed objects.</p>
 
-  <!-- ========= 4.9.3 RMI-IIOP ========= -->
-  <div class="card">
-    <h2>📡 4.9.3 RMI‑IIOP & Java IDL</h2>
-    <p><strong>IIOP (Internet Inter‑ORB Protocol)</strong> is CORBA’s standard protocol (TCP/IP) enabling cross‑language distributed communication. <strong>CORBA</strong> (Common Object Request Broker Architecture) – OMG standard for platform‑neutral distributed objects.</p>
-    <p><strong>Java IDL</strong> = Java’s CORBA/IIOP implementation. The <code>idlj</code> compiler generates stubs and skeletons from IDL files, allowing Java objects to interact with any CORBA‑compliant system.</p>
-    <div class="code-block">
-      // Example IDL (hello.idl)<br>
-      module HelloApp { interface Hello { string sayHello(); }; };
-      // idlj -fall hello.idl  → generates client stubs + server skeletons
-    </div>
-    <p><strong>RMI‑IIOP:</strong> combines RMI simplicity with CORBA interoperability. By adhering to restrictions (no pass‑by‑reference, etc.), RMI remote objects can use IIOP and communicate with CORBA clients in any language (C++, Python, etc.).</p>
-    <div class="knowledge-check" id="check-iiop">
-      <strong><i class="fas fa-brain"></i> Knowledge Check 4.9.3</strong>
-      <p>What is the primary benefit of RMI‑IIOP?</p>
-      <div class="quiz-option"><input type="radio" name="qiiop" value="A"> A) It replaces RMI with a faster transport.</div>
-      <div class="quiz-option"><input type="radio" name="qiiop" value="B"> B) It allows RMI objects to interoperate with CORBA objects written in any language.</div>
-      <div class="quiz-option"><input type="radio" name="qiiop" value="C"> C) It removes the need for stub generation.</div>
-      <div class="quiz-option"><input type="radio" name="qiiop" value="D"> D) It only works between Java applications.</div>
-      <button class="check-btn" data-qgroup="iiop" data-correct="B">Check Answer</button>
-      <div class="feedback-area" id="fb-iiop"></div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Remote Invocation · Chapter 4 (continued)</span>
+    <h1>RMI-IIOP, CORBA and Java IDL</h1>
+    <p class="lead">CORBA was the industry's big attempt to let objects written in any language, on any operating system, call each other over a network. You will learn how its ORB, IDL and IIOP protocol work, how Java plugged into it with Java IDL and RMI-IIOP, and why today's systems use gRPC and REST instead.</p>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">5 knowledge checks</span><span class="chip">13-question final exam</span><span class="chip">Level: Intermediate</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Define CORBA, ORB, IIOP, IDL, IOR, stub, skeleton and object adapter (POA).</li>
+        <li>Trace a CORBA invocation from client to servant and back.</li>
+        <li>Explain the eight core architecture components, including DII vs DSI.</li>
+        <li>Read and write OMG IDL with <code>in</code>, <code>out</code>, <code>inout</code>, attributes and exceptions.</li>
+        <li>Explain what RMI-IIOP was for, why it was removed from Java 11, and what to use instead.</li>
+      </ul>
     </div>
   </div>
+</section>
 
-  <!-- ========= 4.9.4 OMG CORBA (Introduction) ========= -->
-  <div class="card">
-    <h2>🏛️ 4.9.4 OMG CORBA – Introduction</h2>
-    <p><strong>CORBA</strong> is a technical standard for an <strong>ORB (Object Request Broker)</strong> – an object‑oriented evolution of RPC. It allows applications on different computers, OS, CPU types, and languages (C++, Java, Python, COBOL) to interoperate.</p>
-    <p><i class="fas fa-quote-left"></i> “Making software work together” – middleware for heterogeneous environments.</p>
-    <ul>
-      <li><i class="fas fa-check"></i> Distributed middleware – network transparency.</li>
-      <li><i class="fas fa-check"></i> Language‑independent interface definitions via IDL.</li>
-      <li><i class="fas fa-check"></i> ORB handles location, activation, communication.</li>
-    </ul>
-    <div class="code-block">
-      // CORBA invocation steps at runtime:<br>
-      1. Server object starts, registers with ORB.<br>
-      2. Client binds (finds) server object reference via ORB.<br>
-      3. Client invokes method on object reference.<br>
-      4. ORB delivers request to server object.<br>
-      5. Server returns result through ORB.
-    </div>
-    <div class="knowledge-check" id="check-corba-intro">
-      <strong><i class="fas fa-brain"></i> Knowledge Check (CORBA Basics)</strong>
-      <p>What does ORB stand for in CORBA?</p>
-      <div class="quiz-option"><input type="radio" name="qcorba1" value="A"> A) Object Request Broker</div>
-      <div class="quiz-option"><input type="radio" name="qcorba1" value="B"> B) Object Remote Bridge</div>
-      <div class="quiz-option"><input type="radio" name="qcorba1" value="C"> C) Operation Routing Buffer</div>
-      <div class="quiz-option"><input type="radio" name="qcorba1" value="D"> D) Open Request Bus</div>
-      <button class="check-btn" data-qgroup="corba1" data-correct="A">Check Answer</button>
-      <div class="feedback-area" id="fb-corba1"></div>
-    </div>
-  </div>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
 
-  <!-- ========= CORBA Architecture Deep Dive ========= -->
-  <div class="card">
-    <h2>⚙️ CORBA Architecture – Core Components</h2>
-    <div class="arch-grid">
-      <div class="arch-card"><i class="fas fa-database"></i><br><strong>Interface Repository</strong><br>Dynamic info about object interfaces.</div>
-      <div class="arch-card"><i class="fas fa-code-branch"></i><br><strong>DII</strong><br>Dynamic Invocation Interface – construct requests at runtime.</div>
-      <div class="arch-card"><i class="fas fa-file-code"></i><br><strong>Client Stubs (IDL)</strong><br>Precompiled static invocations.</div>
-      <div class="arch-card"><i class="fas fa-plug"></i><br><strong>ORB Interface</strong><br>APIs for local ORB services.</div>
-      <div class="arch-card"><i class="fas fa-microchip"></i><br><strong>Object Adapter</strong><br>Mediates ORB & servants (BOA/OA).</div>
-      <div class="arch-card"><i class="fas fa-tachometer-alt"></i><br><strong>Server Skeletons</strong><br>Static IDL skeletons for server methods.</div>
-      <div class="arch-card"><i class="fas fa-dharmachakra"></i><br><strong>DSI (Dynamic Skeleton)</strong><br>Runtime binding for servers without precompiled stubs.</div>
-      <div class="arch-card"><i class="fas fa-exchange-alt"></i><br><strong>Implementation Repository</strong><br>Stores server activation details.</div>
-    </div>
-    <p><span class="highlight">ORB Core</span> is the switch – routes requests between objects. <strong>Object Adapter</strong> (e.g., POA – Portable Object Adapter) handles activation, reference generation, request dispatching.</p>
-    <div class="knowledge-check" id="check-arch">
-      <strong><i class="fas fa-brain"></i> Knowledge Check (Architecture)</strong>
-      <p>Which component allows a CORBA server to be implemented without compiling IDL‑specific skeletons (dynamic dispatch)?</p>
-      <div class="quiz-option"><input type="radio" name="qarch" value="A"> A) Dynamic Invocation Interface (DII)</div>
-      <div class="quiz-option"><input type="radio" name="qarch" value="B"> B) Dynamic Skeleton Interface (DSI)</div>
-      <div class="quiz-option"><input type="radio" name="qarch" value="C"> C) Interface Repository</div>
-      <div class="quiz-option"><input type="radio" name="qarch" value="D"> D) ORB Interface</div>
-      <button class="check-btn" data-qgroup="arch" data-correct="B">Check Answer</button>
-      <div class="feedback-area" id="fb-arch"></div>
-    </div>
-  </div>
+    <div class="callout warn"><span class="label">Status in 2026: legacy technology</span><p>Java IDL (the <code>org.omg.*</code> packages, <code>idlj</code>, <code>orbd</code>, <code>tnameserv</code>) and RMI-IIOP (<code>javax.rmi</code>, <code>rmic -iiop</code>) were <strong>removed from the JDK in Java 11</strong> by JEP 320. The code on this page compiles on JDK 8 to 10, or on newer Java with a separate ORB library such as JacORB or the Eclipse GlassFish ORB. CORBA itself is still an OMG and ISO standard (ISO/IEC 19500) and runs in older banking, telecom and defence systems, but new projects use <strong>gRPC with Protocol Buffers</strong>, <strong>REST/JSON over HTTP</strong>, <strong>Apache Thrift</strong> or <strong>message queues</strong>. You still study CORBA because its ideas (IDL, stubs, brokers, naming) are exactly the ideas inside those modern tools.</p></div>
 
-  <!-- ========= IDL Deep Dive & Example ========= -->
-  <div class="card">
-    <h2>📜 Interface Definition Language (IDL) & Example</h2>
-    <p>IDL is declarative – defines object interfaces (operations, attributes, exceptions). Supports <strong>in / out / inout</strong> parameter directions, multiple inheritance, and user exceptions.</p>
-    <div class="code-block">
-      // Example IDL file: Bank.idl<br>
-      module Bank {<br>
-        exception InsufficientFunds {};<br>
-        interface Account {<br>
-          readonly attribute string owner;<br>
-          long balance();<br>
-          void withdraw(in long amount) raises (InsufficientFunds);<br>
-          void deposit(in long amount);<br>
-        };<br>
-      };
-    </div>
-    <p>Compiled with <code>idlj -fall Bank.idl</code> → stubs, skeletons, helper classes. <strong>System exceptions</strong> (30+ predefined) are thrown by ORB; <strong>user exceptions</strong> defined in IDL.</p>
-    <div class="knowledge-check" id="check-idl">
-      <strong><i class="fas fa-brain"></i> Knowledge Check (IDL)</strong>
-      <p>What does the IDL direction “inout” indicate?</p>
-      <div class="quiz-option"><input type="radio" name="qidl" value="A"> A) Parameter is only passed client→server.</div>
-      <div class="quiz-option"><input type="radio" name="qidl" value="B"> B) Parameter is only server→client.</div>
-      <div class="quiz-option"><input type="radio" name="qidl" value="C"> C) Parameter is passed both directions (client→server and server→client).</div>
-      <div class="quiz-option"><input type="radio" name="qidl" value="D"> D) Parameter is ignored.</div>
-      <button class="check-btn" data-qgroup="idl" data-correct="C">Check Answer</button>
-      <div class="feedback-area" id="fb-idl"></div>
-    </div>
-  </div>
+    <!-- ========== 4.9.3 ========== -->
+    <section>
+      <h2 data-toc="4.9.3 RMI-IIOP and Java IDL"><span class="num">4.9.3</span>RMI-IIOP and Java IDL</h2>
+      <p>Java RMI (previous page) only connects Java to Java. To talk to programs written in C++, COBOL or Python, Java needed to speak the language of <strong>CORBA</strong>.</p>
+      <dl class="defs">
+        <dt>CORBA</dt><dd>Common Object Request Broker Architecture: a standard from the <strong>OMG</strong> (Object Management Group, an industry consortium) for platform- and language-neutral distributed objects. First version 1991.</dd>
+        <dt>ORB</dt><dd>Object Request Broker: the middleware library that finds the target object, sends the request and returns the reply.</dd>
+        <dt>GIOP</dt><dd>General Inter-ORB Protocol: the abstract message format ORBs use to talk to each other (Request, Reply, LocateRequest, and so on). Data inside is encoded in <strong>CDR</strong> (Common Data Representation).</dd>
+        <dt>IIOP</dt><dd>Internet Inter-ORB Protocol: GIOP carried over TCP/IP. It is CORBA's standard wire protocol (since CORBA 2.0, 1996), so ORBs from different vendors can interoperate.</dd>
+        <dt>IOR</dt><dd>Interoperable Object Reference: the "address" of a CORBA object. It contains the host, port and an object key, and can be written as a string beginning with <code>IOR:</code>.</dd>
+        <dt>Java IDL</dt><dd>Java's built-in CORBA implementation (JDK 1.2 to 10): an ORB, the <code>org.omg.*</code> APIs, a naming service (<code>orbd</code>) and the <code>idlj</code> compiler.</dd>
+        <dt>idlj</dt><dd>The IDL-to-Java compiler. It reads an <code>.idl</code> file and generates Java stubs, skeletons and helper classes.</dd>
+      </dl>
+      <div class="callout analogy"><span class="label">Analogy</span><p>IIOP is like the international postal standard. Every country (vendor ORB) runs its own post office, but because envelopes and addresses (IORs) follow one standard format, a letter from a Java ORB reaches a C++ ORB.</p></div>
 
-  <!-- ========= Advantages of CORBA & Middleware ========= -->
-  <div class="card">
-    <h2>✅ Advantages of CORBA & Role as Middleware</h2>
-    <ul>
-      <li><i class="fas fa-check-circle"></i> Language, OS, hardware independence.</li>
-      <li><i class="fas fa-check-circle"></i> Location transparency – objects can move without client change.</li>
-      <li><i class="fas fa-check-circle"></i> Built‑on standard IDL – strict interface contracts.</li>
-      <li><i class="fas fa-check-circle"></i> Interoperability via IIOP.</li>
-      <li><i class="fas fa-check-circle"></i> Reuse of legacy systems by wrapping them as CORBA objects.</li>
-    </ul>
-    <p><strong>Middleware</strong> (CORBA, RMI, MQ, .NET) connects applications. CORBA is <strong>distributed middleware</strong> – excels at cross‑platform, cross‑language communication.</p>
-    <div class="knowledge-check" id="check-adv">
-      <strong><i class="fas fa-brain"></i> Knowledge Check (Advantages)</strong>
-      <p>Which statement best describes a key advantage of CORBA?</p>
-      <div class="quiz-option"><input type="radio" name="qadv" value="A"> A) It only works on Windows.</div>
-      <div class="quiz-option"><input type="radio" name="qadv" value="B"> B) It allows objects written in different languages (C++, Java, Python) to communicate transparently.</div>
-      <div class="quiz-option"><input type="radio" name="qadv" value="C"> C) It is a programming language, not a middleware.</div>
-      <div class="quiz-option"><input type="radio" name="qadv" value="D"> D) It requires all objects to run on the same machine.</div>
-      <button class="check-btn" data-qgroup="adv" data-correct="B">Check Answer</button>
-      <div class="feedback-area" id="fb-adv"></div>
-    </div>
-  </div>
+      <h3>Java IDL: IDL first</h3>
+      <p>With Java IDL you start from an IDL file and generate Java code from it:</p>
+      <p class="code-title">Hello.idl</p>
+<pre><code><span class="k">module</span> HelloApp {
+    <span class="k">interface</span> <span class="t">Hello</span> {
+        <span class="t">string</span> sayHello();
+    };
+};
+<span class="c">// idlj -fall Hello.idl  → generates client stubs + server skeletons</span></code></pre>
+      <p><code>-fall</code> means "generate files for both client and server". For <code>Hello.idl</code>, idlj produces:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Generated file</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>_HelloStub.java</code></td><td>Client stub: marshals calls into GIOP requests.</td></tr>
+          <tr><td><code>HelloPOA.java</code></td><td>Server skeleton: your servant class extends it.</td></tr>
+          <tr><td><code>Hello.java</code>, <code>HelloOperations.java</code></td><td>The Java interface for the IDL interface.</td></tr>
+          <tr><td><code>HelloHelper.java</code></td><td>Utility methods, notably <code>narrow()</code> to cast a generic CORBA reference to <code>Hello</code>.</td></tr>
+          <tr><td><code>HelloHolder.java</code></td><td>Wrapper used when a <code>Hello</code> is an <code>out</code> or <code>inout</code> parameter.</td></tr>
+        </tbody>
+      </table></div>
 
-  <!-- ========= FINAL QUIZ (Comprehensive) ========= -->
-  <div class="card final-quiz">
-    <h2><i class="fas fa-graduation-cap"></i> 🎓 Final Exam: RMI‑IIOP · CORBA · IDL</h2>
-    <p>Test your mastery (10 questions covering all deep concepts).</p>
-    <div id="finalQuizContainer"></div>
-    <button id="submitFinalQuiz" style="background:#e67e22;"><i class="fas fa-check-double"></i> Submit Final Quiz</button>
-    <div id="finalQuizResult" style="margin-top: 1.2rem;"></div>
-  </div>
+      <h3>RMI-IIOP: Java first</h3>
+      <p><strong>RMI-IIOP</strong> (added in Java 1.3) took the opposite route: you write normal RMI code with Java interfaces, but the calls travel over <strong>IIOP instead of JRMP</strong>. It combined RMI's simple programming model with CORBA interoperability, and it was the protocol used between Enterprise JavaBeans (EJB) containers.</p>
+      <ul>
+        <li>Remote classes extended <code>javax.rmi.PortableRemoteObject</code>.</li>
+        <li><code>rmic -iiop</code> generated IIOP stubs and server-side "ties" (the RMI-IIOP name for skeletons).</li>
+        <li><code>rmic -idl</code> could generate an IDL file from the Java interface, so C++ or other CORBA clients could call the Java object.</li>
+        <li>Clients looked up objects through JNDI and the CORBA naming service.</li>
+      </ul>
+      <p>To be IIOP-compatible, RMI code had to follow some restrictions. The original notes summarise these as "no pass-by-reference"; the precise rules are:</p>
+      <ul>
+        <li>Use <code>PortableRemoteObject.narrow()</code> instead of a plain Java cast on references obtained from lookups.</li>
+        <li>Do not rely on RMI's <strong>distributed garbage collection</strong> (IIOP does not support it); unexport objects explicitly.</li>
+        <li>Avoid names that clash when mapped to IDL (for example method names differing only in letter case), and avoid RMI-only features such as custom socket factories.</li>
+        <li>Remote objects are still passed by reference and serializable objects by value (as CORBA <em>valuetypes</em>), but a non-Java peer must understand those value types, so simple data types are safest.</li>
+      </ul>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Java IDL = write IDL, generate Java (IDL-first). RMI-IIOP = write Java, run it over IIOP (Java-first). Both aim at the same thing: interoperability with CORBA objects in other languages.</p></div>
 
-  <footer><i class="fas fa-code"></i> Complete deep lesson: RMI‑IIOP, CORBA architecture, IDL, ORB, Object Adapters — created from official materials.</footer>
-</div>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.9.3</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What is the primary benefit of RMI-IIOP?</p>
+          <div class="opts">
+            <button>A) It replaces RMI with a faster transport.</button>
+            <button data-correct>B) It allows RMI objects to interoperate with CORBA objects written in any language.</button>
+            <button>C) It removes the need for stub generation.</button>
+            <button>D) It only works between Java applications.</button>
+          </div>
+          <div class="explain">Running RMI over IIOP lets Java objects be called by, and call, CORBA objects in C++, COBOL, Python and so on. It was not faster than JRMP, it still needed stubs and ties (from <code>rmic -iiop</code>), and its whole point was to go beyond Java-only communication.</div>
+        </div>
+      </div>
+    </section>
 
-<script>
-  // utility: knowledge check handler
-  document.querySelectorAll('.check-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const group = btn.getAttribute('data-qgroup');
-      const correctAnswer = btn.getAttribute('data-correct');
-      let selectedRadio = null;
-      if (group === 'iiop') selectedRadio = document.querySelector('input[name="qiiop"]:checked');
-      else if (group === 'corba1') selectedRadio = document.querySelector('input[name="qcorba1"]:checked');
-      else if (group === 'arch') selectedRadio = document.querySelector('input[name="qarch"]:checked');
-      else if (group === 'idl') selectedRadio = document.querySelector('input[name="qidl"]:checked');
-      else if (group === 'adv') selectedRadio = document.querySelector('input[name="qadv"]:checked');
-      const fbDiv = document.getElementById(`fb-${group}`);
-      if (!selectedRadio) {
-        fbDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-exclamation-triangle"></i> Please select an answer.</div>`;
-        return;
-      }
-      const userVal = selectedRadio.value;
-      if (userVal === correctAnswer) {
-        fbDiv.innerHTML = `<div class="feedback correct-feedback"><i class="fas fa-check-circle"></i> ✅ Correct! Well done.</div>`;
-      } else {
-        let correctLetter = "";
-        if (correctAnswer === "A") correctLetter = "A";
-        else if (correctAnswer === "B") correctLetter = "B";
-        else if (correctAnswer === "C") correctLetter = "C";
-        else correctLetter = "D";
-        fbDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-times-circle"></i> ❌ Incorrect. The correct answer is ${correctLetter}. Review the material.</div>`;
-      }
-    });
-  });
+    <!-- ========== 4.9.4 ========== -->
+    <section>
+      <h2 data-toc="4.9.4 CORBA introduction"><span class="num">4.9.4</span>OMG CORBA: Introduction</h2>
+      <p><strong>CORBA</strong> is a technical standard for an <strong>ORB (Object Request Broker)</strong>. You can think of it as the object-oriented evolution of RPC: instead of calling a procedure number on a server, a client calls a method on an <em>object reference</em>. It lets applications on different computers, operating systems, CPU types and languages (C++, Java, Python, COBOL, Ada and others) work together. The OMG's slogan was "making software work together".</p>
+      <ul>
+        <li><strong>Distributed middleware</strong> with network transparency: the client does not see sockets or byte order.</li>
+        <li><strong>Language-independent interface definitions</strong> through IDL.</li>
+        <li><strong>The ORB handles location, activation and communication</strong>: finding the object, starting its server if needed, and moving the request and reply.</li>
+      </ul>
+      <dl class="defs">
+        <dt>Middleware</dt><dd>Software that sits between applications and the operating system/network and connects distributed parts of a system.</dd>
+        <dt>Servant</dt><dd>The programming-language object (for example a Java object) that actually implements a CORBA interface on the server.</dd>
+        <dt>Naming Service</dt><dd>A CORBA service (CosNaming) that maps human-readable names like <code>"Bank"</code> to object references, like the RMI registry. In Java IDL it was provided by <code>orbd</code> (earlier <code>tnameserv</code>).</dd>
+      </dl>
+      <div class="callout analogy"><span class="label">Analogy</span><p>The ORB is a telephone switchboard operator. You ask for "the Accounts department" (a name); the operator finds which building and extension it is (location), wakes someone up if the office is closed (activation), and connects the call (communication). You never need to know the building's address.</p></div>
 
-  // ----- FINAL QUIZ (10 questions covering IIOP, CORBA, IDL, Architecture, RMI-IIOP) -----
-  const finalQuestions = [
-    { text: "1. What protocol does CORBA use for communication between ORBs over TCP/IP?", options: ["RMI", "IIOP", "SOAP", "JRMP"], correct: "IIOP" },
-    { text: "2. Which tool generates Java stubs and skeletons from an IDL file?", options: ["javac", "rmic", "idlj", "orbd"], correct: "idlj" },
-    { text: "3. What does the CORBA Object Adapter (e.g., POA) primarily do?", options: ["Encrypts IIOP messages", "Manages object references, activation, and request dispatching", "Compiles IDL to bytecode", "Provides naming service only"], correct: "Manages object references, activation, and request dispatching" },
-    { text: "4. Which component allows a CORBA client to construct a request dynamically without pre‑compiled stubs?", options: ["Dynamic Skeleton Interface (DSI)", "Interface Repository", "Dynamic Invocation Interface (DII)", "ORB Core"], correct: "Dynamic Invocation Interface (DII)" },
-    { text: "5. In IDL, an attribute declared as 'readonly' maps to:", options: ["A pair of get/set operations", "Only a get operation", "Only a set operation", "No operation"], correct: "Only a get operation" },
-    { text: "6. Which of the following is a system exception in CORBA that can be thrown by any operation?", options: ["InsufficientFunds", "UserNotFound", "CORBA.UNKNOWN", "IOException"], correct: "CORBA.UNKNOWN" },
-    { text: "7. What is the main purpose of the Interface Repository?", options: ["Store server implementations", "Provide runtime information about available object interfaces (methods, types)", "Cache method invocations", "Authenticate clients"], correct: "Provide runtime information about available object interfaces (methods, types)" },
-    { text: "8. RMI‑IIOP allows:", options: ["RMI objects to use JRMP only", "RMI objects to use IIOP while retaining RMI programming simplicity", "CORBA objects to be written in Java only", "To replace IDL with Java interfaces"], correct: "RMI objects to use IIOP while retaining RMI programming simplicity" },
-    { text: "9. Which CORBA component acts as a 'switch' routing requests between objects?", options: ["Object Adapter", "ORB Core", "Dynamic Skeleton", "Implementation Repository"], correct: "ORB Core" },
-    { text: "10. If a parameter in IDL is marked 'out', it means:", options: ["Value is passed from client to server only", "Value is passed from server to client only (result)", "Value is passed both ways", "Parameter is constant"], correct: "Value is passed from server to client only (result)" }
-  ];
+      <h3>CORBA invocation steps at run time</h3>
+      <ol class="steps">
+        <li><strong>The server object starts and registers with the ORB</strong>: the servant is activated in an object adapter (POA), and its reference is usually published in the Naming Service.</li>
+        <li><strong>The client binds to (finds) the server object reference via the ORB</strong>, typically by resolving a name in the Naming Service. It receives an IOR, which the ORB wraps in a stub.</li>
+        <li><strong>The client invokes a method on the object reference</strong>, for example <code>account.withdraw(50)</code>. The stub marshals the arguments into CDR.</li>
+        <li><strong>The ORB delivers the request to the server object</strong>: the client ORB sends a GIOP Request over IIOP; the server ORB passes it to the POA, which picks the servant, and the skeleton unmarshals and calls the method.</li>
+        <li><strong>The server returns the result through the ORB</strong>: the skeleton marshals the return value (or exception) into a GIOP Reply, and the client stub unmarshals it.</li>
+      </ol>
 
-  function buildFinalQuiz() {
-    const container = document.getElementById("finalQuizContainer");
-    container.innerHTML = "";
-    finalQuestions.forEach((q, idx) => {
-      const qDiv = document.createElement("div");
-      qDiv.style.background = "#fff7e8";
-      qDiv.style.borderRadius = "1.2rem";
-      qDiv.style.padding = "1rem";
-      qDiv.style.marginBottom = "1rem";
-      qDiv.innerHTML = `<strong>${q.text}</strong><div id="finalOpts-${idx}" style="margin-top: 0.6rem;"></div>`;
-      const optsDiv = qDiv.querySelector(`#finalOpts-${idx}`);
-      q.options.forEach(opt => {
-        const label = document.createElement("label");
-        label.className = "quiz-option";
-        label.innerHTML = `<input type="radio" name="finalQ${idx}" value="${opt.replace(/"/g, '&quot;')}"> <span>${opt}</span>`;
-        optsDiv.appendChild(label);
-      });
-      container.appendChild(qDiv);
-    });
-  }
-  buildFinalQuiz();
+      <figure class="diagram">
+        <svg viewBox="0 0 680 440" role="img" aria-label="Sequence diagram of a CORBA call: client, naming service, stub and ORB, POA and skeleton, servant">
+          <defs>
+            <marker id="c1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="c2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah2" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="box" x="10" y="10" width="110" height="36" rx="8"/><text class="b" x="65" y="33" text-anchor="middle">Client</text>
+          <rect class="box" x="145" y="10" width="110" height="36" rx="8"/><text class="b" x="200" y="33" text-anchor="middle">Naming Svc</text>
+          <rect class="hi" x="285" y="10" width="110" height="36" rx="8"/><text class="b" x="340" y="33" text-anchor="middle">Stub + ORB</text>
+          <rect class="hi" x="425" y="10" width="110" height="36" rx="8"/><text class="b" x="480" y="33" text-anchor="middle">ORB + POA</text>
+          <rect class="box" x="560" y="10" width="110" height="36" rx="8"/><text class="b" x="615" y="33" text-anchor="middle">Servant</text>
+          <line class="life" x1="65" y1="46" x2="65" y2="430"/>
+          <line class="life" x1="200" y1="46" x2="200" y2="430"/>
+          <line class="life" x1="340" y1="46" x2="340" y2="430"/>
+          <line class="life" x1="480" y1="46" x2="480" y2="430"/>
+          <line class="life" x1="615" y1="46" x2="615" y2="430"/>
+          <line class="msg" x1="613" y1="80" x2="202" y2="80" marker-end="url(#c1)"/><text class="sm" x="410" y="72" text-anchor="middle">1 rebind("Bank", ref) at start-up</text>
+          <line class="msg" x1="65" y1="125" x2="198" y2="125" marker-end="url(#c1)"/><text class="sm" x="132" y="117" text-anchor="middle">2 resolve("Bank")</text>
+          <line class="ret" x1="198" y1="155" x2="67" y2="155" marker-end="url(#c2)"/><text class="sm" x="132" y="147" text-anchor="middle">IOR</text>
+          <line class="msg" x1="65" y1="200" x2="338" y2="200" marker-end="url(#c1)"/><text class="sm" x="200" y="192" text-anchor="middle">3 withdraw(50)</text>
+          <line class="msg" x1="340" y1="240" x2="478" y2="240" marker-end="url(#c1)"/><text class="sm" x="410" y="232" text-anchor="middle">4 GIOP Request</text>
+          <text class="sm mut" x="410" y="257" text-anchor="middle">(IIOP / TCP)</text>
+          <line class="msg" x1="480" y1="285" x2="613" y2="285" marker-end="url(#c1)"/><text class="sm" x="548" y="277" text-anchor="middle">skeleton upcall</text>
+          <line class="ret" x1="613" y1="320" x2="482" y2="320" marker-end="url(#c2)"/><text class="sm" x="548" y="312" text-anchor="middle">5 return</text>
+          <line class="ret" x1="478" y1="355" x2="342" y2="355" marker-end="url(#c2)"/><text class="sm" x="410" y="347" text-anchor="middle">GIOP Reply</text>
+          <line class="ret" x1="338" y1="395" x2="67" y2="395" marker-end="url(#c2)"/><text class="sm" x="200" y="387" text-anchor="middle">result / exception</text>
+        </svg>
+        <figcaption>Figure 1. A static CORBA invocation. The numbers match the five steps above. Client and server ORBs may come from different vendors because both speak IIOP.</figcaption>
+      </figure>
 
-  document.getElementById("submitFinalQuiz").addEventListener("click", () => {
-    let score = 0;
-    const results = [];
-    for (let i = 0; i < finalQuestions.length; i++) {
-      const selected = document.querySelector(`input[name="finalQ${i}"]:checked`);
-      const userAnswer = selected ? selected.value : null;
-      const isCorrect = (userAnswer === finalQuestions[i].correct);
-      if (isCorrect) score++;
-      results.push({ q: finalQuestions[i].text, correct: finalQuestions[i].correct, user: userAnswer, ok: isCorrect });
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: CORBA basics</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What does ORB stand for in CORBA?</p>
+          <div class="opts">
+            <button data-correct>A) Object Request Broker</button>
+            <button>B) Object Remote Bridge</button>
+            <button>C) Operation Routing Buffer</button>
+            <button>D) Open Request Bus</button>
+          </div>
+          <div class="explain">ORB = Object Request Broker, the "broker" that carries requests between client and object. It also gives CORBA its name: Common Object Request Broker Architecture.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Architecture ========== -->
+    <section>
+      <h2 data-toc="CORBA architecture"><span class="num">4.9.5</span>CORBA Architecture: Core Components</h2>
+      <p>The CORBA architecture diagram has a client side (left), a server side (right) and the ORB core in the middle. Learn each box and which side it belongs to.</p>
+      <div class="cards">
+        <div class="card"><h4>Interface Repository (IR)</h4><p>A run-time database of interface definitions (operations, parameter types). Lets programs discover interfaces dynamically.</p></div>
+        <div class="card"><h4>DII</h4><p><strong>Dynamic Invocation Interface</strong> (client side): build a request at run time without a compiled stub.</p></div>
+        <div class="card"><h4>Client stubs (IDL stubs)</h4><p>Precompiled, static invocation code generated from IDL. Fast and type-checked.</p></div>
+        <div class="card"><h4>ORB interface</h4><p>APIs to local ORB services used by both sides, e.g. <code>ORB.init()</code>, <code>string_to_object()</code>, <code>resolve_initial_references()</code>.</p></div>
+        <div class="card"><h4>Object Adapter</h4><p>Mediates between the ORB and servants (server side). The original <strong>BOA</strong> (Basic Object Adapter) was replaced in CORBA 2.2 (1998) by the <strong>POA</strong>.</p></div>
+        <div class="card"><h4>Server skeletons (IDL skeletons)</h4><p>Static, generated code that unmarshals requests and calls servant methods.</p></div>
+        <div class="card"><h4>DSI</h4><p><strong>Dynamic Skeleton Interface</strong> (server side): receive requests at run time without precompiled skeletons. The server-side mirror of DII.</p></div>
+        <div class="card"><h4>Implementation Repository</h4><p>Stores information on how to locate and start (activate) servers, so a server can be launched on demand when a request arrives.</p></div>
+      </div>
+      <p>The <mark>ORB core</mark> is the switch: it routes requests between objects. The <strong>Object Adapter</strong> (in practice the POA, Portable Object Adapter) handles activation of servants, generation of object references, and dispatching each incoming request to the right servant.</p>
+
+      <h3>Static vs dynamic invocation</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Client side</th><th>Server side</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Static</strong></td><td>IDL stub</td><td>IDL skeleton</td><td>Interface known at compile time (the normal case). Faster, compiler checks types.</td></tr>
+          <tr><td><strong>Dynamic</strong></td><td>DII (+ Interface Repository)</td><td>DSI</td><td>Generic tools: object browsers, bridges and gateways that must handle interfaces they have never seen.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Memory trick</span><p><strong>I</strong>nvocation is what a client does → DI<strong>I</strong> is client side. <strong>S</strong>keletons live on the <strong>S</strong>erver → D<strong>S</strong>I is server side.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Mixing up the two repositories. The <strong>Interface</strong> Repository describes <em>what</em> an interface looks like (types). The <strong>Implementation</strong> Repository describes <em>where and how</em> to start the server that implements it.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: architecture</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which component allows a CORBA server to be implemented without compiling IDL-specific skeletons (dynamic dispatch)?</p>
+          <div class="opts">
+            <button>A) Dynamic Invocation Interface (DII)</button>
+            <button data-correct>B) Dynamic Skeleton Interface (DSI)</button>
+            <button>C) Interface Repository</button>
+            <button>D) ORB Interface</button>
+          </div>
+          <div class="explain">DSI is the server-side dynamic mechanism: one generic method receives every request and inspects it at run time. DII is the tempting wrong answer, but it is the client-side counterpart (dynamic requests without stubs).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== IDL ========== -->
+    <section>
+      <h2 data-toc="IDL deep dive"><span class="num">4.9.6</span>Interface Definition Language (IDL)</h2>
+      <p><strong>OMG IDL</strong> is a declarative language: it only <em>describes</em> interfaces (operations, attributes, exceptions and data types); it contains no implementation code. A compiler then maps the IDL to a real language (Java, C++, Python...). Because both sides are generated from the same file, they always agree on the contract.</p>
+      <p>IDL supports <strong>in / out / inout</strong> parameter directions, multiple inheritance of interfaces, modules (namespaces) and user-defined exceptions.</p>
+      <p class="code-title">Bank.idl</p>
+<pre><code><span class="k">module</span> Bank {
+    <span class="k">exception</span> <span class="t">InsufficientFunds</span> {};
+    <span class="k">interface</span> <span class="t">Account</span> {
+        <span class="k">readonly attribute</span> <span class="t">string</span> owner;
+        <span class="t">long</span> balance();
+        <span class="t">void</span> withdraw(<span class="k">in</span> <span class="t">long</span> amount) <span class="k">raises</span> (<span class="t">InsufficientFunds</span>);
+        <span class="t">void</span> deposit(<span class="k">in</span> <span class="t">long</span> amount);
+    };
+};</code></pre>
+      <p>Compiled with <code>idlj -fall Bank.idl</code> to get stubs, skeletons and helper classes.</p>
+
+      <h3>Parameter directions</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Direction</th><th>Data flows</th><th>Java mapping</th></tr></thead>
+        <tbody>
+          <tr><td><code>in</code></td><td>Client → server only. Server reads it.</td><td>Plain value, e.g. <code>int amount</code></td></tr>
+          <tr><td><code>out</code></td><td>Server → client only. Server writes it; client's initial value is ignored.</td><td>Holder class, e.g. <code>IntHolder</code></td></tr>
+          <tr><td><code>inout</code></td><td>Both ways. Client sends a value, server may change it and send it back.</td><td>Holder class, e.g. <code>IntHolder</code></td></tr>
+        </tbody>
+      </table></div>
+      <p>Java passes primitives by value, so it cannot return a changed <code>int</code> through a parameter. That is why <code>out</code>/<code>inout</code> parameters are wrapped in <strong>Holder</strong> objects: the server sets <code>holder.value</code> and the client reads it after the call.</p>
+
+      <h3>Attributes</h3>
+      <p>An IDL <code>attribute</code> is shorthand for accessor operations. A normal attribute maps to a getter <em>and</em> a setter; a <code>readonly attribute</code> maps to a getter only. In Java, <code>readonly attribute string owner;</code> becomes <code>String owner();</code>.</p>
+
+      <h3>IDL to Java type mapping</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>IDL</th><th>Java</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><code>short</code></td><td><code>short</code></td><td>16-bit</td></tr>
+          <tr><td><code>long</code></td><td><code>int</code></td><td>IDL <code>long</code> is 32-bit (a classic trap)</td></tr>
+          <tr><td><code>long long</code></td><td><code>long</code></td><td>64-bit</td></tr>
+          <tr><td><code>float</code> / <code>double</code></td><td><code>float</code> / <code>double</code></td><td></td></tr>
+          <tr><td><code>boolean</code>, <code>char</code>, <code>octet</code></td><td><code>boolean</code>, <code>char</code>, <code>byte</code></td><td></td></tr>
+          <tr><td><code>string</code></td><td><code>String</code></td><td></td></tr>
+          <tr><td><code>sequence&lt;T&gt;</code></td><td><code>T[]</code></td><td>Variable-length array</td></tr>
+          <tr><td><code>interface</code></td><td>Java interface + stub</td><td></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Exceptions</h3>
+      <ul>
+        <li><strong>System exceptions</strong>: about 30 standard exceptions defined by CORBA and raised by the ORB itself, such as <code>COMM_FAILURE</code>, <code>OBJECT_NOT_EXIST</code>, <code>BAD_PARAM</code>, <code>TRANSIENT</code> and <code>UNKNOWN</code>. Any operation can raise them; they do not appear in a <code>raises</code> clause. In Java they are unchecked (<code>org.omg.CORBA.SystemException</code>).</li>
+        <li><strong>User exceptions</strong>: declared in IDL with <code>exception</code> and listed in an operation's <code>raises(...)</code> clause, like <code>InsufficientFunds</code>. In Java they are checked exceptions.</li>
+      </ul>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: IDL</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What does the IDL direction <code>inout</code> indicate?</p>
+          <div class="opts">
+            <button>A) Parameter is only passed client→server.</button>
+            <button>B) Parameter is only server→client.</button>
+            <button data-correct>C) Parameter is passed both directions (client→server and server→client).</button>
+            <button>D) Parameter is ignored.</button>
+          </div>
+          <div class="explain"><code>inout</code> sends the client's value to the server, and the server's (possibly modified) value back to the client. A is <code>in</code>, B is <code>out</code>.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Hello example ========== -->
+    <section>
+      <h2 data-toc="Worked example: Java IDL Hello"><span class="num">4.9.7</span>Worked Example: a Java IDL Hello Application</h2>
+      <p>This is the classic course lab. It needs JDK 8, 9 or 10 (or an external ORB library on newer Java), because Java IDL was removed in Java 11.</p>
+      <ol class="steps">
+        <li><strong>Write the IDL</strong> (<code>Hello.idl</code> from section 4.9.3).</li>
+        <li><strong>Generate code</strong>: <code>idlj -fall Hello.idl</code> creates the <code>HelloApp</code> package.</li>
+        <li><strong>Write the servant</strong>: a class that extends the generated skeleton <code>HelloPOA</code>.</li>
+        <li><strong>Write the server</strong>: start the ORB, activate the servant in the root POA, bind it in the Naming Service, call <code>orb.run()</code>.</li>
+        <li><strong>Write the client</strong>: start the ORB, resolve the name, <code>narrow</code> it, call the method.</li>
+        <li><strong>Run</strong>: start the naming daemon, then the server, then the client.</li>
+      </ol>
+      <div class="tabs"><div role="tablist">
+        <button role="tab" aria-controls="h-srv" aria-selected="true">HelloServer.java</button>
+        <button role="tab" aria-controls="h-cli">HelloClient.java</button>
+        <button role="tab" aria-controls="h-run">Run commands</button>
+      </div>
+      <div role="tabpanel" id="h-srv">
+<pre><code><span class="k">import</span> HelloApp.*;
+<span class="k">import</span> org.omg.CORBA.*;
+<span class="k">import</span> org.omg.CosNaming.*;
+<span class="k">import</span> org.omg.PortableServer.*;
+
+<span class="k">class</span> <span class="t">HelloImpl</span> <span class="k">extends</span> <span class="t">HelloPOA</span> {             <span class="c">// the servant</span>
+    <span class="k">public</span> <span class="t">String</span> sayHello() { <span class="k">return</span> <span class="s">"Hello from CORBA"</span>; }
+}
+
+<span class="k">public class</span> <span class="t">HelloServer</span> {
+    <span class="k">public static void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">Exception</span> {
+        <span class="t">ORB</span> orb = <span class="t">ORB</span>.init(args, <span class="k">null</span>);
+        <span class="t">POA</span> root = <span class="t">POAHelper</span>.narrow(orb.resolve_initial_references(<span class="s">"RootPOA"</span>));
+        root.the_POAManager().activate();
+
+        org.omg.CORBA.<span class="t">Object</span> ref = root.servant_to_reference(<span class="k">new</span> <span class="t">HelloImpl</span>());
+        <span class="t">NamingContextExt</span> ns = <span class="t">NamingContextExtHelper</span>.narrow(
+                orb.resolve_initial_references(<span class="s">"NameService"</span>));
+        ns.rebind(ns.to_name(<span class="s">"Hello"</span>), ref);           <span class="c">// publish the reference</span>
+
+        <span class="t">System</span>.out.println(<span class="s">"HelloServer ready"</span>);
+        orb.run();                                         <span class="c">// wait for requests</span>
     }
-    const resultDiv = document.getElementById("finalQuizResult");
-    let html = `<div style="background:#ecf5f0; border-radius:1.2rem; padding:1rem;"><i class="fas fa-chalkboard-teacher"></i> <strong>Final Score: ${score} / ${finalQuestions.length}</strong><br>`;
-    if (score === finalQuestions.length) html += "🏅 Perfect! You have deep knowledge of RMI‑IIOP, CORBA, and IDL.";
-    else if (score >= 7) html += "👍 Great! Review the incorrect answers to sharpen your expertise.";
-    else html += "📘 Re‑study CORBA architecture, IIOP, and IDL direction semantics, then retry.";
-    html += "<details><summary>🔎 Show detailed answers & explanations</summary><ul>";
-    results.forEach((r, idx) => {
-      html += `<li><strong>Q${idx+1}:</strong> ${r.q}<br> Your answer: ${r.user || "—"} — ${r.ok ? "✅ Correct" : `❌ Correct answer: ${r.correct}`}</li>`;
-    });
-    html += "</ul></details></div>";
-    resultDiv.innerHTML = html;
-    resultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
-</script>
+}</code></pre></div>
+      <div role="tabpanel" id="h-cli">
+<pre><code><span class="k">import</span> HelloApp.*;
+<span class="k">import</span> org.omg.CORBA.*;
+<span class="k">import</span> org.omg.CosNaming.*;
 
-<!-- additional inline explanation for optional exam exercises (conceptual) -->
-<div style="max-width:1300px; margin: 1rem auto 0; background: #fbfaf0; border-radius: 1.5rem; padding: 1rem; border: 1px solid #eee2b5;">
-  <p><i class="fas fa-pen-alt"></i> <strong>📌 Exam exercises (based on official questions)</strong> – Use the interactive quizzes above to practice. For deeper preparation, consider:</p>
-  <ul>
-    <li>Compare 2‑tier vs 3‑tier client/server architectures (presentation, logic, data layers).</li>
-    <li>Explain RPC characteristics (transparency, marshalling, stubs).</li>
-    <li>Middleware functions: communication, data transformation, transaction management, naming.</li>
-    <li>HTTP methods: safe (GET, HEAD) vs idempotent (GET, PUT, DELETE).</li>
-    <li>InetAddress class – represents IP addresses; useful for host resolution.</li>
-    <li>RDA (Remote Database Access) – standard for remote SQL execution.</li>
-    <li>RMI security via policy files (<code>-Djava.security.policy</code>).</li>
-  </ul>
+<span class="k">public class</span> <span class="t">HelloClient</span> {
+    <span class="k">public static void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">Exception</span> {
+        <span class="t">ORB</span> orb = <span class="t">ORB</span>.init(args, <span class="k">null</span>);
+        <span class="t">NamingContextExt</span> ns = <span class="t">NamingContextExtHelper</span>.narrow(
+                orb.resolve_initial_references(<span class="s">"NameService"</span>));
+        <span class="t">Hello</span> hello = <span class="t">HelloHelper</span>.narrow(ns.resolve_str(<span class="s">"Hello"</span>)); <span class="c">// IOR → typed stub</span>
+        <span class="t">System</span>.out.println(hello.sayHello());
+    }
+}</code></pre></div>
+      <div role="tabpanel" id="h-run">
+<pre><code><span class="c"># JDK 8–10 only</span>
+idlj -fall Hello.idl
+javac *.java HelloApp/*.java
+orbd -ORBInitialPort <span class="n">1050</span> &amp;                                   <span class="c"># naming service</span>
+java HelloServer -ORBInitialPort <span class="n">1050</span> -ORBInitialHost localhost &amp;
+java HelloClient -ORBInitialPort <span class="n">1050</span> -ORBInitialHost localhost
+<span class="c"># → Hello from CORBA</span></code></pre></div>
+      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Using a plain Java cast <code>(Hello) ref</code> instead of <code>HelloHelper.narrow(ref)</code>. The object returned by the ORB is a generic CORBA reference, so the cast fails with <code>ClassCastException</code>. <code>narrow</code> checks the type with the remote object and builds the right stub.</p></div>
+    </section>
+
+    <!-- ========== Advantages ========== -->
+    <section>
+      <h2 data-toc="Advantages and middleware"><span class="num">4.9.8</span>Advantages of CORBA and its Role as Middleware</h2>
+      <div class="pros-cons">
+        <div class="pros"><h4>Advantages</h4><ul>
+          <li>Language, OS and hardware independence.</li>
+          <li>Location transparency: objects can move without client changes.</li>
+          <li>Built on standard IDL: strict interface contracts.</li>
+          <li>Interoperability between vendors via IIOP.</li>
+          <li>Reuse of legacy systems by wrapping them as CORBA objects.</li>
+          <li>Rich standard services: naming, events, transactions, security.</li>
+        </ul></div>
+        <div class="cons"><h4>Disadvantages (why it declined)</h4><ul>
+          <li>Complex specification and APIs; steep learning curve.</li>
+          <li>IIOP uses dynamic ports, which are hard to pass through firewalls and proxies.</li>
+          <li>Vendor ORBs differed in practice despite the standard.</li>
+          <li>Web services, then REST/JSON and gRPC, offered simpler HTTP-based alternatives.</li>
+        </ul></div>
+      </div>
+      <p><strong>Middleware</strong> (CORBA, RMI, message-oriented middleware such as IBM MQ, .NET remoting and today gRPC or Kafka) connects applications. CORBA is <strong>distributed object middleware</strong>: it excels at cross-platform, cross-language communication between objects.</p>
+      <div class="callout example"><span class="label">Example</span><p>A bank keeps its 1990s C++ account system running. It wraps it as a CORBA <code>Account</code> object. A new Java teller application and a Python reporting script both call it through IIOP without anyone rewriting the C++ code.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: advantages</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which statement best describes a key advantage of CORBA?</p>
+          <div class="opts">
+            <button>A) It only works on Windows.</button>
+            <button data-correct>B) It allows objects written in different languages (C++, Java, Python) to communicate transparently.</button>
+            <button>C) It is a programming language, not a middleware.</button>
+            <button>D) It requires all objects to run on the same machine.</button>
+          </div>
+          <div class="explain">Language and platform independence is CORBA's main purpose. It runs on many operating systems, it is middleware (IDL describes interfaces but is not a programming language), and objects are distributed across machines.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Today ========== -->
+    <section>
+      <h2 data-toc="CORBA today and alternatives"><span class="num">4.9.9</span>CORBA Today and Modern Alternatives</h2>
+      <p>Most CORBA concepts map directly onto modern tools. If you understand this table, you can explain gRPC in an exam using CORBA vocabulary.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>CORBA concept</th><th>gRPC equivalent</th><th>REST equivalent</th></tr></thead>
+        <tbody>
+          <tr><td>OMG IDL (<code>.idl</code>)</td><td>Protocol Buffers (<code>.proto</code>)</td><td>OpenAPI document</td></tr>
+          <tr><td>idlj / IDL compiler</td><td>protoc</td><td>OpenAPI generators</td></tr>
+          <tr><td>Stub / skeleton</td><td>Generated client stub / service base class</td><td>HTTP client / controller</td></tr>
+          <tr><td>CDR encoding</td><td>Protobuf binary encoding</td><td>JSON</td></tr>
+          <tr><td>IIOP over TCP</td><td>HTTP/2 + TLS</td><td>HTTP + TLS</td></tr>
+          <tr><td>IOR / Naming Service</td><td>DNS name, service registry</td><td>URL</td></tr>
+          <tr><td>User exception</td><td>Status code + error details</td><td>HTTP 4xx/5xx + body</td></tr>
+        </tbody>
+      </table></div>
+      <p class="code-title">bank.proto: the Bank IDL rewritten for gRPC</p>
+<pre><code><span class="k">syntax</span> = <span class="s">"proto3"</span>;
+<span class="k">package</span> bank;
+
+<span class="k">service</span> <span class="t">Account</span> {
+  <span class="k">rpc</span> GetBalance (<span class="t">BalanceRequest</span>) <span class="k">returns</span> (<span class="t">BalanceReply</span>);
+  <span class="k">rpc</span> Withdraw   (<span class="t">WithdrawRequest</span>) <span class="k">returns</span> (<span class="t">BalanceReply</span>); <span class="c">// FAILED_PRECONDITION if funds are short</span>
+}
+<span class="k">message</span> <span class="t">BalanceRequest</span>  { <span class="t">string</span> account_id = <span class="n">1</span>; }
+<span class="k">message</span> <span class="t">WithdrawRequest</span> { <span class="t">string</span> account_id = <span class="n">1</span>; <span class="t">int64</span> amount = <span class="n">2</span>; }
+<span class="k">message</span> <span class="t">BalanceReply</span>    { <span class="t">int64</span> balance = <span class="n">1</span>; }</code></pre>
+      <p>Notice there are no <code>out</code> parameters: every gRPC method takes one request message and returns one reply message, which is simpler than IDL's directions.</p>
+
+      <h3>Comparison of remote invocation technologies</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>Java RMI</th><th>RMI-IIOP</th><th>CORBA</th><th>gRPC</th><th>REST</th></tr></thead>
+        <tbody>
+          <tr><td>Interface</td><td>Java interface</td><td>Java interface</td><td>OMG IDL</td><td>.proto</td><td>OpenAPI (optional)</td></tr>
+          <tr><td>Protocol</td><td>JRMP</td><td>IIOP</td><td>IIOP</td><td>HTTP/2</td><td>HTTP</td></tr>
+          <tr><td>Encoding</td><td>Java serialization</td><td>CDR</td><td>CDR</td><td>Protobuf</td><td>JSON</td></tr>
+          <tr><td>Languages</td><td>Java only</td><td>Java ↔ any CORBA</td><td>Many</td><td>Many</td><td>Any</td></tr>
+          <tr><td>Naming</td><td>RMI registry</td><td>JNDI / CosNaming</td><td>CosNaming</td><td>DNS / registry</td><td>URLs</td></tr>
+          <tr><td>In JDK today?</td><td>Yes</td><td>No (removed Java 11)</td><td>No (removed Java 11)</td><td>Library</td><td>Built-in HTTP client</td></tr>
+          <tr><td>Status</td><td>Legacy-ish</td><td>Legacy</td><td>Legacy niche</td><td>Current</td><td>Current</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- ========== Final exam ========== -->
+    <section>
+      <h2 data-toc="Final exam"><span class="num">4.9.10</span>Final Exam: RMI-IIOP, CORBA and IDL</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Final exam</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What protocol does CORBA use for communication between ORBs over TCP/IP?</p>
+          <div class="opts"><button>RMI</button><button data-correct>IIOP</button><button>SOAP</button><button>JRMP</button></div>
+          <div class="explain">IIOP is GIOP over TCP/IP, CORBA's standard interoperability protocol. JRMP is plain Java RMI's protocol; SOAP belongs to XML web services.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which tool generates Java stubs and skeletons from an IDL file?</p>
+          <div class="opts"><button>javac</button><button>rmic</button><button data-correct>idlj</button><button>orbd</button></div>
+          <div class="explain"><code>idlj</code> is the IDL-to-Java compiler. <code>rmic</code> worked from Java classes (not IDL), <code>orbd</code> was the naming/activation daemon, and <code>javac</code> compiles Java. All three Java IDL/RMI tools are gone from modern JDKs.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What does the CORBA Object Adapter (e.g., POA) primarily do?</p>
+          <div class="opts"><button>Encrypts IIOP messages</button><button data-correct>Manages object references, activation, and request dispatching</button><button>Compiles IDL to bytecode</button><button>Provides naming service only</button></div>
+          <div class="explain">The POA connects servants to the ORB: it activates them, creates their references, and dispatches incoming requests to them.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which component allows a CORBA client to construct a request dynamically without pre-compiled stubs?</p>
+          <div class="opts"><button>Dynamic Skeleton Interface (DSI)</button><button>Interface Repository</button><button data-correct>Dynamic Invocation Interface (DII)</button><button>ORB Core</button></div>
+          <div class="explain">DII is client-side dynamic invocation. DSI is its server-side mirror. The Interface Repository is often used together with DII to discover the operations, but it does not send requests.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>In IDL, an attribute declared as <code>readonly</code> maps to:</p>
+          <div class="opts"><button>A pair of get/set operations</button><button data-correct>Only a get operation</button><button>Only a set operation</button><button>No operation</button></div>
+          <div class="explain">A normal attribute gives a getter and a setter; <code>readonly</code> removes the setter.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>Which of the following is a system exception in CORBA that can be thrown by any operation?</p>
+          <div class="opts"><button>InsufficientFunds</button><button>UserNotFound</button><button data-correct>CORBA.UNKNOWN</button><button>IOException</button></div>
+          <div class="explain"><code>CORBA::UNKNOWN</code> is one of the standard system exceptions raised by the ORB. <code>InsufficientFunds</code> and <code>UserNotFound</code> would be user exceptions declared in IDL; <code>IOException</code> is a Java class, not CORBA.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>What is the main purpose of the Interface Repository?</p>
+          <div class="opts"><button>Store server implementations</button><button data-correct>Provide runtime information about available object interfaces (methods, types)</button><button>Cache method invocations</button><button>Authenticate clients</button></div>
+          <div class="explain">The Interface Repository holds interface descriptions at run time. Information about server implementations and how to start them is in the <em>Implementation</em> Repository.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>RMI-IIOP allows:</p>
+          <div class="opts"><button>RMI objects to use JRMP only</button><button data-correct>RMI objects to use IIOP while retaining RMI programming simplicity</button><button>CORBA objects to be written in Java only</button><button>To replace IDL with Java interfaces</button></div>
+          <div class="explain">RMI-IIOP keeps the RMI programming model (Java interfaces) but uses IIOP on the wire. It did not replace IDL for other languages; <code>rmic -idl</code> could even generate IDL for them.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>Which CORBA component acts as a "switch" routing requests between objects?</p>
+          <div class="opts"><button>Object Adapter</button><button data-correct>ORB Core</button><button>Dynamic Skeleton</button><button>Implementation Repository</button></div>
+          <div class="explain">The ORB core moves requests between clients and objects. The object adapter only dispatches inside one server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>If a parameter in IDL is marked <code>out</code>, it means:</p>
+          <div class="opts"><button>Value is passed from client to server only</button><button data-correct>Value is passed from server to client only (result)</button><button>Value is passed both ways</button><button>Parameter is constant</button></div>
+          <div class="explain"><code>out</code> carries a value back from the server. In Java it is mapped to a Holder object whose <code>value</code> field the server fills.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>In which Java version were Java IDL (<code>org.omg.*</code>, idlj, orbd) and RMI-IIOP removed from the JDK?</p>
+          <div class="opts"><button>Java 8</button><button data-correct>Java 11</button><button>Java 17</button><button>They are still included</button></div>
+          <div class="explain">JEP 320 removed the Java EE and CORBA modules in Java 11 (2018). Java 17 is when RMI <em>Activation</em> was removed; core RMI is still included.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>What is an IOR?</p>
+          <div class="opts"><button>An IDL output routine</button><button data-correct>An Interoperable Object Reference: host, port and object key that locate a CORBA object</button><button>The Internet Object Registry on port 111</button><button>A type of user exception</button></div>
+          <div class="explain">An IOR identifies a CORBA object in a vendor-neutral way, so any ORB can use it to reach the object. The Naming Service maps names to IORs.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>A team today wants language-neutral, strongly typed RPC between microservices. Which choice is closest in spirit to CORBA but current?</p>
+          <div class="opts"><button>RMI-IIOP</button><button data-correct>gRPC with Protocol Buffers</button><button>Java RMI with a policy file</button><button>FTP</button></div>
+          <div class="explain">gRPC has an IDL (.proto), generated stubs in many languages and a binary encoding, just like CORBA, but runs over HTTP/2 and is actively maintained. RMI-IIOP is removed from the JDK, and plain RMI is Java-only.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ========== Exam exercises ========== -->
+    <section>
+      <h2 data-toc="Exam exercises"><span class="num">4.9.11</span>Exam Exercises (Based on Official Questions)</h2>
+      <p>Use the quizzes above to practise, then prepare short written answers to these. Try each one before opening the model answer. The practice page has more exercises.</p>
+      <details class="reveal"><summary>Compare 2-tier vs 3-tier client/server architectures (presentation, logic, data layers).</summary>
+        <p>In <strong>2-tier</strong>, the client holds presentation and most business logic and talks directly to the database server. Simple, but every client needs DB drivers and credentials, and logic changes require updating every client. In <strong>3-tier</strong>, a middle tier (application server, or an RMI/CORBA/gRPC service) holds the business logic between presentation and data. It scales better, is more secure (only the middle tier touches the database) and is easier to maintain.</p></details>
+      <details class="reveal"><summary>Explain RPC characteristics (transparency, marshalling, stubs).</summary>
+        <p>RPC gives <strong>access transparency</strong>: a remote call looks like a local call. <strong>Stubs</strong> make this possible; the client stub marshals parameters into a message and the server stub unmarshals and calls the procedure. <strong>Marshalling</strong> converts data to a machine-independent format (XDR in Sun RPC, CDR in CORBA, Protobuf in gRPC). Parameters are passed by value because there is no shared memory.</p></details>
+      <details class="reveal"><summary>Middleware functions: communication, data transformation, transaction management, naming.</summary>
+        <p><strong>Communication</strong>: hides sockets and protocols (IIOP, JRMP, HTTP/2). <strong>Data transformation</strong>: marshalling between formats and byte orders. <strong>Transaction management</strong>: making several operations all succeed or all fail (CORBA Object Transaction Service, Java JTA). <strong>Naming</strong>: finding services by name (CORBA Naming Service, RMI registry, DNS).</p></details>
+      <details class="reveal"><summary>HTTP methods: safe (GET, HEAD) vs idempotent (GET, PUT, DELETE).</summary>
+        <p>A <strong>safe</strong> method does not change server state: GET, HEAD, OPTIONS, TRACE. An <strong>idempotent</strong> method has the same effect whether called once or many times: all safe methods plus PUT and DELETE. POST is neither (and PATCH is not guaranteed idempotent). Every safe method is idempotent, but not every idempotent method is safe (DELETE changes state). This is the HTTP version of RPC's at-least-once rule: idempotent requests can be retried safely.</p></details>
+      <details class="reveal"><summary>InetAddress class: represents IP addresses; useful for host resolution.</summary>
+        <p><code>java.net.InetAddress</code> represents an IPv4 or IPv6 address. <code>InetAddress.getByName("example.com")</code> resolves a host name through DNS; <code>getLocalHost()</code> returns the local machine; <code>getHostAddress()</code> gives the text form. Subclasses are <code>Inet4Address</code> and <code>Inet6Address</code>.</p></details>
+      <details class="reveal"><summary>RDA (Remote Database Access): standard for remote SQL execution.</summary>
+        <p>RDA was an ISO standard (ISO/IEC 9579) defining how a client sends SQL statements to a remote database server and receives results, independent of vendor. It is mostly historical; today the same job is done by vendor network protocols with drivers such as JDBC and ODBC, or by putting a service (REST/gRPC) in front of the database.</p></details>
+      <details class="reveal"><summary>RMI security via policy files (<code>-Djava.security.policy</code>).</summary>
+        <p>Classically, an RMI program installed a <code>SecurityManager</code> and started with <code>-Djava.security.policy=server.policy</code>; the policy file granted permissions such as <code>java.net.SocketPermission "*:1024-", "connect,accept"</code>. This mattered mainly when stub classes were downloaded from a remote codebase. <strong>Updated:</strong> the SecurityManager was deprecated for removal in Java 17 and permanently disabled in Java 24, so modern RMI security relies on TLS socket factories, firewalls, deserialization filters and not exposing the registry publicly.</p></details>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>CORBA (OMG standard) lets objects in different languages and platforms call each other through an ORB. IIOP (GIOP over TCP/IP) is the wire protocol; IORs identify objects.</li>
+        <li>Java IDL is IDL-first (idlj generates stubs, POA skeletons, helpers, holders). RMI-IIOP is Java-first (RMI over IIOP). Both were removed in Java 11 (JEP 320).</li>
+        <li>Architecture: IDL stubs and DII on the client; IDL skeletons, DSI and the object adapter (POA, which replaced BOA) on the server; Interface Repository (types) and Implementation Repository (server activation); ORB core as the switch.</li>
+        <li>IDL directions: <code>in</code> client→server, <code>out</code> server→client, <code>inout</code> both. <code>readonly attribute</code> gives only a getter. System exceptions come from the ORB, user exceptions from IDL <code>raises</code>.</li>
+        <li>Advantages: language/OS independence, location transparency, standard contracts, legacy wrapping. Declined because of complexity and firewall issues.</li>
+        <li>Modern equivalents: gRPC with Protocol Buffers, REST/JSON over HTTP, Apache Thrift and message queues.</li>
+      </ul></div>
+    </section>
+
+  </main>
 </div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

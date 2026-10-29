@@ -1,167 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LT Information</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      color: #1e293b;
-    }
-
-    header {
-      background: #0f172a;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 35px 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 22px;
-      border-radius: 14px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      color: #0f172a;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 10px 16px;
-      background: #2563eb;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-    }
-
-    .btn:hover {
-      background: #1d4ed8;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #64748b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LT Information · Course Library</title>
+<meta name="description" content="Interactive lessons, quizzes and practice for Client/Server Architecture, Remote Invocation, Network Programming and Cybersecurity.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .home-hero .lt-hero-in { padding-block: 56px 44px }
+  .home-hero h1 { max-width: 18ch }
+  .stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 8px }
+  .stat b { display: block; font: 800 2rem/1 var(--display); letter-spacing: -.02em }
+  .stat span { color: var(--muted); font-size: .9rem }
+  .home { max-width: 1240px; margin: 0 auto; padding: 32px max(16px, env(safe-area-inset-right, 0px)) 72px max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 44px }
+  .finder { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+  .finder input { flex: 1 1 260px; padding: 12px 14px; font-size: 1rem }
+  .filters { display: flex; flex-wrap: wrap; gap: 6px }
+  .filters button { border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 999px; padding: 8px 14px; font: 700 .85rem var(--body); cursor: pointer }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+  .group { display: grid; gap: 16px }
+  .group-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: baseline }
+  .group-head .idx { grid-row: span 2; font: 800 2.4rem/1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums }
+  .group-head h2 { font: 800 1.6rem/1.15 var(--display); margin: 0; letter-spacing: -.02em }
+  .group-head p { margin: 0; color: var(--muted); max-width: 70ch }
+  .lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0 }
+  .lesson a { height: 100%; display: grid; grid-template-rows: auto auto 1fr auto; gap: 8px; padding: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink); text-decoration: none; transition: border-color .15s, transform .15s }
+  .lesson a:hover { border-color: var(--accent); transform: translateY(-2px) }
+  .lesson h3 { margin: 0; font: 700 1.1rem/1.3 var(--display) }
+  .lesson p { margin: 0; color: var(--muted); font-size: .93rem; line-height: 1.55 }
+  .lesson .go { font: 700 .85rem var(--body); color: var(--accent) }
+  .type { justify-self: start; font: 700 .68rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent) }
+  .type.quiz { background: var(--ok-soft); color: var(--ok) }
+  .type.practice { background: var(--warn-soft); color: var(--warn) }
+  .type.slides { background: var(--tip-soft); color: var(--tip) }
+  .path { display: grid; gap: 12px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px }
+  .path h2 { font: 800 1.3rem/1.2 var(--display); margin: 0 }
+  .path ol { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; counter-reset: p }
+  .path li { counter-increment: p; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: var(--sunk); font-weight: 700; font-size: .92rem }
+  .path li::before { content: counter(p); width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--panel); display: grid; place-items: center; font: 700 .72rem var(--mono) }
+  .empty { color: var(--muted); padding: 24px; text-align: center; border: 1px dashed var(--line); border-radius: var(--radius) }
+</style>
 </head>
-
 <body>
 
-<header>
-  <h1>LT Information</h1>
-  <p>Course Pages Directory</p>
-</header>
-
-<div class="container">
-  <div class="grid">
-
-    <div class="card">
-      <h3>CIA - Cyber 25-26</h3>
-      <a class="btn" href="CIA%20-CYber%2025-26.html">Open Page</a>
+<section class="lt-hero home-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Course library · 2025–26</span>
+    <h1>Learn how networked systems talk, and how to keep them safe</h1>
+    <p class="lead">Interactive lessons with worked examples, diagrams and self-marking quizzes. Start with Client/Server Architecture, then move on to remote invocation, network programming and cybersecurity.</p>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>subjects</span></div>
+      <div class="stat"><b>16</b><span>lessons, quizzes and practice pages</span></div>
+      <div class="stat"><b>Light / dark</b><span>works on phone and laptop</span></div>
     </div>
-
-    <div class="card">
-      <h3>Chapter 1 - Cyber 25-26</h3>
-      <a class="btn" href="Cha1-cyber-25-26.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Client Server Course</h3>
-      <a class="btn" href="Client_Server_Course.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>HTML 20251030</h3>
-      <a class="btn" href="_html_20251030_25fce4.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Client Server Part 2</h3>
-      <a class="btn" href="c-spart2.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Chapter 4</h3>
-      <a class="btn" href="chapter4.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Chapter 4 CORBA</h3>
-      <a class="btn" href="chapter4corba.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Course HTML LT 2025</h3>
-      <a class="btn" href="course_html_LT2025.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>HTTP</h3>
-      <a class="btn" href="http.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Practice</h3>
-      <a class="btn" href="paractis.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Security Layers</h3>
-      <a class="btn" href="security%20layers.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Socket Program Slide P1</h3>
-      <a class="btn" href="socet%20program%20slide%20p1.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Socket First</h3>
-      <a class="btn" href="socket%20first.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Tiers Explanations</h3>
-      <a class="btn" href="teirsexplanations.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>Tier</h3>
-      <a class="btn" href="tier.html">Open Page</a>
-    </div>
-
-    <div class="card">
-      <h3>True / False - Tiers</h3>
-      <a class="btn" href="truefalse-tiers.html">Open Page</a>
-    </div>
-
   </div>
-</div>
+</section>
 
-<footer>
-  © 2026 LT Information
-</footer>
+<main class="home">
+  <div class="path">
+    <h2>Suggested study order</h2>
+    <ol>
+      <li>Client/Server foundations</li>
+      <li>Architecture tiers</li>
+      <li>Java sockets</li>
+      <li>HTTP &amp; HTTPS</li>
+      <li>RPC, RMI &amp; CORBA</li>
+      <li>Cybersecurity &amp; the CIA triad</li>
+    </ol>
+  </div>
 
+  <div class="finder">
+    <label for="q" class="eyebrow" style="flex-basis:100%">Find a page</label>
+    <input id="q" type="text" placeholder="Search, for example: sockets, CORBA, 3-tier, integrity" autocomplete="off">
+    <div class="filters" role="group" aria-label="Filter by type">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="lesson" aria-pressed="false">Lessons</button>
+      <button type="button" data-f="quiz" aria-pressed="false">Quizzes</button>
+      <button type="button" data-f="practice" aria-pressed="false">Practice</button>
+      <button type="button" data-f="slides" aria-pressed="false">Slides</button>
+    </div>
+  </div>
+
+  <div id="groups"></div>
+  <p class="empty" id="none" hidden>No page matches that search. Try a shorter word.</p>
+</main>
+
+<script src="assets/lt.js"></script>
+<script>
+(function () {
+  // Descriptions and page types for the library. Order and titles come from LT_COURSES in assets/lt.js.
+  var INFO = {
+    'Client_Server_Course.html': ['lesson', 'The full syllabus: principles, protocols, server roles, 2-, 3- and N-tier designs, code examples, and HTTP and FTP case studies.'],
+    'course_html_LT2025.html': ['lesson', 'A concise tour of the whole course: foundations, server types, communication, protocols, middleware and remote invocation.'],
+    '_html_20251030_25fce4.html': ['lesson', 'The same course in depth, with longer explanations, more examples and more practice questions.'],
+    'c-spart2.html': ['lesson', 'How a request travels from client to server and back, the advantages and limits of the model, and the main server types.'],
+    'teirsexplanations.html': ['lesson', '1-tier, 2-tier, 3-tier and N-tier architectures compared side by side, with diagrams and modern examples.'],
+    'tier.html': ['quiz', 'Multiple-choice questions on architecture tiers, each with an explanation.'],
+    'truefalse-tiers.html': ['quiz', 'Quick true-or-false statements on tiers to test the details before an exam.'],
+    'chapter4.html': ['lesson', 'How a function call crosses the network: stubs, marshalling, binding, failure semantics, and modern RPC with gRPC.'],
+    'chapter4corba.html': ['lesson', 'Distributed objects with Java RMI, RMI-IIOP and CORBA: IDL, ORB, IIOP and naming, and what replaced them.'],
+    'paractis.html': ['practice', 'Exercises on RMI-IIOP and CORBA with worked answers you can reveal one at a time.'],
+    'socket first.html': ['lesson', 'Java networking from scratch: InetAddress, TCP and UDP sockets, and a complete echo client and server.'],
+    'socet program slide p1.html': ['slides', 'The Java network programming lecture as slides, with notes on every slide. Use the arrow keys to move.'],
+    'http.html': ['lesson', 'Methods, status codes, headers, cookies, HTTPS and TLS, and HTTP/1.1 to HTTP/3, with a request playground.'],
+    'Cha1-cyber-25-26.html': ['lesson', 'Foundations of cybersecurity, technical security measures, and how to assess and treat risk.'],
+    'CIA -CYber 25-26.html': ['lesson', 'Confidentiality, integrity and availability explained with real scenarios, plus the controls that protect each one.'],
+    'security layers.html': ['lesson', 'Defence in depth: application, operational and telecommunications security, and how the layers work together.']
+  };
+  var GROUP_INTRO = {
+    'Client/Server Architecture': 'How clients and servers divide the work, how they communicate, and how systems are split into tiers.',
+    'Remote Invocation': 'Calling code that runs on another machine: RPC, Java RMI and CORBA, and the tools used today.',
+    'Network Programming': 'Writing programs that talk over the network, from raw sockets to the web’s own protocol.',
+    'Cybersecurity': 'Protecting information and systems: core principles, layered defences and risk management.'
+  };
+  var root = document.getElementById('groups'), none = document.getElementById('none');
+  var html = '';
+  (window.LT_COURSES || []).forEach(function (g, gi) {
+    html += '<section class="group" data-group><div class="group-head"><span class="idx">0' + (gi + 1) + '</span><h2>' + g.group + '</h2><p>' + (GROUP_INTRO[g.group] || '') + '</p></div><ul class="lessons">';
+    g.pages.forEach(function (p) {
+      var info = INFO[p[0]] || ['lesson', ''];
+      var label = { lesson: 'Lesson', quiz: 'Quiz', practice: 'Practice', slides: 'Slides' }[info[0]];
+      html += '<li class="lesson" data-type="' + info[0] + '" data-text="' + (p[1] + ' ' + info[1] + ' ' + g.group).toLowerCase().replace(/"/g, '') + '">' +
+        '<a href="' + encodeURI(p[0]) + '"><span class="type ' + info[0] + '">' + label + '</span><h3>' + p[1] + '</h3><p>' + info[1] + '</p><span class="go">Open →</span></a></li>';
+    });
+    html += '</ul></section>';
+  });
+  root.innerHTML = html;
+
+  var input = document.getElementById('q'), filter = 'all';
+  function apply() {
+    var term = input.value.trim().toLowerCase(), shown = 0;
+    root.querySelectorAll('[data-group]').forEach(function (g) {
+      var n = 0;
+      g.querySelectorAll('.lesson').forEach(function (li) {
+        var ok = (filter === 'all' || li.getAttribute('data-type') === filter) && (!term || li.getAttribute('data-text').indexOf(term) !== -1);
+        li.hidden = !ok; if (ok) n++;
+      });
+      g.hidden = n === 0; shown += n;
+    });
+    none.hidden = shown !== 0;
+  }
+  input.addEventListener('input', apply);
+  document.querySelectorAll('.filters button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      filter = b.getAttribute('data-f');
+      document.querySelectorAll('.filters button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      apply();
+    });
+  });
+})();
+</script>
 </body>
 </html>

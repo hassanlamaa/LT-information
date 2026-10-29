@@ -1,330 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Client–Server Tiers – Knowledge Check</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f7;
-            color: #222;
-        }
-        header {
-            background: #1f2933;
-            color: #fff;
-            padding: 1rem 1.5rem;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 1.6rem;
-        }
-        main {
-            max-width: 1000px;
-            margin: 1.5rem auto 2rem;
-            padding: 0 1rem;
-        }
-        .card {
-            background: #fff;
-            border-radius: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
-        }
-        .card h2 {
-            margin-top: 0;
-            margin-bottom: 0.75rem;
-            font-size: 1.3rem;
-        }
-        .highlight {
-            background: #eef2ff;
-            border-left: 4px solid #4f46e5;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Diagram */
-        .diagram-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-        .tier-diagram {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .tier-box {
-            min-width: 220px;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            text-align: center;
-            font-weight: 600;
-        }
-        .tier-box small {
-            display: block;
-            font-weight: 400;
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-top: 0.25rem;
-        }
-        .arrow {
-            font-size: 1.2rem;
-            color: #4b5563;
-        }
-
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-            margin-top: 0.75rem;
-        }
-        th, td {
-            border: 1px solid #e5e7eb;
-            padding: 0.5rem 0.6rem;
-            text-align: left;
-            vertical-align: top;
-        }
-        th {
-            background: #f3f4f6;
-        }
-
-        /* Quiz */
-        .question {
-            margin-bottom: 1rem;
-            padding: 0.75rem 0.9rem;
-            border-radius: 0.5rem;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-        }
-        .question p {
-            margin: 0 0 0.4rem;
-            font-weight: 600;
-        }
-        .question label {
-            display: block;
-            margin: 0.15rem 0;
-            font-weight: 400;
-        }
-        button {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 999px;
-            padding: 0.55rem 1.3rem;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-top: 0.75rem;
-        }
-        button:hover {
-            background: #4338ca;
-        }
-        #result {
-            margin-top: 0.75rem;
-            font-weight: 600;
-        }
-        #result.good { color: #16a34a; }
-        #result.medium { color: #eab308; }
-        #result.bad { color: #dc2626; }
-
-        footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin: 1.5rem 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tiers: Knowledge Check · LT Information</title>
+<meta name="description" content="Revise 1-tier, 2-tier, 3-tier and N-tier client/server architectures, then test yourself with 17 multiple-choice questions with explanations.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  svg.tz { display: block; margin: 0 auto; width: 100%; max-width: 440px }
+  svg.tz .mach { fill: var(--sunk); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 6 4 }
+  svg.tz .lay { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5 }
+  svg.tz .ar { stroke: var(--muted); stroke-width: 1.8; fill: none }
+  svg.tz .ah { fill: var(--muted) }
+  .diagram svg.tz text { font-size: 14px; font-weight: 700 }
+  .diagram svg.tz text.sub { fill: var(--muted); font-size: 12px; font-weight: 400 }
+  .diagram svg.tz text.cap { fill: var(--accent); font: 700 11px var(--mono); letter-spacing: .08em }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Client–Server Architecture: Tiers (1, 2, 3, N)</h1>
-    </header>
 
-    <main>
-        <!-- Overview -->
-        <section class="card">
-            <h2>Quick Overview</h2>
-            <p>
-                A <strong>tier</strong> is a logical layer in a client–server system.
-                We can combine or separate the presentation, business logic, and data
-                into different tiers to balance <em>simplicity, scalability, and security</em>.
-            </p>
-            <div class="highlight">
-                <strong>Rule of thumb:</strong><br />
-                More tiers = more flexibility and scalability, but also more complexity.
-            </div>
-        </section>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Client/Server Architecture · Practice</span>
+    <h1>Tiers: Knowledge Check</h1>
+    <p class="lead">A quick revision of the tier models (1, 2, 3 and N), followed by a quiz. Read the recap first, then answer each question: you get the explanation straight away.</p>
+    <div class="chips"><span class="chip">≈ 15 min</span><span class="chip">17 quiz questions</span><span class="chip">Level: Intermediate</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Say where the presentation, business logic and data live in each tier model.</li>
+        <li>Explain why 3-tier is the standard for web applications.</li>
+        <li>Recognise what N-tier adds and what it costs.</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-        <!-- 3-tier diagram -->
-        <section class="card">
-            <h2>Example: Classic 3-Tier Architecture</h2>
-            <p>In a 3-tier system, each layer has a clear role:</p>
-            <div class="diagram-container">
-                <div class="tier-diagram">
-                    <div class="tier-box">
-                        Presentation Tier (Client)
-                        <small>Browser, mobile app, desktop UI</small>
-                    </div>
-                    <div class="arrow">&#8595;</div>
-                    <div class="tier-box">
-                        Application Tier (Server)
-                        <small>Business logic, APIs, validation</small>
-                    </div>
-                    <div class="arrow">&#8595;</div>
-                    <div class="tier-box">
-                        Data Tier (Database)
-                        <small>Relational DB, files, storage</small>
-                    </div>
-                </div>
-            </div>
-        </section>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
 
-        <!-- Comparison table -->
-        <section class="card">
-            <h2>Tier Comparison</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tier Type</th>
-                        <th>Layers</th>
-                        <th>Where is Logic?</th>
-                        <th>Main Advantages</th>
-                        <th>Main Disadvantages</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1-Tier</td>
-                        <td>One program with UI + logic + data</td>
-                        <td>All inside the same executable</td>
-                        <td>Very simple; no network; fast for a single user</td>
-                        <td>Not scalable; hard to share data; hard to maintain</td>
-                    </tr>
-                    <tr>
-                        <td>2-Tier</td>
-                        <td>Client + Database server</td>
-                        <td>Mainly in the client, some in DB</td>
-                        <td>Simpler than 3-tier; good performance; central DB</td>
-                        <td>Many clients to update; DB more exposed; limited scaling</td>
-                    </tr>
-                    <tr>
-                        <td>3-Tier</td>
-                        <td>Presentation, Application, Data</td>
-                        <td>Application server (web/API layer)</td>
-                        <td>Separation of concerns; better security; easier scaling</td>
-                        <td>More components; more complexity to manage</td>
-                    </tr>
-                    <tr>
-                        <td>N-Tier</td>
-                        <td>Client, gateways, services, DB, cache, etc.</td>
-                        <td>Split across multiple services</td>
-                        <td>Highly scalable and flexible; fault isolation</td>
-                        <td>Very complex; needs strong DevOps and monitoring</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+    <section>
+      <h2><span class="num">1</span>Quick recap</h2>
+      <p>A <span class="term" title="A separately deployed part of a system that runs as its own process, usually on its own machine">tier</span> is a part of a client/server system that can run on its own, usually on its own machine, and talks to the other parts over a network. We can combine or separate the <strong>presentation</strong>, <strong>business logic</strong> and <strong>data</strong> into different tiers to balance <em>simplicity, scalability and security</em>.</p>
+      <dl class="defs">
+        <dt>Presentation</dt><dd>The user interface: screens, forms, buttons.</dd>
+        <dt>Business logic</dt><dd>The rules: validation, calculations, decisions ("orders over $50 ship free").</dd>
+        <dt>Data</dt><dd>Permanent storage, usually a database.</dd>
+        <dt>Layer vs tier</dt><dd>A <strong>layer</strong> is a logical grouping of code; a <strong>tier</strong> is where that code is physically deployed. Several layers can share one tier.</dd>
+      </dl>
+      <div class="callout key"><span class="label">Rule of thumb</span><p>More tiers = more flexibility and scalability, but also more complexity, more cost and a little more latency per request.</p></div>
+      <ul>
+        <li><strong>1-tier</strong>: everything in one program on one machine. Example: a spreadsheet or an offline desktop app with a local SQLite file.</li>
+        <li><strong>2-tier</strong>: a thick client (UI + logic) connects <em>directly</em> to a database server. Example: a desktop app on office PCs querying a shared SQL Server.</li>
+        <li><strong>3-tier</strong>: presentation → application server → database. The client never touches the database. Example: almost every web application.</li>
+        <li><strong>N-tier</strong>: more than three tiers, such as load balancer, web tier, API gateway, separate services, cache, message queue and database. Example: large cloud and microservice systems.</li>
+      </ul>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A restaurant: the waiter and dining room are the presentation tier, the kitchen is the application tier, the storeroom is the data tier. Customers never walk into the storeroom; they ask the waiter. That is exactly why 3-tier is more secure than 2-tier.</p></div>
+      <p>For the full lesson, see <a href="teirsexplanations.html">Architecture Tiers Explained</a>.</p>
+    </section>
 
-        <!-- Quiz -->
-        <section class="card">
-            <h2>Knowledge Check Quiz</h2>
-            <p>Choose the best answer for each question, then click <strong>Check Answers</strong>.</p>
+    <section>
+      <h2><span class="num">2</span>Example: classic 3-tier architecture</h2>
+      <p>In a 3-tier system, each layer has a clear role and its own tier:</p>
+      <figure class="diagram">
+        <svg class="tz" viewBox="0 0 340 380" role="img" aria-label="3-tier: presentation tier, application tier and data tier">
+          <defs><marker id="t3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <rect class="mach" x="20" y="10" width="300" height="96" rx="14"/>
+          <text class="cap" x="40" y="34">PRESENTATION TIER (CLIENT)</text>
+          <rect class="lay" x="50" y="44" width="240" height="50" rx="10"/>
+          <text x="170" y="68" text-anchor="middle">User interface</text>
+          <text class="sub" x="170" y="85" text-anchor="middle">browser, mobile app, desktop UI</text>
+          <line class="ar" x1="170" y1="108" x2="170" y2="140" marker-start="url(#t3)" marker-end="url(#t3)"/>
+          <text class="sub" x="184" y="129">HTTPS requests</text>
+          <rect class="mach" x="20" y="142" width="300" height="96" rx="14"/>
+          <text class="cap" x="40" y="166">APPLICATION TIER (SERVER)</text>
+          <rect class="lay" x="50" y="176" width="240" height="50" rx="10"/>
+          <text x="170" y="200" text-anchor="middle">Business logic</text>
+          <text class="sub" x="170" y="217" text-anchor="middle">APIs, validation, rules</text>
+          <line class="ar" x1="170" y1="240" x2="170" y2="272" marker-start="url(#t3)" marker-end="url(#t3)"/>
+          <text class="sub" x="184" y="261">SQL queries</text>
+          <rect class="mach" x="20" y="274" width="300" height="96" rx="14"/>
+          <text class="cap" x="40" y="298">DATA TIER (DATABASE)</text>
+          <rect class="lay" x="50" y="308" width="240" height="50" rx="10"/>
+          <text x="170" y="332" text-anchor="middle">Storage</text>
+          <text class="sub" x="170" y="349" text-anchor="middle">relational DB, files, storage</text>
+        </svg>
+        <figcaption>Figure 1. Classic 3-tier: each tier talks only to the tier next to it.</figcaption>
+      </figure>
+      <div class="callout example"><span class="label">Example</span><p>A student portal: the browser shows the grades page (presentation), a Java or Node.js server checks you are logged in and may only see your own grades (application), and a PostgreSQL database stores the grades (data).</p></div>
+    </section>
 
-            <div class="question">
-                <p>1. Which tier type usually combines UI, logic, and data in one application?</p>
-                <label><input type="radio" name="q1" value="a" /> 2-Tier</label>
-                <label><input type="radio" name="q1" value="b" /> 3-Tier</label>
-                <label><input type="radio" name="q1" value="c" /> 1-Tier</label>
-                <label><input type="radio" name="q1" value="d" /> N-Tier</label>
-            </div>
+    <section>
+      <h2><span class="num">3</span>Tier comparison</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tier type</th><th>Layers</th><th>Where is logic?</th><th>Main advantages</th><th>Main disadvantages</th></tr></thead>
+        <tbody>
+          <tr><td>1-Tier</td><td>One program with UI + logic + data</td><td>All inside the same executable</td><td>Very simple; no network; fast for a single user</td><td>Not scalable; hard to share data; hard to maintain as it grows</td></tr>
+          <tr><td>2-Tier</td><td>Client + database server</td><td>Mainly in the client, some in the DB (stored procedures)</td><td>Simpler than 3-tier; good performance on a LAN; central DB</td><td>Many clients to update; DB more exposed; limited scaling</td></tr>
+          <tr><td>3-Tier</td><td>Presentation, application, data</td><td>Application server (web/API layer)</td><td>Separation of concerns; better security; easier scaling</td><td>More components; more complexity to manage; extra network hop</td></tr>
+          <tr><td>N-Tier</td><td>Client, load balancers, gateways, services, cache, queue, DB, etc.</td><td>Split across multiple services</td><td>Highly scalable and flexible; fault isolation</td><td>Very complex; needs strong DevOps and monitoring; higher cost</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>If a question asks "where does the business logic live?", the expected answers are: 1-tier, in the single program; 2-tier, in the client; 3-tier, on the application server; N-tier, spread over several service tiers.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>A website is not 2-tier just because there is "a browser and a server". The browser talks to an application server, which talks to the database: three tiers.</p></div>
+    </section>
 
-            <div class="question">
-                <p>2. In a 2-tier system, the client usually talks directly to:</p>
-                <label><input type="radio" name="q2" value="a" /> The API gateway</label>
-                <label><input type="radio" name="q2" value="b" /> The database server</label>
-                <label><input type="radio" name="q2" value="c" /> A message queue</label>
-                <label><input type="radio" name="q2" value="d" /> A caching layer</label>
-            </div>
+    <section>
+      <h2><span class="num">4</span>Knowledge check quiz</h2>
+      <p>Choose the best answer for each question. The correct answer and the explanation appear as soon as you click.</p>
 
-            <div class="question">
-                <p>3. In a 3-tier architecture, which tier should contain most of the business rules?</p>
-                <label><input type="radio" name="q3" value="a" /> Presentation tier (client)</label>
-                <label><input type="radio" name="q3" value="b" /> Application tier (server)</label>
-                <label><input type="radio" name="q3" value="c" /> Data tier only</label>
-                <label><input type="radio" name="q3" value="d" /> None of them</label>
-            </div>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Part A: Tier basics</h3><span class="quiz-score"></span></div>
 
-            <div class="question">
-                <p>4. What is the main reason to move from 3-tier to N-tier?</p>
-                <label><input type="radio" name="q4" value="a" /> To remove all servers</label>
-                <label><input type="radio" name="q4" value="b" /> To support microservices and higher scalability</label>
-                <label><input type="radio" name="q4" value="c" /> To force clients to connect directly to the DB</label>
-                <label><input type="radio" name="q4" value="d" /> To reduce the number of layers</label>
-            </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which tier type usually combines UI, logic and data in one application?</p>
+          <div class="opts">
+            <button>2-Tier</button>
+            <button>3-Tier</button>
+            <button data-correct>1-Tier</button>
+            <button>N-Tier</button>
+          </div>
+          <div class="explain">1-tier puts all three layers in a single program on one machine. Every other model splits them across machines.</div>
+        </div>
 
-            <div class="question">
-                <p>5. Which statement is <strong>true</strong>?</p>
-                <label><input type="radio" name="q5" value="a" /> More tiers always make the system simpler.</label>
-                <label><input type="radio" name="q5" value="b" /> 1-tier is always more scalable than 3-tier.</label>
-                <label><input type="radio" name="q5" value="c" /> N-tier increases flexibility but also complexity.</label>
-                <label><input type="radio" name="q5" value="d" /> 2-tier has no database.</label>
-            </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which statement is <strong>true</strong>?</p>
+          <div class="opts">
+            <button>More tiers always make the system simpler.</button>
+            <button>1-tier is always more scalable than 3-tier.</button>
+            <button data-correct>N-tier increases flexibility but also complexity.</button>
+            <button>2-tier has no database.</button>
+          </div>
+          <div class="explain">Extra tiers let you scale and change parts independently, but you have more components to deploy, secure and monitor. 1-tier is the least scalable, and 2-tier's second tier <em>is</em> the database.</div>
+        </div>
 
-            <button id="checkBtn">Check Answers</button>
-            <div id="result"></div>
-        </section>
-    </main>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What is the best description of a <em>tier</em>?</p>
+          <div class="opts">
+            <button>A folder in the source code</button>
+            <button data-correct>A separately deployed part of the system, usually on its own machine</button>
+            <button>A type of database table</button>
+            <button>A programming language</button>
+          </div>
+          <div class="explain">A tier is physical: it runs as its own process or server. A logical grouping of code is called a layer.</div>
+        </div>
 
-    <footer>
-        Client–Server Architecture – Practice Page
-    </footer>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which layer is responsible for displaying data and collecting user input?</p>
+          <div class="opts">
+            <button data-correct>Presentation</button>
+            <button>Business logic</button>
+            <button>Data</button>
+            <button>Network</button>
+          </div>
+          <div class="explain">The presentation layer is the user interface. It should not contain the rules (business logic) or talk to the database itself.</div>
+        </div>
 
-    <script>
-        const answerKey = {
-            q1: "c",
-            q2: "b",
-            q3: "b",
-            q4: "b",
-            q5: "c"
-        };
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>A note-taking app that runs offline on one laptop and saves to a local file is an example of…</p>
+          <div class="opts">
+            <button data-correct>1-tier</button>
+            <button>2-tier</button>
+            <button>3-tier</button>
+            <button>N-tier</button>
+          </div>
+          <div class="explain">Everything (UI, logic, storage) is on one machine with no network, which is 1-tier.</div>
+        </div>
 
-        document.getElementById("checkBtn").addEventListener("click", function () {
-            let score = 0;
-            let total = Object.keys(answerKey).length;
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset part A</button></p>
+      </div>
 
-            for (const q in answerKey) {
-                const selected = document.querySelector('input[name="' + q + '"]:checked');
-                if (selected && selected.value === answerKey[q]) {
-                    score++;
-                }
-            }
+      <div class="quiz">
+        <div class="quiz-head"><h3>Part B: 2-tier and 3-tier</h3><span class="quiz-score"></span></div>
 
-            const result = document.getElementById("result");
-            const percent = Math.round((score / total) * 100);
-            let cls = "bad";
-            let msg = "";
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>In a 2-tier system, the client usually talks directly to:</p>
+          <div class="opts">
+            <button>The API gateway</button>
+            <button data-correct>The database server</button>
+            <button>A message queue</button>
+            <button>A caching layer</button>
+          </div>
+          <div class="explain">In 2-tier there is no middle tier: the client program sends SQL straight to the database server. Gateways, queues and caches are N-tier components.</div>
+        </div>
 
-            if (percent === 100) {
-                cls = "good";
-                msg = "Excellent! You scored " + score + " / " + total + " (" + percent + "%).";
-            } else if (percent >= 60) {
-                cls = "medium";
-                msg = "Good job! You scored " + score + " / " + total + " (" + percent + "%). Review the questions you missed.";
-            } else {
-                cls = "bad";
-                msg = "You scored " + score + " / " + total + " (" + percent + "%). Re-read the notes and try again.";
-            }
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>In a 3-tier architecture, which tier should contain most of the business rules?</p>
+          <div class="opts">
+            <button>Presentation tier (client)</button>
+            <button data-correct>Application tier (server)</button>
+            <button>Data tier only</button>
+            <button>None of them</button>
+          </div>
+          <div class="explain">The application tier is where rules are enforced, because it is under the organisation's control and every client must go through it. The data tier can add constraints, but it is not the main home of the rules.</div>
+        </div>
 
-            result.className = cls;
-            result.textContent = msg;
-        });
-    </script>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Why is a 2-tier design risky for a system used over the internet?</p>
+          <div class="opts">
+            <button>It cannot store data</button>
+            <button data-correct>The database and its credentials must be reachable from every client</button>
+            <button>It needs too many API gateways</button>
+            <button>Clients cannot show a user interface</button>
+          </div>
+          <div class="explain">Each client connects straight to the database, so the DB is exposed and the connection details sit on every user's device. 3-tier hides the database behind the application tier.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>A browser calls a Node.js API, which reads and writes a PostgreSQL database. How many tiers is this?</p>
+          <div class="opts">
+            <button>1</button>
+            <button>2</button>
+            <button data-correct>3</button>
+            <button>It depends on the browser</button>
+          </div>
+          <div class="explain">Browser (presentation) → Node.js API (application) → PostgreSQL (data): the classic 3-tier web application.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>A rule in a 3-tier web app is checked in the browser with JavaScript. What else must happen?</p>
+          <div class="opts">
+            <button>Nothing; the browser check is enough</button>
+            <button data-correct>The application tier must check the same rule again</button>
+            <button>The rule must be removed from the browser</button>
+            <button>The database must call the browser to confirm</button>
+          </div>
+          <div class="explain">Users control their own browser and can bypass any client-side check. Browser checks are for a quick, friendly interface; the server must enforce the rule. "Never trust the client."</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>Traffic to a 3-tier web app doubles. What is the usual way to scale it?</p>
+          <div class="opts">
+            <button>Install the app on every user's PC</button>
+            <button data-correct>Run more copies of the application server behind a load balancer</button>
+            <button>Let browsers query the database directly</button>
+            <button>Merge all tiers onto one machine</button>
+          </div>
+          <div class="explain">If the application servers are stateless, you add more of them (horizontal scaling) and a load balancer spreads requests across them.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset part B</button></p>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Part C: N-tier and modern systems</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>What is the main reason to move from 3-tier to N-tier?</p>
+          <div class="opts">
+            <button>To remove all servers</button>
+            <button data-correct>To support microservices and higher scalability</button>
+            <button>To force clients to connect directly to the DB</button>
+            <button>To reduce the number of layers</button>
+          </div>
+          <div class="explain">Splitting the middle tier into specialised services lets each part scale, deploy and fail independently. N-tier adds tiers; it never removes servers or exposes the database.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>Which component spreads incoming requests across several identical servers?</p>
+          <div class="opts">
+            <button>Database</button>
+            <button data-correct>Load balancer</button>
+            <button>Thick client</button>
+            <button>Stored procedure</button>
+          </div>
+          <div class="explain">A load balancer (for example Nginx, HAProxy or a cloud load balancer) sits in front of a tier and distributes traffic so no single server is overloaded.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>What is the main purpose of a cache tier such as Redis?</p>
+          <div class="opts">
+            <button>To permanently store all business data</button>
+            <button data-correct>To keep frequently read data in memory and reduce load on the database</button>
+            <button>To display the user interface</button>
+            <button>To encrypt network traffic</button>
+          </div>
+          <div class="explain">A cache answers repeated reads quickly from memory. The database remains the permanent, authoritative store.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q15</span>How do microservices usually divide an application?</p>
+          <div class="opts">
+            <button>Into one large program deployed once</button>
+            <button data-correct>Into small services by business capability (orders, payments, users), each deployed independently</button>
+            <button>Into one database per user</button>
+            <button>Into a client and a database only</button>
+          </div>
+          <div class="explain">Microservices are a modern N-tier style: the business tier is split by capability, and each service can be built, deployed and scaled on its own, communicating over APIs or messages.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q16</span>Which is a real disadvantage of N-tier architecture?</p>
+          <div class="opts">
+            <button>It cannot scale</button>
+            <button>It cannot be hosted in the cloud</button>
+            <button data-correct>It needs strong monitoring, logging and automated deployment to manage many parts</button>
+            <button>It only supports one user</button>
+          </div>
+          <div class="explain">With many tiers and services, finding a fault or deploying safely requires good DevOps tooling. Scalability and cloud hosting are strengths, not weaknesses.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q17</span>A message queue (for example RabbitMQ or Kafka) in an N-tier system is used to…</p>
+          <div class="opts">
+            <button>Draw the user interface</button>
+            <button data-correct>Pass work between tiers asynchronously, so the user does not wait for slow tasks</button>
+            <button>Replace the database</button>
+            <button>Connect the browser directly to the DB</button>
+          </div>
+          <div class="explain">Example: after an order is placed, a "send confirmation email" message goes on the queue and an email service handles it later. The user gets a fast response.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset part C</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>1-tier: all in one program. 2-tier: thick client + database server. 3-tier: presentation, application, data. N-tier: the middle and data tiers split further.</li>
+        <li>In 3-tier and above, the client never talks to the database; business rules are enforced on the server.</li>
+        <li>More tiers buy scalability, flexibility and fault isolation, and cost complexity, money and some latency.</li>
+        <li>Load balancers, API gateways, caches and queues are typical N-tier components; microservices and cloud systems are modern N-tier designs.</li>
+      </ul></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

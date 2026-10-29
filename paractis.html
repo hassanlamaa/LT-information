@@ -1,341 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📝 RMI‑IIOP & CORBA – Extra Practice Zone</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #eef2f7;
-      color: #0a2c3b;
-      padding: 2rem 1.5rem;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .practice-card {
-      background: white;
-      border-radius: 2rem;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-      padding: 1.8rem;
-      margin-bottom: 2rem;
-      border-top: 6px solid #e67e22;
-    }
-    h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #1d5a73;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .exercise {
-      background: #f9fafc;
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      margin: 1.2rem 0;
-      border-left: 4px solid #2c9b8e;
-    }
-    .quiz-option {
-      margin: 0.6rem 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    input, textarea {
-      font-family: inherit;
-      padding: 0.6rem;
-      border-radius: 1rem;
-      border: 1px solid #cbd5e1;
-      width: 100%;
-      margin: 0.5rem 0;
-    }
-    button {
-      background: #1d6f8b;
-      border: none;
-      color: white;
-      font-weight: 600;
-      padding: 0.6rem 1.3rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0.5rem 0.5rem 0 0;
-    }
-    button:hover { background: #0f556d; transform: translateY(-1px); }
-    .feedback {
-      margin-top: 0.8rem;
-      padding: 0.6rem;
-      border-radius: 1rem;
-      font-weight: 500;
-    }
-    .correct { background: #e0f2e9; color: #0f5c3e; border-left: 4px solid #2ecc71; }
-    .wrong { background: #ffe6e6; color: #b13e3e; border-left: 4px solid #e74c3c; }
-    .neutral { background: #eef2fa; }
-    .match-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: space-between;
-    }
-    .match-col {
-      flex: 1;
-      background: #f1f5f9;
-      border-radius: 1rem;
-      padding: 1rem;
-    }
-    .drag-item {
-      background: white;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border-radius: 0.8rem;
-      cursor: pointer;
-      border: 1px solid #b9cfdf;
-      transition: 0.1s;
-    }
-    .drag-item.selected {
-      background: #cbe5f0;
-      border-color: #1d6f8b;
-    }
-    .target-slot {
-      background: #fff6e0;
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      border-radius: 0.8rem;
-      border: 1px dashed #e67e22;
-      min-height: 3rem;
-    }
-    hr { margin: 1rem 0; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RMI-IIOP &amp; CORBA: Practice · LT Information</title>
+<meta name="description" content="Practice exercises on CORBA, RMI-IIOP, IDL and RPC: scenario questions, fill-in-the-blanks, a matching game, an IDL writing task, code fixing and a 10-question mixed quiz, each with a worked answer.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .match-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 220px); gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line) }
+  .match-row:first-of-type { border-top: 0 }
+  .match-row select { width: 100% }
+  .match-row.ok select { border-color: var(--ok); background: var(--ok-soft) }
+  .match-row.no select { border-color: var(--bad); background: var(--bad-soft) }
+  .fill { display: grid; gap: 6px; margin: 0 0 14px }
+  .fill input { width: 100% }
+  .fill.ok input { border-color: var(--ok); background: var(--ok-soft) }
+  .fill.no input { border-color: var(--bad); background: var(--bad-soft) }
+  .tool textarea { width: 100%; font: .9rem/1.5 var(--mono) }
+  .tool .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
+  @media (max-width: 560px) { .match-row { grid-template-columns: minmax(0, 1fr) } }
+</style>
 </head>
 <body>
-<div class="container">
-  <div class="practice-card">
-    <h2><i class="fas fa-laptop-code"></i> Extra Practice Zone: CORBA · RMI‑IIOP · IDL</h2>
-    <p>Test your deeper understanding with scenario questions, fill‑in‑blanks, a matching game, and an IDL writing task.</p>
 
-    <!-- ========= 1. SCENARIO-BASED MCQs ========= -->
-    <div class="exercise">
-      <h3><i class="fas fa-comments"></i> Scenario 1 – Cross‑language banking</h3>
-      <p>A bank has a legacy C++ CORBA server that exposes an <code>Account</code> interface (IDL). A new Java client uses RMI‑IIOP to communicate with it. Which statement is true?</p>
-      <div class="quiz-option"><input type="radio" name="scen1" value="A"> A) The Java client must rewrite the server in Java.</div>
-      <div class="quiz-option"><input type="radio" name="scen1" value="B"> B) The Java client can use IIOP and the same IDL to generate stubs, invoking the C++ server directly.</div>
-      <div class="quiz-option"><input type="radio" name="scen1" value="C"> C) CORBA does not support C++ and Java interoperability.</div>
-      <div class="quiz-option"><input type="radio" name="scen1" value="D"> D) Only RMI over JRMP works, not IIOP.</div>
-      <button class="scen-btn" data-scen="1" data-ans="B">Submit</button>
-      <div id="scen1-fb" class="feedback neutral"></div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Remote Invocation · Practice</span>
+    <h1>Extra Practice Zone: CORBA, RMI-IIOP and IDL</h1>
+    <p class="lead">Test your understanding with scenario questions, fill-in-the-blanks, a matching game, an IDL writing task and new exercises on code fixing, IDL mapping and modern RPC. Every exercise has a worked answer: try first, then open it.</p>
+    <div class="chips"><span class="chip">≈ 40 min</span><span class="chip">15 exercises</span><span class="chip">10-question mixed quiz</span><span class="chip">Level: Intermediate</span></div>
+    <div class="goals">
+      <h2>This practice checks that you can</h2>
+      <ul>
+        <li>Choose the right CORBA component (DII, DSI, POA, ORB core, repositories) for a situation.</li>
+        <li>Read and write IDL, including <code>in</code>/<code>out</code>/<code>inout</code>, attributes and exceptions.</li>
+        <li>Map IDL to Java and spot common mistakes in Java IDL code.</li>
+        <li>Apply RPC call semantics and say which technology to use today.</li>
+      </ul>
     </div>
+  </div>
+</section>
 
-    <div class="exercise">
-      <h3><i class="fas fa-comments"></i> Scenario 2 – Dynamic vs Static invocation</h3>
-      <p>A developer wants to build a generic CORBA browser that can invoke any method on any object without knowing the interface at compile time. Which CORBA component should they use?</p>
-      <div class="quiz-option"><input type="radio" name="scen2" value="A"> A) Static IDL stubs</div>
-      <div class="quiz-option"><input type="radio" name="scen2" value="B"> B) Dynamic Invocation Interface (DII) + Interface Repository</div>
-      <div class="quiz-option"><input type="radio" name="scen2" value="C"> C) Server skeletons</div>
-      <div class="quiz-option"><input type="radio" name="scen2" value="D"> D) Object Adapter only</div>
-      <button class="scen-btn" data-scen="2" data-ans="B">Submit</button>
-      <div id="scen2-fb" class="feedback neutral"></div>
-    </div>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
 
-    <div class="exercise">
-      <h3><i class="fas fa-comments"></i> Scenario 3 – IDL direction misuse</h3>
-      <p>In an IDL definition: <code>void transfer(in long amount, out long newBalance);</code> The client passes <code>amount = 100</code> and a variable <code>balance</code>. After the call, which statement is correct?</p>
-      <div class="quiz-option"><input type="radio" name="scen3" value="A"> A) <code>amount</code> can be modified by the server and returned.</div>
-      <div class="quiz-option"><input type="radio" name="scen3" value="B"> B) <code>newBalance</code> is sent from client to server.</div>
-      <div class="quiz-option"><input type="radio" name="scen3" value="C"> C) <code>amount</code> is read‑only from server side; <code>newBalance</code> is written by server and sent back to client.</div>
-      <div class="quiz-option"><input type="radio" name="scen3" value="D"> D) Both parameters are inout.</div>
-      <button class="scen-btn" data-scen="3" data-ans="C">Submit</button>
-      <div id="scen3-fb" class="feedback neutral"></div>
-    </div>
+    <div class="callout tip"><span class="label">Before you start</span><p>Revise the two lesson pages first: <a href="chapter4.html">Chapter 4: RPC</a> and <a href="chapter4corba.html">Chapter 4: RMI-IIOP &amp; CORBA</a>. Remember that Java IDL and RMI-IIOP were removed from the JDK in Java 11; exam questions still test them as concepts.</p></div>
 
-    <!-- ========= 2. FILL IN THE BLANK ========= -->
-    <div class="exercise">
-      <h3><i class="fas fa-pen-fancy"></i> Fill in the blanks</h3>
-      <p>1. The protocol used by CORBA for communication over TCP/IP is called <strong>________</strong>.</p>
-      <input type="text" id="fill1" placeholder="Your answer">
-      <p>2. The component that mediates between the ORB and servant objects (manages activation, object references) is the <strong>________</strong> (e.g., POA).</p>
-      <input type="text" id="fill2" placeholder="Your answer">
-      <button id="checkFillBtn">Check Fill‑in Answers</button>
-      <div id="fillFb" class="feedback neutral"></div>
-    </div>
+    <!-- ========== Scenarios ========== -->
+    <section>
+      <h2 data-toc="Scenario questions"><span class="num">1</span>Scenario Questions</h2>
+      <p>Each scenario describes a real situation. Pick an answer to see a short explanation, then open the worked answer for the full reasoning.</p>
 
-    <!-- ========= 3. MATCHING GAME (CORBA components) ========= -->
-    <div class="exercise">
-      <h3><i class="fas fa-puzzle-piece"></i> Matching: CORBA Components</h3>
-      <p>Drag the term on the left to its correct description on the right. Click a term, then click a slot.</p>
-      <div class="match-grid">
-        <div class="match-col">
-          <p><strong>🔹 Terms</strong></p>
-          <div id="termsList">
-            <div class="drag-item" data-term="ORB Core">ORB Core</div>
-            <div class="drag-item" data-term="Dynamic Skeleton Interface (DSI)">Dynamic Skeleton Interface (DSI)</div>
-            <div class="drag-item" data-term="Interface Repository">Interface Repository</div>
-            <div class="drag-item" data-term="Portable Object Adapter (POA)">Portable Object Adapter (POA)</div>
+      <h3>Scenario 1: Cross-language banking</h3>
+      <div class="quiz">
+        <div class="q">
+          <p class="q-text">A bank has a legacy C++ CORBA server that exposes an <code>Account</code> interface (IDL). A new Java client uses RMI-IIOP to communicate with it. Which statement is true?</p>
+          <div class="opts">
+            <button>A) The Java client must rewrite the server in Java.</button>
+            <button data-correct>B) The Java client can use IIOP and the same IDL to generate stubs, invoking the C++ server directly.</button>
+            <button>C) CORBA does not support C++ and Java interoperability.</button>
+            <button>D) Only RMI over JRMP works, not IIOP.</button>
           </div>
-        </div>
-        <div class="match-col">
-          <p><strong>🔸 Descriptions</strong></p>
-          <div id="targetSlots">
-            <div class="target-slot" data-slot="0">[1] Routes requests and acts as a switch between objects.</div>
-            <div class="target-slot" data-slot="1">[2] Allows servers to receive requests without pre‑compiled skeletons (runtime binding).</div>
-            <div class="target-slot" data-slot="2">[3] Stores available object interfaces (types, methods) for dynamic lookup.</div>
-            <div class="target-slot" data-slot="3">[4] Mediates ORB and servants, handles activation & reference generation.</div>
-          </div>
+          <div class="explain">IIOP is a language-neutral protocol, so a Java client with stubs generated from the same IDL can call the C++ server directly.</div>
         </div>
       </div>
-      <button id="checkMatchBtn">Verify Matching</button>
-      <div id="matchFb" class="feedback neutral"></div>
-    </div>
+      <details class="reveal"><summary>Worked answer: Scenario 1</summary>
+        <p><strong>B.</strong> The IDL file is the shared contract. Running an IDL compiler for Java (<code>idlj -fall Account.idl</code> in JDK 8–10, or JacORB's IDL compiler today) generates a Java stub. The stub marshals calls into CDR and sends GIOP requests over IIOP, which the C++ ORB understands.</p>
+        <ul>
+          <li>A is wrong: interoperability exists precisely so legacy servers need not be rewritten.</li>
+          <li>C is wrong: C++ and Java both have standard OMG language mappings.</li>
+          <li>D is wrong: JRMP is Java-only; IIOP is the one that crosses languages.</li>
+        </ul>
+        <p><em>Precision point:</em> starting from an existing IDL is technically the <strong>Java IDL</strong> (IDL-first) approach; RMI-IIOP is Java-first. Both speak IIOP, which is what makes the answer true.</p></details>
 
-    <!-- ========= 4. IDL CODING CHALLENGE ========= -->
-    <div class="exercise">
-      <h3><i class="fas fa-code"></i> IDL Coding Challenge</h3>
+      <h3>Scenario 2: Dynamic vs static invocation</h3>
+      <div class="quiz">
+        <div class="q">
+          <p class="q-text">A developer wants to build a generic CORBA browser that can invoke any method on any object without knowing the interface at compile time. Which CORBA component should they use?</p>
+          <div class="opts">
+            <button>A) Static IDL stubs</button>
+            <button data-correct>B) Dynamic Invocation Interface (DII) + Interface Repository</button>
+            <button>C) Server skeletons</button>
+            <button>D) Object Adapter only</button>
+          </div>
+          <div class="explain">DII builds requests at run time, and the Interface Repository tells the browser which operations and parameter types exist.</div>
+        </div>
+      </div>
+      <details class="reveal"><summary>Worked answer: Scenario 2</summary>
+        <p><strong>B.</strong> The browser is a <em>client</em> that does not know interfaces in advance, so static stubs (A) are impossible: they must be compiled from known IDL. It first asks the <strong>Interface Repository</strong> for the object's interface description (operation names and parameter types), then builds a <code>Request</code> object with the <strong>DII</strong>, adds arguments and calls <code>invoke()</code>. Skeletons (C) and the object adapter (D) are server-side and do not help a client.</p></details>
+
+      <h3>Scenario 3: IDL direction misuse</h3>
+      <div class="quiz">
+        <div class="q">
+          <p class="q-text">In an IDL definition: <code>void transfer(in long amount, out long newBalance);</code> The client passes <code>amount = 100</code> and a variable <code>balance</code>. After the call, which statement is correct?</p>
+          <div class="opts">
+            <button>A) <code>amount</code> can be modified by the server and returned.</button>
+            <button>B) <code>newBalance</code> is sent from client to server.</button>
+            <button data-correct>C) <code>amount</code> is read-only from the server side; <code>newBalance</code> is written by the server and sent back to the client.</button>
+            <button>D) Both parameters are inout.</button>
+          </div>
+          <div class="explain"><code>in</code> = client to server only; <code>out</code> = server to client only.</div>
+        </div>
+      </div>
+      <details class="reveal"><summary>Worked answer: Scenario 3</summary>
+        <p><strong>C.</strong> <code>amount</code> is <code>in</code>: it travels only to the server, and any change the server makes is not sent back. <code>newBalance</code> is <code>out</code>: the client's initial value is ignored, and the server's value is returned. In Java the generated signature is:</p>
+<pre><code><span class="t">void</span> transfer(<span class="t">int</span> amount, org.omg.CORBA.<span class="t">IntHolder</span> newBalance);
+<span class="c">// client:</span>
+<span class="t">IntHolder</span> balance = <span class="k">new</span> <span class="t">IntHolder</span>();
+account.transfer(<span class="n">100</span>, balance);
+<span class="t">System</span>.out.println(balance.value);   <span class="c">// value set by the server</span></code></pre>
+        <p>Note that IDL <code>long</code> maps to Java <code>int</code> (32-bit).</p></details>
+
+      <h3>Scenario 4 (new): Choosing call semantics</h3>
+      <div class="quiz">
+        <div class="q">
+          <p class="q-text">A mobile app calls <code>transferMoney(from, to, 500)</code>. Sometimes the network drops the reply and the app retries. Which design is correct?</p>
+          <div class="opts">
+            <button>A) At-least-once semantics: just retry until a reply arrives.</button>
+            <button data-correct>B) At-most-once semantics: the server stores request IDs and returns the saved reply for duplicates.</button>
+            <button>C) No semantics are needed because TCP never loses data.</button>
+            <button>D) Make the call one-way so no reply is needed.</button>
+          </div>
+          <div class="explain">A transfer is not idempotent, so blind retries could move the money twice. Duplicate detection by request ID is required.</div>
+        </div>
+      </div>
+      <details class="reveal"><summary>Worked answer: Scenario 4</summary>
+        <p><strong>B.</strong> Running a transfer twice moves 1,000 instead of 500, so the operation is <strong>not idempotent</strong> and at-least-once (A) is dangerous. TCP (C) guarantees delivery only while the connection is alive; if the connection breaks after the server ran the transfer but before the reply arrived, the client still cannot know. One-way (D) gives the user no confirmation. The fix is at-most-once: the client attaches a unique request ID (today called an <em>idempotency key</em>), and the server remembers processed IDs and resends the stored reply for a retry.</p></details>
+
+      <h3>Scenario 5 (new): Legacy CORBA on modern Java</h3>
+      <div class="quiz">
+        <div class="q">
+          <p class="q-text">Your team runs Java 21 and must call an existing C++ CORBA service. A colleague types <code>idlj</code> and gets "command not found". What is the best explanation and fix?</p>
+          <div class="opts">
+            <button>A) idlj must be installed with <code>apt install idlj</code>; it is part of Java 21.</button>
+            <button data-correct>B) Java IDL was removed in Java 11; use a separate ORB library (for example JacORB) with its own IDL compiler, or put a gRPC/REST gateway in front of the C++ service.</button>
+            <button>C) CORBA services cannot be called from Java at all.</button>
+            <button>D) Use <code>rmic -iiop</code> instead.</button>
+          </div>
+          <div class="explain">JEP 320 removed Java IDL and RMI-IIOP from the JDK in Java 11. External ORBs still work.</div>
+        </div>
+      </div>
+      <details class="reveal"><summary>Worked answer: Scenario 5</summary>
+        <p><strong>B.</strong> Since Java 11 the JDK has no <code>org.omg</code> packages, <code>idlj</code>, <code>orbd</code> or <code>rmic</code> (rmic itself was removed in Java 15), so D also fails. Two practical options: (1) add a standalone ORB such as JacORB or the Eclipse GlassFish ORB as a dependency and use its IDL compiler; (2) longer term, write a thin adapter next to the C++ service that exposes it through gRPC or REST, so new clients do not depend on CORBA at all.</p></details>
+    </section>
+
+    <!-- ========== Fill in ========== -->
+    <section>
+      <h2 data-toc="Fill in the blanks"><span class="num">2</span>Fill in the Blanks</h2>
+      <p>Questions 1 and 2 are from the original set; 3 to 5 are new. Spelling and capitals do not matter.</p>
+      <div class="tool" id="fillTool">
+        <div class="fill"><label for="fill1">1. The protocol used by CORBA for communication over TCP/IP is called <strong>________</strong>.</label><input type="text" id="fill1" placeholder="Your answer" autocomplete="off"></div>
+        <div class="fill"><label for="fill2">2. The component that mediates between the ORB and servant objects (manages activation, object references) is the <strong>________</strong> (e.g., POA).</label><input type="text" id="fill2" placeholder="Your answer" autocomplete="off"></div>
+        <div class="fill"><label for="fill3">3. The CORBA service that maps human-readable names to object references is the <strong>________</strong> Service.</label><input type="text" id="fill3" placeholder="Your answer" autocomplete="off"></div>
+        <div class="fill"><label for="fill4">4. The string that encodes a CORBA object's host, port and object key is called an <strong>________</strong>.</label><input type="text" id="fill4" placeholder="Your answer" autocomplete="off"></div>
+        <div class="fill"><label for="fill5">5. In gRPC, interfaces and messages are written in <strong>________</strong>.</label><input type="text" id="fill5" placeholder="Your answer" autocomplete="off"></div>
+        <div class="row"><button class="btn" type="button" id="checkFillBtn">Check answers</button><button class="btn ghost" type="button" id="resetFillBtn">Clear</button></div>
+        <div class="out" id="fillFb" aria-live="polite">Type your answers, then press Check.</div>
+      </div>
+      <details class="reveal"><summary>Worked answers: fill in the blanks</summary>
+        <ol>
+          <li><strong>IIOP</strong> (Internet Inter-ORB Protocol): GIOP messages carried over TCP/IP.</li>
+          <li><strong>Object Adapter</strong>, in practice the <strong>POA</strong> (Portable Object Adapter), which replaced the older BOA.</li>
+          <li><strong>Naming</strong> Service (CosNaming). In Java IDL it was run by <code>orbd</code>.</li>
+          <li><strong>IOR</strong> (Interoperable Object Reference), written as <code>IOR:0000…</code>.</li>
+          <li><strong>Protocol Buffers</strong> (protobuf), in <code>.proto</code> files compiled by <code>protoc</code>.</li>
+        </ol></details>
+    </section>
+
+    <!-- ========== Matching ========== -->
+    <section>
+      <h2 data-toc="Matching: CORBA components"><span class="num">3</span>Matching: CORBA Components</h2>
+      <p>Choose the term that matches each description. Descriptions 1 to 4 are the original set; 5 and 6 are new. Each term is used once.</p>
+      <div class="tool" id="matchTool">
+        <div class="match-row" data-answer="ORB Core"><span>[1] Routes requests and acts as a switch between objects.</span><select aria-label="Term for description 1"></select></div>
+        <div class="match-row" data-answer="Dynamic Skeleton Interface (DSI)"><span>[2] Allows servers to receive requests without pre-compiled skeletons (runtime binding).</span><select aria-label="Term for description 2"></select></div>
+        <div class="match-row" data-answer="Interface Repository"><span>[3] Stores available object interfaces (types, methods) for dynamic lookup.</span><select aria-label="Term for description 3"></select></div>
+        <div class="match-row" data-answer="Portable Object Adapter (POA)"><span>[4] Mediates ORB and servants, handles activation &amp; reference generation.</span><select aria-label="Term for description 4"></select></div>
+        <div class="match-row" data-answer="Dynamic Invocation Interface (DII)"><span>[5] Lets a client build and send a request at run time without a stub.</span><select aria-label="Term for description 5"></select></div>
+        <div class="match-row" data-answer="Implementation Repository"><span>[6] Knows how to locate and start a server process on demand.</span><select aria-label="Term for description 6"></select></div>
+        <div class="row"><button class="btn" type="button" id="checkMatchBtn">Verify matching</button><button class="btn ghost" type="button" id="resetMatchBtn">Reset</button></div>
+        <div class="out" id="matchFb" aria-live="polite">Pick a term for every description.</div>
+      </div>
+      <details class="reveal"><summary>Worked answer: matching</summary>
+        <p>[1] ORB Core · [2] DSI · [3] Interface Repository · [4] POA · [5] DII · [6] Implementation Repository.</p>
+        <p>The usual traps: DII (client side) vs DSI (server side), and Interface Repository (describes <em>types</em>) vs Implementation Repository (describes <em>how to start servers</em>).</p></details>
+    </section>
+
+    <!-- ========== IDL challenge ========== -->
+    <section>
+      <h2 data-toc="IDL coding challenge"><span class="num">4</span>IDL Coding Challenge</h2>
       <p>Write an IDL interface for a <strong>TemperatureSensor</strong> that:</p>
       <ul>
         <li>Has a <strong>readonly attribute</strong> <code>location</code> (string).</li>
         <li>Has an operation <code>getTemp()</code> returning a <code>float</code>.</li>
         <li>May raise a user exception <code>SensorError</code> (with no extra data).</li>
       </ul>
-      <textarea id="idlCode" rows="6" style="width:100%; font-family: monospace;" placeholder="Write IDL here..."></textarea>
-      <button id="checkIdlBtn">Check IDL</button>
-      <div id="idlFb" class="feedback neutral"></div>
-      <details>
-        <summary><i class="fas fa-lightbulb"></i> Hint</summary>
-        <pre style="background:#eef; padding:0.5rem;">module Sensors {
-  exception SensorError {};
-  interface TemperatureSensor {
-    readonly attribute string location;
-    float getTemp() raises (SensorError);
-  };
-};</pre>
-      </details>
-    </div>
-  </div>
+      <div class="tool">
+        <label for="idlCode" class="code-title">Your IDL</label>
+        <textarea id="idlCode" rows="8" spellcheck="false" placeholder="module Sensors { ... };"></textarea>
+        <div class="row"><button class="btn" type="button" id="checkIdlBtn">Check IDL</button></div>
+        <div class="out" id="idlFb" aria-live="polite">The checker looks for the five required parts. It is a pattern check, not a full IDL compiler.</div>
+      </div>
+      <details class="reveal"><summary>Worked answer: IDL challenge</summary>
+<pre><code><span class="k">module</span> Sensors {
+    <span class="k">exception</span> <span class="t">SensorError</span> {};                 <span class="c">// user exception, no data members</span>
+    <span class="k">interface</span> <span class="t">TemperatureSensor</span> {
+        <span class="k">readonly attribute</span> <span class="t">string</span> location;    <span class="c">// getter only</span>
+        <span class="t">float</span> getTemp() <span class="k">raises</span> (<span class="t">SensorError</span>);
+    };
+};</code></pre>
+        <p>Points to check: the exception is declared <em>before</em> it is used; <code>raises</code> lists it in brackets; every declaration ends with a semicolon, including the closing <code>};</code> of the interface and module. In Java, <code>location</code> becomes <code>String location()</code> and <code>getTemp()</code> becomes <code>float getTemp() throws SensorError</code>.</p></details>
+    </section>
+
+    <!-- ========== New exercises ========== -->
+    <section>
+      <h2 data-toc="More exercises"><span class="num">5</span>More Exercises</h2>
+      <p>Short written exercises in the style of exam questions. Write your answer on paper first.</p>
+
+      <h3>Exercise 5.1: Order the steps</h3>
+      <p>Put these CORBA run-time steps in the correct order: (a) ORB delivers the request to the server object; (b) client invokes a method on the object reference; (c) server object starts and registers with the ORB; (d) server returns the result through the ORB; (e) client finds the object reference via the ORB/Naming Service.</p>
+      <details class="reveal"><summary>Worked answer 5.1</summary>
+        <p><strong>c → e → b → a → d.</strong> The server must exist and be registered before anyone can find it; the client must hold a reference before it can call; the request travels (stub → ORB → IIOP → ORB → POA → skeleton → servant) and the reply comes back the same way.</p></details>
+
+      <h3>Exercise 5.2: Client side or server side?</h3>
+      <p>Classify each: IDL stub, IDL skeleton, DII, DSI, POA, Holder class used for an <code>out</code> parameter.</p>
+      <details class="reveal"><summary>Worked answer 5.2</summary>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Client side</th><th>Server side</th></tr></thead>
+          <tbody><tr><td>IDL stub, DII, Holder class (the client creates it and reads <code>.value</code> after the call)</td><td>IDL skeleton, DSI, POA</td></tr></tbody>
+        </table></div>
+        <p>Holders are generated for both sides, since the servant also receives a holder to fill in, but the question is usually asked from the client's view.</p></details>
+
+      <h3>Exercise 5.3: IDL to Java mapping</h3>
+      <p>Give the Java signatures generated for this IDL:</p>
+<pre><code><span class="k">interface</span> <span class="t">Counter</span> {
+    <span class="k">attribute</span> <span class="t">long</span> step;
+    <span class="t">long long</span> next(<span class="k">inout</span> <span class="t">short</span> calls);
+};</code></pre>
+      <details class="reveal"><summary>Worked answer 5.3</summary>
+<pre><code><span class="t">int</span>  step();                                   <span class="c">// getter  (IDL long → int)</span>
+<span class="t">void</span> step(<span class="t">int</span> newStep);                        <span class="c">// setter  (not readonly, so a setter exists)</span>
+<span class="t">long</span> next(org.omg.CORBA.<span class="t">ShortHolder</span> calls);  <span class="c">// long long → long; inout → Holder</span></code></pre>
+        <p>The two classic traps: IDL <code>long</code> is Java <code>int</code>, and IDL <code>long long</code> is Java <code>long</code>. Java accessors use the attribute name with no <code>get</code>/<code>set</code> prefix.</p></details>
+
+      <h3>Exercise 5.4: Find the bugs</h3>
+      <p>This Java IDL client does not work. Find three problems.</p>
+<pre><code><span class="t">ORB</span> orb = <span class="k">new</span> <span class="t">ORB</span>();
+<span class="t">NamingContextExt</span> ns = (<span class="t">NamingContextExt</span>) orb.resolve_initial_references(<span class="s">"NameService"</span>);
+<span class="t">Hello</span> h = (<span class="t">Hello</span>) ns.resolve_str(<span class="s">"Hello"</span>);
+<span class="t">System</span>.out.println(h.sayHello());</code></pre>
+      <details class="reveal"><summary>Worked answer 5.4</summary>
+        <ol>
+          <li><code>ORB</code> is abstract and is never created with <code>new</code>; use <code>ORB.init(args, null)</code>, which also reads <code>-ORBInitialHost</code>/<code>-ORBInitialPort</code> from the command line.</li>
+          <li>The naming reference must be converted with <code>NamingContextExtHelper.narrow(...)</code>, not a Java cast.</li>
+          <li>Same for the object: <code>HelloHelper.narrow(ns.resolve_str("Hello"))</code>. A plain cast throws <code>ClassCastException</code> because the ORB returns a generic <code>org.omg.CORBA.Object</code>.</li>
+        </ol>
+        <p>Bonus: on Java 11 or later the code will not even compile without an external ORB, because <code>org.omg.*</code> was removed.</p></details>
+
+      <h3>Exercise 5.5: Java IDL vs RMI-IIOP</h3>
+      <p>In two or three sentences, explain the difference between Java IDL and RMI-IIOP, and say when each would have been chosen.</p>
+      <details class="reveal"><summary>Worked answer 5.5</summary>
+        <p><strong>Java IDL</strong> is IDL-first: you start from an OMG IDL file (often an existing one from a C++ system) and generate Java stubs and skeletons with <code>idlj</code>. <strong>RMI-IIOP</strong> is Java-first: you write ordinary RMI interfaces in Java and run them over IIOP (with <code>rmic -iiop</code>), optionally exporting IDL for other languages. Choose Java IDL to join an existing CORBA system; choose RMI-IIOP when Java developers own the service but CORBA or EJB clients must reach it. Both were removed in Java 11.</p></details>
+
+      <h3>Exercise 5.6: Translate IDL to Protocol Buffers</h3>
+      <p>Rewrite the <code>TemperatureSensor</code> interface from Exercise 4 as a gRPC service.</p>
+      <details class="reveal"><summary>Worked answer 5.6</summary>
+<pre><code><span class="k">syntax</span> = <span class="s">"proto3"</span>;
+<span class="k">package</span> sensors;
+
+<span class="k">service</span> <span class="t">TemperatureSensor</span> {
+  <span class="k">rpc</span> GetLocation (<span class="t">Empty</span>) <span class="k">returns</span> (<span class="t">LocationReply</span>);   <span class="c">// readonly attribute → getter RPC</span>
+  <span class="k">rpc</span> GetTemp     (<span class="t">Empty</span>) <span class="k">returns</span> (<span class="t">TempReply</span>);
+}
+<span class="k">message</span> <span class="t">Empty</span> {}
+<span class="k">message</span> <span class="t">LocationReply</span> { <span class="t">string</span> location = <span class="n">1</span>; }
+<span class="k">message</span> <span class="t">TempReply</span>     { <span class="t">float</span> celsius = <span class="n">1</span>; }</code></pre>
+        <p>gRPC has no user exceptions: <code>SensorError</code> becomes an error status such as <code>UNAVAILABLE</code> returned by <code>GetTemp</code>. Many teams use the standard <code>google.protobuf.Empty</code> type instead of defining their own.</p></details>
+
+      <h3>Exercise 5.7: System or user exception?</h3>
+      <p>Classify: <code>COMM_FAILURE</code>, <code>InsufficientFunds</code>, <code>OBJECT_NOT_EXIST</code>, <code>SensorError</code>, <code>BAD_PARAM</code>.</p>
+      <details class="reveal"><summary>Worked answer 5.7</summary>
+        <p><strong>System</strong> (raised by the ORB, possible on any operation, unchecked in Java): <code>COMM_FAILURE</code>, <code>OBJECT_NOT_EXIST</code>, <code>BAD_PARAM</code>. <strong>User</strong> (declared in IDL, listed in <code>raises</code>, checked in Java): <code>InsufficientFunds</code>, <code>SensorError</code>.</p></details>
+    </section>
+
+    <!-- ========== Mixed quiz ========== -->
+    <section>
+      <h2 data-toc="Mixed quiz"><span class="num">6</span>Mixed Quiz: RPC, RMI and CORBA</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Mixed quiz</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which part of IIOP's name tells you it runs over TCP/IP?</p>
+          <div class="opts"><button>"Inter-ORB"</button><button data-correct>"Internet" (IIOP is GIOP mapped onto TCP/IP)</button><button>"Protocol"</button><button>None; IIOP runs over UDP</button></div>
+          <div class="explain">GIOP is the abstract protocol; IIOP is GIOP specialised for TCP/IP, hence "Internet" Inter-ORB Protocol.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which object adapter replaced the BOA in CORBA 2.2?</p>
+          <div class="opts"><button>DSI</button><button data-correct>POA</button><button>ORB core</button><button>IOR</button></div>
+          <div class="explain">The Portable Object Adapter fixed the BOA's under-specification, making server code portable between ORB vendors.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What does <code>HelloHelper.narrow(obj)</code> do?</p>
+          <div class="opts"><button>Compresses the IOR</button><button data-correct>Safely converts a generic CORBA reference into a typed <code>Hello</code> stub</button><button>Closes the connection</button><button>Registers the servant in the POA</button></div>
+          <div class="explain"><code>narrow</code> checks the remote type and returns a properly typed stub. A plain Java cast would fail.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: a <code>readonly attribute</code> in IDL generates both a getter and a setter in Java.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">Only a getter. A normal (non-readonly) attribute gets both.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>IDL <code>long</code> maps to which Java type?</p>
+          <div class="opts"><button>long</button><button data-correct>int</button><button>Integer</button><button>BigInteger</button></div>
+          <div class="explain">IDL <code>long</code> is 32-bit, so it maps to Java <code>int</code>. IDL <code>long long</code> maps to Java <code>long</code>.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>Which call semantics is safe for <code>getBalance()</code> with simple retries?</p>
+          <div class="opts"><button>At most once only</button><button data-correct>At least once</button><button>Exactly once only</button><button>None</button></div>
+          <div class="explain">Reading a balance is idempotent, so repeating it is harmless and retries are fine.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>What is the default port of the Java RMI registry?</p>
+          <div class="opts"><button>111</button><button data-correct>1099</button><button>1050</button><button>8080</button></div>
+          <div class="explain">rmiregistry uses 1099 by default. Port 111 is Sun RPC's port mapper; 1050 is just a common choice for <code>-ORBInitialPort</code> in Java IDL labs.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Which JDK change removed <code>org.omg.CORBA</code>, <code>idlj</code> and <code>javax.rmi</code>?</p>
+          <div class="opts"><button>JEP 411 in Java 17</button><button data-correct>JEP 320 in Java 11</button><button>JEP 407 in Java 17</button><button>Java 9 modules made them private</button></div>
+          <div class="explain">JEP 320 removed the Java EE and CORBA modules in Java 11. JEP 407 (Java 17) removed RMI Activation; JEP 411 deprecated the Security Manager.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>Which pair are the dynamic counterparts of stubs and skeletons?</p>
+          <div class="opts"><button>IR and ImplR</button><button data-correct>DII (client) and DSI (server)</button><button>DSI (client) and DII (server)</button><button>POA and BOA</button></div>
+          <div class="explain">DII replaces the stub on the client; DSI replaces the skeleton on the server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>Which modern technology is the closest equivalent of CORBA's IDL + stubs + binary encoding?</p>
+          <div class="opts"><button>HTML forms</button><button data-correct>gRPC with Protocol Buffers</button><button>FTP</button><button>SMTP</button></div>
+          <div class="explain">gRPC uses an IDL (.proto), generates stubs for many languages and encodes messages in binary, all carried over HTTP/2.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Key points to remember</h2><ul>
+        <li>IIOP = CORBA's protocol over TCP/IP; the POA (object adapter) connects servants to the ORB; the ORB core routes requests.</li>
+        <li>Static: stub (client) + skeleton (server). Dynamic: DII (client) + DSI (server), with the Interface Repository describing types.</li>
+        <li><code>in</code> → client to server, <code>out</code> → server to client, <code>inout</code> → both; <code>out</code>/<code>inout</code> map to Holder classes in Java.</li>
+        <li>Use <code>Helper.narrow()</code>, never a plain cast, on CORBA references.</li>
+        <li>Non-idempotent operations need at-most-once semantics (duplicate detection).</li>
+        <li>Java IDL and RMI-IIOP were removed in Java 11; use an external ORB for legacy systems and gRPC or REST for new ones.</li>
+      </ul></div>
+    </section>
+
+  </main>
 </div>
 
+<script src="assets/lt.js"></script>
 <script>
-  // ----- Scenario MCQs -----
-  const scenAnswers = {1:"B",2:"B",3:"C"};
-  for (let i=1; i<=3; i++) {
-    const btn = document.querySelector(`.scen-btn[data-scen="${i}"]`);
-    if(btn) {
-      btn.addEventListener('click', () => {
-        const selected = document.querySelector(`input[name="scen${i}"]:checked`);
-        const fbDiv = document.getElementById(`scen${i}-fb`);
-        if(!selected) { fbDiv.innerHTML = `<div class="feedback wrong">❌ Please select an answer.</div>`; return; }
-        if(selected.value === scenAnswers[i]) {
-          fbDiv.innerHTML = `<div class="feedback correct">✅ Correct! ${i===1 ? "RMI‑IIOP enables Java to talk to C++ CORBA via IIOP." : i===2 ? "DII + Interface Repository allow dynamic invocation." : "in = input only, out = server returns value."}</div>`;
-        } else {
-          fbDiv.innerHTML = `<div class="feedback wrong">❌ Incorrect. Correct answer: ${scenAnswers[i]}. ${i===1 ? "RMI‑IIOP provides cross‑language interoperability." : i===2 ? "Use DII for generic browsers." : "Parameters: in (client→server), out (server→client)."}</div>`;
-        }
-      });
-    }
-  }
+(function () {
+  'use strict';
+  function norm(s) { return String(s).trim().toUpperCase().replace(/[‐-―]/g, '-').replace(/\s+/g, ' '); }
 
-  // Fill in the blanks
-  document.getElementById("checkFillBtn").addEventListener("click", () => {
-    const ans1 = document.getElementById("fill1").value.trim().toUpperCase();
-    const ans2 = document.getElementById("fill2").value.trim().toUpperCase();
-    let fb = "";
-    let correctCount = 0;
-    if(ans1 === "IIOP" || ans1 === "INTERNET INTER-ORB PROTOCOL") { correctCount++; } 
-    else { fb += "• Fill 1: ❌ correct answer is 'IIOP' (Internet Inter‑ORB Protocol).<br>"; }
-    if(ans2 === "OBJECT ADAPTER" || ans2 === "PORTABLE OBJECT ADAPTER" || ans2 === "POA" || ans2.includes("OBJECT ADAPTER")) { correctCount++; }
-    else { fb += "• Fill 2: ❌ correct answer is 'Object Adapter' (or POA).<br>"; }
-    if(correctCount === 2) fb = "✅ Both answers correct! Perfect.<br>";
-    else if(correctCount === 1) fb = "⚠️ One correct. Review: IIOP and Object Adapter (POA).<br>" + fb;
-    else fb = "❌ Both incorrect. IIOP = CORBA protocol; POA/Object Adapter manages servants.<br>" + fb;
-    document.getElementById("fillFb").innerHTML = `<div class="feedback ${correctCount===2 ? 'correct' : 'wrong'}">${fb}</div>`;
-  });
-
-  // Matching game logic
-  let selectedTerm = null;
-  const termDivs = document.querySelectorAll('.drag-item');
-  const slots = document.querySelectorAll('.target-slot');
-  // store correct mapping (slot index -> correct term)
-  const correctMapping = {
-    0: "ORB Core",
-    1: "Dynamic Skeleton Interface (DSI)",
-    2: "Interface Repository",
-    3: "Portable Object Adapter (POA)"
-  };
-  let userMatches = {0:null,1:null,2:null,3:null}; // term name placed into each slot
-
-  function updateSlotDisplay() {
-    slots.forEach((slot, idx) => {
-      const term = userMatches[idx];
-      if(term) {
-        slot.innerHTML = `[${idx+1}] ${term} <i class="fas fa-check-circle" style="color:#2ecc71;"></i>`;
-      } else {
-        slot.innerHTML = `[${idx+1}] (empty) — click a term then a slot`;
-      }
+  // ----- Fill in the blanks -----
+  var fills = [
+    { id: 'fill1', ok: function (a) { return a === 'IIOP' || a === 'INTERNET INTER-ORB PROTOCOL' || a === 'INTERNET INTER ORB PROTOCOL'; }, answer: 'IIOP (Internet Inter-ORB Protocol)' },
+    { id: 'fill2', ok: function (a) { return a === 'POA' || a.indexOf('OBJECT ADAPTER') !== -1; }, answer: 'Object Adapter (POA)' },
+    { id: 'fill3', ok: function (a) { return a === 'NAMING' || a === 'NAMING SERVICE' || a === 'COSNAMING'; }, answer: 'Naming (CosNaming)' },
+    { id: 'fill4', ok: function (a) { return a === 'IOR' || a.indexOf('INTEROPERABLE OBJECT REFERENCE') !== -1; }, answer: 'IOR (Interoperable Object Reference)' },
+    { id: 'fill5', ok: function (a) { return a === 'PROTOBUF' || a.indexOf('PROTOCOL BUFFER') !== -1 || a === 'PROTO'; }, answer: 'Protocol Buffers (protobuf)' }
+  ];
+  var fillFb = document.getElementById('fillFb');
+  document.getElementById('checkFillBtn').addEventListener('click', function () {
+    var right = 0, lines = [];
+    fills.forEach(function (f, i) {
+      var input = document.getElementById(f.id), row = input.parentNode, good = f.ok(norm(input.value));
+      row.classList.toggle('ok', good); row.classList.toggle('no', !good);
+      if (good) right++; else lines.push((i + 1) + '. Correct answer: ' + f.answer);
     });
-  }
+    fillFb.textContent = right + ' / ' + fills.length + ' correct.' + (lines.length ? '\n' + lines.join('\n') : ' Perfect.');
+  });
+  document.getElementById('resetFillBtn').addEventListener('click', function () {
+    fills.forEach(function (f) { var i = document.getElementById(f.id); i.value = ''; i.parentNode.classList.remove('ok', 'no'); });
+    fillFb.textContent = 'Type your answers, then press Check.';
+  });
 
-  termDivs.forEach(term => {
-    term.addEventListener('click', () => {
-      // remove highlight from others
-      termDivs.forEach(t => t.classList.remove('selected'));
-      term.classList.add('selected');
-      selectedTerm = term.getAttribute('data-term');
+  // ----- Matching -----
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#matchTool .match-row'));
+  var terms = ['Dynamic Invocation Interface (DII)', 'Implementation Repository', 'Interface Repository', 'ORB Core', 'Portable Object Adapter (POA)', 'Dynamic Skeleton Interface (DSI)'];
+  rows.forEach(function (r) {
+    var sel = r.querySelector('select');
+    var blank = document.createElement('option'); blank.value = ''; blank.textContent = 'Choose a term'; sel.appendChild(blank);
+    terms.forEach(function (t) { var o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o); });
+    sel.addEventListener('change', function () { r.classList.remove('ok', 'no'); });
+  });
+  var matchFb = document.getElementById('matchFb');
+  document.getElementById('checkMatchBtn').addEventListener('click', function () {
+    var right = 0, used = {}, dup = false;
+    rows.forEach(function (r) {
+      var v = r.querySelector('select').value, good = v === r.getAttribute('data-answer');
+      if (v) { if (used[v]) dup = true; used[v] = 1; }
+      r.classList.toggle('ok', good); r.classList.toggle('no', !good);
+      if (good) right++;
     });
+    matchFb.textContent = right === rows.length ? 'All ' + rows.length + ' correct. You know the CORBA components.'
+      : right + ' / ' + rows.length + ' correct. Red rows are wrong.' + (dup ? ' Note: each term is used only once.' : '') + ' Open the worked answer below if you are stuck.';
+  });
+  document.getElementById('resetMatchBtn').addEventListener('click', function () {
+    rows.forEach(function (r) { r.querySelector('select').value = ''; r.classList.remove('ok', 'no'); });
+    matchFb.textContent = 'Pick a term for every description.';
   });
 
-  slots.forEach((slot, idx) => {
-    slot.addEventListener('click', () => {
-      if(selectedTerm) {
-        userMatches[idx] = selectedTerm;
-        updateSlotDisplay();
-        selectedTerm = null;
-        termDivs.forEach(t => t.classList.remove('selected'));
-      } else {
-        // clear slot if double-click? optional: remove if empty? skip.
-      }
-    });
+  // ----- IDL checker (pattern based) -----
+  document.getElementById('checkIdlBtn').addEventListener('click', function () {
+    var code = document.getElementById('idlCode').value
+      .replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/\/\/[^\n]*/g, ' ');
+    var checks = [
+      [/\binterface\s+TemperatureSensor\b/, "interface TemperatureSensor { ... };"],
+      [/\breadonly\s+attribute\s+string\s+location\s*;/, 'readonly attribute string location;'],
+      [/\bfloat\s+getTemp\s*\(\s*\)/, 'float getTemp()'],
+      [/\bexception\s+SensorError\s*\{\s*\}\s*;/, 'exception SensorError {};'],
+      [/getTemp\s*\(\s*\)\s*raises\s*\(\s*SensorError\s*\)\s*;/, 'raises (SensorError) on getTemp()']
+    ];
+    var missing = [], score = 0;
+    checks.forEach(function (c) { if (c[0].test(code)) score++; else missing.push('Missing or incorrect: ' + c[1]); });
+    var fb = document.getElementById('idlFb');
+    fb.textContent = score === checks.length
+      ? 'Excellent. Your IDL defines all five required parts.'
+      : 'Score: ' + score + ' / ' + checks.length + '\n' + missing.join('\n') + '\nCompare with the worked answer below.';
   });
-
-  document.getElementById("checkMatchBtn").addEventListener("click", () => {
-    let correctCount = 0;
-    for(let i=0;i<4;i++) {
-      if(userMatches[i] === correctMapping[i]) correctCount++;
-    }
-    let msg = "";
-    if(correctCount === 4) msg = "🎉 Perfect matching! You know CORBA components.";
-    else msg = `⚠️ ${correctCount}/4 correct. Correct mapping: ORB Core → [1], DSI → [2], Interface Repository → [3], POA → [4].`;
-    document.getElementById("matchFb").innerHTML = `<div class="feedback ${correctCount===4 ? 'correct' : 'wrong'}">${msg}</div>`;
-  });
-
-  // IDL coding challenge evaluation (simple but robust)
-  document.getElementById("checkIdlBtn").addEventListener("click", () => {
-    const code = document.getElementById("idlCode").value;
-    let score = 0;
-    let feedback = "";
-    const hasReadonly = /readonly\s+attribute\s+string\s+\w*location/i.test(code);
-    const hasGetTemp = /float\s+\w*getTemp\s*\(\s*\)\s*(raises\s*\([^)]*SensorError\s*\))?/i.test(code);
-    const hasException = /exception\s+SensorError/i.test(code);
-    const hasInterface = /interface\s+\w*TemperatureSensor/i.test(code);
-    if(hasInterface) score++;
-    else feedback += "❌ Missing interface 'TemperatureSensor'.<br>";
-    if(hasReadonly) score++;
-    else feedback += "❌ Missing 'readonly attribute string location'.<br>";
-    if(hasGetTemp) score++;
-    else feedback += "❌ Missing 'float getTemp()' operation (or raise clause).<br>";
-    if(hasException) score++;
-    else feedback += "❌ Missing user exception 'SensorError'.<br>";
-    if(score === 4) feedback = "✅ Excellent! Your IDL correctly defines the sensor interface.<br>";
-    else feedback = `⚠️ Score: ${score}/4. ${feedback}<br>Check sample in the hint.`;
-    document.getElementById("idlFb").innerHTML = `<div class="feedback ${score===4 ? 'correct' : 'wrong'}">${feedback}</div>`;
-  });
-
-  // initial reset for matching display
-  updateSlotDisplay();
+})();
 </script>
 </body>
 </html>

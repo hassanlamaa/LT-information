@@ -1,528 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client/Server Architecture Course</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --info: #17a2b8;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-        
-        .author {
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            padding: 1rem 0;
-            display: block;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--secondary);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-        }
-        
-        .module {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .module:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        
-        .module-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .module-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            color: white;
-            font-size: 1.5rem;
-        }
-        
-        .module-title {
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-icon {
-            margin-right: 0.5rem;
-            color: var(--secondary);
-        }
-        
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-        
-        .comparison-table th, .comparison-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .comparison-table th {
-            background-color: var(--light);
-            color: var(--dark);
-            font-weight: 600;
-        }
-        
-        .comparison-table tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .diagram {
-            background-color: var(--light);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        
-        .code-block {
-            background-color: #2d3748;
-            color: #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        
-        .highlight {
-            background-color: #fff9c4;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        footer {
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                padding: 1rem 20px;
-            }
-            
-            .nav-links {
-                margin-top: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .nav-links li {
-                margin: 0.5rem 1rem;
-            }
-            
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Client/Server Architecture: Course Overview · LT Information</title>
+<meta name="description" content="A concise tour of client/server architecture: the request-response model, server types and tiers, sockets, TCP and UDP, HTTP and FTP, middleware, JDBC, RPC and Java RMI.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  /* Let long inline code (class and method names) wrap on narrow phones */
+  .lt-main :not(pre) > code { overflow-wrap: anywhere }
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Client/Server Architecture</h1>
-            <p class="subtitle">LT-Informatics Course 2016-2017</p>
-            <p class="author">Prepared by: Hassan Lamaas</p>
-            <p>A comprehensive guide to distributed computing models and implementations</p>
-        </div>
-    </header>
-    
-    <nav>
-        <div class="nav-container">
-            <div class="logo">C/S Architecture</div>
-            <ul class="nav-links">
-                <li><a href="#module1">Foundations</a></li>
-                <li><a href="#module2">Architectures</a></li>
-                <li><a href="#module3">Communication</a></li>
-                <li><a href="#module4">Protocols</a></li>
-                <li><a href="#module5">Middleware</a></li>
-                <li><a href="#module6">RPC & RMI</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="container">
-        <!-- Module 1: Foundations of Client/Server Model -->
-        <section id="module1" class="module">
-            <div class="module-header">
-                <div class="module-icon">1</div>
-                <h2 class="module-title">Foundations of Client/Server Model</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔍</span> What is Client/Server?</h3>
-                    <p>A network model where each computer is either a client or a server. Clients rely on servers for resources like files, devices, and processing power.</p>
-                    <ul>
-                        <li><strong>Clients:</strong> PCs/workstations running user applications</li>
-                        <li><strong>Servers:</strong> Powerful computers storing/managing public files and applications</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔄</span> Communication Pattern</h3>
-                    <p>Clients and servers exchange messages using a request-response pattern through Inter-Process Communication (IPC).</p>
-                    <p>They communicate using common protocols and servers use scheduling systems to handle multiple client requests.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">⚖️</span> Pros & Cons</h3>
-                    <div>
-                        <h4>Advantages:</h4>
-                        <ul>
-                            <li>Centralized management</li>
-                            <li>Scalability</li>
-                            <li>Enhanced data sharing</li>
-                            <li>Improved security</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Disadvantages:</h4>
-                        <ul>
-                            <li>Server cost</li>
-                            <li>Complex configuration</li>
-                            <li>Single point of failure</li>
-                            <li>Traffic congestion</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 2: Server Types & System Architectures -->
-        <section id="module2" class="module">
-            <div class="module-header">
-                <div class="module-icon">2</div>
-                <h2 class="module-title">Server Types & System Architectures</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🖥️</span> Server Types</h3>
-                    <ul>
-                        <li><strong>File Server:</strong> Shares files across network</li>
-                        <li><strong>Database Server:</strong> Provides database services</li>
-                        <li><strong>Transaction Server:</strong> Handles OLTP operations</li>
-                        <li><strong>Groupware Server:</strong> Enables collaboration</li>
-                        <li><strong>Web Server:</strong> Handles HTTP protocol</li>
-                        <li><strong>Web Application Server:</strong> Supports dynamic content</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">⚖️</span> Fat Client vs Fat Server</h3>
-                    <p><strong>Fat Client:</strong> More functions on client side, knows data organization</p>
-                    <p><strong>Fat Server:</strong> More functions on server side, easier to manage and deploy</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🏗️</span> N-Tier Architectures</h3>
-                    <ul>
-                        <li><strong>2-Tier:</strong> Client + Database Server</li>
-                        <li><strong>3-Tier:</strong> Client + Application Server + Database Server</li>
-                        <li><strong>N-Tier:</strong> Extended architecture with specialized components</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">2-Tier vs 3-Tier Architecture Comparison</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>2-Tier</th>
-                        <th>3-Tier</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>System Administration</td>
-                        <td>More logic on client to manage</td>
-                        <td>Centrally managed on server</td>
-                    </tr>
-                    <tr>
-                        <td>Performance</td>
-                        <td>Poor (many SQL statements over network)</td>
-                        <td>Good (only service requests/responses)</td>
-                    </tr>
-                    <tr>
-                        <td>Scalability</td>
-                        <td>Poor/Low</td>
-                        <td>Excellent (distribute load across servers)</td>
-                    </tr>
-                    <tr>
-                        <td>Application Reuse</td>
-                        <td>Poor (application on client)</td>
-                        <td>Excellent (reuse services and objects)</td>
-                    </tr>
-                    <tr>
-                        <td>Ease of Development</td>
-                        <td>High</td>
-                        <td>Complex</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        
-        <!-- Module 3: Core Communication Technologies -->
-        <section id="module3" class="module">
-            <div class="module-header">
-                <div class="module-icon">3</div>
-                <h2 class="module-title">Core Communication Technologies</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔌</span> Sockets & Ports</h3>
-                    <p>Sockets provide communication mechanism between computers using IP addresses and ports.</p>
-                    <p><strong>Well-known ports:</strong></p>
-                    <ul>
-                        <li>HTTP: 80</li>
-                        <li>HTTPS: 443</li>
-                        <li>FTP: 21</li>
-                        <li>SMTP: 25</li>
-                        <li>DNS: 53</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔄</span> TCP vs UDP</h3>
-                    <p><strong>TCP:</strong> Connection-oriented, reliable, ordered delivery</p>
-                    <p><strong>UDP:</strong> Connectionless, faster, no delivery guarantees</p>
-                    <p>Used for voice, video, DNS, DHCP</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">☕</span> Java Networking</h3>
-                    <p>Java provides comprehensive networking support:</p>
-                    <ul>
-                        <li>InetAddress class for IP address representation</li>
-                        <li>Socket and ServerSocket for TCP communication</li>
-                        <li>DatagramSocket for UDP communication</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">TCP vs UDP Detailed Comparison</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>TCP</th>
-                        <th>UDP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Connection</td>
-                        <td>Connection-oriented</td>
-                        <td>Connectionless</td>
-                    </tr>
-                    <tr>
-                        <td>Reliability</td>
-                        <td>High (error checking, retransmission)</td>
-                        <td>Low (no guarantees)</td>
-                    </tr>
-                    <tr>
-                        <td>Speed</td>
-                        <td>Slower</td>
-                        <td>Faster</td>
-                    </tr>
-                    <tr>
-                        <td>Header Size</td>
-                        <td>20-60 bytes</td>
-                        <td>8 bytes</td>
-                    </tr>
-                    <tr>
-                        <td>Usage</td>
-                        <td>HTTP, HTTPS, FTP, SMTP</td>
-                        <td>DNS, DHCP, VoIP, Video Streaming</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="code-block">
-                <pre>// Java TCP Client Example
+
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Client/Server Architecture · Course Overview</span>
+    <h1>Client/Server Architecture: Course Overview</h1>
+    <p class="lead">The whole course on one page: how clients and servers talk, how systems are split into tiers, which protocols carry the messages, and how middleware, RPC and RMI hide the network from the programmer. Read this first, then go deeper in the Extended Edition.</p>
+    <div class="chips"><span class="chip">≈ 30 min read</span><span class="chip">12 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">LT-Informatics 2025–2026</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Explain the client/server model, the request-response pattern and its pros and cons.</li>
+        <li>Name the main server types and compare 2-tier, 3-tier and N-tier architectures.</li>
+        <li>Compare TCP and UDP, recognise well-known ports, and read a simple Java socket client.</li>
+        <li>Describe HTTP (versions 1.1, 2 and 3), its methods, and which ones are safe or idempotent.</li>
+        <li>Explain what middleware is, how JDBC reaches a database, and how RPC and RMI work.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <!-- ===================== 1 ===================== -->
+    <section>
+      <h2><span class="num">1</span>Foundations of the Client/Server Model</h2>
+
+      <div class="callout tip"><span class="label">Two versions of this lesson</span><p>This is the short <strong>Course Overview</strong>. The <a href="_html_20251030_25fce4.html">Extended Edition</a> covers the same seven sections in much more depth, with full Java code (multi-threaded servers, UDP, HTTP, JDBC transactions, three RMI programs), diagrams and a quiz after every section.</p></div>
+
+      <h3>What is client/server?</h3>
+      <p>Client/server is a way of organising a networked system in which every program plays one of two roles. A <span class="term" title="A program that asks for a service and uses the answer, usually on behalf of a person">client</span> asks for something. A <span class="term" title="A program that waits for requests and provides a service: files, data, processing, web pages">server</span> waits for requests and provides the service: files, printers, database data, computing power or web pages. Clients rely on servers for those shared resources.</p>
+      <ul>
+        <li><strong>Clients:</strong> PCs and workstations running user applications. Today that also means phones, browsers, smart TVs and IoT devices.</li>
+        <li><strong>Servers:</strong> computers that store and manage shared files, data and applications. In practice a server is often a virtual machine or container in a data centre or cloud, and many servers run on one physical host.</li>
+      </ul>
+
+      <div class="callout analogy"><span class="label">Analogy</span><p>A restaurant. You (the client) read the menu and place an order. The kitchen (the server) prepares it and sends it back. The waiter and the order slip are the <em>protocol</em>: an agreed format both sides understand. The kitchen serves many tables at once, and you never need to know how it is organised inside.</p></div>
+
+      <h3>How they communicate</h3>
+      <p>Clients and servers exchange messages using a <span class="term" title="The client sends a request message; the server processes it and sends back exactly one response">request-response</span> pattern. Because the two programs are separate processes (usually on separate machines), this exchange is a form of <span class="term" title="Inter-Process Communication: any mechanism that lets two running processes exchange data, such as sockets, pipes or shared memory">Inter-Process Communication (IPC)</span>. Both sides must speak a common <span class="term" title="An agreed set of rules for the format and order of messages">protocol</span>, such as HTTP. Because many clients connect at the same time, servers use scheduling (threads, thread pools or event loops) to handle many requests concurrently.</p>
+      <div class="flow"><span class="node">Client</span><span class="arrow">— request →</span><span class="node hi">Server</span><span class="arrow">— response →</span><span class="node">Client</span></div>
+
+      <div class="callout key"><span class="label">Key idea</span><p>The client always <strong>initiates</strong>; the server <strong>listens and responds</strong>. "Client" and "server" are roles played by programs, not types of hardware.</p></div>
+
+      <h3>Advantages and disadvantages</h3>
+      <div class="pros-cons">
+        <div class="pros"><h4>Advantages</h4><ul>
+          <li><strong>Centralised management:</strong> data, backups and updates live in one place.</li>
+          <li><strong>Scalability:</strong> add clients freely; upgrade or add servers when load grows.</li>
+          <li><strong>Enhanced data sharing:</strong> every authorised user sees the same, current data.</li>
+          <li><strong>Improved security:</strong> access control is enforced at the server, not on each PC.</li>
+        </ul></div>
+        <div class="cons"><h4>Disadvantages</h4><ul>
+          <li><strong>Server cost:</strong> hardware, licences and skilled administrators.</li>
+          <li><strong>Complex configuration:</strong> networking, permissions and services must be set up correctly.</li>
+          <li><strong>Single point of failure:</strong> if the only server goes down, nobody can work (reduced with redundancy and load balancers).</li>
+          <li><strong>Traffic congestion:</strong> too many simultaneous requests can overload the server or the network.</li>
+        </ul></div>
+      </div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Saying "a server is a powerful computer". A server is any program that provides a service. A laptop running a small web server for testing is a server; a powerful workstation that only runs a browser is a client.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>When asked to compare client/server with peer-to-peer, say: in client/server the roles are fixed and resources are centralised; in peer-to-peer every node can be both client and server and resources are spread across the peers.</p></div>
+    </section>
+
+    <!-- ===================== 2 ===================== -->
+    <section>
+      <h2><span class="num">2</span>Server Types &amp; System Architectures</h2>
+
+      <h3>Server types</h3>
+      <p>Servers are usually named after the service they provide.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Server type</th><th>What it does</th><th>Example today</th></tr></thead>
+        <tbody>
+          <tr><td>File server</td><td>Shares files across the network</td><td>Windows file share (SMB), NFS on Linux</td></tr>
+          <tr><td>Database server</td><td>Provides database services; answers SQL queries</td><td>PostgreSQL, MySQL, SQL Server, Oracle</td></tr>
+          <tr><td>Transaction server</td><td>Handles <span class="term" title="Online Transaction Processing: many small, short updates that must be all-or-nothing, like bank transfers">OLTP</span> operations as all-or-nothing units</td><td>Banking or booking back-ends</td></tr>
+          <tr><td>Groupware server</td><td>Enables collaboration: mail, calendars, shared documents</td><td>Email and calendar servers, team workspaces</td></tr>
+          <tr><td>Web server</td><td>Handles the HTTP protocol; serves pages and files</td><td>Nginx, Apache HTTP Server</td></tr>
+          <tr><td>Web application server</td><td>Runs code to produce dynamic content</td><td>Apache Tomcat, WildFly, Node.js</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Fat client vs fat server</h3>
+      <p>"Fat" means "holds most of the logic". The question is where the application's work happens.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Fat client</th><th>Fat server</th></tr></thead>
+        <tbody>
+          <tr><td>Where the logic runs</td><td>Mostly on the client</td><td>Mostly on the server</td></tr>
+          <tr><td>Client knowledge</td><td>Knows how the data is organised (tables, columns)</td><td>Only calls services; does not see the data layout</td></tr>
+          <tr><td>Deployment</td><td>Update every client machine</td><td>Update the server once; easier to manage and deploy</td></tr>
+          <tr><td>Example</td><td>Desktop accounting app that queries the database directly</td><td>Web app in a browser</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>2-tier, 3-tier and N-tier</h3>
+      <p>A <span class="term" title="A separate part of the system that can run on its own machine">tier</span> is a separate layer of the system, often on its own machine. The usual three jobs are <strong>presentation</strong> (the user interface), <strong>business logic</strong> (the rules) and <strong>data</strong> (storage).</p>
+      <ul>
+        <li><strong>2-tier:</strong> Client + Database Server. The client holds the interface and most of the logic.</li>
+        <li><strong>3-tier:</strong> Client + Application Server + Database Server. The logic moves to the middle tier.</li>
+        <li><strong>N-tier:</strong> an extended architecture with specialised components such as load balancers, caches, web servers, message queues or microservices.</li>
+      </ul>
+      <div class="flow"><span class="node">Client (UI)</span><span class="arrow">→</span><span class="node hi">Application server (logic)</span><span class="arrow">→</span><span class="node">Database server (data)</span></div>
+
+      <h4>2-tier vs 3-tier comparison</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>2-Tier</th><th>3-Tier</th></tr></thead>
+        <tbody>
+          <tr><td>System administration</td><td>More logic on each client to manage</td><td>Centrally managed on the server</td></tr>
+          <tr><td>Performance</td><td>Poor (many SQL statements over the network)</td><td>Good (only service requests and responses)</td></tr>
+          <tr><td>Scalability</td><td>Poor / low</td><td>Excellent (distribute load across servers)</td></tr>
+          <tr><td>Application reuse</td><td>Poor (application lives on the client)</td><td>Excellent (reuse services and objects)</td></tr>
+          <tr><td>Ease of development</td><td>High (simple)</td><td>More complex</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout example"><span class="label">Example</span><p>An online shop: the browser shows products (presentation), a Java or Node.js application computes prices, stock and discounts (logic), and PostgreSQL stores orders (data). That is 3-tier. Add a load balancer and a cache in front of several application servers and it becomes N-tier.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"Why is 3-tier faster than 2-tier?" In 2-tier the client sends many raw SQL statements across the network. In 3-tier it sends one service request ("place order"), and the many SQL statements run between the application server and the database, which sit close together.</p></div>
+    </section>
+
+    <!-- ===================== 3 ===================== -->
+    <section>
+      <h2><span class="num">3</span>Core Communication Technologies</h2>
+
+      <h3>Sockets and ports</h3>
+      <p>A <span class="term" title="One end of a two-way communication link, identified by an IP address plus a port number">socket</span> is the programming interface a process uses to send and receive data over the network. A socket is identified by an <strong>IP address</strong> (which machine) plus a <span class="term" title="A 16-bit number (0 to 65535) that identifies which program on a machine should get the data">port</span> (which program on that machine).</p>
+      <div class="callout analogy"><span class="label">Analogy</span><p>The IP address is the street address of an apartment building; the port is the apartment number. The post office (the network) delivers to the building, and the port says which resident gets the letter.</p></div>
+      <p>Port numbers are grouped into ranges: <strong>0–1023</strong> well-known (system services), <strong>1024–49151</strong> registered, and <strong>49152–65535</strong> dynamic or ephemeral (picked automatically for the client side).</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Service</th><th>Port</th><th>Transport</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP</td><td>80</td><td>TCP</td></tr>
+          <tr><td>HTTPS</td><td>443</td><td>TCP (HTTP/1.1, HTTP/2); UDP for HTTP/3</td></tr>
+          <tr><td>FTP</td><td>21 control, 20 data (active mode)</td><td>TCP</td></tr>
+          <tr><td>SSH / SFTP</td><td>22</td><td>TCP</td></tr>
+          <tr><td>SMTP</td><td>25 (server to server); 587 for mail submission</td><td>TCP</td></tr>
+          <tr><td>DNS</td><td>53</td><td>UDP for most queries; TCP for large answers and zone transfers</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>TCP vs UDP</h3>
+      <p><strong>TCP</strong> (Transmission Control Protocol) is connection-oriented: it sets up a connection with a three-way handshake (SYN, SYN-ACK, ACK) and then guarantees reliable, ordered delivery. <strong>UDP</strong> (User Datagram Protocol) is connectionless: it sends independent packets (<span class="term" title="A self-contained packet sent without a connection; it may be lost, duplicated or arrive out of order">datagrams</span>) with no guarantees, which makes it lighter and faster. UDP is used for voice, video, DNS and DHCP, and also underneath QUIC, which carries HTTP/3.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+        <tbody>
+          <tr><td>Connection</td><td>Connection-oriented (handshake first)</td><td>Connectionless</td></tr>
+          <tr><td>Reliability</td><td>High (error checking, acknowledgements, retransmission)</td><td>Low (no delivery guarantee; checksum only)</td></tr>
+          <tr><td>Ordering</td><td>Data arrives in the order sent</td><td>Packets may arrive out of order</td></tr>
+          <tr><td>Speed</td><td>Slower (more overhead)</td><td>Faster (less overhead)</td></tr>
+          <tr><td>Header size</td><td>20–60 bytes</td><td>8 bytes</td></tr>
+          <tr><td>Usage</td><td>HTTP/1.1, HTTP/2, HTTPS, FTP, SMTP, SSH</td><td>DNS, DHCP, VoIP, video streaming, online games, QUIC (HTTP/3)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>"UDP is unreliable, so it is bad." UDP is chosen on purpose when late data is useless (a voice call cannot wait for a retransmission) or when the application adds its own reliability, as QUIC does.</p></div>
+
+      <h3>Java networking</h3>
+      <p>Java's <code>java.net</code> package provides comprehensive networking support:</p>
+      <ul>
+        <li><code>InetAddress</code> represents an IP address (IPv4 or IPv6) and can resolve host names through DNS.</li>
+        <li><code>Socket</code> (client) and <code>ServerSocket</code> (server) handle TCP communication.</li>
+        <li><code>DatagramSocket</code> and <code>DatagramPacket</code> handle UDP communication.</li>
+        <li>For web requests, modern Java (11+) adds <code>java.net.http.HttpClient</code>, which supports HTTP/1.1 and HTTP/2.</li>
+      </ul>
+
+      <p class="code-title">TCPClient.java: sends one line, prints the server's reply</p>
+<pre><code>// Java TCP Client Example
 import java.io.*;
 import java.net.*;
 
@@ -532,183 +187,159 @@ public class TCPClient {
         String modifiedSentence;
         BufferedReader inFromUser = new BufferedReader(
             new InputStreamReader(System.in));
-        
+
         Socket clientSocket = new Socket("localhost", 6789);
-        
+
         DataOutputStream outToServer = new DataOutputStream(
             clientSocket.getOutputStream());
-        
+
         BufferedReader inFromServer = new BufferedReader(
             new InputStreamReader(clientSocket.getInputStream()));
-        
+
         sentence = inFromUser.readLine();
         outToServer.writeBytes(sentence + '\n');
         modifiedSentence = inFromServer.readLine();
         System.out.println(modifiedSentence);
         clientSocket.close();
     }
-}</pre>
-            </div>
-        </section>
-        
-        <!-- Module 4: Application Protocols -->
-        <section id="module4" class="module">
-            <div class="module-header">
-                <div class="module-icon">4</div>
-                <h2 class="module-title">Application Protocols (Case Studies)</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🌐</span> HTTP Protocol</h3>
-                    <p>Application-level protocol for distributed, collaborative, hypermedia information systems.</p>
-                    <p><strong>Key Features:</strong></p>
-                    <ul>
-                        <li>Connectionless</li>
-                        <li>Media independent</li>
-                        <li>Stateless</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📁</span> FTP Protocol</h3>
-                    <p>Protocol for transferring files between computers, typically from your computer to a web server.</p>
-                    <p>Uses port 20 for data and port 21 for control.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔒</span> HTTP Methods</h3>
-                    <ul>
-                        <li><strong>GET:</strong> Retrieve information</li>
-                        <li><strong>POST:</strong> Send data to server</li>
-                        <li><strong>PUT:</strong> Replace resource</li>
-                        <li><strong>DELETE:</strong> Remove resource</li>
-                        <li><strong>HEAD:</strong> Get headers only</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">HTTP Method Safety & Idempotence</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>HTTP Method</th>
-                        <th>Safe (Yes/No)</th>
-                        <th>Idempotent (Yes/No)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OPTIONS</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>HEAD</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>PUT</td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>POST</td>
-                        <td>No</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td>DELETE</td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>TRACE</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        
-        <!-- Module 5: Middleware & Advanced Distribution -->
-        <section id="module5" class="module">
-            <div class="module-header">
-                <div class="module-icon">5</div>
-                <h2 class="module-title">Middleware & Advanced Distribution</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔗</span> What is Middleware?</h3>
-                    <p>Connectivity software that enables multiple processes to interact across a network.</p>
-                    <p>Essential for migrating mainframe applications to client/server and providing communication across heterogeneous platforms.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📊</span> Middleware Types</h3>
-                    <ul>
-                        <li>RPC - Remote Procedure Calls</li>
-                        <li>MOM - Message-Oriented Middleware</li>
-                        <li>Publish/Subscribe</li>
-                        <li>ORB - Object Request Broker</li>
-                        <li>SQL-oriented Data Access</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🗃️</span> Database Middleware</h3>
-                    <ul>
-                        <li>ODBC - Open Database Connectivity</li>
-                        <li>OLE-DB - Microsoft enhancement</li>
-                        <li>JDBC - Java Database Connectivity</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">JDBC Architecture</h3>
-            <div class="diagram">
-                <p>Java Application → JDBC API → JDBC Driver Manager → JDBC Driver → Database</p>
-            </div>
-            
-            <div class="code-block">
-                <pre>// JDBC Connection Example
+}</code></pre>
+      <ol class="steps">
+        <li><strong>Connect:</strong> <code>new Socket("localhost", 6789)</code> performs the TCP handshake with a server listening on port 6789.</li>
+        <li><strong>Wrap the streams:</strong> the output stream sends bytes; the input stream is wrapped in a <code>BufferedReader</code> so we can read whole lines.</li>
+        <li><strong>Send:</strong> <code>writeBytes(sentence + '\n')</code>. The newline matters: the server's <code>readLine()</code> waits until it sees one.</li>
+        <li><strong>Receive and close:</strong> read the reply line, print it, close the socket.</li>
+      </ol>
+      <div class="callout tip"><span class="label">Tip</span><p><code>writeBytes</code> keeps only the low 8 bits of each character, so it is fine for plain ASCII but breaks Arabic or accented text. In new code use a <code>PrintWriter</code> or an <code>OutputStreamWriter</code> with <code>StandardCharsets.UTF_8</code>.</p></div>
+    </section>
+
+    <!-- ===================== 4 ===================== -->
+    <section>
+      <h2><span class="num">4</span>Application Protocols (Case Studies)</h2>
+
+      <h3>HTTP</h3>
+      <p><strong>HTTP</strong> (HyperText Transfer Protocol) is an application-level protocol for distributed, collaborative, hypermedia information systems: the protocol of the Web. A client sends a request (method, path, headers, optional body); the server returns a response (status code, headers, body).</p>
+      <p>Key features:</p>
+      <ul>
+        <li><strong>Stateless:</strong> each request is independent; the server does not remember earlier requests. Applications add state with cookies, sessions or tokens.</li>
+        <li><strong>Media independent:</strong> any kind of data (HTML, JSON, images, video) can be sent, as long as both sides understand the <code>Content-Type</code>.</li>
+        <li><strong>Connection handling (updated):</strong> older notes call HTTP "connectionless" because HTTP/1.0 closed the connection after each response. Since HTTP/1.1, connections are <em>persistent</em> by default and reused for many requests. The protocol is still stateless.</li>
+      </ul>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Version</th><th>Year</th><th>Transport</th><th>What changed</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP/1.0</td><td>1996</td><td>TCP</td><td>New connection for each request by default</td></tr>
+          <tr><td>HTTP/1.1</td><td>1997 (current spec 2022)</td><td>TCP</td><td>Persistent connections, mandatory <code>Host</code> header, text format</td></tr>
+          <tr><td>HTTP/2</td><td>2015</td><td>TCP</td><td>Binary framing, many requests multiplexed on one connection, header compression</td></tr>
+          <tr><td>HTTP/3</td><td>2022</td><td>QUIC over UDP</td><td>Faster setup, no TCP head-of-line blocking, encryption built in</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>HTTPS</strong> is HTTP sent through an encrypted <span class="term" title="Transport Layer Security: encrypts and authenticates the connection; the successor to SSL">TLS</span> channel on port 443. Use TLS 1.3 (or 1.2); SSL and TLS 1.0/1.1 are deprecated and should be disabled.</p>
+
+      <h3>HTTP methods</h3>
+      <ul>
+        <li><strong>GET:</strong> retrieve information.</li>
+        <li><strong>POST:</strong> send data to the server for processing (create a resource, submit a form).</li>
+        <li><strong>PUT:</strong> replace a resource with the one sent.</li>
+        <li><strong>PATCH:</strong> partially modify a resource.</li>
+        <li><strong>DELETE:</strong> remove a resource.</li>
+        <li><strong>HEAD:</strong> like GET but return the headers only.</li>
+        <li><strong>OPTIONS:</strong> ask which methods the server supports.</li>
+        <li><strong>TRACE:</strong> echo the request back (diagnostics; usually disabled on public servers for security).</li>
+      </ul>
+
+      <h3>Method safety and idempotence</h3>
+      <dl class="defs">
+        <dt>Safe</dt><dd>The method only reads; it is not meant to change anything on the server.</dd>
+        <dt>Idempotent</dt><dd>Sending the same request once or ten times leaves the server in the same final state. Every safe method is also idempotent.</dd>
+      </dl>
+      <div class="table-wrap"><table>
+        <thead><tr><th>HTTP method</th><th>Safe</th><th>Idempotent</th></tr></thead>
+        <tbody>
+          <tr><td>OPTIONS</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>GET</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>HEAD</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>PUT</td><td>No</td><td>Yes</td></tr>
+          <tr><td>POST</td><td>No</td><td>No</td></tr>
+          <tr><td>DELETE</td><td>No</td><td>Yes</td></tr>
+          <tr><td>TRACE</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>PATCH</td><td>No</td><td>No (not guaranteed)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout example"><span class="label">Example</span><p><code>PUT /users/7 {"name":"Sara"}</code> sent twice: user 7 is still named Sara, so PUT is idempotent. <code>POST /orders</code> sent twice: two orders are created, so POST is not. This is why browsers warn you before re-submitting a form.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Thinking DELETE is not idempotent because the second call returns 404. Idempotence is about the server's <em>state</em>, not the response code: after one or two DELETEs the resource is gone either way.</p></div>
+
+      <h3>FTP</h3>
+      <p><strong>FTP</strong> (File Transfer Protocol) transfers files between computers, classically from your computer to a web server. It uses two TCP connections: port <strong>21</strong> for the <em>control</em> connection (commands such as <code>USER</code>, <code>RETR</code>, <code>STOR</code>) and a separate <em>data</em> connection, which comes from port <strong>20</strong> in active mode. In passive mode, which most clients use today because it works through firewalls and NAT, the client connects to a random high port that the server announces.</p>
+      <div class="callout warn"><span class="label">Updated</span><p>Plain FTP sends usernames and passwords unencrypted. Use <strong>SFTP</strong> (file transfer over SSH, port 22) or <strong>FTPS</strong> (FTP over TLS) instead. Modern browsers no longer support <code>ftp://</code> links.</p></div>
+    </section>
+
+    <!-- ===================== 5 ===================== -->
+    <section>
+      <h2><span class="num">5</span>Middleware &amp; Advanced Distribution</h2>
+
+      <h3>What is middleware?</h3>
+      <p><span class="term" title="Software that sits between the operating system/network and the application, so applications can talk without handling low-level details">Middleware</span> is connectivity software that lets multiple processes on different machines interact across a network. It sits between the application and the operating system and network, hiding sockets, data formats and platform differences. It was essential for migrating mainframe applications to client/server, and it still provides communication across <span class="term" title="Different hardware, operating systems or programming languages">heterogeneous</span> platforms.</p>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A professional interpreter and courier in one. Two people who speak different languages and live in different cities can still do business, because the middle person handles translation and delivery.</p></div>
+
+      <h3>Middleware types</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>Idea</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>RPC (Remote Procedure Call)</td><td>Call a function on another machine as if it were local; usually synchronous</td><td>ONC RPC, gRPC</td></tr>
+          <tr><td>MOM (Message-Oriented Middleware)</td><td>Send messages to a queue; the receiver processes them later (asynchronous)</td><td>RabbitMQ, IBM MQ, Jakarta Messaging (JMS)</td></tr>
+          <tr><td>Publish/Subscribe</td><td>Publishers send to a topic; every subscriber of that topic receives a copy</td><td>Apache Kafka, MQTT</td></tr>
+          <tr><td>ORB (Object Request Broker)</td><td>Call methods on remote objects across languages</td><td>CORBA (legacy)</td></tr>
+          <tr><td>SQL-oriented data access</td><td>A standard API for talking to any database</td><td>ODBC, JDBC, ADO.NET</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Database middleware</h3>
+      <ul>
+        <li><strong>ODBC</strong> (Open Database Connectivity): a language-independent C API for databases; still widely used.</li>
+        <li><strong>OLE DB</strong>: Microsoft's COM-based enhancement of ODBC for Windows. It is still supported for SQL Server, but new .NET code uses <strong>ADO.NET</strong>.</li>
+        <li><strong>JDBC</strong> (Java Database Connectivity): the standard Java API for relational databases.</li>
+      </ul>
+
+      <h3>JDBC architecture</h3>
+      <div class="flow"><span class="node">Java application</span><span class="arrow">→</span><span class="node">JDBC API</span><span class="arrow">→</span><span class="node hi">DriverManager / DataSource</span><span class="arrow">→</span><span class="node">JDBC driver</span><span class="arrow">→</span><span class="node">Database</span></div>
+      <p>Your code uses only the standard interfaces (<code>Connection</code>, <code>Statement</code>, <code>ResultSet</code>). The <span class="term" title="A vendor library (a .jar) that translates JDBC calls into one database's network protocol">driver</span> for MySQL, PostgreSQL or Oracle does the database-specific work, so you can switch databases by changing the driver and the URL. Real applications usually get connections from a <code>DataSource</code> with a connection pool instead of <code>DriverManager</code>.</p>
+
+      <p class="code-title">JDBCExample.java (updated driver name)</p>
+<pre><code>// JDBC Connection Example
 import java.sql.*;
 
 public class JDBCExample {
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    // Updated: "com.mysql.jdbc.Driver" is the old, deprecated name.
+    // MySQL Connector/J 8 and later use "com.mysql.cj.jdbc.Driver".
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
     static final String USER = "username";
     static final String PASS = "password";
-    
+
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
         try {
-            // Register JDBC driver
+            // Register JDBC driver (optional since JDBC 4.0 / Java 6:
+            // drivers on the classpath register themselves)
             Class.forName(JDBC_DRIVER);
-            
+
             // Open a connection
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
+
             // Execute a query
             stmt = conn.createStatement();
             String sql = "SELECT id, first, last, age FROM Employees";
             ResultSet rs = stmt.executeQuery(sql);
-            
+
             // Extract data from result set
             while(rs.next()) {
                 int id = rs.getInt("id");
                 int age = rs.getInt("age");
                 String first = rs.getString("first");
                 String last = rs.getString("last");
-                
+
                 System.out.print("ID: " + id);
                 System.out.print(", Age: " + age);
                 System.out.print(", First: " + first);
@@ -723,44 +354,56 @@ public class JDBCExample {
             e.printStackTrace();
         }
     }
-}</pre>
-            </div>
-        </section>
-        
-        <!-- Module 6: Remote Invocation (RPC & RMI) -->
-        <section id="module6" class="module">
-            <div class="module-header">
-                <div class="module-icon">6</div>
-                <h2 class="module-title">Remote Invocation (RPC & RMI)</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📞</span> RPC - Remote Procedure Call</h3>
-                    <p>Mechanism to execute subroutines on other hosts without including socket code in programs.</p>
-                    <p>Hides network code into stub procedures.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">☕</span> RMI - Remote Method Invocation</h3>
-                    <p>Java mechanism allowing objects in one JVM to invoke objects running on another JVM.</p>
-                    <p>Used to build distributed applications.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🌐</span> CORBA</h3>
-                    <p>Common Object Request Broker Architecture - platform and language-independent framework for building distributed systems.</p>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">RPC Mechanism</h3>
-            <div class="diagram">
-                <p>Client → Client Stub → Network → Server Stub → Server Procedure</p>
-                <p>Then reverse for response</p>
-            </div>
-            
-            <div class="code-block">
-                <pre>// RMI Remote Interface Example
+}</code></pre>
+      <details class="reveal"><summary>Show the modern version (try-with-resources)</summary>
+<pre><code>import java.sql.*;
+
+public class JDBCExampleModern {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost/EMP";
+        String sql = "SELECT id, first, last, age FROM Employees";
+        // Resources declared here are closed automatically, even on errors
+        try (Connection conn = DriverManager.getConnection(url, "username", "password");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                System.out.println("ID: " + rs.getInt("id") + ", Age: " + rs.getInt("age")
+                    + ", First: " + rs.getString("first") + ", Last: " + rs.getString("last"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+        <p>No <code>Class.forName</code> and no manual <code>close()</code> calls. If an exception happens half-way, the connection is still closed, which the original version does not guarantee.</p>
+      </details>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Building SQL by joining strings with user input (<code>"... WHERE name='" + name + "'"</code>). That allows SQL injection. Use a <code>PreparedStatement</code> with <code>?</code> placeholders; the Extended Edition shows how.</p></div>
+    </section>
+
+    <!-- ===================== 6 ===================== -->
+    <section>
+      <h2><span class="num">6</span>Remote Invocation (RPC &amp; RMI)</h2>
+
+      <div class="cards">
+        <div class="card"><h3>RPC: Remote Procedure Call</h3><p>A mechanism to execute subroutines on other hosts without writing socket code in your program. The network code is hidden inside generated <span class="term" title="A local stand-in procedure that packs the call into a message and sends it over the network">stub</span> procedures.</p></div>
+        <div class="card"><h3>RMI: Remote Method Invocation</h3><p>Java's object-oriented RPC: an object in one JVM invokes methods on an object running in another JVM. Used to build distributed Java applications.</p></div>
+        <div class="card"><h3>CORBA</h3><p>Common Object Request Broker Architecture: a platform- and language-independent framework for distributed objects. Now legacy; removed from the JDK in Java 11.</p></div>
+      </div>
+
+      <h3>The RPC mechanism</h3>
+      <div class="flow"><span class="node">Client</span><span class="arrow">→</span><span class="node hi">Client stub</span><span class="arrow">→</span><span class="node">Network</span><span class="arrow">→</span><span class="node hi">Server stub</span><span class="arrow">→</span><span class="node">Server procedure</span></div>
+      <p>Then the same path in reverse carries the result back.</p>
+      <ol class="steps">
+        <li><strong>The client calls the client stub</strong> exactly like a local function.</li>
+        <li><strong>The stub marshals the parameters:</strong> <span class="term" title="Converting parameters into a byte format that can travel over the network">marshalling</span> packs them into a message.</li>
+        <li><strong>The message crosses the network</strong> to the server machine.</li>
+        <li><strong>The server stub unmarshals</strong> the parameters and calls the real procedure.</li>
+        <li><strong>The result returns</strong> through the server stub, the network and the client stub, back to the caller.</li>
+      </ol>
+      <div class="callout analogy"><span class="label">Analogy</span><p>Ordering by phone. You tell the shop assistant what you want; they write it on an order form (marshalling), fax it to the warehouse, where someone reads the form (unmarshalling) and fills the order. You never deal with the fax machine.</p></div>
+
+      <h3>An RMI remote interface</h3>
+<pre><code>// RMI Remote Interface Example
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -769,77 +412,193 @@ public interface Calculator extends Remote {
     public long sub(long a, long b) throws RemoteException;
     public long mul(long a, long b) throws RemoteException;
     public long div(long a, long b) throws RemoteException;
-}</pre>
-            </div>
-        </section>
-        
-        <div style="text-align: center; margin-top: 3rem;">
-            <h2>Course Resources</h2>
-            <p style="margin-bottom: 1.5rem;">Explore additional materials and references</p>
-            <a href="#" class="btn">Download Full PDF</a>
-            <a href="#" class="btn btn-outline" style="margin-left: 1rem;">Java Code Examples</a>
-        </div>
-    </div>
-    
-    <footer>
-        <div class="footer-content">
-            <p>Client/Server Architecture Course - LT-Informatics 2016-2017</p>
-            <p>Prepared by Hassan Lamaas</p>
-            <p style="margin-top: 1rem; font-size: 0.9rem;">&copy; 2023 - Educational Material</p>
-        </div>
-    </footer>
+}</code></pre>
+      <p>Two rules make an interface remote: it <strong>extends <code>java.rmi.Remote</code></strong>, and every method <strong>declares <code>RemoteException</code></strong>, because any remote call can fail for network reasons. The server registers an implementation in the <span class="term" title="A simple naming service where servers bind objects by name and clients look them up; default port 1099">RMI registry</span> (port 1099 by default), and the client looks it up by name to get a stub.</p>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Highlight active section in navigation
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Add active class styling
-        const style = document.createElement('style');
-        style.textContent = `
-            .nav-links a.active {
-                color: var(--secondary) !important;
-                font-weight: 600;
-                border-bottom: 2px solid var(--secondary);
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>RPC (classic)</th><th>Java RMI</th><th>CORBA</th><th>gRPC (modern)</th></tr></thead>
+        <tbody>
+          <tr><td>Calls</td><td>Procedures</td><td>Methods on objects</td><td>Methods on objects</td><td>Service methods</td></tr>
+          <tr><td>Languages</td><td>Mostly C</td><td>Java only</td><td>Many (via IDL)</td><td>Many (via .proto files)</td></tr>
+          <tr><td>Wire format</td><td>XDR</td><td>Java serialization</td><td>IIOP</td><td>Protocol Buffers over HTTP/2</td></tr>
+          <tr><td>Status</td><td>Legacy (still in NFS)</td><td>In the JDK; mainly teaching and older systems</td><td>Legacy</td><td>Widely used for microservices</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Believing a remote call behaves exactly like a local one. It is slower by orders of magnitude, it can fail half-way, and parameters are copied, not shared. That is why <code>RemoteException</code> is a checked exception.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"Difference between RPC and RMI?" RPC calls procedures and passes plain data; RMI is object-oriented, Java-only, can pass whole objects (serialized) and remote references, and uses a registry to find objects by name.</p></div>
+    </section>
+
+    <!-- ===================== 7 ===================== -->
+    <section>
+      <h2><span class="num">7</span>Course Resources</h2>
+      <p>Explore additional materials and references. The download buttons on the old page were placeholders with no file behind them; they are replaced by the links below.</p>
+      <div class="cards">
+        <div class="card"><h3>Go deeper</h3><ul>
+          <li><a href="_html_20251030_25fce4.html">Client/Server Architecture: Extended Edition</a>, with all the Java code examples</li>
+          <li><a href="Client_Server_Course.html">Client/Server Architecture &amp; IT Security</a></li>
+          <li><a href="c-spart2.html">Client/Server Part 2: How It Works</a></li>
+          <li><a href="teirsexplanations.html">Architecture Tiers Explained</a></li>
+        </ul></div>
+        <div class="card"><h3>Related chapters</h3><ul>
+          <li><a href="chapter4.html">Chapter 4: Remote Procedure Call (RPC)</a></li>
+          <li><a href="chapter4corba.html">Chapter 4: RMI-IIOP &amp; CORBA</a></li>
+          <li><a href="socket%20first.html">Java Network Programming: Guide</a></li>
+          <li><a href="http.html">HTTP &amp; HTTPS</a></li>
+        </ul></div>
+        <div class="card"><h3>Official references</h3><ul>
+          <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/package-summary.html" rel="noopener">Java <code>java.net</code> API</a></li>
+          <li><a href="https://docs.oracle.com/javase/tutorial/jdbc/" rel="noopener">Oracle JDBC tutorial</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP" rel="noopener">MDN: HTTP</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics</a></li>
+        </ul></div>
+      </div>
+      <p><small>Client/Server Architecture course, LT-Informatics. Prepared by Hassan Lamaa. Updated for 2025–2026.</small></p>
+    </section>
+
+    <!-- ===================== 8 ===================== -->
+    <section>
+      <h2><span class="num">8</span>Check your understanding</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: the whole overview</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>In the client/server model, which side starts the conversation?</p>
+          <div class="opts">
+            <button data-correct>The client sends a request</button>
+            <button>The server sends a message to every client</button>
+            <button>Either side; it is random</button>
+          </div>
+          <div class="explain">The client initiates; the server waits (listens) and responds. If both sides could start conversations as equals, that would be peer-to-peer.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: a server must be a powerful, dedicated machine.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. "Server" is a role played by a program. A laptop, a Raspberry Pi or a container can run a server; powerful hardware is only needed for heavy load.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In a 3-tier architecture, where does the business logic live?</p>
+          <div class="opts">
+            <button>On each client PC</button>
+            <button data-correct>On the application server (middle tier)</button>
+            <button>Inside the database tables</button>
+          </div>
+          <div class="explain">3-tier separates presentation (client), logic (application server) and data (database server). Moving logic off the client is what makes 3-tier easier to manage and reuse.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Why does 2-tier usually perform worse than 3-tier over a network?</p>
+          <div class="opts">
+            <button>Because 2-tier cannot use SQL</button>
+            <button data-correct>Because the client sends many SQL statements across the network instead of one service request</button>
+            <button>Because 3-tier uses UDP</button>
+          </div>
+          <div class="explain">In 2-tier, every query travels between client and database. In 3-tier the client makes one request and the many queries run between application server and database, which are close together.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What is the size of a UDP header?</p>
+          <div class="opts">
+            <button data-correct>8 bytes</button>
+            <button>20–60 bytes</button>
+            <button>128 bytes</button>
+          </div>
+          <div class="explain">UDP's header has only four 2-byte fields (source port, destination port, length, checksum) = 8 bytes. 20–60 bytes is TCP's header.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>Which transport does HTTP/3 use?</p>
+          <div class="opts">
+            <button>TCP, like HTTP/1.1</button>
+            <button data-correct>QUIC, which runs over UDP</button>
+            <button>FTP's data channel</button>
+          </div>
+          <div class="explain">HTTP/3 runs on QUIC, which is built on UDP and adds its own reliability and TLS 1.3 encryption. This avoids TCP head-of-line blocking. HTTP/1.1 and HTTP/2 use TCP.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>Which HTTP method is neither safe nor idempotent?</p>
+          <div class="opts">
+            <button>PUT</button>
+            <button>DELETE</button>
+            <button data-correct>POST</button>
+            <button>GET</button>
+          </div>
+          <div class="explain">Sending the same POST twice usually creates two resources (two orders), so it is not idempotent. PUT and DELETE are idempotent but not safe; GET is both.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Today, HTTP is best described as:</p>
+          <div class="opts">
+            <button>Stateful and connectionless</button>
+            <button data-correct>Stateless, with persistent (reused) connections since HTTP/1.1</button>
+            <button>Stateful, because cookies are part of the core protocol</button>
+          </div>
+          <div class="explain">The protocol itself remembers nothing between requests (stateless). The "connectionless" label is from HTTP/1.0; HTTP/1.1 keeps connections open by default. Cookies add state at the application level.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>On which port does FTP's control connection run?</p>
+          <div class="opts">
+            <button>20</button>
+            <button data-correct>21</button>
+            <button>22</button>
+          </div>
+          <div class="explain">Port 21 carries commands. Port 20 is the data connection in active mode. Port 22 is SSH, which also carries SFTP, the secure replacement for FTP.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>What is the main job of middleware?</p>
+          <div class="opts">
+            <button>To draw the user interface</button>
+            <button data-correct>To let processes on different, possibly heterogeneous, machines communicate without handling low-level network details</button>
+            <button>To replace the operating system</button>
+          </div>
+          <div class="explain">Middleware sits between applications and the OS/network: RPC, message queues, ORBs and database APIs like JDBC are all middleware.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>In RPC, what does the client stub do?</p>
+          <div class="opts">
+            <button>Executes the procedure on the client</button>
+            <button data-correct>Marshals the parameters into a message and sends it to the server</button>
+            <button>Stores the result in a database</button>
+          </div>
+          <div class="explain">The client stub is a local stand-in. It packs (marshals) the arguments, sends the request, waits, and unpacks the reply. The real procedure runs on the server.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>In modern JDBC (4.0 and later), is <code>Class.forName("com.mysql.cj.jdbc.Driver")</code> required?</p>
+          <div class="opts">
+            <button>Yes, the connection fails without it</button>
+            <button data-correct>No, drivers on the classpath register themselves automatically</button>
+            <button>Only for PreparedStatement</button>
+          </div>
+          <div class="explain">Since JDBC 4.0 (Java 6), DriverManager finds drivers automatically through the service-provider mechanism. The line is harmless but optional. The class name also changed: <code>com.mysql.jdbc.Driver</code> is the old, deprecated one.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>Client/server: clients initiate requests, servers listen and respond, using a shared protocol over IPC. Roles, not hardware.</li>
+        <li>Pros: central management, scalability, data sharing, security. Cons: cost, complex setup, single point of failure, congestion.</li>
+        <li>2-tier puts logic on the client; 3-tier moves it to an application server for better performance, scalability and reuse; N-tier adds specialised components.</li>
+        <li>Sockets = IP address + port. TCP is reliable and ordered (20–60 byte header); UDP is fast and connectionless (8 byte header) and now also carries HTTP/3 via QUIC.</li>
+        <li>HTTP is stateless and media independent; HTTP/1.1 keeps connections open, HTTP/2 multiplexes, HTTP/3 uses QUIC. Use HTTPS with TLS 1.2 or 1.3.</li>
+        <li>Safe methods only read (GET, HEAD, OPTIONS, TRACE); idempotent methods can be repeated safely (those plus PUT and DELETE). POST and PATCH are neither.</li>
+        <li>Middleware hides the network: RPC, MOM, publish/subscribe, ORBs and database APIs (ODBC, JDBC). JDBC = API + driver; prefer try-with-resources and PreparedStatement.</li>
+        <li>RPC hides network code in stubs that marshal parameters; RMI is Java's object version with a registry on port 1099; CORBA is legacy; gRPC is today's common choice.</li>
+      </ul></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

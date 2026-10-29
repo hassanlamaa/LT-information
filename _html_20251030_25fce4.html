@@ -1,493 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client/Server Architecture Course</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-tomorrow.min.css">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --info: #17a2b8;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-        
-        .author {
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-        
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            padding: 1rem 0;
-            display: block;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--secondary);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-        }
-        
-        .module {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .module:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        
-        .module-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .module-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            color: white;
-            font-size: 1.5rem;
-        }
-        
-        .module-title {
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-3px);
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-icon {
-            margin-right: 0.5rem;
-            color: var(--secondary);
-        }
-        
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-        
-        .comparison-table th, .comparison-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .comparison-table th {
-            background-color: var(--light);
-            color: var(--dark);
-            font-weight: 600;
-        }
-        
-        .comparison-table tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .diagram {
-            background-color: var(--light);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        
-        .code-section {
-            margin: 2rem 0;
-        }
-        
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        .code-title {
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-        
-        .code-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .code-block {
-            background-color: #2d3748;
-            border-radius: 8px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-        
-        pre[class*="language-"] {
-            margin: 0;
-            border-radius: 0;
-        }
-        
-        .highlight {
-            background-color: #fff9c4;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .btn-small {
-            padding: 0.4rem 0.8rem;
-            font-size: 0.8rem;
-        }
-        
-        .btn-copy {
-            background-color: #4a5568;
-        }
-        
-        .btn-copy:hover {
-            background-color: #2d3748;
-        }
-        
-        .btn-run {
-            background-color: var(--success);
-        }
-        
-        .btn-run:hover {
-            background-color: #27ae60;
-        }
-        
-        .tab-container {
-            margin: 1.5rem 0;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .tab-button {
-            padding: 0.8rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--dark);
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .tab-button.active {
-            color: var(--secondary);
-            border-bottom: 3px solid var(--secondary);
-        }
-        
-        .tab-content {
-            display: none;
-            padding: 1.5rem 0;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .code-explanation {
-            background-color: var(--light);
-            border-left: 4px solid var(--secondary);
-            padding: 1rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        footer {
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                padding: 1rem 20px;
-            }
-            
-            .nav-links {
-                margin-top: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .nav-links li {
-                margin: 0.5rem 1rem;
-            }
-            
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .tab-buttons {
-                flex-wrap: wrap;
-            }
-            
-            .tab-button {
-                flex: 1;
-                min-width: 120px;
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Client/Server Architecture: Extended Edition · LT Information</title>
+<meta name="description" content="The in-depth edition of the client/server course: request-response, server types and tiers, TCP/UDP sockets in Java, HTTP and FTP, middleware and JDBC, RPC and Java RMI, with full code and a quiz after every section.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  /* Diagram parts, built only from shared tokens so light and dark mode both work */
+  .diagram svg { display: block; width: 100%; max-width: 680px; margin: 0 auto }
+  .diagram svg .bx { fill: var(--panel); stroke: var(--line); stroke-width: 1.5 }
+  .diagram svg .bx-hi { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5 }
+  .diagram svg .bx-sunk { fill: var(--sunk); stroke: var(--line); stroke-width: 1 }
+  .diagram svg .ln { stroke: var(--muted); stroke-width: 1.5; fill: none }
+  .diagram svg .ln-a { stroke: var(--accent); stroke-width: 2; fill: none }
+  .diagram svg .ln-ok { stroke: var(--ok); stroke-width: 2; fill: none }
+  .diagram svg .dash { stroke-dasharray: 5 4 }
+  .diagram svg .ah { fill: var(--accent) }
+  .diagram svg .ah-m { fill: var(--muted) }
+  .diagram svg .ah-ok { fill: var(--ok) }
+  .diagram svg text.sm { font-size: 12px; fill: var(--muted) }
+  .diagram svg text.b { font-weight: 700 }
+  /* Let long inline code (class and method names) wrap on narrow phones */
+  .lt-main :not(pre) > code { overflow-wrap: anywhere }
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Client/Server Architecture</h1>
-            <p class="subtitle">LT-Informatics Course 2025-2026</p>
-            <p class="author">Prepared by: Hassan Lamaa</p>
-            <p>A comprehensive guide to distributed computing models and implementations</p>
-        </div>
-    </header>
-    
-    <nav>
-        <div class="nav-container">
-            <div class="logo">C/S Architecture</div>
-            <ul class="nav-links">
-                <li><a href="#module1">Foundations</a></li>
-                <li><a href="#module2">Architectures</a></li>
-                <li><a href="#module3">Communication</a></li>
-                <li><a href="#module4">Protocols</a></li>
-                <li><a href="#module5">Middleware</a></li>
-                <li><a href="#module6">RPC & RMI</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <div class="container">
-        <!-- Module 1: Foundations of Client/Server Model -->
-        <section id="module1" class="module">
-            <div class="module-header">
-                <div class="module-icon">1</div>
-                <h2 class="module-title">Foundations of Client/Server Model</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔍</span> What is Client/Server?</h3>
-                    <p>A network model where each computer is either a client or a server. Clients rely on servers for resources like files, devices, and processing power.</p>
-                    <ul>
-                        <li><strong>Clients:</strong> PCs/workstations running user applications</li>
-                        <li><strong>Servers:</strong> Powerful computers storing/managing public files and applications</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔄</span> Communication Pattern</h3>
-                    <p>Clients and servers exchange messages using a request-response pattern through Inter-Process Communication (IPC).</p>
-                    <p>They communicate using common protocols and servers use scheduling systems to handle multiple client requests.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">⚖️</span> Pros & Cons</h3>
-                    <div>
-                        <h4>Advantages:</h4>
-                        <ul>
-                            <li>Centralized management</li>
-                            <li>Scalability</li>
-                            <li>Enhanced data sharing</li>
-                            <li>Improved security</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Disadvantages:</h4>
-                        <ul>
-                            <li>Server cost</li>
-                            <li>Complex configuration</li>
-                            <li>Single point of failure</li>
-                            <li>Traffic congestion</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="code-section">
-                <h3>Basic Client/Server Template</h3>
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" data-tab="server-template">Server Template</button>
-                        <button class="tab-button" data-tab="client-template">Client Template</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="server-template">
-                        <div class="code-header">
-                            <div class="code-title">Basic Server Structure</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.io.*;
+
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Client/Server Architecture · Extended Edition</span>
+    <h1>Client/Server Architecture: Extended Edition</h1>
+    <p class="lead">The full, in-depth version of the course. Every idea from the overview is explained step by step, with diagrams, runnable Java programs for sockets, HTTP, JDBC and RMI, notes on what has changed in modern Java and on the modern web, and a short quiz at the end of each section.</p>
+    <div class="chips"><span class="chip">≈ 75 min read</span><span class="chip">24 quiz questions</span><span class="chip">Level: Intermediate</span><span class="chip">LT-Informatics 2025–2026</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Explain the client/server model and write a basic multi-threaded Java server and client.</li>
+        <li>Choose between fat client and fat server, and between 2-tier, 3-tier and N-tier designs, and justify the choice.</li>
+        <li>Write TCP and UDP programs in Java, use <code>InetAddress</code>, and explain the TCP handshake and port ranges.</li>
+        <li>Read and build raw HTTP requests and responses, explain HTTP/1.1, HTTP/2 and HTTP/3, and classify methods as safe or idempotent.</li>
+        <li>Describe the kinds of middleware and use JDBC correctly: PreparedStatement, transactions, try-with-resources.</li>
+        <li>Trace an RPC call through its stubs and build a complete Java RMI application.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <!-- ===================== 1 ===================== -->
+    <section>
+      <h2><span class="num">1</span>Foundations of the Client/Server Model</h2>
+
+      <div class="callout tip"><span class="label">Two versions of this lesson</span><p>This is the deep <strong>Extended Edition</strong>. If you want a 30-minute tour first, or a quick revision sheet before an exam, read the <a href="course_html_LT2025.html">Course Overview</a>. Both pages cover the same seven sections.</p></div>
+
+      <h3>What is client/server?</h3>
+      <p>Client/server is a network model in which each program is either a client or a server. A <span class="term" title="A program that asks for a service and uses the answer">client</span> requests a service; a <span class="term" title="A program that waits for requests and provides a service">server</span> provides it. Clients rely on servers for resources such as files, devices (printers, storage) and processing power.</p>
+      <ul>
+        <li><strong>Clients:</strong> PCs and workstations running user applications, and today also phones, browsers, apps and IoT devices.</li>
+        <li><strong>Servers:</strong> computers that store and manage shared files and applications. Usually more powerful and always on, but the word describes a <em>role</em>: a single physical machine can host dozens of virtual servers, and one program can be a server to some programs and a client of others (a web application server is a client of the database server).</li>
+      </ul>
+
+      <div class="callout analogy"><span class="label">Analogy</span><p>A library. Readers (clients) come to the desk and ask for a book. The librarian (server) checks the catalogue, fetches the book and hands it over. Readers never go into the stacks themselves, and the library decides who may borrow what. If the only librarian goes home sick, nobody gets a book: that is the single point of failure.</p></div>
+
+      <h3>The communication pattern</h3>
+      <p>Clients and servers exchange messages using a <strong>request-response</strong> pattern. The two programs are separate processes, usually on separate machines, so they need <span class="term" title="Inter-Process Communication: mechanisms that let running processes exchange data, e.g. sockets, pipes, shared memory, message queues">Inter-Process Communication (IPC)</span>. Across a network, IPC almost always means <strong>sockets</strong> (section 3). Both sides must use a common <span class="term" title="An agreed set of rules: message format, order, meaning, and what to do on errors">protocol</span>, and the server uses a scheduling system to handle many client requests at the same time.</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 260" role="img" aria-label="Three clients send requests to one server; the server hands each request to a worker thread and returns a response">
+          <defs>
+            <marker id="d1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="d1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="bx" x="10" y="20" width="130" height="50" rx="10"/><text x="75" y="50" text-anchor="middle" class="b">Client A</text>
+          <rect class="bx" x="10" y="105" width="130" height="50" rx="10"/><text x="75" y="135" text-anchor="middle" class="b">Client B</text>
+          <rect class="bx" x="10" y="190" width="130" height="50" rx="10"/><text x="75" y="220" text-anchor="middle" class="b">Client C</text>
+          <rect class="bx-hi" x="360" y="15" width="270" height="230" rx="12"/>
+          <text x="495" y="42" text-anchor="middle" class="b">Server (port 8080)</text>
+          <rect class="bx" x="380" y="58" width="230" height="38" rx="8"/><text x="495" y="82" text-anchor="middle">Listener: accept()</text>
+          <rect class="bx-sunk" x="380" y="112" width="70" height="40" rx="6"/><text x="415" y="137" text-anchor="middle" class="sm">thread 1</text>
+          <rect class="bx-sunk" x="460" y="112" width="70" height="40" rx="6"/><text x="495" y="137" text-anchor="middle" class="sm">thread 2</text>
+          <rect class="bx-sunk" x="540" y="112" width="70" height="40" rx="6"/><text x="575" y="137" text-anchor="middle" class="sm">thread 3</text>
+          <rect class="bx" x="380" y="170" width="230" height="56" rx="8"/><text x="495" y="194" text-anchor="middle">Shared resources</text><text x="495" y="213" text-anchor="middle" class="sm">files · database · CPU</text>
+          <line class="ln-a" x1="140" y1="38" x2="355" y2="70" marker-end="url(#d1a)"/>
+          <line class="ln-a" x1="140" y1="123" x2="355" y2="100" marker-end="url(#d1a)"/>
+          <line class="ln-a" x1="140" y1="208" x2="355" y2="130" marker-end="url(#d1a)"/>
+          <line class="ln-ok dash" x1="355" y1="160" x2="145" y2="225" marker-end="url(#d1b)"/>
+          <text x="245" y="50" text-anchor="middle" class="sm">request</text>
+          <text x="235" y="212" text-anchor="middle" class="sm">response</text>
+        </svg>
+        <figcaption>Figure 1. Many clients, one server. The listener accepts each connection and a worker thread serves it, so slow clients do not block fast ones.</figcaption>
+      </figure>
+
+      <div class="callout key"><span class="label">Key idea</span><p>The client <strong>initiates</strong>, the server <strong>listens and responds</strong>. The server must be running and reachable at a known address and port before any client can connect.</p></div>
+
+      <h3>Advantages and disadvantages, explained</h3>
+      <div class="pros-cons">
+        <div class="pros"><h4>Advantages</h4><ul>
+          <li><strong>Centralised management:</strong> one place to back up, patch and audit.</li>
+          <li><strong>Scalability:</strong> clients can be added easily; server capacity can grow by upgrading (scale up) or adding servers behind a load balancer (scale out).</li>
+          <li><strong>Enhanced data sharing:</strong> everyone works on the same up-to-date data instead of private copies.</li>
+          <li><strong>Improved security:</strong> authentication and permissions are enforced centrally.</li>
+        </ul></div>
+        <div class="cons"><h4>Disadvantages</h4><ul>
+          <li><strong>Server cost:</strong> hardware or cloud bills, licences, administrators.</li>
+          <li><strong>Complex configuration:</strong> network, DNS, firewall, certificates and services must all be right.</li>
+          <li><strong>Single point of failure:</strong> one server down means everyone is down, unless you add redundancy (clusters, replicas, failover).</li>
+          <li><strong>Traffic congestion:</strong> many simultaneous requests can saturate the server or its network link (a denial-of-service attack exploits exactly this).</li>
+        </ul></div>
+      </div>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Client/server</th><th>Peer-to-peer (P2P)</th></tr></thead>
+        <tbody>
+          <tr><td>Roles</td><td>Fixed: clients request, servers serve</td><td>Every node is both client and server</td></tr>
+          <tr><td>Data</td><td>Centralised on servers</td><td>Distributed across peers</td></tr>
+          <tr><td>Control and security</td><td>Easy to enforce centrally</td><td>Hard to enforce</td></tr>
+          <tr><td>Failure</td><td>Server is a single point of failure</td><td>No single point; peers come and go</td></tr>
+          <tr><td>Examples</td><td>Web, email, databases, online banking</td><td>BitTorrent, some blockchain networks</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Basic client/server template in Java</h3>
+      <p>The two programs below are the skeleton of almost every TCP service. The server opens a <code>ServerSocket</code>, loops on <code>accept()</code>, and gives each connection its own thread. The client connects, sends lines typed by the user, and prints each reply.</p>
+
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="t-srv-tpl" aria-selected="true">Server template</button><button role="tab" aria-controls="t-cli-tpl">Client template</button></div>
+        <div role="tabpanel" id="t-srv-tpl">
+          <p class="code-title">BasicServer.java: basic server structure</p>
+<pre><code>import java.io.*;
 import java.net.*;
 
 public class BasicServer {
     private ServerSocket serverSocket;
-    
+
     public BasicServer(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -496,14 +144,14 @@ public class BasicServer {
             System.err.println("Could not start server: " + e.getMessage());
         }
     }
-    
+
     public void start() {
         while (true) {
             try {
                 // Wait for client connection
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected: " + clientSocket.getInetAddress());
-                
+
                 // Handle client request in a new thread
                 ClientHandler handler = new ClientHandler(clientSocket);
                 new Thread(handler).start();
@@ -512,15 +160,15 @@ public class BasicServer {
             }
         }
     }
-    
+
     // Inner class to handle client requests
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;
-        
+
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
         }
-        
+
         @Override
         public void run() {
             try (
@@ -544,41 +192,33 @@ public class BasicServer {
                 }
             }
         }
-        
+
         private String processRequest(String request) {
             // Implement your request processing logic here
             return "Processed: " + request;
         }
     }
-    
+
     public static void main(String[] args) {
         BasicServer server = new BasicServer(8080);
         server.start();
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="client-template">
-                        <div class="code-header">
-                            <div class="code-title">Basic Client Structure</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.io.*;
+        </div>
+        <div role="tabpanel" id="t-cli-tpl">
+          <p class="code-title">BasicClient.java: basic client structure</p>
+<pre><code>import java.io.*;
 import java.net.*;
 
 public class BasicClient {
     private String host;
     private int port;
-    
+
     public BasicClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
-    
+
     public void connect() {
         try (
             Socket socket = new Socket(host, port);
@@ -589,16 +229,16 @@ public class BasicClient {
                 new InputStreamReader(System.in))
         ) {
             System.out.println("Connected to server " + host + ":" + port);
-            
+
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 // Send request to server
                 out.println(userInput);
-                
+
                 // Get response from server
                 String response = in.readLine();
                 System.out.println("Server response: " + response);
-                
+
                 if ("exit".equalsIgnoreCase(userInput)) {
                     break;
                 }
@@ -609,109 +249,159 @@ public class BasicClient {
             System.err.println("I/O error: " + e.getMessage());
         }
     }
-    
+
     public static void main(String[] args) {
         BasicClient client = new BasicClient("localhost", 8080);
         client.connect();
     }
 }</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 2: Server Types & System Architectures -->
-        <section id="module2" class="module">
-            <div class="module-header">
-                <div class="module-icon">2</div>
-                <h2 class="module-title">Server Types & System Architectures</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🖥️</span> Server Types</h3>
-                    <ul>
-                        <li><strong>File Server:</strong> Shares files across network</li>
-                        <li><strong>Database Server:</strong> Provides database services</li>
-                        <li><strong>Transaction Server:</strong> Handles OLTP operations</li>
-                        <li><strong>Groupware Server:</strong> Enables collaboration</li>
-                        <li><strong>Web Server:</strong> Handles HTTP protocol</li>
-                        <li><strong>Web Application Server:</strong> Supports dynamic content</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">⚖️</span> Fat Client vs Fat Server</h3>
-                    <p><strong>Fat Client:</strong> More functions on client side, knows data organization</p>
-                    <p><strong>Fat Server:</strong> More functions on server side, easier to manage and deploy</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🏗️</span> N-Tier Architectures</h3>
-                    <ul>
-                        <li><strong>2-Tier:</strong> Client + Database Server</li>
-                        <li><strong>3-Tier:</strong> Client + Application Server + Database Server</li>
-                        <li><strong>N-Tier:</strong> Extended architecture with specialized components</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">2-Tier vs 3-Tier Architecture Comparison</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>2-Tier</th>
-                        <th>3-Tier</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>System Administration</td>
-                        <td>More logic on client to manage</td>
-                        <td>Centrally managed on server</td>
-                    </tr>
-                    <tr>
-                        <td>Performance</td>
-                        <td>Poor (many SQL statements over network)</td>
-                        <td>Good (only service requests/responses)</td>
-                    </tr>
-                    <tr>
-                        <td>Scalability</td>
-                        <td>Poor/Low</td>
-                        <td>Excellent (distribute load across servers)</td>
-                    </tr>
-                    <tr>
-                        <td>Application Reuse</td>
-                        <td>Poor (application on client)</td>
-                        <td>Excellent (reuse services and objects)</td>
-                    </tr>
-                    <tr>
-                        <td>Ease of Development</td>
-                        <td>High</td>
-                        <td>Complex</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="code-section">
-                <h3>Multi-threaded Server Example</h3>
-                <div class="code-header">
-                    <div class="code-title">Handling Multiple Clients Concurrently</div>
-                    <div class="code-actions">
-                        <button class="btn btn-copy btn-small">Copy Code</button>
-                    </div>
-                </div>
-                <div class="code-block">
-                    <pre><code class="language-java">import java.io.*;
+        </div>
+      </div>
+
+      <ol class="steps">
+        <li><strong>Bind:</strong> <code>new ServerSocket(8080)</code> reserves port 8080 and starts listening.</li>
+        <li><strong>Accept:</strong> <code>accept()</code> blocks until a client connects, then returns a new <code>Socket</code> just for that client.</li>
+        <li><strong>Hand off:</strong> a new thread runs <code>ClientHandler</code>, so the main loop can go straight back to <code>accept()</code>.</li>
+        <li><strong>Talk:</strong> both sides wrap the socket streams in a reader and writer and exchange text lines. <code>PrintWriter(..., true)</code> turns on auto-flush, so each <code>println</code> is sent immediately.</li>
+        <li><strong>Close:</strong> try-with-resources closes the streams; the <code>finally</code> block closes the socket.</li>
+      </ol>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Forgetting <code>autoFlush</code> (the <code>true</code> in <code>new PrintWriter(out, true)</code>). Without it the reply waits in a buffer, the client's <code>readLine()</code> waits forever, and the program looks frozen.</p></div>
+      <div class="callout tip"><span class="label">Tip</span><p>If <code>new ServerSocket(port)</code> fails (for example "Address already in use"), this template prints an error but <code>start()</code> then crashes with a <code>NullPointerException</code>. In real code, let the constructor throw the <code>IOException</code> instead of swallowing it.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: foundations</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What does <code>serverSocket.accept()</code> return?</p>
+          <div class="opts">
+            <button>The first line the client sent</button>
+            <button data-correct>A new Socket connected to that particular client</button>
+            <button>The port number the client used</button>
+          </div>
+          <div class="explain"><code>accept()</code> blocks until a client connects and then returns a dedicated <code>Socket</code> for talking to it. The <code>ServerSocket</code> itself only listens for new connections.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>True or false: one program can be a server to some programs and a client of others.</p>
+          <div class="opts tf"><button data-correct>True</button><button>False</button></div>
+          <div class="explain">True. A web application server serves browsers but is itself a client of the database server. Client and server are roles in a particular conversation.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Why does BasicServer start a new thread for each client?</p>
+          <div class="opts">
+            <button>Because sockets cannot be used in the main thread</button>
+            <button data-correct>So the main loop can return to accept() and serve other clients while this one is being handled</button>
+            <button>To encrypt the connection</button>
+          </div>
+          <div class="explain">Without threads, the server would serve one client at a time: a slow client would block everybody. This is the "scheduling system" the course mentions.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which technique reduces the "single point of failure" disadvantage?</p>
+          <div class="opts">
+            <button>Using UDP instead of TCP</button>
+            <button>Giving each client its own copy of the data</button>
+            <button data-correct>Running redundant servers with failover or a load balancer</button>
+          </div>
+          <div class="explain">Redundancy means another server takes over if one fails. Giving each client a private copy would destroy the main benefit (shared, consistent data), and the transport protocol does not change server availability.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 2 ===================== -->
+    <section>
+      <h2><span class="num">2</span>Server Types &amp; System Architectures</h2>
+
+      <h3>Server types</h3>
+      <p>A server type is named after the service it offers. One physical machine can run several of these at once.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Server type</th><th>What it does</th><th>Typical protocol</th><th>Example software</th></tr></thead>
+        <tbody>
+          <tr><td>File server</td><td>Shares files across the network</td><td>SMB, NFS</td><td>Windows Server file shares, Samba</td></tr>
+          <tr><td>Database server</td><td>Provides database services: stores data, answers SQL queries</td><td>Vendor protocol (e.g. MySQL, PostgreSQL wire protocols)</td><td>PostgreSQL, MySQL, SQL Server, Oracle</td></tr>
+          <tr><td>Transaction server</td><td>Handles OLTP operations: groups several updates into one all-or-nothing transaction</td><td>Usually through an application server</td><td>Banking, ticketing and booking back-ends</td></tr>
+          <tr><td>Groupware server</td><td>Enables collaboration: email, calendars, shared documents, chat</td><td>SMTP, IMAP, HTTPS</td><td>Mail and calendar servers, team collaboration suites</td></tr>
+          <tr><td>Web server</td><td>Handles the HTTP protocol: serves static files and forwards dynamic requests</td><td>HTTP/HTTPS</td><td>Nginx, Apache HTTP Server, IIS</td></tr>
+          <tr><td>Web application server</td><td>Supports dynamic content: runs application code that builds pages or JSON on demand</td><td>HTTP/HTTPS</td><td>Apache Tomcat, WildFly, Spring Boot, Node.js</td></tr>
+        </tbody>
+      </table></div>
+      <dl class="defs">
+        <dt>OLTP</dt><dd>Online Transaction Processing: many short transactions (a withdrawal, a seat booking) that must each succeed completely or not at all.</dd>
+        <dt>Static content</dt><dd>A file sent as-is, the same for every user (an image, a CSS file).</dd>
+        <dt>Dynamic content</dt><dd>A response generated by code for this request (your inbox, your shopping basket).</dd>
+      </dl>
+
+      <h3>Fat client vs fat server</h3>
+      <p><strong>Fat client:</strong> more functions run on the client side, and the client knows how the data is organised (table names, columns). <strong>Fat server:</strong> more functions run on the server side; the client only calls services, which makes the system easier to manage and deploy. A <em>thin client</em> is the extreme of a fat server: a browser that only displays what the server sends.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th>Fat client</th><th>Fat server</th></tr></thead>
+        <tbody>
+          <tr><td>Logic location</td><td>Client</td><td>Server</td></tr>
+          <tr><td>Network traffic</td><td>High: raw data travels to the client</td><td>Low: only requests and results travel</td></tr>
+          <tr><td>Updating the application</td><td>Reinstall on every client</td><td>Deploy once on the server</td></tr>
+          <tr><td>Uses client hardware</td><td>Yes, offloads work from the server</td><td>Little; server does the work</td></tr>
+          <tr><td>Works offline</td><td>Often</td><td>Rarely</td></tr>
+          <tr><td>Typical example</td><td>Desktop app with direct database access; a 3D game</td><td>Web application, groupware, transaction systems</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>2-tier, 3-tier and N-tier</h3>
+      <p>Every application has three logical jobs: <strong>presentation</strong> (show data, collect input), <strong>business logic</strong> (rules, calculations, validation) and <strong>data management</strong> (store and retrieve). A <span class="term" title="A physically separate part of the system, usually on its own machine or process">tier</span> is a place where some of these jobs run.</p>
+      <ul>
+        <li><strong>2-tier:</strong> Client + Database Server. Presentation and logic on the client; data on the server.</li>
+        <li><strong>3-tier:</strong> Client + Application Server + Database Server. Each job has its own tier.</li>
+        <li><strong>N-tier:</strong> the extended architecture with specialised components: a load balancer, several web or application servers, caches, message queues, separate microservices, and so on.</li>
+      </ul>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 250" role="img" aria-label="2-tier: client talks directly to the database. 3-tier: client talks to an application server which talks to the database">
+          <defs>
+            <marker id="d2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <text x="10" y="22" class="b">2-tier</text>
+          <rect class="bx" x="10" y="35" width="200" height="70" rx="10"/><text x="110" y="64" text-anchor="middle" class="b">Client</text><text x="110" y="86" text-anchor="middle" class="sm">UI + business logic</text>
+          <rect class="bx" x="430" y="35" width="200" height="70" rx="10"/><text x="530" y="64" text-anchor="middle" class="b">Database server</text><text x="530" y="86" text-anchor="middle" class="sm">data</text>
+          <line class="ln-a" x1="212" y1="62" x2="426" y2="62" marker-end="url(#d2a)" marker-start="url(#d2a)"/>
+          <text x="320" y="55" text-anchor="middle" class="sm">many SQL statements</text>
+          <text x="10" y="147" class="b">3-tier</text>
+          <rect class="bx" x="10" y="160" width="170" height="70" rx="10"/><text x="95" y="189" text-anchor="middle" class="b">Client</text><text x="95" y="211" text-anchor="middle" class="sm">UI only</text>
+          <rect class="bx-hi" x="235" y="160" width="170" height="70" rx="10"/><text x="320" y="189" text-anchor="middle" class="b">App server</text><text x="320" y="211" text-anchor="middle" class="sm">business logic</text>
+          <rect class="bx" x="460" y="160" width="170" height="70" rx="10"/><text x="545" y="189" text-anchor="middle" class="b">Database</text><text x="545" y="211" text-anchor="middle" class="sm">data</text>
+          <line class="ln-a" x1="182" y1="195" x2="231" y2="195" marker-end="url(#d2a)" marker-start="url(#d2a)"/>
+          <line class="ln-a" x1="407" y1="195" x2="456" y2="195" marker-end="url(#d2a)" marker-start="url(#d2a)"/>
+          <text x="207" y="248" text-anchor="middle" class="sm">1 request</text>
+          <text x="432" y="248" text-anchor="middle" class="sm">SQL (local, fast)</text>
+        </svg>
+        <figcaption>Figure 2. In 2-tier, every SQL statement crosses the network. In 3-tier, the client sends one service request and the SQL stays between two servers that sit side by side.</figcaption>
+      </figure>
+
+      <h4>2-tier vs 3-tier comparison</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>2-Tier</th><th>3-Tier</th></tr></thead>
+        <tbody>
+          <tr><td>System administration</td><td>More logic on the client to manage</td><td>Centrally managed on the server</td></tr>
+          <tr><td>Performance</td><td>Poor (many SQL statements over the network)</td><td>Good (only service requests and responses)</td></tr>
+          <tr><td>Scalability</td><td>Poor / low (each client holds a database connection)</td><td>Excellent (distribute load across servers; pool connections)</td></tr>
+          <tr><td>Application reuse</td><td>Poor (application lives on the client)</td><td>Excellent (reuse services and objects)</td></tr>
+          <tr><td>Security</td><td>Database exposed to every client</td><td>Only the app server reaches the database</td></tr>
+          <tr><td>Ease of development</td><td>High (simple)</td><td>More complex</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout example"><span class="label">Example</span><p>A university registration system. <strong>2-tier version:</strong> a desktop program on each secretary's PC sends SQL straight to the database; changing a fee rule means reinstalling the program everywhere. <strong>3-tier version:</strong> staff and students use a browser; the rules live in one application server; the database is reachable only from that server. <strong>N-tier version:</strong> during registration week a load balancer spreads students over four application servers and a cache keeps the course list in memory.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Mixing up <em>layers</em> and <em>tiers</em>. Layers are a logical split of the code (UI classes, service classes, data-access classes). Tiers are a physical split across machines or processes. A 3-layer program can still run as a single tier on one PC.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>For "advantages of 3-tier", give at least four from the table and justify each one: central administration, better performance over the network, scalability, reuse, and security (the database is not exposed). Mention the cost: more complex development.</p></div>
+
+      <h3>Multi-threaded server with a thread pool</h3>
+      <p>Creating a brand-new thread for every client (as in section 1) is simple, but thousands of clients would mean thousands of threads. A <span class="term" title="A fixed set of worker threads that take tasks from a queue and are reused, instead of creating a thread per task">thread pool</span> reuses a fixed number of threads, which puts a ceiling on resource use.</p>
+      <p class="code-title">MultiThreadedServer.java: handling multiple clients concurrently</p>
+<pre><code>import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
 
 public class MultiThreadedServer {
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
-    
+
     public MultiThreadedServer(int port, int poolSize) {
         try {
             serverSocket = new ServerSocket(port);
@@ -721,13 +411,13 @@ public class MultiThreadedServer {
             System.err.println("Could not start server: " + e.getMessage());
         }
     }
-    
+
     public void start() {
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());
-                
+
                 // Submit client handling to thread pool
                 threadPool.submit(new ClientHandler(clientSocket));
             } catch (IOException e) {
@@ -735,14 +425,14 @@ public class MultiThreadedServer {
             }
         }
     }
-    
+
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;
-        
+
         public ClientHandler(Socket socket) {
             this.clientSocket = socket;
         }
-        
+
         @Override
         public void run() {
             try (
@@ -753,10 +443,10 @@ public class MultiThreadedServer {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     System.out.println("Received from " + clientSocket.getInetAddress() + ": " + inputLine);
-                    
+
                     // Echo back the message
                     out.println("Echo: " + inputLine);
-                    
+
                     if ("bye".equalsIgnoreCase(inputLine)) {
                         break;
                     }
@@ -773,133 +463,175 @@ public class MultiThreadedServer {
             }
         }
     }
-    
+
     public static void main(String[] args) {
         MultiThreadedServer server = new MultiThreadedServer(8080, 10);
         server.start();
     }
 }</code></pre>
-                </div>
-                <div class="code-explanation">
-                    <p><strong>Explanation:</strong> This server uses a thread pool to handle multiple clients concurrently. Each client connection is processed in a separate thread, allowing the server to serve multiple clients simultaneously without blocking.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 3: Core Communication Technologies -->
-        <section id="module3" class="module">
-            <div class="module-header">
-                <div class="module-icon">3</div>
-                <h2 class="module-title">Core Communication Technologies</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔌</span> Sockets & Ports</h3>
-                    <p>Sockets provide communication mechanism between computers using IP addresses and ports.</p>
-                    <p><strong>Well-known ports:</strong></p>
-                    <ul>
-                        <li>HTTP: 80</li>
-                        <li>HTTPS: 443</li>
-                        <li>FTP: 21</li>
-                        <li>SMTP: 25</li>
-                        <li>DNS: 53</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔄</span> TCP vs UDP</h3>
-                    <p><strong>TCP:</strong> Connection-oriented, reliable, ordered delivery</p>
-                    <p><strong>UDP:</strong> Connectionless, faster, no delivery guarantees</p>
-                    <p>Used for voice, video, DNS, DHCP</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">☕</span> Java Networking</h3>
-                    <p>Java provides comprehensive networking support:</p>
-                    <ul>
-                        <li>InetAddress class for IP address representation</li>
-                        <li>Socket and ServerSocket for TCP communication</li>
-                        <li>DatagramSocket for UDP communication</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">TCP vs UDP Detailed Comparison</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>TCP</th>
-                        <th>UDP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Connection</td>
-                        <td>Connection-oriented</td>
-                        <td>Connectionless</td>
-                    </tr>
-                    <tr>
-                        <td>Reliability</td>
-                        <td>High (error checking, retransmission)</td>
-                        <td>Low (no guarantees)</td>
-                    </tr>
-                    <tr>
-                        <td>Speed</td>
-                        <td>Slower</td>
-                        <td>Faster</td>
-                    </tr>
-                    <tr>
-                        <td>Header Size</td>
-                        <td>20-60 bytes</td>
-                        <td>8 bytes</td>
-                    </tr>
-                    <tr>
-                        <td>Usage</td>
-                        <td>HTTP, HTTPS, FTP, SMTP</td>
-                        <td>DNS, DHCP, VoIP, Video Streaming</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="code-section">
-                <h3>TCP and UDP Communication Examples</h3>
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" data-tab="tcp-example">TCP Example</button>
-                        <button class="tab-button" data-tab="udp-example">UDP Example</button>
-                        <button class="tab-button" data-tab="inetaddress-example">InetAddress Example</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="tcp-example">
-                        <div class="code-header">
-                            <div class="code-title">TCP Client/Server Communication</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// TCP Server
+      <p><strong>Explanation:</strong> this server uses a thread pool to handle multiple clients concurrently. Each client connection is processed by one of the pool's threads, so the server serves several clients at once without blocking. With a pool of 10, the 11th client waits in the pool's queue until a thread is free.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Strategy</th><th>How</th><th>Good for</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td>Thread per client</td><td><code>new Thread(handler).start()</code></td><td>Teaching, few clients</td><td>Memory use grows with every client</td></tr>
+          <tr><td>Fixed thread pool</td><td><code>Executors.newFixedThreadPool(n)</code></td><td>Predictable load</td><td>Clients queue when all n threads are busy</td></tr>
+          <tr><td>Virtual threads (Java 21+)</td><td><code>Executors.newVirtualThreadPerTaskExecutor()</code></td><td>Many thousands of mostly-waiting connections</td><td>Requires Java 21 or later</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Updated for modern Java</span><p>Since Java 21, <span class="term" title="Very lightweight threads managed by the JVM rather than the operating system; millions can exist at once">virtual threads</span> make the simple thread-per-client style scale again. Change one line, <code>threadPool = Executors.newVirtualThreadPerTaskExecutor();</code>, and every client gets its own cheap virtual thread.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: server types and tiers</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>Which design is easiest to update when a business rule changes?</p>
+          <div class="opts">
+            <button>Fat client</button>
+            <button data-correct>Fat server</button>
+            <button>Both are equally easy</button>
+          </div>
+          <div class="explain">With a fat server the rule lives in one place, so you deploy once. With a fat client every installed copy must be updated.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A web application server differs from a plain web server because it:</p>
+          <div class="opts">
+            <button>Uses a different port</button>
+            <button data-correct>Runs application code to generate dynamic content</button>
+            <button>Does not use HTTP</button>
+          </div>
+          <div class="explain">A web server can serve static files on its own. A web application server (Tomcat, Node.js) executes code per request to build the response, for example a page listing your own orders.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>True or false: a program split into UI, service and data-access classes is automatically a 3-tier system.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. That is three logical layers. It is only 3-tier when those parts run as separate tiers (processes or machines), such as browser, application server and database server.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>In MultiThreadedServer with a pool of 10 threads, what happens to the 11th simultaneous client?</p>
+          <div class="opts">
+            <button>Its connection is refused</button>
+            <button data-correct>Its task waits in the pool's queue until a thread becomes free</button>
+            <button>The pool creates an 11th thread</button>
+          </div>
+          <div class="explain"><code>newFixedThreadPool</code> keeps exactly n threads and an unbounded queue. The connection is accepted, but the handler only runs when one of the 10 threads finishes.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 3 ===================== -->
+    <section>
+      <h2><span class="num">3</span>Core Communication Technologies</h2>
+
+      <h3>Sockets and ports</h3>
+      <p>Sockets provide the communication mechanism between two computers using IP addresses and ports. A <span class="term" title="An endpoint for sending and receiving data, identified by IP address + port">socket</span> is one end of a connection; a TCP connection is uniquely identified by four values: client IP, client port, server IP, server port. That is how a web server on port 443 can keep thousands of connections apart: each one has a different client IP/port pair.</p>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A phone call. The IP address is the phone number of a company, the port is the extension (sales = 80, support = 443). A socket is the handset at each end once the call is connected.</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Range</th><th>Name</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td>0–1023</td><td>Well-known (system) ports</td><td>Standard services; on Linux/macOS a normal user cannot listen on them without extra privileges</td></tr>
+          <tr><td>1024–49151</td><td>Registered ports</td><td>Applications such as MySQL 3306, RMI registry 1099, development servers 8080</td></tr>
+          <tr><td>49152–65535</td><td>Dynamic / ephemeral ports</td><td>Picked automatically by the OS for the client end of a connection</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Well-known ports to remember:</strong></p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Service</th><th>Port</th><th>Transport</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP</td><td>80</td><td>TCP</td><td>Unencrypted; mostly redirects to HTTPS today</td></tr>
+          <tr><td>HTTPS</td><td>443</td><td>TCP, or UDP for HTTP/3</td><td>HTTP inside TLS</td></tr>
+          <tr><td>FTP</td><td>21 (control), 20 (data, active mode)</td><td>TCP</td><td>Legacy, unencrypted</td></tr>
+          <tr><td>SSH / SFTP</td><td>22</td><td>TCP</td><td>Secure remote login and file transfer</td></tr>
+          <tr><td>SMTP</td><td>25</td><td>TCP</td><td>Server-to-server mail; clients submit on 587 (or 465 with TLS)</td></tr>
+          <tr><td>DNS</td><td>53</td><td>UDP and TCP</td><td>UDP for normal lookups, TCP for large replies and zone transfers</td></tr>
+          <tr><td>Daytime</td><td>13</td><td>TCP/UDP</td><td>Historic test service (see section 4)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>TCP vs UDP</h3>
+      <p><strong>TCP</strong> is connection-oriented, reliable and gives ordered delivery. Before any data flows, the two sides perform a three-way handshake; afterwards every segment is numbered and acknowledged, and lost segments are retransmitted. <strong>UDP</strong> is connectionless and faster, with no delivery guarantees: each datagram is sent on its own. UDP is used for voice, video, DNS and DHCP, where speed matters more than perfect delivery, and as the base of QUIC (HTTP/3).</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 300" role="img" aria-label="TCP three-way handshake: SYN, SYN-ACK, ACK, then data, compared with UDP sending a datagram immediately">
+          <defs>
+            <marker id="d3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="d3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <text x="160" y="20" text-anchor="middle" class="b">TCP</text>
+          <rect class="bx" x="20" y="30" width="80" height="30" rx="6"/><text x="60" y="50" text-anchor="middle">Client</text>
+          <rect class="bx" x="220" y="30" width="80" height="30" rx="6"/><text x="260" y="50" text-anchor="middle">Server</text>
+          <line class="ln dash" x1="60" y1="60" x2="60" y2="290"/><line class="ln dash" x1="260" y1="60" x2="260" y2="290"/>
+          <line class="ln-a" x1="60" y1="80" x2="256" y2="105" marker-end="url(#d3a)"/><text x="150" y="84" text-anchor="middle" class="sm">1. SYN</text>
+          <line class="ln-a" x1="260" y1="125" x2="64" y2="150" marker-end="url(#d3a)"/><text x="170" y="130" text-anchor="middle" class="sm">2. SYN-ACK</text>
+          <line class="ln-a" x1="60" y1="170" x2="256" y2="195" marker-end="url(#d3a)"/><text x="150" y="174" text-anchor="middle" class="sm">3. ACK</text>
+          <line class="ln-ok" x1="60" y1="225" x2="256" y2="250" marker-end="url(#d3b)"/><text x="150" y="229" text-anchor="middle" class="sm">data</text>
+          <line class="ln-ok" x1="260" y1="262" x2="64" y2="285" marker-end="url(#d3b)"/><text x="175" y="266" text-anchor="middle" class="sm">ACK</text>
+          <text x="490" y="20" text-anchor="middle" class="b">UDP</text>
+          <rect class="bx" x="350" y="30" width="80" height="30" rx="6"/><text x="390" y="50" text-anchor="middle">Client</text>
+          <rect class="bx" x="550" y="30" width="80" height="30" rx="6"/><text x="590" y="50" text-anchor="middle">Server</text>
+          <line class="ln dash" x1="390" y1="60" x2="390" y2="290"/><line class="ln dash" x1="590" y1="60" x2="590" y2="290"/>
+          <line class="ln-ok" x1="390" y1="80" x2="586" y2="105" marker-end="url(#d3b)"/><text x="480" y="84" text-anchor="middle" class="sm">datagram</text>
+          <line class="ln-ok" x1="590" y1="125" x2="394" y2="150" marker-end="url(#d3b)"/><text x="500" y="130" text-anchor="middle" class="sm">reply (maybe)</text>
+          <text x="490" y="200" text-anchor="middle" class="sm">no handshake,</text>
+          <text x="490" y="218" text-anchor="middle" class="sm">no acknowledgements,</text>
+          <text x="490" y="236" text-anchor="middle" class="sm">no retransmission</text>
+        </svg>
+        <figcaption>Figure 3. TCP spends one round trip on the handshake before sending data and acknowledges what it receives. UDP just sends.</figcaption>
+      </figure>
+
+      <h4>TCP vs UDP: detailed comparison</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>TCP</th><th>UDP</th></tr></thead>
+        <tbody>
+          <tr><td>Connection</td><td>Connection-oriented (three-way handshake)</td><td>Connectionless</td></tr>
+          <tr><td>Reliability</td><td>High (error checking, acknowledgements, retransmission)</td><td>Low (checksum only; lost packets are not resent)</td></tr>
+          <tr><td>Ordering</td><td>Guaranteed in-order byte stream</td><td>Datagrams may arrive out of order or twice</td></tr>
+          <tr><td>Flow and congestion control</td><td>Yes</td><td>No (application must be careful)</td></tr>
+          <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+          <tr><td>Header size</td><td>20–60 bytes</td><td>8 bytes</td></tr>
+          <tr><td>Data unit</td><td>Byte stream (no message boundaries)</td><td>Separate datagrams (boundaries kept)</td></tr>
+          <tr><td>Usage</td><td>HTTP/1.1, HTTP/2, HTTPS, FTP, SMTP, SSH</td><td>DNS, DHCP, VoIP, video streaming, games, QUIC / HTTP/3</td></tr>
+          <tr><td>Java classes</td><td><code>Socket</code>, <code>ServerSocket</code></td><td><code>DatagramSocket</code>, <code>DatagramPacket</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"Why does a voice call use UDP?" Because a retransmitted voice packet arrives too late to be played; it is better to skip it than to pause the call. Give the trade-off in one sentence: TCP trades speed for reliability, UDP trades reliability for speed.</p></div>
+
+      <h3>Java networking</h3>
+      <p>Java provides comprehensive networking support in <code>java.net</code>:</p>
+      <dl class="defs">
+        <dt><code>InetAddress</code></dt><dd>Represents an IP address (IPv4 or IPv6); resolves names with DNS.</dd>
+        <dt><code>Socket</code></dt><dd>Client end of a TCP connection.</dd>
+        <dt><code>ServerSocket</code></dt><dd>Listens on a port and accepts TCP connections.</dd>
+        <dt><code>DatagramSocket</code></dt><dd>Sends and receives UDP datagrams.</dd>
+        <dt><code>DatagramPacket</code></dt><dd>One UDP datagram: a byte buffer plus the destination or source address and port.</dd>
+        <dt><code>HttpClient</code></dt><dd><code>java.net.http.HttpClient</code> (Java 11+): a ready-made HTTP/1.1 and HTTP/2 client, used instead of writing HTTP over raw sockets.</dd>
+      </dl>
+
+      <h3>TCP and UDP communication examples</h3>
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="t-tcp" aria-selected="true">TCP example</button><button role="tab" aria-controls="t-udp">UDP example</button><button role="tab" aria-controls="t-inet">InetAddress example</button></div>
+        <div role="tabpanel" id="t-tcp">
+          <p class="code-title">TCPServer.java and TCPClient.java: the client sends a sentence, the server returns it in capitals</p>
+<pre><code>// TCP Server
 import java.io.*;
 import java.net.*;
 
 public class TCPServer {
     public static void main(String args[]) throws Exception {
         ServerSocket welcomeSocket = new ServerSocket(6789);
-        
+
         while(true) {
             Socket connectionSocket = welcomeSocket.accept();
             BufferedReader inFromClient = new BufferedReader(
                 new InputStreamReader(connectionSocket.getInputStream()));
             DataOutputStream outToClient = new DataOutputStream(
                 connectionSocket.getOutputStream());
-            
+
             String clientSentence = inFromClient.readLine();
             System.out.println("Received: " + clientSentence);
-            
+
             String capitalizedSentence = clientSentence.toUpperCase() + '\n';
             outToClient.writeBytes(capitalizedSentence);
+            connectionSocket.close();   // added: release the connection after replying
         }
     }
 }
@@ -912,35 +644,28 @@ public class TCPClient {
     public static void main(String args[]) throws Exception {
         BufferedReader inFromUser = new BufferedReader(
             new InputStreamReader(System.in));
-        
+
         Socket clientSocket = new Socket("localhost", 6789);
-        
+
         DataOutputStream outToServer = new DataOutputStream(
             clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(
             new InputStreamReader(clientSocket.getInputStream()));
-        
+
         String sentence = inFromUser.readLine();
         outToServer.writeBytes(sentence + '\n');
-        
+
         String modifiedSentence = inFromServer.readLine();
         System.out.println("FROM SERVER: " + modifiedSentence);
-        
+
         clientSocket.close();
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="udp-example">
-                        <div class="code-header">
-                            <div class="code-title">UDP Client/Server Communication</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// UDP Server
+          <p>The server has two sockets: <code>welcomeSocket</code> only accepts; <code>connectionSocket</code> talks to one client. The original version never closed <code>connectionSocket</code>, which leaks one connection per client; the added <code>close()</code> fixes that. Put each class in its own <code>.java</code> file, start the server first, then the client.</p>
+        </div>
+        <div role="tabpanel" id="t-udp">
+          <p class="code-title">UDPServer.java and UDPClient.java: the same capitalising service over UDP</p>
+<pre><code>// UDP Server
 import java.io.*;
 import java.net.*;
 
@@ -949,20 +674,22 @@ class UDPServer {
         DatagramSocket serverSocket = new DatagramSocket(9876);
         byte[] receiveData = new byte[1024];
         byte[] sendData = new byte[1024];
-        
+
         while(true) {
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
-            
-            String sentence = new String(receivePacket.getData());
+
+            // Fixed: use only the bytes actually received (getLength),
+            // not the whole 1024-byte buffer
+            String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
             InetAddress IPAddress = receivePacket.getAddress();
             int port = receivePacket.getPort();
-            
+
             System.out.println("Received from " + IPAddress + ":" + port + " - " + sentence);
-            
+
             String capitalizedSentence = sentence.toUpperCase();
             sendData = capitalizedSentence.getBytes();
-            
+
             DatagramPacket sendPacket = new DatagramPacket(
                 sendData, sendData.length, IPAddress, port);
             serverSocket.send(sendPacket);
@@ -979,40 +706,34 @@ class UDPClient {
         BufferedReader inFromUser = new BufferedReader(
             new InputStreamReader(System.in));
         DatagramSocket clientSocket = new DatagramSocket();
-        
+
         InetAddress IPAddress = InetAddress.getByName("localhost");
-        
+
         byte[] sendData = new byte[1024];
         byte[] receiveData = new byte[1024];
-        
+
         String sentence = inFromUser.readLine();
         sendData = sentence.getBytes();
-        
+
         DatagramPacket sendPacket = new DatagramPacket(
             sendData, sendData.length, IPAddress, 9876);
         clientSocket.send(sendPacket);
-        
+
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+        clientSocket.setSoTimeout(5000);   // added: give up after 5 s if the reply is lost
         clientSocket.receive(receivePacket);
-        
-        String modifiedSentence = new String(receivePacket.getData());
+
+        String modifiedSentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
         System.out.println("FROM SERVER: " + modifiedSentence);
-        
+
         clientSocket.close();
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="inetaddress-example">
-                        <div class="code-header">
-                            <div class="code-title">InetAddress Usage Examples</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.net.*;
+          <p>No <code>accept()</code> and no streams: each <code>receive()</code> gets one whole datagram, and the server learns where to reply from the packet itself (<code>getAddress()</code>, <code>getPort()</code>). Two fixes from the original: <code>new String(getData())</code> turned the entire 1024-byte buffer into text, including leftover zero bytes, so the output had invisible garbage; and without a timeout, a lost UDP packet would make the client wait forever.</p>
+        </div>
+        <div role="tabpanel" id="t-inet">
+          <p class="code-title">InetAddressExample.java: InetAddress usage</p>
+<pre><code>import java.net.*;
 
 public class InetAddressExample {
     public static void main(String[] args) {
@@ -1020,140 +741,188 @@ public class InetAddressExample {
             // Get local host address
             InetAddress localHost = InetAddress.getLocalHost();
             System.out.println("Local Host: " + localHost);
-            
+
             // Get by host name
             InetAddress googleAddress = InetAddress.getByName("google.com");
             System.out.println("Google: " + googleAddress);
-            
+
             // Get all addresses for a host
             InetAddress[] allAddresses = InetAddress.getAllByName("google.com");
             System.out.println("All Google addresses:");
             for (InetAddress addr : allAddresses) {
                 System.out.println("  - " + addr);
             }
-            
+
             // Get host name from IP
             InetAddress address = InetAddress.getByName("8.8.8.8");
             System.out.println("Host name for 8.8.8.8: " + address.getHostName());
-            
+
             // Check if address is reachable
             System.out.println("Is Google reachable? " + googleAddress.isReachable(5000));
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 4: Application Protocols -->
-        <section id="module4" class="module">
-            <div class="module-header">
-                <div class="module-icon">4</div>
-                <h2 class="module-title">Application Protocols (Case Studies)</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🌐</span> HTTP Protocol</h3>
-                    <p>Application-level protocol for distributed, collaborative, hypermedia information systems.</p>
-                    <p><strong>Key Features:</strong></p>
-                    <ul>
-                        <li>Connectionless</li>
-                        <li>Media independent</li>
-                        <li>Stateless</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📁</span> FTP Protocol</h3>
-                    <p>Protocol for transferring files between computers, typically from your computer to a web server.</p>
-                    <p>Uses port 20 for data and port 21 for control.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔒</span> HTTP Methods</h3>
-                    <ul>
-                        <li><strong>GET:</strong> Retrieve information</li>
-                        <li><strong>POST:</strong> Send data to server</li>
-                        <li><strong>PUT:</strong> Replace resource</li>
-                        <li><strong>DELETE:</strong> Remove resource</li>
-                        <li><strong>HEAD:</strong> Get headers only</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">HTTP Method Safety & Idempotence</h3>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>HTTP Method</th>
-                        <th>Safe (Yes/No)</th>
-                        <th>Idempotent (Yes/No)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OPTIONS</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>HEAD</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>PUT</td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>POST</td>
-                        <td>No</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td>DELETE</td>
-                        <td>No</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>TRACE</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="code-section">
-                <h3>HTTP Client and Server Implementation</h3>
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" data-tab="http-server">HTTP Server</button>
-                        <button class="tab-button" data-tab="http-client">HTTP Client</button>
-                        <button class="tab-button" data-tab="daytime-protocol">Daytime Protocol</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="http-server">
-                        <div class="code-header">
-                            <div class="code-title">Simple HTTP Server Implementation</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.io.*;
+          <ul>
+            <li><code>getByName</code> performs a DNS lookup; <code>getAllByName</code> returns every address, often both IPv4 and IPv6 for big sites.</li>
+            <li><code>getHostName()</code> on an IP does a reverse lookup: for 8.8.8.8 it prints <code>dns.google</code>.</li>
+            <li><code>isReachable</code> uses ICMP ping only when the program has the privilege; otherwise it tries a TCP connection to port 7. Firewalls often block both, so <code>false</code> does not prove the host is down.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Expecting TCP to keep message boundaries. If the client writes "Hello" then "World", the server may read "HelloWorld" in one go or "Hel" + "loWorld". That is why these examples end every message with <code>'\n'</code> and read with <code>readLine()</code>: the newline marks where a message ends.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: communication technologies</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What are the three messages of the TCP handshake, in order?</p>
+          <div class="opts">
+            <button>ACK, SYN, FIN</button>
+            <button data-correct>SYN, SYN-ACK, ACK</button>
+            <button>HELLO, READY, GO</button>
+          </div>
+          <div class="explain">The client sends SYN, the server replies SYN-ACK, the client confirms with ACK. Only then can data flow. FIN is used to close a connection.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which Java class do you use to listen for incoming UDP datagrams?</p>
+          <div class="opts">
+            <button>ServerSocket</button>
+            <button data-correct>DatagramSocket</button>
+            <button>InetAddress</button>
+          </div>
+          <div class="explain">UDP has no connections, so there is no "server socket" that accepts. A <code>DatagramSocket</code> bound to a port both receives and sends <code>DatagramPacket</code>s. <code>ServerSocket</code> is TCP only.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In the original UDP server, why could the printed sentence contain garbage at the end?</p>
+          <div class="opts">
+            <button>UDP corrupts data in transit</button>
+            <button data-correct>It converted the whole 1024-byte buffer to a String instead of only getLength() bytes</button>
+            <button>toUpperCase() adds extra characters</button>
+          </div>
+          <div class="explain">A datagram fills only the first <code>getLength()</code> bytes of the buffer; the rest are zeros (or old data). <code>new String(data, 0, packet.getLength())</code> uses just the received part.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Port 49800 most likely belongs to:</p>
+          <div class="opts">
+            <button>A well-known service such as HTTP</button>
+            <button>A registered application such as MySQL</button>
+            <button data-correct>The client end of a connection, chosen automatically by the OS</button>
+          </div>
+          <div class="explain">49152–65535 is the IANA dynamic/ephemeral range. When a client opens a socket without choosing a port, the OS picks one for it. (Exact ranges vary: Windows uses 49152–65535, Linux defaults to 32768–60999.)</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 4 ===================== -->
+    <section>
+      <h2><span class="num">4</span>Application Protocols (Case Studies)</h2>
+      <p>Sockets move bytes; an <span class="term" title="A protocol at the top layer that defines the meaning of messages for one kind of application (web, mail, file transfer)">application protocol</span> says what those bytes mean. We study three: HTTP, FTP and the tiny Daytime protocol.</p>
+
+      <h3>HTTP</h3>
+      <p>HTTP is an application-level protocol for distributed, collaborative, hypermedia information systems. <em>Hypermedia</em> means documents that link to other documents and media: the Web. Its key features:</p>
+      <dl class="defs">
+        <dt>Stateless</dt><dd>The server keeps no memory of previous requests. Each request must carry everything needed (cookies, tokens). This makes servers simple and easy to scale, because any server in a cluster can answer any request.</dd>
+        <dt>Media independent</dt><dd>Any type of data can be sent, as long as client and server agree on its type through the <code>Content-Type</code> header (<code>text/html</code>, <code>application/json</code>, <code>image/png</code>).</dd>
+        <dt>Connection handling</dt><dd>Older course notes say "connectionless": in HTTP/1.0 the client connected, sent one request, got one response, and the connection closed. <strong>Updated:</strong> since HTTP/1.1, connections are persistent by default and reused for many requests; HTTP/2 multiplexes many requests on one connection; HTTP/3 uses QUIC. What stayed true is that HTTP is stateless.</dd>
+      </dl>
+
+      <h4>Anatomy of an HTTP/1.1 exchange</h4>
+      <p class="code-title">Request (client to server)</p>
+<pre><code>GET /courses/index.html HTTP/1.1      &lt;- request line: method, path, version
+Host: www.example.com                  &lt;- mandatory in HTTP/1.1
+User-Agent: Mozilla/5.0
+Accept: text/html
+                                       &lt;- empty line ends the headers</code></pre>
+      <p class="code-title">Response (server to client)</p>
+<pre><code>HTTP/1.1 200 OK                        &lt;- status line: version, code, reason
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1532
+                                       &lt;- empty line
+&lt;!DOCTYPE html&gt;&lt;html&gt;...             &lt;- body: exactly 1532 bytes</code></pre>
+      <p>Every line ends with <strong>CRLF</strong> (<code>\r\n</code>), and an empty line separates headers from the body.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Status class</th><th>Meaning</th><th>Common examples</th></tr></thead>
+        <tbody>
+          <tr><td>1xx</td><td>Informational</td><td>101 Switching Protocols (WebSocket upgrade)</td></tr>
+          <tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 204 No Content</td></tr>
+          <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 304 Not Modified</td></tr>
+          <tr><td>4xx</td><td>Client error</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 405 Method Not Allowed</td></tr>
+          <tr><td>5xx</td><td>Server error</td><td>500 Internal Server Error, 503 Service Unavailable</td></tr>
+        </tbody>
+      </table></div>
+
+      <h4>HTTP versions</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Version</th><th>Year</th><th>Transport</th><th>Main features</th></tr></thead>
+        <tbody>
+          <tr><td>HTTP/1.0</td><td>1996</td><td>TCP</td><td>Text messages; one request per connection by default</td></tr>
+          <tr><td>HTTP/1.1</td><td>1997; current spec RFC 9112 (2022)</td><td>TCP</td><td>Persistent connections, <code>Host</code> header (many sites on one IP), chunked transfer</td></tr>
+          <tr><td>HTTP/2</td><td>2015; RFC 9113 (2022)</td><td>TCP (TLS in practice)</td><td>Binary frames, multiplexing of many streams on one connection, HPACK header compression</td></tr>
+          <tr><td>HTTP/3</td><td>2022; RFC 9114</td><td>QUIC over UDP</td><td>Built-in TLS 1.3, faster connection setup, a lost packet only delays its own stream (no TCP head-of-line blocking)</td></tr>
+        </tbody>
+      </table></div>
+      <p>All versions share the same <em>semantics</em> (methods, status codes, headers), defined in RFC 9110. Only the way messages are packed on the wire changes. <strong>HTTPS</strong> is HTTP over <span class="term" title="Transport Layer Security: encrypts the connection and proves the server's identity with a certificate">TLS</span> on port 443. The current version is TLS 1.3 (2018); TLS 1.2 is still acceptable; SSL 3.0, TLS 1.0 and TLS 1.1 are deprecated and must not be used.</p>
+      <div class="callout analogy"><span class="label">Analogy</span><p>HTTP/1.1 is a single-lane road where cars (responses) must leave in the order they entered. HTTP/2 paints several lanes on the same road, but one accident (a lost TCP packet) still blocks all lanes. HTTP/3 gives each lane its own road, so an accident only stops one lane.</p></div>
+
+      <h3>HTTP methods</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Method</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>GET</td><td>Retrieve information</td><td><code>GET /students/7</code></td></tr>
+          <tr><td>POST</td><td>Send data to the server for processing; often creates a resource</td><td><code>POST /students</code> with a new student in the body</td></tr>
+          <tr><td>PUT</td><td>Replace the resource at this URL with the one sent</td><td><code>PUT /students/7</code> with the complete student</td></tr>
+          <tr><td>PATCH</td><td>Partially modify a resource</td><td><code>PATCH /students/7</code> with only <code>{"email": ...}</code></td></tr>
+          <tr><td>DELETE</td><td>Remove the resource</td><td><code>DELETE /students/7</code></td></tr>
+          <tr><td>HEAD</td><td>Same as GET but headers only (check size, date, existence)</td><td><code>HEAD /video.mp4</code></td></tr>
+          <tr><td>OPTIONS</td><td>Ask which methods are allowed (also used by browsers for CORS checks)</td><td><code>OPTIONS /students</code></td></tr>
+          <tr><td>TRACE</td><td>Echo the received request back, for debugging</td><td>Usually disabled on public servers</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>HTTP method safety and idempotence</h3>
+      <dl class="defs">
+        <dt>Safe</dt><dd>The client does not request any change on the server; the method is read-only by intent. Crawlers and caches may send safe requests freely.</dd>
+        <dt>Idempotent</dt><dd>Repeating the identical request has the same effect on the server as sending it once. Clients may automatically retry idempotent requests after a network error.</dd>
+      </dl>
+      <div class="table-wrap"><table>
+        <thead><tr><th>HTTP method</th><th>Safe</th><th>Idempotent</th></tr></thead>
+        <tbody>
+          <tr><td>OPTIONS</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>GET</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>HEAD</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>PUT</td><td>No</td><td>Yes</td></tr>
+          <tr><td>POST</td><td>No</td><td>No</td></tr>
+          <tr><td>DELETE</td><td>No</td><td>Yes</td></tr>
+          <tr><td>TRACE</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>PATCH</td><td>No</td><td>No (not guaranteed)</td></tr>
+          <tr><td>CONNECT</td><td>No</td><td>No</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">Key idea</span><p>Every safe method is idempotent, but not every idempotent method is safe. PUT and DELETE change the server, yet doing them twice ends in the same state as doing them once.</p></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Using GET for actions that change data, such as <code>GET /deleteStudent?id=7</code>. Browsers prefetch links and crawlers follow them, so a "safe" GET that deletes data can wipe records by accident. Use POST or DELETE for changes.</p></div>
+
+      <h3>FTP</h3>
+      <p>FTP is a protocol for transferring files between computers, classically from your computer to a web server. It uses two separate TCP connections:</p>
+      <ul>
+        <li><strong>Control connection, port 21:</strong> stays open for the whole session and carries text commands (<code>USER</code>, <code>PASS</code>, <code>LIST</code>, <code>RETR</code> to download, <code>STOR</code> to upload).</li>
+        <li><strong>Data connection:</strong> opened for each file or directory listing. In <strong>active mode</strong> the server connects back to the client <em>from port 20</em>. In <strong>passive mode</strong> (the default in modern clients) the client connects to a random high port the server announces, which works through firewalls and NAT.</li>
+      </ul>
+      <div class="callout warn"><span class="label">Updated</span><p>FTP sends passwords and files in clear text, so anyone on the network path can read them. Today use <strong>SFTP</strong> (part of SSH, port 22) or <strong>FTPS</strong> (FTP with TLS). Chrome and Firefox removed support for <code>ftp://</code> URLs in 2021.</p></div>
+
+      <h3>HTTP client and server implementation</h3>
+      <p>These programs speak HTTP directly over sockets, so you can see exactly what goes on the wire. In real projects you would use a framework or <code>java.net.http.HttpClient</code>, but writing it by hand once is the best way to understand the protocol.</p>
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="t-hsrv" aria-selected="true">HTTP server</button><button role="tab" aria-controls="t-hcli">HTTP client</button><button role="tab" aria-controls="t-day">Daytime protocol</button></div>
+        <div role="tabpanel" id="t-hsrv">
+          <p class="code-title">SimpleHTTPServer.java: simple HTTP server implementation</p>
+<pre><code>import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
 public class SimpleHTTPServer {
@@ -1161,10 +930,10 @@ public class SimpleHTTPServer {
         try {
             ServerSocket serverSocket = new ServerSocket(8000);
             System.out.println("HTTP Server running on port 8000");
-            
+
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                
+
                 // Handle each request in a separate thread
                 new Thread(new RequestHandler(clientSocket)).start();
             }
@@ -1172,14 +941,14 @@ public class SimpleHTTPServer {
             System.err.println("Server error: " + e.getMessage());
         }
     }
-    
+
     private static class RequestHandler implements Runnable {
         private Socket clientSocket;
-        
+
         public RequestHandler(Socket socket) {
             this.clientSocket = socket;
         }
-        
+
         @Override
         public void run() {
             try (
@@ -1189,25 +958,25 @@ public class SimpleHTTPServer {
             ) {
                 String requestLine = in.readLine();
                 if (requestLine == null) return;
-                
+
                 System.out.println("Request: " + requestLine);
-                
+
                 StringTokenizer tokenizer = new StringTokenizer(requestLine);
                 String method = tokenizer.nextToken();
                 String path = tokenizer.nextToken();
-                
+
                 // Simple routing
                 if ("GET".equals(method)) {
                     if ("/".equals(path)) {
-                        sendResponse(out, "200 OK", "text/html", 
-                            "&lt;html>&lt;body>&lt;h1>Welcome to Simple HTTP Server&lt;/h1>&lt;/body>&lt;/html>");
+                        sendResponse(out, "200 OK", "text/html",
+                            "&lt;html&gt;&lt;body&gt;&lt;h1&gt;Welcome to Simple HTTP Server&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
                     } else {
                         sendResponse(out, "404 Not Found", "text/html",
-                            "&lt;html>&lt;body>&lt;h1>404 - Page Not Found&lt;/h1>&lt;/body>&lt;/html>");
+                            "&lt;html&gt;&lt;body&gt;&lt;h1&gt;404 - Page Not Found&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
                     }
                 } else {
                     sendResponse(out, "405 Method Not Allowed", "text/html",
-                        "&lt;html>&lt;body>&lt;h1>405 - Method Not Allowed&lt;/h1>&lt;/body>&lt;/html>");
+                        "&lt;html&gt;&lt;body&gt;&lt;h1&gt;405 - Method Not Allowed&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;");
                 }
             } catch (IOException e) {
                 System.err.println("Error handling request: " + e.getMessage());
@@ -1219,99 +988,109 @@ public class SimpleHTTPServer {
                 }
             }
         }
-        
+
+        // Fixed: HTTP requires CRLF ("\r\n") line endings, and Content-Length
+        // counts bytes, not characters. println() would use the OS line separator.
         private void sendResponse(PrintWriter out, String status, String contentType, String content) {
-            out.println("HTTP/1.1 " + status);
-            out.println("Content-Type: " + contentType);
-            out.println("Content-Length: " + content.length());
-            out.println();
-            out.println(content);
+            byte[] body = content.getBytes(StandardCharsets.UTF_8);
+            out.print("HTTP/1.1 " + status + "\r\n");
+            out.print("Content-Type: " + contentType + "; charset=UTF-8\r\n");
+            out.print("Content-Length: " + body.length + "\r\n");
+            out.print("Connection: close\r\n");
+            out.print("\r\n");
+            out.print(content);
+            out.flush();
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="http-client">
-                        <div class="code-header">
-                            <div class="code-title">HTTP Client with GET and POST</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.io.*;
+          <p>Run it and open <code>http://localhost:8000/</code> in a browser. The server reads only the request line (<code>GET / HTTP/1.1</code>), splits it into method and path, and routes: <code>/</code> gives 200, anything else 404, any method other than GET gives 405.</p>
+        </div>
+        <div role="tabpanel" id="t-hcli">
+          <p class="code-title">HTTPClient.java: HTTP client with GET and POST</p>
+<pre><code>import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
 public class HTTPClient {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Enter host (e.g., www.google.com): ");
+
+        System.out.print("Enter host (e.g., example.com): ");
         String host = scanner.nextLine();
-        
+
         System.out.print("Use (1) GET or (2) POST? ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // consume newline
-        
+
         try {
-            Socket socket = new Socket(host, 80);
+            Socket socket = new Socket(host, 80);   // port 80 = plain HTTP, no TLS
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
-            
+
+            // Updated: every HTTP line must end in "\r\n" (CRLF)
             if (choice == 1) {
                 // Send GET request
-                out.println("GET / HTTP/1.1");
-                out.println("Host: " + host);
-                out.println("User-Agent: Simple Java HTTP Client");
-                out.println("Accept: text/html");
-                out.println("Connection: close");
-                out.println();
+                out.print("GET / HTTP/1.1\r\n");
+                out.print("Host: " + host + "\r\n");
+                out.print("User-Agent: Simple Java HTTP Client\r\n");
+                out.print("Accept: text/html\r\n");
+                out.print("Connection: close\r\n");
+                out.print("\r\n");
             } else {
                 // Send POST request
-                String postData = "name=John&email=john@example.com";
-                
-                out.println("POST / HTTP/1.1");
-                out.println("Host: " + host);
-                out.println("User-Agent: Simple Java HTTP Client");
-                out.println("Content-Type: application/x-www-form-urlencoded");
-                out.println("Content-Length: " + postData.length());
-                out.println("Connection: close");
-                out.println();
-                out.println(postData);
+                String postData = "name=John&amp;email=john@example.com";
+
+                out.print("POST / HTTP/1.1\r\n");
+                out.print("Host: " + host + "\r\n");
+                out.print("User-Agent: Simple Java HTTP Client\r\n");
+                out.print("Content-Type: application/x-www-form-urlencoded\r\n");
+                out.print("Content-Length: " + postData.length() + "\r\n");
+                out.print("Connection: close\r\n");
+                out.print("\r\n");
+                out.print(postData);
             }
-            
+            out.flush();
+
             // Read response
             String line;
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
             }
-            
+
             socket.close();
         } catch (IOException e) {
             System.err.println("Client error: " + e.getMessage());
         }
-        
+
         scanner.close();
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="daytime-protocol">
-                        <div class="code-header">
-                            <div class="code-title">Daytime Protocol Implementation</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// Daytime Server
+          <p><code>Connection: close</code> asks the server to close the connection after its response, so the read loop ends. Many big sites (for example www.google.com) answer a plain-HTTP request on port 80 with <code>301 Moved Permanently</code> to the HTTPS address, and a POST to <code>/</code> is often refused with 405. Both are correct HTTP behaviour, not bugs in the client.</p>
+          <details class="reveal"><summary>Show the modern way: java.net.http.HttpClient (Java 11+)</summary>
+<pre><code>import java.net.URI;
+import java.net.http.*;
+
+public class ModernHttpClient {
+    public static void main(String[] args) throws Exception {
+        HttpClient client = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL)
+            .build();                                  // negotiates HTTP/2 when possible
+        HttpRequest request = HttpRequest.newBuilder(URI.create("https://example.com/")).GET().build();
+        HttpResponse&lt;String&gt; response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.version() + " " + response.statusCode());
+        System.out.println(response.body());
+    }
+}</code></pre>
+            <p>This handles HTTPS (TLS), redirects, HTTP/2 and character sets for you.</p>
+          </details>
+        </div>
+        <div role="tabpanel" id="t-day">
+          <p class="code-title">DaytimeServer.java and DaytimeClient.java: Daytime protocol implementation</p>
+<pre><code>// Daytime Server
 import java.io.*;
 import java.net.*;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public class DaytimeServer {
     public static void main(String[] args) throws IOException {
@@ -1321,7 +1100,8 @@ public class DaytimeServer {
                 Socket socket = listener.accept();
                 try {
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    out.println(new Date().toString());
+                    // Updated: java.time replaces the legacy java.util.Date
+                    out.println(ZonedDateTime.now().toString());
                 } finally {
                     socket.close();
                 }
@@ -1342,106 +1122,141 @@ public class DaytimeClient {
         String serverAddress = JOptionPane.showInputDialog(
             "Enter IP Address of a machine that is\n" +
             "running the date service on port 9090:");
-        
+
         Socket s = new Socket(serverAddress, 9090);
         BufferedReader input = new BufferedReader(
             new InputStreamReader(s.getInputStream()));
-        
+
         String answer = input.readLine();
         JOptionPane.showMessageDialog(null, answer);
         System.exit(0);
     }
 }</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 5: Middleware & Advanced Distribution -->
-        <section id="module5" class="module">
-            <div class="module-header">
-                <div class="module-icon">5</div>
-                <h2 class="module-title">Middleware & Advanced Distribution</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🔗</span> What is Middleware?</h3>
-                    <p>Connectivity software that enables multiple processes to interact across a network.</p>
-                    <p>Essential for migrating mainframe applications to client/server and providing communication across heterogeneous platforms.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📊</span> Middleware Types</h3>
-                    <ul>
-                        <li>RPC - Remote Procedure Calls</li>
-                        <li>MOM - Message-Oriented Middleware</li>
-                        <li>Publish/Subscribe</li>
-                        <li>ORB - Object Request Broker</li>
-                        <li>SQL-oriented Data Access</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🗃️</span> Database Middleware</h3>
-                    <ul>
-                        <li>ODBC - Open Database Connectivity</li>
-                        <li>OLE-DB - Microsoft enhancement</li>
-                        <li>JDBC - Java Database Connectivity</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">JDBC Architecture</h3>
-            <div class="diagram">
-                <p>Java Application → JDBC API → JDBC Driver Manager → JDBC Driver → Database</p>
-            </div>
-            
-            <div class="code-section">
-                <h3>JDBC Database Connectivity Examples</h3>
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" data-tab="jdbc-basic">Basic JDBC</button>
-                        <button class="tab-button" data-tab="jdbc-advanced">Advanced JDBC</button>
-                        <button class="tab-button" data-tab="jdbc-transaction">Transactions</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="jdbc-basic">
-                        <div class="code-header">
-                            <div class="code-title">Basic JDBC Connection and Query</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.sql.*;
+          <p>The Daytime protocol (RFC 867) is the simplest possible service: connect, receive the current date and time as text, disconnect. The client sends nothing. The official port is <strong>13</strong>; the example uses 9090 because ports below 1024 need administrator rights. The original used <code>new Date().toString()</code>; <code>java.util.Date</code> still works but <code>java.time</code> (Java 8+) is the modern API.</p>
+        </div>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: application protocols</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A client times out while sending <code>PUT /students/7</code> and automatically sends it again. Is that safe to do?</p>
+          <div class="opts">
+            <button data-correct>Yes, PUT is idempotent: the second request leaves the same final state</button>
+            <button>No, PUT is not idempotent and creates a duplicate</button>
+            <button>Only if the method is also safe</button>
+          </div>
+          <div class="explain">PUT replaces the resource with the same content, so one or two PUTs give the same result. Retrying a POST is what can create duplicates.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>What is the main improvement of HTTP/2 over HTTP/1.1?</p>
+          <div class="opts">
+            <button>It runs over UDP</button>
+            <button data-correct>Many requests and responses are multiplexed in parallel on one connection, in binary frames</button>
+            <button>It adds new methods such as FETCH</button>
+          </div>
+          <div class="explain">HTTP/2 keeps the same methods and status codes but sends binary frames and interleaves many streams on one TCP connection. Moving to UDP (via QUIC) is HTTP/3.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Why do most FTP clients use passive mode today?</p>
+          <div class="opts">
+            <button>It encrypts the data</button>
+            <button data-correct>The client opens the data connection, which works through firewalls and NAT</button>
+            <button>It uses port 20 for everything</button>
+          </div>
+          <div class="explain">In active mode the server must connect back into the client, which home routers and firewalls usually block. In passive mode both connections go from client to server. Passive mode adds no encryption; use SFTP or FTPS for that.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which header is mandatory in every HTTP/1.1 request?</p>
+          <div class="opts">
+            <button>Content-Type</button>
+            <button data-correct>Host</button>
+            <button>User-Agent</button>
+          </div>
+          <div class="explain"><code>Host</code> tells the server which website is wanted, which lets many sites share one IP address. Content-Type is only needed when there is a body; User-Agent is optional.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 5 ===================== -->
+    <section>
+      <h2><span class="num">5</span>Middleware &amp; Advanced Distribution</h2>
+
+      <h3>What is middleware?</h3>
+      <p><span class="term" title="Software between the application and the OS/network that handles communication, data conversion and location of services">Middleware</span> is connectivity software that enables multiple processes running on one or more machines to interact across a network. Think of the "/" in client/server: middleware is the software that sits on that slash. It was essential for migrating mainframe applications to client/server and for providing communication across <span class="term" title="Different hardware, operating systems, languages and data formats">heterogeneous</span> platforms, for example a Java client on Windows talking to a C program on a Linux server.</p>
+      <div class="flow"><span class="node">Client application</span><span class="arrow">↔</span><span class="node hi">Middleware</span><span class="arrow">↔</span><span class="node">OS + network</span><span class="arrow">↔</span><span class="node hi">Middleware</span><span class="arrow">↔</span><span class="node">Server application</span></div>
+      <p>Middleware typically provides: <strong>location transparency</strong> (find a service by name, not IP), <strong>data conversion</strong> (byte order, character sets, object formats), <strong>reliability</strong> (retries, queues, transactions) and <strong>security</strong> (authentication, encryption).</p>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A postal service with translators. You write a letter in your own language and drop it in a box. The service finds the address, carries the letter, translates it on arrival and keeps it safe until the receiver is home. You never deal with trucks, routes or languages.</p></div>
+
+      <h3>Middleware types</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>How it works</th><th>Sync or async</th><th>Examples today</th></tr></thead>
+        <tbody>
+          <tr><td>RPC: Remote Procedure Calls</td><td>Call a remote function as if it were local (section 6)</td><td>Usually synchronous</td><td>gRPC, ONC RPC, Java RMI</td></tr>
+          <tr><td>MOM: Message-Oriented Middleware</td><td>Put a message in a queue; a consumer takes it out later. Sender and receiver need not run at the same time</td><td>Asynchronous</td><td>RabbitMQ, IBM MQ, Amazon SQS, Jakarta Messaging (JMS)</td></tr>
+          <tr><td>Publish/Subscribe</td><td>Publishers send to a topic; every subscriber of that topic gets a copy. Publishers do not know who listens</td><td>Asynchronous</td><td>Apache Kafka, MQTT (IoT), Redis Pub/Sub</td></tr>
+          <tr><td>ORB: Object Request Broker</td><td>Invoke methods on remote objects written in other languages, described in an IDL</td><td>Synchronous</td><td>CORBA (legacy)</td></tr>
+          <tr><td>SQL-oriented data access</td><td>A uniform API to send SQL to any database and get rows back</td><td>Synchronous</td><td>ODBC, JDBC, ADO.NET</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout example"><span class="label">Example</span><p>An online shop uses all of these. The browser calls the order service (RPC/REST, synchronous: the user waits). The order service puts "send confirmation email" in a queue (MOM: the email can go out a few seconds later). It publishes an "order placed" event that the warehouse, analytics and loyalty services each receive (pub/sub). And it saves the order through JDBC (SQL-oriented data access).</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"RPC vs MOM": RPC is synchronous and tightly coupled (the caller waits; the server must be up). MOM is asynchronous and loosely coupled (the sender continues; the queue holds the message until the receiver is ready).</p></div>
+
+      <h3>Database middleware</h3>
+      <dl class="defs">
+        <dt>ODBC</dt><dd>Open Database Connectivity (1992): a C-language, vendor-neutral API. An application written to ODBC can use any database that has an ODBC driver. Still widely used, for example by Excel and reporting tools.</dd>
+        <dt>OLE DB</dt><dd>Microsoft's COM-based enhancement of ODBC that can also reach non-relational data sources. Windows-only. Still supported for SQL Server through the MSOLEDBSQL driver, but new .NET applications use <strong>ADO.NET</strong>.</dd>
+        <dt>JDBC</dt><dd>Java Database Connectivity: the standard Java API (<code>java.sql</code>) for relational databases, independent of the database vendor.</dd>
+      </dl>
+
+      <h3>JDBC architecture</h3>
+      <div class="flow"><span class="node">Java application</span><span class="arrow">→</span><span class="node">JDBC API</span><span class="arrow">→</span><span class="node hi">JDBC Driver Manager</span><span class="arrow">→</span><span class="node">JDBC driver</span><span class="arrow">→</span><span class="node">Database</span></div>
+      <p>Your code depends only on the interfaces in <code>java.sql</code>. The <code>DriverManager</code> picks the driver that understands the connection URL (<code>jdbc:mysql://...</code>, <code>jdbc:postgresql://...</code>), and that driver speaks the database's own network protocol. In larger applications a <code>javax.sql.DataSource</code> with a <span class="term" title="A set of open database connections kept ready and reused, because opening a new connection is slow">connection pool</span> (for example HikariCP) replaces <code>DriverManager</code>.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Driver type</th><th>How it reaches the database</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Type 1: JDBC-ODBC bridge</td><td>Translates JDBC calls into ODBC calls</td><td>Removed from the JDK in Java 8</td></tr>
+          <tr><td>Type 2: native API</td><td>Calls the vendor's native client library</td><td>Rare</td></tr>
+          <tr><td>Type 3: network protocol</td><td>Talks to a middleware server, which talks to the database</td><td>Rare</td></tr>
+          <tr><td>Type 4: thin, pure Java</td><td>Speaks the database's wire protocol directly</td><td>Standard today (MySQL Connector/J, PostgreSQL JDBC)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>JDBC database connectivity examples</h3>
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="t-jb" aria-selected="true">Basic JDBC</button><button role="tab" aria-controls="t-ja">Advanced JDBC</button><button role="tab" aria-controls="t-jt">Transactions</button></div>
+        <div role="tabpanel" id="t-jb">
+          <p class="code-title">BasicJDBCExample.java: basic JDBC connection and query (the classic five steps)</p>
+<pre><code>import java.sql.*;
 
 public class BasicJDBCExample {
     // Database credentials
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    // Updated: MySQL Connector/J 8+ uses "com.mysql.cj.jdbc.Driver";
+    // the old name "com.mysql.jdbc.Driver" is deprecated.
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
     static final String USER = "username";
     static final String PASS = "password";
-    
+
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
-        
+
         try {
             // STEP 1: Register JDBC driver
+            // (optional since JDBC 4.0 / Java 6: drivers register themselves)
             Class.forName(JDBC_DRIVER);
-            
+
             // STEP 2: Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
+
             // STEP 3: Execute a query
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             String sql = "SELECT id, first, last, age FROM Employees";
             ResultSet rs = stmt.executeQuery(sql);
-            
+
             // STEP 4: Extract data from result set
             while(rs.next()) {
                 // Retrieve by column name
@@ -1449,14 +1264,14 @@ public class BasicJDBCExample {
                 int age = rs.getInt("age");
                 String first = rs.getString("first");
                 String last = rs.getString("last");
-                
+
                 // Display values
                 System.out.print("ID: " + id);
                 System.out.print(", Age: " + age);
                 System.out.print(", First: " + first);
                 System.out.println(", Last: " + last);
             }
-            
+
             // STEP 5: Clean-up environment
             rs.close();
             stmt.close();
@@ -1482,211 +1297,272 @@ public class BasicJDBCExample {
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="jdbc-advanced">
-                        <div class="code-header">
-                            <div class="code-title">Advanced JDBC with PreparedStatement</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.sql.*;
+          <ol class="steps">
+            <li><strong>Register the driver</strong> (automatic in modern Java).</li>
+            <li><strong>Open a connection</strong> with a JDBC URL, user and password.</li>
+            <li><strong>Execute a query</strong> through a <code>Statement</code>.</li>
+            <li><strong>Read the <code>ResultSet</code></strong> row by row: <code>next()</code> moves to the next row and returns <code>false</code> at the end.</li>
+            <li><strong>Close</strong> the result set, statement and connection. Closing twice (in the try and in <code>finally</code>) is harmless; try-with-resources, used in the next tabs, does it once and correctly.</li>
+          </ol>
+        </div>
+        <div role="tabpanel" id="t-ja">
+          <p class="code-title">AdvancedJDBCExample.java: PreparedStatement for parameterised queries</p>
+<pre><code>import java.sql.*;
 
 public class AdvancedJDBCExample {
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
     static final String USER = "username";
     static final String PASS = "password";
-    
+
     public static void main(String[] args) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        
-        try {
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
+        // Updated: try-with-resources closes everything automatically.
+        // The original reused one pstmt variable for two statements,
+        // so the first PreparedStatement was never closed.
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+
             // Using PreparedStatement for parameterized queries
             String sql = "UPDATE Employees SET age = ? WHERE id = ?";
-            pstmt = conn.prepareStatement(sql);
-            
-            // Bind values into the parameters
-            pstmt.setInt(1, 35);  // This would set the age
-            pstmt.setInt(2, 102); // This would set the ID
-            
-            // Execute the update
-            int rows = pstmt.executeUpdate();
-            System.out.println(rows + " rows affected.");
-            
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                // Bind values into the parameters
+                pstmt.setInt(1, 35);  // This sets the age
+                pstmt.setInt(2, 102); // This sets the ID
+
+                // Execute the update
+                int rows = pstmt.executeUpdate();
+                System.out.println(rows + " rows affected.");
+            }
+
             // Using PreparedStatement for SELECT with parameters
             sql = "SELECT id, first, last, age FROM Employees WHERE age > ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, 30);
-            
-            ResultSet rs = pstmt.executeQuery();
-            
-            // Extract data from result set
-            while(rs.next()) {
-                int id = rs.getInt("id");
-                int age = rs.getInt("age");
-                String first = rs.getString("first");
-                String last = rs.getString("last");
-                
-                System.out.print("ID: " + id);
-                System.out.print(", Age: " + age);
-                System.out.print(", First: " + first);
-                System.out.println(", Last: " + last);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, 30);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    // Extract data from result set
+                    while(rs.next()) {
+                        int id = rs.getInt("id");
+                        int age = rs.getInt("age");
+                        String first = rs.getString("first");
+                        String last = rs.getString("last");
+
+                        System.out.print("ID: " + id);
+                        System.out.print(", Age: " + age);
+                        System.out.print(", First: " + first);
+                        System.out.println(", Last: " + last);
+                    }
+                }
             }
-            
-            rs.close();
-            pstmt.close();
-            conn.close();
         } catch(SQLException se) {
             se.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if(pstmt != null) pstmt.close();
-            } catch(SQLException se2) {
-                // Nothing we can do
-            }
-            try {
-                if(conn != null) conn.close();
-            } catch(SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="jdbc-transaction">
-                        <div class="code-header">
-                            <div class="code-title">JDBC Transaction Management</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">import java.sql.*;
+          <div class="table-wrap"><table>
+            <thead><tr><th></th><th>Statement</th><th>PreparedStatement</th></tr></thead>
+            <tbody>
+              <tr><td>SQL text</td><td>Built as a full string each time</td><td>Fixed, with <code>?</code> placeholders</td></tr>
+              <tr><td>Parameters</td><td>Concatenated into the SQL</td><td>Bound with <code>setInt</code>, <code>setString</code>, ...</td></tr>
+              <tr><td>SQL injection</td><td>Vulnerable if user input is concatenated</td><td>Protected: values are never parsed as SQL</td></tr>
+              <tr><td>Repeated execution</td><td>Parsed every time</td><td>Can be pre-compiled once and reused</td></tr>
+            </tbody>
+          </table></div>
+          <div class="callout warn"><span class="label">Common mistake</span><p><code>"SELECT * FROM users WHERE name = '" + input + "'"</code>. If a user types <code>' OR '1'='1</code>, the query returns every user. With <code>WHERE name = ?</code> and <code>setString(1, input)</code>, that text is just a strange name.</p></div>
+        </div>
+        <div role="tabpanel" id="t-jt">
+          <p class="code-title">TransactionExample.java: JDBC transaction management</p>
+<pre><code>import java.sql.*;
 
 public class TransactionExample {
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/EMP";
     static final String USER = "username";
     static final String PASS = "password";
-    
+
     public static void main(String[] args) {
-        Connection conn = null;
-        
-        try {
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+
             // Turn off auto-commit to control transactions manually
             conn.setAutoCommit(false);
-            
-            // Create statement
-            Statement stmt = conn.createStatement();
-            
-            try {
+
+            try (Statement stmt = conn.createStatement()) {
                 // Execute multiple SQL statements as a single transaction
                 String sql1 = "UPDATE Employees SET age = 30 WHERE id = 101";
                 stmt.executeUpdate(sql1);
-                
+
                 String sql2 = "UPDATE Employees SET age = 35 WHERE id = 102";
                 stmt.executeUpdate(sql2);
-                
+
                 String sql3 = "INSERT INTO Employees VALUES (103, 'John', 'Doe', 28)";
                 stmt.executeUpdate(sql3);
-                
+
                 // If we reach here without exceptions, commit the transaction
                 conn.commit();
                 System.out.println("Transaction committed successfully.");
-                
+
             } catch (SQLException e) {
                 // If any error occurs, rollback the transaction
                 conn.rollback();
                 System.out.println("Transaction rolled back due to error: " + e.getMessage());
+            } finally {
+                conn.setAutoCommit(true);   // restore the default
             }
-            
-            stmt.close();
-            conn.close();
-            
+
         } catch(SQLException se) {
             se.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if(conn != null) conn.close();
-            } catch(SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Module 6: Remote Invocation (RPC & RMI) -->
-        <section id="module6" class="module">
-            <div class="module-header">
-                <div class="module-icon">6</div>
-                <h2 class="module-title">Remote Invocation (RPC & RMI)</h2>
-            </div>
-            
-            <div class="content-grid">
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">📞</span> RPC - Remote Procedure Call</h3>
-                    <p>Mechanism to execute subroutines on other hosts without including socket code in programs.</p>
-                    <p>Hides network code into stub procedures.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">☕</span> RMI - Remote Method Invocation</h3>
-                    <p>Java mechanism allowing objects in one JVM to invoke objects running on another JVM.</p>
-                    <p>Used to build distributed applications.</p>
-                </div>
-                
-                <div class="card">
-                    <h3 class="card-title"><span class="card-icon">🌐</span> CORBA</h3>
-                    <p>Common Object Request Broker Architecture - platform and language-independent framework for building distributed systems.</p>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 2rem;">RPC Mechanism</h3>
-            <div class="diagram">
-                <p>Client → Client Stub → Network → Server Stub → Server Procedure</p>
-                <p>Then reverse for response</p>
-            </div>
-            
-            <div class="code-section">
-                <h3>RMI Implementation Examples</h3>
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" data-tab="rmi-basic">Basic RMI</button>
-                        <button class="tab-button" data-tab="rmi-calculator">Calculator RMI</button>
-                        <button class="tab-button" data-tab="rmi-database">Database RMI</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="rmi-basic">
-                        <div class="code-header">
-                            <div class="code-title">Basic RMI Implementation</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// 1. Define the Remote Interface
+          <p>By default JDBC is in <em>auto-commit</em> mode: every statement is saved permanently as soon as it runs. <code>setAutoCommit(false)</code> groups the three statements into one <span class="term" title="A group of operations that succeed or fail together">transaction</span>. If the INSERT fails (for example, id 103 already exists), <code>rollback()</code> undoes the two UPDATEs as well, so the database is never left half-changed.</p>
+          <dl class="defs">
+            <dt>Atomicity</dt><dd>All statements happen, or none do.</dd>
+            <dt>Consistency</dt><dd>The database moves from one valid state to another (constraints still hold).</dd>
+            <dt>Isolation</dt><dd>Concurrent transactions do not see each other's half-finished work.</dd>
+            <dt>Durability</dt><dd>Once committed, the change survives a crash.</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="callout tip"><span class="label">Tip</span><p>The MySQL driver is not part of the JDK. Add the Connector/J <code>.jar</code> to the classpath (or the Maven dependency <code>com.mysql:mysql-connector-j</code>), otherwise you get <code>No suitable driver found</code>.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: middleware and JDBC</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A sender must keep working even when the receiver is offline for an hour. Which middleware fits best?</p>
+          <div class="opts">
+            <button>RPC</button>
+            <button data-correct>Message-Oriented Middleware (a queue)</button>
+            <button>ODBC</button>
+          </div>
+          <div class="explain">MOM is asynchronous: the queue stores the message until the receiver comes back. RPC is synchronous and fails if the server is down. ODBC is for database access.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why is PreparedStatement preferred over Statement when values come from the user?</p>
+          <div class="opts">
+            <button>It returns more rows</button>
+            <button data-correct>Parameters are bound separately, so user input cannot change the SQL (prevents SQL injection)</button>
+            <button>It does not need a Connection</button>
+          </div>
+          <div class="explain">With <code>?</code> placeholders the SQL structure is fixed before any value is supplied; the driver sends values as data. It can also be faster when the same statement runs many times.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>In TransactionExample, the third statement fails. What is in the database afterwards?</p>
+          <div class="opts">
+            <button>The two UPDATEs are saved; only the INSERT is missing</button>
+            <button data-correct>None of the three changes, because rollback() undoes the whole transaction</button>
+            <button>All three changes, because executeUpdate already saved them</button>
+          </div>
+          <div class="explain">With auto-commit off, nothing is permanent until <code>commit()</code>. The exception jumps to the catch block, <code>rollback()</code> runs, and the two updates are undone: atomicity.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which JDBC driver type is the standard choice today?</p>
+          <div class="opts">
+            <button>Type 1, the JDBC-ODBC bridge</button>
+            <button>Type 2, native API</button>
+            <button data-correct>Type 4, pure Java (thin)</button>
+          </div>
+          <div class="explain">Type 4 drivers are a single .jar that talks the database protocol directly, with no native libraries. The Type 1 bridge was removed in Java 8.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 6 ===================== -->
+    <section>
+      <h2><span class="num">6</span>Remote Invocation (RPC &amp; RMI)</h2>
+
+      <h3>RPC: Remote Procedure Call</h3>
+      <p>RPC is a mechanism to execute subroutines on other hosts without including socket code in your programs. The network code is hidden in <span class="term" title="Generated code that looks like the real procedure but forwards the call over the network">stub</span> procedures, so calling a remote function looks like calling a local one: <code>result = add(4, 5)</code>, even though <code>add</code> runs on another machine.</p>
+      <dl class="defs">
+        <dt>Client stub</dt><dd>Local procedure with the same signature as the remote one. It marshals the arguments and sends the request.</dd>
+        <dt>Server stub (skeleton)</dt><dd>Receives the request, unmarshals the arguments, calls the real procedure, and sends back the result.</dd>
+        <dt>Marshalling</dt><dd>Converting parameters into a network format (bytes). Unmarshalling is the reverse.</dd>
+        <dt>IDL</dt><dd>Interface Definition Language: a language-neutral description of the remote procedures, from which stubs are generated (for example <code>.x</code> files in ONC RPC, <code>.proto</code> files in gRPC).</dd>
+        <dt>Binding</dt><dd>How the client finds the server: a name service or registry (portmapper on port 111 in ONC RPC, the RMI registry on 1099).</dd>
+      </dl>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 640 270" role="img" aria-label="RPC call path: client, client stub, network, server stub, server procedure, and back">
+          <defs>
+            <marker id="d6a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="d6b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="bx-sunk" x="10" y="10" width="260" height="250" rx="12"/><text x="140" y="32" text-anchor="middle" class="sm">Client machine</text>
+          <rect class="bx-sunk" x="370" y="10" width="260" height="250" rx="12"/><text x="500" y="32" text-anchor="middle" class="sm">Server machine</text>
+          <rect class="bx" x="40" y="45" width="200" height="50" rx="8"/><text x="140" y="75" text-anchor="middle" class="b">Client program</text>
+          <rect class="bx-hi" x="40" y="130" width="200" height="50" rx="8"/><text x="140" y="160" text-anchor="middle" class="b">Client stub</text>
+          <rect class="bx" x="40" y="205" width="200" height="40" rx="8"/><text x="140" y="230" text-anchor="middle">OS / network</text>
+          <rect class="bx" x="400" y="45" width="200" height="50" rx="8"/><text x="500" y="75" text-anchor="middle" class="b">Server procedure</text>
+          <rect class="bx-hi" x="400" y="130" width="200" height="50" rx="8"/><text x="500" y="160" text-anchor="middle" class="b">Server stub</text>
+          <rect class="bx" x="400" y="205" width="200" height="40" rx="8"/><text x="500" y="230" text-anchor="middle">OS / network</text>
+          <line class="ln-a" x1="110" y1="95" x2="110" y2="126" marker-end="url(#d6a)"/><text x="104" y="116" text-anchor="end" class="sm">1 call</text>
+          <line class="ln-a" x1="110" y1="180" x2="110" y2="201" marker-end="url(#d6a)"/><text x="104" y="196" text-anchor="end" class="sm">2 marshal</text>
+          <line class="ln-a" x1="240" y1="220" x2="396" y2="220" marker-end="url(#d6a)"/><text x="318" y="212" text-anchor="middle" class="sm">3 request</text>
+          <line class="ln-a" x1="470" y1="205" x2="470" y2="184" marker-end="url(#d6a)"/><text x="464" y="198" text-anchor="end" class="sm">4 unmarshal</text>
+          <line class="ln-a" x1="470" y1="130" x2="470" y2="99" marker-end="url(#d6a)"/><text x="464" y="118" text-anchor="end" class="sm">5 call</text>
+          <line class="ln-ok" x1="530" y1="99" x2="530" y2="126" marker-end="url(#d6b)"/><text x="536" y="118" class="sm">6 return</text>
+          <line class="ln-ok" x1="530" y1="180" x2="530" y2="201" marker-end="url(#d6b)"/><text x="536" y="196" class="sm">7 marshal</text>
+          <line class="ln-ok" x1="400" y1="238" x2="244" y2="238" marker-end="url(#d6b)"/><text x="318" y="256" text-anchor="middle" class="sm">8 reply</text>
+          <line class="ln-ok" x1="170" y1="201" x2="170" y2="184" marker-end="url(#d6b)"/><text x="176" y="198" class="sm">9 unmarshal</text>
+          <line class="ln-ok" x1="170" y1="126" x2="170" y2="99" marker-end="url(#d6b)"/><text x="176" y="118" class="sm">10 result</text>
+        </svg>
+        <figcaption>Figure 4. The ten steps of a remote procedure call. Blue arrows carry the request, green arrows carry the result back. Only steps 3 and 8 cross the network.</figcaption>
+      </figure>
+
+      <ol class="steps">
+        <li><strong>The client calls the client stub</strong> in the normal way; the client blocks until the reply comes back.</li>
+        <li><strong>The client stub marshals</strong> the procedure ID and parameters into a message.</li>
+        <li><strong>The OS sends the message</strong> to the server machine.</li>
+        <li><strong>The server stub unmarshals</strong> the parameters.</li>
+        <li><strong>The server stub calls the real procedure</strong> on the server.</li>
+        <li>The procedure <strong>returns its result</strong> to the server stub, which marshals it and sends it back (steps 6–8).</li>
+        <li><strong>The client stub unmarshals the result</strong> and returns it to the caller, which continues as if it had made a local call (steps 9–10).</li>
+      </ol>
+
+      <div class="callout analogy"><span class="label">Analogy</span><p>A travel agent. You ask the agent (client stub) for "a flight to Paris on Friday". The agent fills in the airline's booking form (marshalling), sends it, and the airline's clerk (server stub) reads the form and enters it in the real system (server procedure). The ticket comes back the same way. You only talked to the agent.</p></div>
+
+      <h4>Local call vs remote call</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Local call</th><th>Remote call (RPC/RMI)</th></tr></thead>
+        <tbody>
+          <tr><td>Speed</td><td>Nanoseconds</td><td>Milliseconds: about a million times slower</td></tr>
+          <tr><td>Failure</td><td>Caller and callee fail together</td><td>Network or server can fail independently; caller may not know if the call ran</td></tr>
+          <tr><td>Parameters</td><td>Can pass pointers / references</td><td>Values are copied (serialized); references need special remote objects</td></tr>
+          <tr><td>Errors</td><td>Normal exceptions</td><td>Extra network errors (<code>RemoteException</code>, timeouts)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>RMI: Remote Method Invocation</h3>
+      <p>RMI is Java's mechanism that allows an object in one JVM to invoke methods on an object running in another JVM. It is RPC made object-oriented and is used to build distributed Java applications.</p>
+      <ul>
+        <li><strong>Remote interface:</strong> extends <code>java.rmi.Remote</code>; each method declares <code>throws RemoteException</code>.</li>
+        <li><strong>Remote object:</strong> implements the interface and is <em>exported</em> (made reachable), usually by extending <code>UnicastRemoteObject</code>.</li>
+        <li><strong>Stub:</strong> the client-side proxy. Since Java 5 it is generated automatically at run time; the old <code>rmic</code> compiler was removed in Java 15. Server-side skeletons have not been needed since Java 1.2.</li>
+        <li><strong>RMI registry:</strong> a name service on port 1099. The server <code>bind</code>s or <code>rebind</code>s a name; the client <code>lookup</code>s the name and receives a stub.</li>
+        <li><strong>Parameters:</strong> ordinary objects must implement <code>Serializable</code> and are passed <em>by value</em> (copied); remote objects are passed <em>by reference</em> (as a stub).</li>
+      </ul>
+      <div class="flow"><span class="node">Server: rebind("Hello", obj)</span><span class="arrow">→</span><span class="node hi">RMI registry :1099</span><span class="arrow">←</span><span class="node">Client: lookup("Hello")</span><span class="arrow">→</span><span class="node">stub.sayHello()</span></div>
+
+      <h3>CORBA</h3>
+      <p>CORBA (Common Object Request Broker Architecture), from the Object Management Group, is a platform- and language-independent framework for building distributed systems. Interfaces are written in OMG IDL and compiled into stubs for C++, Java and other languages; an <span class="term" title="Object Request Broker: the middleware that locates the remote object and delivers the call">ORB</span> carries calls using the IIOP protocol. CORBA is now <strong>legacy</strong>: Java's CORBA and RMI-IIOP modules were removed in Java 11 (2018). See <a href="chapter4corba.html">Chapter 4: RMI-IIOP &amp; CORBA</a>.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>RPC (ONC/Sun RPC)</th><th>Java RMI</th><th>CORBA</th><th>gRPC</th></tr></thead>
+        <tbody>
+          <tr><td>Model</td><td>Procedures</td><td>Objects and methods</td><td>Objects and methods</td><td>Services and methods</td></tr>
+          <tr><td>Languages</td><td>Mainly C</td><td>Java only</td><td>Many</td><td>Many</td></tr>
+          <tr><td>Interface definition</td><td>XDR / <code>.x</code> files</td><td>Java interface</td><td>OMG IDL</td><td>Protocol Buffers <code>.proto</code></td></tr>
+          <tr><td>Wire format</td><td>XDR over TCP/UDP</td><td>Java serialization (JRMP)</td><td>IIOP</td><td>Protobuf over HTTP/2</td></tr>
+          <tr><td>Name service</td><td>Portmapper (port 111)</td><td>RMI registry (1099)</td><td>Naming service</td><td>DNS / service discovery</td></tr>
+          <tr><td>Status in 2025</td><td>Legacy; still used by NFS</td><td>In the JDK; teaching and older systems</td><td>Legacy; removed from JDK 11</td><td>Widely used between microservices</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Security note</span><p>RMI transfers objects with Java serialization, which has a long history of remote-code-execution vulnerabilities when it accepts data from untrusted sources. Use RMI only on trusted internal networks, configure serialization filters (<code>jdk.serialFilter</code>), and prefer gRPC or HTTPS APIs for anything exposed to the internet.</p></div>
+
+      <h3>RMI implementation examples</h3>
+      <p>Each example has four parts: remote interface, implementation, server, client. In a real project each public class goes in its own <code>.java</code> file, and the interface (plus any serializable data classes) must be on both the client's and the server's classpath.</p>
+      <div class="tabs"><div role="tablist"><button role="tab" aria-controls="t-rb" aria-selected="true">Basic RMI</button><button role="tab" aria-controls="t-rc">Calculator RMI</button><button role="tab" aria-controls="t-rd">Database RMI</button></div>
+        <div role="tabpanel" id="t-rb">
+          <p class="code-title">Hello: basic RMI implementation</p>
+<pre><code>// 1. Define the Remote Interface
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -1695,13 +1571,14 @@ public interface Hello extends Remote {
 }
 
 // 2. Implement the Remote Interface
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class HelloImpl extends UnicastRemoteObject implements Hello {
     public HelloImpl() throws RemoteException {
-        super();
+        super();   // exports this object so it can receive remote calls
     }
-    
+
     public String sayHello() throws RemoteException {
         return "Hello, world!";
     }
@@ -1712,15 +1589,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class HelloServer {
+    // Keep a strong reference so the registry is not garbage-collected
+    private static Registry registry;
+
     public static void main(String[] args) {
         try {
             // Create and export the remote object
             HelloImpl obj = new HelloImpl();
-            
+
             // Bind the remote object to the registry
-            Registry registry = LocateRegistry.createRegistry(1099);
+            registry = LocateRegistry.createRegistry(1099);
             registry.bind("Hello", obj);
-            
+
             System.out.println("HelloServer ready");
         } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
@@ -1738,10 +1618,10 @@ public class HelloClient {
         try {
             // Get the registry
             Registry registry = LocateRegistry.getRegistry("localhost");
-            
+
             // Look up the remote object
             Hello stub = (Hello) registry.lookup("Hello");
-            
+
             // Call the remote method
             String response = stub.sayHello();
             System.out.println("Response: " + response);
@@ -1751,18 +1631,11 @@ public class HelloClient {
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="rmi-calculator">
-                        <div class="code-header">
-                            <div class="code-title">RMI Calculator Implementation</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// Calculator Interface
+          <p>The server creates the registry inside its own JVM with <code>createRegistry(1099)</code>, so no separate program is needed. <code>bind</code> fails with <code>AlreadyBoundException</code> if the name is taken; <code>rebind</code> replaces it. The client's <code>lookup</code> returns a stub that implements <code>Hello</code>, so <code>stub.sayHello()</code> looks like a local call. Two small additions to the original: <code>HelloImpl</code> now imports <code>RemoteException</code>, and the server keeps the registry in a static field.</p>
+        </div>
+        <div role="tabpanel" id="t-rc">
+          <p class="code-title">Calculator: RMI calculator implementation</p>
+<pre><code>// Calculator Interface
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -1774,27 +1647,28 @@ public interface Calculator extends Remote {
 }
 
 // Calculator Implementation
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class CalculatorImpl extends UnicastRemoteObject implements Calculator {
     public CalculatorImpl() throws RemoteException {
         super();
     }
-    
+
     public long add(long a, long b) throws RemoteException {
         return a + b;
     }
-    
+
     public long sub(long a, long b) throws RemoteException {
         return a - b;
     }
-    
+
     public long mul(long a, long b) throws RemoteException {
         return a * b;
     }
-    
+
     public long div(long a, long b) throws RemoteException {
-        return a / b;
+        return a / b;   // b == 0 throws ArithmeticException, which RMI passes back to the client
     }
 }
 
@@ -1810,7 +1684,7 @@ public class CalculatorServer {
             System.out.println("Trouble: " + e);
         }
     }
-    
+
     public static void main(String args[]) {
         new CalculatorServer();
     }
@@ -1832,37 +1706,35 @@ public class CalculatorClient {
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="rmi-database">
-                        <div class="code-header">
-                            <div class="code-title">RMI with Database Access</div>
-                            <div class="code-actions">
-                                <button class="btn btn-copy btn-small">Copy Code</button>
-                            </div>
-                        </div>
-                        <div class="code-block">
-                            <pre><code class="language-java">// Student class (serializable)
+          <p>This version uses <code>java.rmi.Naming</code>, which takes URL-style names (<code>rmi://host:port/name</code>). Unlike HelloServer it does <strong>not</strong> create a registry, so start one first from the JDK's <code>bin</code> folder, in the directory containing your compiled classes:</p>
+<pre><code>rmiregistry 1099          # terminal 1 (leave it running)
+java CalculatorServer     # terminal 2
+java CalculatorClient     # terminal 3
+# Output: Sub: 1   Add: 9   Mul: 18   Div: 3</code></pre>
+        </div>
+        <div role="tabpanel" id="t-rd">
+          <p class="code-title">StudentService: RMI with database access</p>
+<pre><code>// Student class (serializable)
 import java.io.Serializable;
 
 public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;   // added: version stamp for serialization
     private int id, percent;
     private String name, branch, email;
-    
+
     // Getters and setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
-    
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    
+
     public String getBranch() { return branch; }
     public void setBranch(String branch) { this.branch = branch; }
-    
+
     public int getPercent() { return percent; }
     public void setPercent(int percent) { this.percent = percent; }
-    
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 }
@@ -1873,10 +1745,11 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface StudentService extends Remote {
-    public List<Student> getStudents() throws RemoteException;
+    public List&lt;Student&gt; getStudents() throws RemoteException;
 }
 
 // Service Implementation
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.*;
@@ -1885,28 +1758,22 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
     public StudentServiceImpl() throws RemoteException {
         super();
     }
-    
-    public List<Student> getStudents() throws RemoteException {
-        List<Student> students = new ArrayList<>();
-        
-        try {
-            // Database connection details
-            String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-            String DB_URL = "jdbc:mysql://localhost:3306/details";
-            String USER = "myuser";
-            String PASS = "password";
-            
-            // Register JDBC driver
-            Class.forName(JDBC_DRIVER);
-            
-            // Open connection
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
-            // Execute query
-            Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM student_data";
-            ResultSet rs = stmt.executeQuery(sql);
-            
+
+    public List&lt;Student&gt; getStudents() throws RemoteException {
+        List&lt;Student&gt; students = new ArrayList&lt;&gt;();
+
+        // Database connection details
+        String DB_URL = "jdbc:mysql://localhost:3306/details";
+        String USER = "myuser";
+        String PASS = "password";
+        String sql = "SELECT * FROM student_data";
+
+        // Updated: no Class.forName("com.mysql.jdbc.Driver") needed (JDBC 4.0+),
+        // and try-with-resources closes everything even on errors
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
             // Extract data from result set
             while(rs.next()) {
                 Student student = new Student();
@@ -1915,19 +1782,13 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
                 student.setBranch(rs.getString("branch"));
                 student.setPercent(rs.getInt("percentage"));
                 student.setEmail(rs.getString("email"));
-                
+
                 students.add(student);
             }
-            
-            // Clean-up
-            rs.close();
-            stmt.close();
-            conn.close();
-            
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RemoteException("Error accessing database", e);
         }
-        
+
         return students;
     }
 }
@@ -1937,10 +1798,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class StudentServer {
+    private static Registry registry;
+
     public static void main(String[] args) {
         try {
             StudentService service = new StudentServiceImpl();
-            Registry registry = LocateRegistry.createRegistry(1099);
+            registry = LocateRegistry.createRegistry(1099);
             registry.bind("StudentService", service);
             System.out.println("StudentServer ready");
         } catch (Exception e) {
@@ -1960,8 +1823,8 @@ public class StudentClient {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost");
             StudentService stub = (StudentService) registry.lookup("StudentService");
-            
-            List<Student> students = stub.getStudents();
+
+            List&lt;Student&gt; students = stub.getStudents();
             for (Student s : students) {
                 System.out.println("ID: " + s.getId());
                 System.out.println("Name: " + s.getName());
@@ -1976,120 +1839,94 @@ public class StudentClient {
         }
     }
 }</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <div style="text-align: center; margin-top: 3rem;">
-            <h2>Course Resources</h2>
-            <p style="margin-bottom: 1.5rem;">Explore additional materials and references</p>
-            <a href="#" class="btn">Download Full PDF</a>
-            <a href="#" class="btn btn-outline" style="margin-left: 1rem;">All Code Examples</a>
+          <p>This example joins everything in the course into a 3-tier system: the RMI client is the presentation tier, <code>StudentServiceImpl</code> is the application tier, and MySQL is the data tier. The client never sees SQL or database passwords. <code>Student</code> objects travel <em>by value</em>, so they must be <code>Serializable</code>, and the <code>Student</code> class must exist on both sides.</p>
         </div>
-    </div>
-    
-    <footer>
-        <div class="footer-content">
-            <p>Client/Server Architecture Course - LT-Informatics 2016-2017</p>
-            <p>Prepared by Ibrahim Sayed Ahmad</p>
-            <p style="margin-top: 1rem; font-size: 0.9rem;">&copy; 2023 - Educational Material</p>
-        </div>
-    </footer>
+      </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-java.min.js"></script>
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Highlight active section in navigation
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Tab functionality
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                const tabContainer = button.closest('.tab-container');
-                const tabId = button.getAttribute('data-tab');
-                
-                // Remove active class from all buttons and contents
-                tabContainer.querySelectorAll('.tab-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                tabContainer.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-        
-        // Copy code functionality
-        document.querySelectorAll('.btn-copy').forEach(button => {
-            button.addEventListener('click', () => {
-                const codeBlock = button.closest('.code-header').nextElementSibling;
-                const code = codeBlock.querySelector('code').textContent;
-                
-                navigator.clipboard.writeText(code).then(() => {
-                    const originalText = button.textContent;
-                    button.textContent = 'Copied!';
-                    
-                    setTimeout(() => {
-                        button.textContent = originalText;
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy code: ', err);
-                });
-            });
-        });
-        
-        // Add active class styling
-        const style = document.createElement('style');
-        style.textContent = `
-            .nav-links a.active {
-                color: var(--secondary) !important;
-                font-weight: 600;
-                border-bottom: 2px solid var(--secondary);
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Be ready to list the steps to build an RMI application: (1) define a remote interface extending <code>Remote</code>, every method throwing <code>RemoteException</code>; (2) implement it, extending <code>UnicastRemoteObject</code>; (3) server creates the object and binds it in the registry; (4) client looks it up and calls methods on the stub. Compiling with <code>rmic</code> is no longer a step in current Java.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: RPC and RMI</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is marshalling?</p>
+          <div class="opts">
+            <button>Finding the server's IP address</button>
+            <button data-correct>Packing the procedure's parameters into a message that can be sent over the network</button>
+            <button>Running the procedure on the server</button>
+          </div>
+          <div class="explain">The client stub marshals the arguments into bytes; the server stub unmarshals them. Finding the server is binding (registry, portmapper).</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Why must every method in an RMI remote interface declare <code>RemoteException</code>?</p>
+          <div class="opts">
+            <button>Because the compiler adds it to every interface</button>
+            <button data-correct>Because any remote call can fail for network reasons, and the caller must handle that</button>
+            <button>Because the registry throws it when the name is found</button>
+          </div>
+          <div class="explain">A remote call can fail even when the code is correct: server down, connection lost, timeout. Making it a checked exception forces the programmer to deal with it, which is the honest difference between local and remote calls.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>The Student class must implement <code>Serializable</code> because:</p>
+          <div class="opts">
+            <button>It is stored in the RMI registry</button>
+            <button data-correct>Student objects are copied (passed by value) from server to client over the network</button>
+            <button>JDBC requires it</button>
+          </div>
+          <div class="explain">Non-remote objects in RMI are serialized into bytes, sent, and rebuilt on the other side. Only remote objects (stubs) are passed by reference. The registry stores stubs, not Student objects.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>True or false: CORBA and RMI-IIOP are still included in the current JDK.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Both were removed in Java 11 (2018, JEP 320). Plain Java RMI (JRMP) is still in the JDK in the <code>java.rmi</code> module; RMI Activation was removed in Java 17.</div>
+        </div>
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <!-- ===================== 7 ===================== -->
+    <section>
+      <h2><span class="num">7</span>Course Resources</h2>
+      <p>Explore additional materials and references. The "Download Full PDF" and "All Code Examples" buttons on the old page did not point to any file; all the code examples are on this page, and the links below lead to the related lessons.</p>
+      <div class="cards">
+        <div class="card"><h3>This course</h3><ul>
+          <li><a href="course_html_LT2025.html">Client/Server Architecture: Course Overview</a> (short revision version of this page)</li>
+          <li><a href="Client_Server_Course.html">Client/Server Architecture &amp; IT Security</a></li>
+          <li><a href="c-spart2.html">Client/Server Part 2: How It Works</a></li>
+          <li><a href="teirsexplanations.html">Architecture Tiers Explained</a> and <a href="tier.html">Tiers: Knowledge Check</a></li>
+        </ul></div>
+        <div class="card"><h3>Related chapters</h3><ul>
+          <li><a href="chapter4.html">Chapter 4: Remote Procedure Call (RPC)</a></li>
+          <li><a href="chapter4corba.html">Chapter 4: RMI-IIOP &amp; CORBA</a></li>
+          <li><a href="socket%20first.html">Java Network Programming: Guide</a></li>
+          <li><a href="http.html">HTTP &amp; HTTPS</a></li>
+        </ul></div>
+        <div class="card"><h3>Official references</h3><ul>
+          <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/package-summary.html" rel="noopener">Java <code>java.net</code> API</a></li>
+          <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.rmi/module-summary.html" rel="noopener">Java <code>java.rmi</code> module</a></li>
+          <li><a href="https://docs.oracle.com/javase/tutorial/jdbc/" rel="noopener">Oracle JDBC tutorial</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP" rel="noopener">MDN: HTTP</a></li>
+        </ul></div>
+      </div>
+      <p><small>Client/Server Architecture course, LT-Informatics 2025–2026. Prepared by Hassan Lamaa. Earlier edition (LT-Informatics 2016–2017) prepared by Ibrahim Sayed Ahmad.</small></p>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li><strong>Model:</strong> clients initiate requests, servers listen and respond over IPC (sockets) using a shared protocol. Servers use threads, thread pools or (Java 21+) virtual threads to serve many clients at once.</li>
+        <li><strong>Trade-offs:</strong> central management, scalability, data sharing and security, against cost, complexity, a single point of failure (fixed with redundancy) and congestion.</li>
+        <li><strong>Architectures:</strong> fat client vs fat server decides where logic runs. 2-tier sends SQL from every client; 3-tier puts logic in an application server for performance, scalability, reuse and security; N-tier adds load balancers, caches, queues and services. Layers are logical, tiers are physical.</li>
+        <li><strong>Transport:</strong> socket = IP + port. TCP: handshake, reliable, ordered byte stream, 20–60 byte header. UDP: connectionless datagrams, 8 byte header, used for DNS, VoIP and QUIC. Read only <code>getLength()</code> bytes of a datagram.</li>
+        <li><strong>HTTP:</strong> stateless, media independent, CRLF-terminated text in 1.1, binary multiplexed in HTTP/2, QUIC over UDP in HTTP/3; HTTPS uses TLS 1.2/1.3. GET, HEAD, OPTIONS, TRACE are safe; add PUT and DELETE for idempotent; POST and PATCH are neither.</li>
+        <li><strong>FTP:</strong> control on 21, data on 20 (active) or a high port (passive); unencrypted, so use SFTP or FTPS.</li>
+        <li><strong>Middleware:</strong> RPC (synchronous), MOM and pub/sub (asynchronous), ORBs (CORBA, legacy) and database APIs (ODBC, OLE DB, JDBC). In JDBC use Type 4 drivers, try-with-resources, PreparedStatement against SQL injection, and transactions for all-or-nothing updates.</li>
+        <li><strong>Remote invocation:</strong> stubs marshal parameters and hide the network (10 steps). RMI: Remote interface + RemoteException, UnicastRemoteObject, registry on 1099, Serializable parameters copied by value. CORBA was removed from Java 11; gRPC is the common modern choice.</li>
+      </ul></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

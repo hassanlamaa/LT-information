@@ -1,444 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>📡 Chapter 4: Remote Procedure Call (RPC) | Interactive Course + Knowledge Checks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f1f5f9;
-      color: #0b2b38;
-      line-height: 1.5;
-      padding: 2rem 1.5rem;
-    }
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      background: linear-gradient(145deg, #0a2e3f, #1b6b8f);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    h2 {
-      font-size: 1.7rem;
-      font-weight: 600;
-      margin: 1.5rem 0 1rem;
-      border-left: 5px solid #1e6f5c;
-      padding-left: 1rem;
-      color: #134b5e;
-    }
-    h3 {
-      font-weight: 600;
-      font-size: 1.3rem;
-      margin: 1rem 0 0.5rem;
-      color: #1f5e6e;
-    }
-    .card {
-      background: white;
-      border-radius: 1.8rem;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
-      padding: 1.6rem;
-      margin-bottom: 2rem;
-      transition: all 0.2s;
-      border: 1px solid #dceaf0;
-    }
-    .code-block {
-      background: #0f212e;
-      color: #e3f0f5;
-      padding: 1rem;
-      border-radius: 1.2rem;
-      font-family: 'Monaco', 'Menlo', monospace;
-      font-size: 0.85rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-    }
-    .highlight {
-      background: #eef2fc;
-      padding: 0.2rem 0.4rem;
-      border-radius: 8px;
-      font-weight: 500;
-    }
-    .knowledge-check {
-      background: #eef5f9;
-      border-radius: 1.5rem;
-      padding: 1rem 1.5rem;
-      margin-top: 1.2rem;
-      border-left: 4px solid #2c9b8e;
-    }
-    .quiz-option {
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    button {
-      background: #1d6f8b;
-      border: none;
-      color: white;
-      font-weight: 600;
-      padding: 0.6rem 1.2rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    button:hover {
-      background: #0f556d;
-      transform: translateY(-1px);
-    }
-    .feedback {
-      margin-top: 0.8rem;
-      font-weight: 500;
-      padding: 0.5rem;
-      border-radius: 1rem;
-    }
-    .correct-feedback { color: #0f5c3e; background: #e0f2e9; }
-    .wrong-feedback { color: #b13e3e; background: #ffe6e6; }
-    hr {
-      margin: 2rem 0;
-      border: 1px solid #cbdde6;
-    }
-    .final-quiz {
-      background: #fef7e0;
-      border: 2px solid #f1c40f;
-    }
-    .badge {
-      background: #1e6f5c20;
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-    footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #497c8c;
-    }
-    @media (max-width: 700px) {
-      body { padding: 1rem; }
-      h1 { font-size: 1.8rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chapter 4: Remote Procedure Call (RPC) · LT Information</title>
+<meta name="description" content="How Remote Procedure Call works: stubs, marshalling, XDR, the port mapper, call semantics, authentication, rpcgen, Java RMI and modern RPC with gRPC.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .diagram svg { display: block; width: 100%; min-width: 540px }
+  .diagram svg .box { fill: var(--sunk); stroke: var(--line); stroke-width: 1.5 }
+  .diagram svg .life { stroke: var(--muted); stroke-dasharray: 4 5; stroke-width: 1.2 }
+  .diagram svg .msg { stroke: var(--accent); stroke-width: 2; fill: none }
+  .diagram svg .ret { stroke: var(--ok); stroke-width: 2; fill: none; stroke-dasharray: 7 4 }
+  .diagram svg .ah { fill: var(--accent) }
+  .diagram svg .ah2 { fill: var(--ok) }
+  .diagram svg .act { fill: var(--accent-soft); stroke: var(--accent) }
+  .diagram svg .sm { font-size: 12px }
+  .diagram svg .b { font-weight: 700; font-size: 13px }
+  .diagram svg .mut { fill: var(--muted) }
+</style>
 </head>
 <body>
-<div class="container">
-  <h1><i class="fas fa-network-wired"></i> Chapter 4: Remote Procedure Call (RPC)</h1>
-  <p style="margin-bottom: 1.5rem; font-size: 1.1rem;"><i class="fas fa-book-open"></i> Full interactive course — each section includes a knowledge check. Final exam at the end.</p>
 
-  <!-- ========= 4.1 INTRODUCTION ========= -->
-  <div class="card">
-    <h2>4.1 Introduction to RPC <i class="fas fa-microchip"></i></h2>
-    <p><strong>Remote Procedure Call</strong> allows a program to execute subroutines on another host without manually coding sockets. Network details are hidden inside <strong>stub procedures</strong>.</p>
-    <ul style="margin: 0.8rem 0 0.8rem 1.5rem;">
-      <li><i class="fas fa-check-circle"></i> Analogy with local function call: push parameters, call, return.</li>
-      <li><i class="fas fa-question-circle"></i> Why RPC? Enables distributed computing with familiar procedure-call semantics.</li>
-      <li><i class="fas fa-list"></i> Characteristics: different process/machine, no shared address space, parameters passed <strong>by value</strong> (no pointers).</li>
-      <li><i class="fas fa-star"></i> Features: simple syntax, well-defined interface, efficient, hides network complexity.</li>
-    </ul>
-    <div class="knowledge-check" id="check-4-1">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.1</strong>
-      <p>Which of the following is <strong>NOT</strong> a characteristic of RPC?</p>
-      <div class="quiz-option"><input type="radio" name="q41" value="A"> A) Called procedure resides in a different process/machine.</div>
-      <div class="quiz-option"><input type="radio" name="q41" value="B"> B) Parameters are passed by reference (pointers allowed).</div>
-      <div class="quiz-option"><input type="radio" name="q41" value="C"> C) No shared address space between client and server.</div>
-      <div class="quiz-option"><input type="radio" name="q41" value="D"> D) Client and server may use different architectures.</div>
-      <button class="check-btn" data-section="41">Check Answer</button>
-      <div class="feedback-area" id="fb41"></div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Remote Invocation · Chapter 4</span>
+    <h1>Remote Procedure Call (RPC)</h1>
+    <p class="lead">RPC lets a program call a function that runs on another computer as if it were a normal local call. It is the idea behind Sun RPC, NFS, Java RMI, CORBA and today's gRPC. Once you understand stubs, marshalling and call semantics, every one of these systems looks familiar.</p>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">9 knowledge checks</span><span class="chip">14-question final exam</span><span class="chip">Level: Intermediate</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Explain what RPC is, how it differs from a local call, and what stubs and marshalling do.</li>
+        <li>Trace a full RPC call step by step, including the port mapper lookup.</li>
+        <li>Choose the right call semantics (at-least-once, at-most-once, exactly-once) and explain idempotence.</li>
+        <li>Describe Sun RPC identification, authentication, message format and the rpcgen tool.</li>
+        <li>Write a small Java RMI client and server, and say how modern systems (gRPC, REST) do the same job.</li>
+      </ul>
     </div>
   </div>
+</section>
 
-  <!-- 4.2 RPC Model -->
-  <div class="card">
-    <h2>4.2 RPC Model & Mechanism</h2>
-    <p><strong>Client stub</strong> marshals arguments → sends message → server dispatcher → server stub unmarshals → calls server procedure → result marshaled back.</p>
-    <p><strong>Data representation:</strong> XDR (eXternal Data Representation) ensures machine independence. Marshalling = assemble into external format; unmarshalling = rebuild local format.</p>
-    <p><strong>Asynchronous RPC:</strong> client continues after acknowledgment, server processes later. One-way RPCs (fire-and-forget).</p>
-    <div class="knowledge-check" id="check-4-2">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.2</strong>
-      <p>What is the role of a <strong>stub</strong> in RPC?</p>
-      <div class="quiz-option"><input type="radio" name="q42" value="A"> A) It directly executes the remote procedure.</div>
-      <div class="quiz-option"><input type="radio" name="q42" value="B"> B) It hides network communication & marshals/unmarshals parameters.</div>
-      <div class="quiz-option"><input type="radio" name="q42" value="C"> C) It only authenticates remote calls.</div>
-      <div class="quiz-option"><input type="radio" name="q42" value="D"> D) It allocates port numbers dynamically.</div>
-      <button class="check-btn" data-section="42">Check Answer</button>
-      <div class="feedback-area" id="fb42"></div>
-    </div>
-  </div>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
 
-  <!-- 4.3 Identification of remote procedures -->
-  <div class="card">
-    <h2>4.3 Identification: Program, Version, Procedure Numbers</h2>
-    <p>Each RPC procedure is uniquely identified by:<br>
-    <i class="fas fa-hashtag"></i> <strong>Program number</strong> (group of related procedures)<br>
-    <i class="fas fa-code-branch"></i> <strong>Version number</strong> (evolve protocols smoothly)<br>
-    <i class="fas fa-cog"></i> <strong>Procedure number</strong> (specific function).<br>
-    Sun defined ranges: 0x00000000 – 0x1fffffff (Sun), 0x20000000 – 0x3fffffff (user-defined).</p>
-    <div class="knowledge-check" id="check-4-3">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.3</strong>
-      <p>Why do we use version numbers in RPC?</p>
-      <div class="quiz-option"><input type="radio" name="q43" value="A"> A) To allocate transport ports.</div>
-      <div class="quiz-option"><input type="radio" name="q43" value="B"> B) To allow protocol evolution and backward compatibility.</div>
-      <div class="quiz-option"><input type="radio" name="q43" value="C"> C) To encrypt the call message.</div>
-      <div class="quiz-option"><input type="radio" name="q43" value="D"> D) To indicate the client's IP address.</div>
-      <button class="check-btn" data-section="43">Check Answer</button>
-      <div class="feedback-area" id="fb43"></div>
-    </div>
-  </div>
+    <!-- ========== 4.1 ========== -->
+    <section>
+      <h2 data-toc="4.1 Introduction to RPC"><span class="num">4.1</span>Introduction to RPC</h2>
+      <p><strong>Remote Procedure Call (RPC)</strong> allows a program to execute a subroutine (a procedure or function) on another host <em>without writing any socket code by hand</em>. The programmer writes <code>result = add(2, 3)</code>; behind the scenes the call is turned into a network message, sent to a server, executed there, and the result is sent back.</p>
+      <p>The network details are hidden inside two small pieces of generated code called <span class="term" title="Generated proxy code that makes a remote call look like a local one">stubs</span>. A <strong>stub</strong> is a stand-in procedure with the same name and parameters as the real one. The <em>client stub</em> pretends to be the remote procedure; the <em>server stub</em> (often called the <span class="term" title="Server-side stub that receives a request, unpacks it and calls the real procedure">skeleton</span>) pretends to be the caller on the server side.</p>
 
-  <!-- 4.4 Dynamic Allocation of Transport Ports -->
-  <div class="card">
-    <h2>4.4 Dynamic Port Mapping & Port Mapper</h2>
-    <p>RPC programs cannot use fixed ports because program numbers exceed 16-bit port range. Solution: <strong>Port mapper</strong> (port 111) maintains a dynamic mapping from (program number, version) to protocol port. Servers register; clients query.</p>
-    <div class="code-block">Server registers: (RPC program number, protocol port)<br>Client lookup: portMapper.Lookup(programNumber) → port</div>
-    <div class="knowledge-check" id="check-4-4">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.4</strong>
-      <p>The RPC port mapper listens on which well-known port?</p>
-      <div class="quiz-option"><input type="radio" name="q44" value="A"> A) 80</div>
-      <div class="quiz-option"><input type="radio" name="q44" value="B"> B) 443</div>
-      <div class="quiz-option"><input type="radio" name="q44" value="C"> C) 111</div>
-      <div class="quiz-option"><input type="radio" name="q44" value="D"> D) 8080</div>
-      <button class="check-btn" data-section="44">Check Answer</button>
-      <div class="feedback-area" id="fb44"></div>
-    </div>
-  </div>
+      <div class="callout analogy"><span class="label">Analogy</span><p>Ordering food by phone. You (the client) say "one pizza, large" to the person on the phone (the client stub). They write it on an order slip in a standard format (marshalling), send it to the kitchen (network), where a cook reads the slip (server stub unmarshals) and makes the pizza (the real procedure). The pizza comes back the same way. You never walk into the kitchen.</p></div>
 
-  <!-- 4.5 Semantics of transport -->
-  <div class="card">
-    <h2>4.5 RPC Call Semantics</h2>
-    <p><strong>Exactly once</strong> (hard), <strong>At most once</strong> (error if unsure), <strong>At least once</strong> (repeat until success, for <strong>idempotent</strong> procedures). Idempotent = repeated execution same effect (e.g., read account balance).</p>
-    <div class="knowledge-check" id="check-4-5">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.5</strong>
-      <p>Which semantic is most suitable for an idempotent operation like "get temperature sensor value"?</p>
-      <div class="quiz-option"><input type="radio" name="q45" value="A"> A) Exactly once</div>
-      <div class="quiz-option"><input type="radio" name="q45" value="B"> B) At most once</div>
-      <div class="quiz-option"><input type="radio" name="q45" value="C"> C) At least once</div>
-      <div class="quiz-option"><input type="radio" name="q45" value="D"> D) Zero once</div>
-      <button class="check-btn" data-section="45">Check Answer</button>
-      <div class="feedback-area" id="fb45"></div>
-    </div>
-  </div>
+      <h3>Local call vs remote call</h3>
+      <p>In a local call the caller pushes the parameters onto the stack, jumps to the procedure, and the procedure returns a value. RPC copies this model: the client "pushes" parameters into a message, "jumps" by sending it, and "returns" when the reply arrives. The difference is that the two sides no longer share memory or a CPU.</p>
 
-  <!-- 4.6 RPC Authentication -->
-  <div class="card">
-    <h2>4.6 RPC Authentication</h2>
-    <p><i class="fas fa-shield-alt"></i> NULL (no auth), UNIX style (hostname+UID/GID, weak), DES (encrypted, strong), SHORT (handle after initial auth).</p>
-    <div class="knowledge-check" id="check-4-6">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.6</strong>
-      <p>Which authentication method uses Data Encryption Standard (DES) to provide strong security?</p>
-      <div class="quiz-option"><input type="radio" name="q46" value="A"> A) NULL Authentication</div>
-      <div class="quiz-option"><input type="radio" name="q46" value="B"> B) UNIX Style</div>
-      <div class="quiz-option"><input type="radio" name="q46" value="C"> C) DES Authentication</div>
-      <div class="quiz-option"><input type="radio" name="q46" value="D"> D) SHORT Authentication</div>
-      <button class="check-btn" data-section="46">Check Answer</button>
-      <div class="feedback-area" id="fb46"></div>
-    </div>
-  </div>
+      <h3>Why RPC?</h3>
+      <p>RPC enables distributed computing with the familiar procedure-call style. Programmers already know how to call functions, so splitting an application across machines becomes much easier than designing raw message protocols over sockets.</p>
 
-  <!-- 4.7 RPC Message Format -->
-  <div class="card">
-    <h2>4.7 RPC Message Format</h2>
-    <p>Contains: Message ID, type (CALL/REPLY), RPC version, program, version, procedure, authentication fields, arguments/results.</p>
-    <div class="knowledge-check" id="check-4-7">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.7</strong>
-      <p>What distinguishes a CALL message from a REPLY message in RPC?</p>
-      <div class="quiz-option"><input type="radio" name="q47" value="A"> A) The source port number</div>
-      <div class="quiz-option"><input type="radio" name="q47" value="B"> B) The message type field (CALL vs REPLY)</div>
-      <div class="quiz-option"><input type="radio" name="q47" value="C"> C) The size of the payload</div>
-      <div class="quiz-option"><input type="radio" name="q47" value="D"> D) The checksum field</div>
-      <button class="check-btn" data-section="47">Check Answer</button>
-      <div class="feedback-area" id="fb47"></div>
-    </div>
-  </div>
+      <h3>Characteristics of RPC</h3>
+      <ul>
+        <li>The called procedure runs in a <strong>different process</strong>, usually on a <strong>different machine</strong>.</li>
+        <li>There is <strong>no shared address space</strong> between client and server. A memory address on the client means nothing on the server.</li>
+        <li>Parameters are therefore passed <strong>by value</strong> (copied into the message). Pointers and references cannot be passed as addresses; if a parameter points to data, the stub copies the data itself.</li>
+        <li>Client and server may run on <strong>different architectures</strong> and operating systems (for example little-endian x86 vs big-endian SPARC), so data must be converted to a common format.</li>
+        <li>A remote call can fail in ways a local call cannot: the network can lose a message, or the server can crash halfway (a <em>partial failure</em>).</li>
+      </ul>
 
-  <!-- 4.8 RPC Language (rpcgen) -->
-  <div class="card">
-    <h2>4.8 RPC Language & rpcgen Compiler</h2>
-    <p><strong>rpcgen</strong> takes an interface definition (.x file) written in RPC Language (similar to C) and generates:<br>
-    - Client stub, server skeleton, XDR routines, header file.<br>
-    - Simplifies distributed app development dramatically.</p>
-    <div class="knowledge-check" id="check-4-8">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.8</strong>
-      <p>What is the main output of rpcgen?</p>
-      <div class="quiz-option"><input type="radio" name="q48" value="A"> A) Compiled binary of the server</div>
-      <div class="quiz-option"><input type="radio" name="q48" value="B"> B) Client and server stubs + XDR routines</div>
-      <div class="quiz-option"><input type="radio" name="q48" value="C"> C) Only a Makefile</div>
-      <div class="quiz-option"><input type="radio" name="q48" value="D"> D) Bytecode for JVM</div>
-      <button class="check-btn" data-section="48">Check Answer</button>
-      <div class="feedback-area" id="fb48"></div>
-    </div>
-  </div>
+      <h3>Features</h3>
+      <div class="cards">
+        <div class="card"><h4>Simple syntax</h4><p>A remote call looks like an ordinary function call.</p></div>
+        <div class="card"><h4>Well-defined interface</h4><p>The procedures are described in an interface file, so client and server agree on names and types.</p></div>
+        <div class="card"><h4>Efficient</h4><p>Messages are compact (binary) and the protocol is simple, so calls are fast compared with hand-written text protocols.</p></div>
+        <div class="card"><h4>Hides network complexity</h4><p>Sockets, byte order and retransmission are handled by the stubs and the runtime library.</p></div>
+      </div>
 
-  <!-- 4.9 Practical application: Java RMI -->
-  <div class="card">
-    <h2>4.9 Practical: Sun Java RMI (Remote Method Invocation)</h2>
-    <p><strong>RMI</strong> allows Java objects to invoke methods on remote JVMs. Architecture: Stub (client proxy), Skeleton (server proxy), Remote Reference Layer, Transport. RMI Registry (rmiregistry, default port 1099).</p>
-    <div class="code-block">
-      // Remote interface
-      public interface Calculator extends Remote {
-         long add(long a, long b) throws RemoteException;
-      }
-      // Implementation & Server export, Client lookup via Naming.lookup()
-    </div>
-    <p><strong>Example:</strong> Calculator with add/sub/mul/div, also MySQL database RMI example (retrieve student_data table).<br>
-    Steps: define remote interface → implement → create server with bind() → client lookup().<br>
-    Security: policy file grants permissions (socket, file).</p>
-    <div class="knowledge-check" id="check-4-9">
-      <strong><i class="fas fa-brain"></i> 📘 Knowledge Check 4.9 (RMI)</strong>
-      <p>Which RMI component acts as a proxy on the client side?</p>
-      <div class="quiz-option"><input type="radio" name="q49" value="A"> A) Skeleton</div>
-      <div class="quiz-option"><input type="radio" name="q49" value="B"> B) Stub</div>
-      <div class="quiz-option"><input type="radio" name="q49" value="C"> C) Registry</div>
-      <div class="quiz-option"><input type="radio" name="q49" value="D"> D) Transport layer</div>
-      <button class="check-btn" data-section="49">Check Answer</button>
-      <div class="feedback-area" id="fb49"></div>
-    </div>
-    <p style="margin-top: 1rem;"><i class="fas fa-database"></i> <strong>RMI + JDBC example:</strong> remote method returns List&lt;Student&gt; fetched from MySQL – demonstrates distributed database access.</p>
-  </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Saying "RPC is exactly like a local call". It <em>looks</em> like one, but it is slower (milliseconds instead of nanoseconds), it can fail independently, and it cannot share pointers. Good RPC code always handles timeouts and remote errors.</p></div>
 
-  <!-- FINAL QUIZ (Chapter 4) -->
-  <div class="card final-quiz">
-    <h2><i class="fas fa-clipboard-list"></i> 🎓 Chapter 4 Final Exam · RPC Mastery</h2>
-    <p>Answer all 10 questions to test your understanding of RPC concepts, authentication, port mapping, RMI, and semantics.</p>
-    <div id="finalQuizContainer"></div>
-    <button id="submitFinalQuiz" style="background:#e67e22;"><i class="fas fa-check-double"></i> Submit Final Quiz</button>
-    <div id="finalQuizResult" style="margin-top: 1.5rem; font-weight: 600;"></div>
-  </div>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.1</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which of the following is <strong>NOT</strong> a characteristic of RPC?</p>
+          <div class="opts">
+            <button>A) Called procedure resides in a different process/machine.</button>
+            <button data-correct>B) Parameters are passed by reference (pointers allowed).</button>
+            <button>C) No shared address space between client and server.</button>
+            <button>D) Client and server may use different architectures.</button>
+          </div>
+          <div class="explain">RPC does not allow passing pointers or references, because there is no shared memory: an address on the client is meaningless on the server. Parameters are copied into the message (passed by value). A, C and D are all true characteristics.</div>
+        </div>
+      </div>
+    </section>
 
-  <footer><i class="fas fa-code-branch"></i> Complete RPC Course — knowledge checks + final quiz. Chapter 4 based on standard RPC & RMI literature.</footer>
+    <!-- ========== 4.2 ========== -->
+    <section>
+      <h2 data-toc="4.2 RPC model and mechanism"><span class="num">4.2</span>RPC Model and Mechanism</h2>
+      <p>Every RPC system is built from the same parts. Learn these definitions; they come back in RMI, CORBA and gRPC.</p>
+      <dl class="defs">
+        <dt>Client stub</dt><dd>Local procedure the client calls. It marshals the arguments, sends the request and waits for the reply.</dd>
+        <dt>Server stub (skeleton)</dt><dd>Receives the request on the server, unmarshals the arguments and calls the real procedure.</dd>
+        <dt>Dispatcher</dt><dd>Server code that reads the procedure number in the request and picks which server stub to run.</dd>
+        <dt>Marshalling</dt><dd>Packing parameters into a flat, machine-independent byte format for sending. Also called serialization.</dd>
+        <dt>Unmarshalling</dt><dd>The reverse: rebuilding local data values from the received bytes.</dd>
+        <dt>XDR</dt><dd>eXternal Data Representation (RFC 4506): the standard format Sun RPC uses for marshalled data (big-endian, 4-byte aligned).</dd>
+        <dt>RPC runtime</dt><dd>The library that handles sockets, timeouts and retransmission underneath the stubs.</dd>
+      </dl>
+
+      <h3>The call, step by step</h3>
+      <ol class="steps">
+        <li><strong>Client calls the client stub</strong> as if it were the real procedure, for example <code>add(2, 3)</code>.</li>
+        <li><strong>Client stub marshals</strong> the arguments into an XDR message, together with the program, version and procedure numbers.</li>
+        <li><strong>The RPC runtime sends</strong> the message over the network (UDP or TCP) and the client blocks, waiting.</li>
+        <li><strong>The server dispatcher receives</strong> the message and selects the right server stub using the procedure number.</li>
+        <li><strong>The server stub unmarshals</strong> the arguments and calls the real server procedure.</li>
+        <li><strong>The procedure runs</strong> and returns its result to the server stub.</li>
+        <li><strong>The server stub marshals the result</strong> into a REPLY message and sends it back.</li>
+        <li><strong>The client stub unmarshals the result</strong> and returns it to the caller, which continues as if a local call had finished.</li>
+      </ol>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 680 420" role="img" aria-label="Sequence diagram of an RPC call: client, client stub, network, server stub, server">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+            <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah2" d="M0,0 L10,5 L0,10 z"/></marker>
+          </defs>
+          <rect class="box" x="10" y="10" width="110" height="36" rx="8"/><text class="b" x="65" y="33" text-anchor="middle">Client</text>
+          <rect class="box" x="145" y="10" width="110" height="36" rx="8"/><text class="b" x="200" y="33" text-anchor="middle">Client stub</text>
+          <rect class="box" x="285" y="10" width="110" height="36" rx="8"/><text class="b" x="340" y="33" text-anchor="middle">Network</text>
+          <rect class="box" x="425" y="10" width="110" height="36" rx="8"/><text class="b" x="480" y="33" text-anchor="middle">Server stub</text>
+          <rect class="box" x="560" y="10" width="110" height="36" rx="8"/><text class="b" x="615" y="33" text-anchor="middle">Server proc</text>
+          <line class="life" x1="65" y1="46" x2="65" y2="410"/>
+          <line class="life" x1="200" y1="46" x2="200" y2="410"/>
+          <line class="life" x1="340" y1="46" x2="340" y2="410"/>
+          <line class="life" x1="480" y1="46" x2="480" y2="410"/>
+          <line class="life" x1="615" y1="46" x2="615" y2="410"/>
+          <line class="msg" x1="65" y1="80" x2="198" y2="80" marker-end="url(#a1)"/><text class="sm" x="132" y="72" text-anchor="middle">1 add(2,3)</text>
+          <rect class="act" x="194" y="90" width="12" height="40"/><text class="sm mut" x="212" y="114">2 marshal (XDR)</text>
+          <line class="msg" x1="206" y1="150" x2="338" y2="150" marker-end="url(#a1)"/><text class="sm" x="272" y="142" text-anchor="middle">3 CALL msg</text>
+          <line class="msg" x1="340" y1="175" x2="478" y2="175" marker-end="url(#a1)"/><text class="sm" x="410" y="167" text-anchor="middle">4 dispatch</text>
+          <rect class="act" x="474" y="185" width="12" height="36"/><text class="sm mut" x="378" y="208">5 unmarshal</text>
+          <line class="msg" x1="486" y1="235" x2="613" y2="235" marker-end="url(#a1)"/><text class="sm" x="550" y="227" text-anchor="middle">5 add(2,3)</text>
+          <line class="ret" x1="613" y1="270" x2="488" y2="270" marker-end="url(#a2)"/><text class="sm" x="550" y="262" text-anchor="middle">6 return 5</text>
+          <line class="ret" x1="478" y1="310" x2="342" y2="310" marker-end="url(#a2)"/><text class="sm" x="410" y="302" text-anchor="middle">7 REPLY msg</text>
+          <line class="ret" x1="338" y1="340" x2="208" y2="340" marker-end="url(#a2)"/><text class="sm" x="272" y="332" text-anchor="middle">7 REPLY</text>
+          <line class="ret" x1="194" y1="380" x2="67" y2="380" marker-end="url(#a2)"/><text class="sm" x="132" y="372" text-anchor="middle">8 result = 5</text>
+        </svg>
+        <figcaption>Figure 1. A synchronous RPC. Solid arrows are the request path, dashed arrows the reply. The client is blocked from step 1 until step 8.</figcaption>
+      </figure>
+
+      <h3>Data representation: why XDR?</h3>
+      <p>Different machines store numbers differently. An <code>int</code> of value 1 is stored as <code>01 00 00 00</code> on a little-endian x86 PC but as <code>00 00 00 01</code> on a big-endian machine. If bytes were copied directly, the server could read 16,777,216 instead of 1. <strong>XDR</strong> solves this by defining one external format: the sender converts to XDR (marshalling), the receiver converts from XDR to its own local format (unmarshalling). This gives <strong>machine independence</strong>.</p>
+      <div class="callout example"><span class="label">Example</span><p>Marshalling <code>add(2, 3)</code> in XDR gives eight bytes: <code>00 00 00 02 00 00 00 03</code>. Each integer is 4 bytes, big-endian. A string such as <code>"hi"</code> becomes a 4-byte length (<code>00 00 00 02</code>) followed by the bytes <code>68 69</code> and two padding bytes, because XDR keeps everything aligned to 4 bytes.</p></div>
+
+      <h3>Synchronous, asynchronous and one-way RPC</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Style</th><th>What the client does</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Synchronous</td><td>Blocks until the reply arrives.</td><td>Most calls: "get balance", "add".</td></tr>
+          <tr><td>Asynchronous</td><td>Continues after the server <em>acknowledges</em> the request; the server processes it later and the result is collected later (callback or future).</td><td>Long jobs, such as generating a report.</td></tr>
+          <tr><td>One-way (fire-and-forget)</td><td>Sends the request and never waits for any reply.</td><td>Logging, notifications, where losing one message is acceptable.</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.2</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What is the role of a <strong>stub</strong> in RPC?</p>
+          <div class="opts">
+            <button>A) It directly executes the remote procedure.</button>
+            <button data-correct>B) It hides network communication and marshals/unmarshals parameters.</button>
+            <button>C) It only authenticates remote calls.</button>
+            <button>D) It allocates port numbers dynamically.</button>
+          </div>
+          <div class="explain">Stubs handle marshalling and the network exchange so the remote call looks local. The procedure itself runs on the server (not in the stub), and port allocation is the port mapper's job.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.3 ========== -->
+    <section>
+      <h2 data-toc="4.3 Identifying remote procedures"><span class="num">4.3</span>Identification: Program, Version and Procedure Numbers</h2>
+      <p>On one machine, a function is identified by its name. Across a network, names are awkward, so Sun RPC (also called ONC RPC, defined in RFC 5531) identifies every remote procedure with <strong>three numbers</strong>:</p>
+      <dl class="defs">
+        <dt>Program number</dt><dd>Identifies a group of related procedures, i.e. one service. Example: NFS is program 100003.</dd>
+        <dt>Version number</dt><dd>Lets a service evolve. A server can offer version 2 and version 3 at the same time, so old clients keep working while new clients use new features.</dd>
+        <dt>Procedure number</dt><dd>Identifies one specific function inside that program version. Procedure 0 is always the "null procedure", used to ping a server.</dd>
+      </dl>
+      <div class="flow"><span class="node">Program 0x20000001</span><span class="arrow">→</span><span class="node">Version 1</span><span class="arrow">→</span><span class="node hi">Procedure 1 = ADD</span></div>
+
+      <h3>Program number ranges</h3>
+      <p>Program numbers are 32-bit values divided into ranges. Originally Sun Microsystems assigned the first range; today the registry is kept by IANA.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Range</th><th>Who assigns it</th></tr></thead>
+        <tbody>
+          <tr><td><code>0x00000000 – 0x1fffffff</code></td><td>Defined centrally (originally Sun, now IANA). Well-known services like NFS and mountd.</td></tr>
+          <tr><td><code>0x20000000 – 0x3fffffff</code></td><td>User-defined (local administrator). Use this range for your own programs and course exercises.</td></tr>
+          <tr><td><code>0x40000000 – 0x5fffffff</code></td><td>Transient: generated dynamically by applications at run time.</td></tr>
+          <tr><td><code>0x60000000 – 0xffffffff</code></td><td>Reserved.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>If asked "why use version numbers?", answer: so a server can support several revisions of the same protocol at once, which allows the protocol to evolve while staying backward compatible with old clients.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.3</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Why do we use version numbers in RPC?</p>
+          <div class="opts">
+            <button>A) To allocate transport ports.</button>
+            <button data-correct>B) To allow protocol evolution and backward compatibility.</button>
+            <button>C) To encrypt the call message.</button>
+            <button>D) To indicate the client's IP address.</button>
+          </div>
+          <div class="explain">Version numbers let a server support several revisions of a service at the same time, so the protocol can change without breaking old clients. Ports are handled by the port mapper; encryption is not related.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.4 ========== -->
+    <section>
+      <h2 data-toc="4.4 Port mapper"><span class="num">4.4</span>Dynamic Port Mapping and the Port Mapper</h2>
+      <p>A client needs a <em>port number</em> to reach a server. Why not give each RPC program a fixed port? Because program numbers are 32-bit (over 4 billion values) but TCP/UDP ports are only 16-bit (65,536 values), so there is no one-to-one mapping. Instead, RPC servers take <strong>any free port</strong> when they start and register it with a directory service.</p>
+      <p>That directory is the <span class="term" title="Service on port 111 that maps (program, version, protocol) to a port number">port mapper</span>, called <code>rpcbind</code> on modern Linux and BSD systems. It always listens on the well-known <strong>port 111</strong> (both TCP and UDP) and keeps a table that maps (program number, version, protocol) to a port.</p>
+      <ol class="steps">
+        <li><strong>Server starts</strong> and binds to any free port, for example 40512.</li>
+        <li><strong>Server registers</strong> with the port mapper: "program 0x20000001, version 1, TCP → port 40512".</li>
+        <li><strong>Client asks</strong> the port mapper on port 111: "which port has program 0x20000001 version 1?"</li>
+        <li><strong>Port mapper replies</strong> 40512.</li>
+        <li><strong>Client sends the actual RPC</strong> directly to port 40512. Later calls reuse that port.</li>
+      </ol>
+      <p class="code-title">Pseudocode</p>
+<pre><code><span class="c">// Server side, at start-up</span>
+portMapper.Register(programNumber, version, <span class="s">"tcp"</span>, myPort)
+
+<span class="c">// Client side, before the first call</span>
+port = portMapper.Lookup(programNumber, version, <span class="s">"tcp"</span>)   <span class="c">// asks port 111</span></code></pre>
+      <p class="code-title">Linux terminal: list registered RPC programs</p>
+<pre><code>$ rpcinfo -p localhost
+   program vers proto   port  service
+    <span class="n">100000</span>    4   tcp    <span class="n">111</span>  portmapper
+    <span class="n">100003</span>    3   tcp   <span class="n">2049</span>  nfs
+    <span class="n">100005</span>    3   udp  <span class="n">20048</span>  mountd</code></pre>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A hotel reception desk. Guests (servers) get whatever room is free and tell reception their room number. Visitors (clients) always go to reception first (port 111) and ask "which room is Mr. NFS in?".</p></div>
+      <div class="callout tip"><span class="label">Security note</span><p>Port 111 should never be open to the internet. Exposed rpcbind services have been abused for reconnaissance and for DDoS amplification attacks, so firewalls normally block it from outside networks.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.4</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>The RPC port mapper listens on which well-known port?</p>
+          <div class="opts">
+            <button>A) 80</button>
+            <button>B) 443</button>
+            <button data-correct>C) 111</button>
+            <button>D) 8080</button>
+          </div>
+          <div class="explain">The port mapper (rpcbind) uses port 111 on both TCP and UDP. Port 80 is HTTP, 443 is HTTPS and 8080 is a common alternative HTTP port.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.5 ========== -->
+    <section>
+      <h2 data-toc="4.5 Call semantics"><span class="num">4.5</span>RPC Call Semantics</h2>
+      <p>Suppose the client sends a request and no reply arrives before the timeout. Did the request get lost, did the server crash before running it, or did it run and only the reply get lost? The client cannot tell. <strong>Call semantics</strong> describe what the RPC system promises about how many times the procedure was executed.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Semantics</th><th>How it works</th><th>Guarantee</th><th>Good for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>At least once</strong></td><td>Client keeps retrying until it gets a reply.</td><td>Executed one or more times (if a reply arrives).</td><td>Idempotent operations only.</td></tr>
+          <tr><td><strong>At most once</strong></td><td>Server remembers request IDs and filters duplicates; client reports an error if unsure.</td><td>Executed zero or one time, never twice.</td><td>Non-idempotent operations such as money transfers.</td></tr>
+          <tr><td><strong>Exactly once</strong></td><td>Would need retries plus duplicate filtering plus surviving crashes (logging, transactions).</td><td>Executed exactly one time.</td><td>Ideal but very hard; impossible to guarantee in general if the server can crash.</td></tr>
+        </tbody>
+      </table></div>
+      <p>An operation is <span class="term" title="Running it many times has the same effect as running it once">idempotent</span> if executing it several times has the same effect as executing it once. "Read account balance" and "set temperature to 21°C" are idempotent. "Add $100 to account" and "append a line to a log" are not: a retry would add $200 or write the line twice.</p>
+      <div class="callout example"><span class="label">Example</span><p>You call <code>withdraw(100)</code> with at-least-once semantics. The server runs it, but the reply is lost. The client retries, and the server runs it again: $200 is withdrawn. With at-most-once semantics, the server sees the same request ID, does not run it again, and resends the saved reply.</p></div>
+      <div class="callout tip"><span class="label">Today</span><p>Modern APIs make non-idempotent operations safe to retry by adding an <strong>idempotency key</strong>: a unique ID the client sends with each request so the server can recognise duplicates. Payment APIs such as Stripe work this way.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>"Which semantics for an idempotent operation?" → at least once (retrying is harmless and it is the simplest to implement). "Which for a bank transfer?" → at most once.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.5</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which semantic is most suitable for an idempotent operation like "get temperature sensor value"?</p>
+          <div class="opts">
+            <button>A) Exactly once</button>
+            <button>B) At most once</button>
+            <button data-correct>C) At least once</button>
+            <button>D) Zero once</button>
+          </div>
+          <div class="explain">Reading a sensor twice does no harm, so the client can simply retry until it gets an answer. At-most-once would work too but adds unnecessary duplicate tracking; exactly-once is expensive and unnecessary here. "Zero once" does not exist.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.6 ========== -->
+    <section>
+      <h2 data-toc="4.6 Authentication"><span class="num">4.6</span>RPC Authentication</h2>
+      <p>Each RPC CALL message carries a <strong>credential</strong> (who the caller claims to be) and a <strong>verifier</strong> (evidence that the claim is true). Sun RPC defined several "flavors":</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Flavor</th><th>What is sent</th><th>Security</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NULL</strong> (AUTH_NONE)</td><td>Nothing.</td><td>None. Used for public services and the null procedure.</td></tr>
+          <tr><td><strong>UNIX style</strong> (AUTH_UNIX, now AUTH_SYS)</td><td>Hostname, user ID (UID), group IDs (GIDs), timestamp.</td><td>Weak: the client simply states its UID and the server trusts it. Anyone with root on a client can claim any UID.</td></tr>
+          <tr><td><strong>DES</strong> (AUTH_DES, also AUTH_DH)</td><td>Network name plus an encrypted timestamp, using a DES session key agreed with Diffie-Hellman.</td><td>Strong for its time, because the identity is proven cryptographically. Today 56-bit DES and the small Diffie-Hellman key are considered broken.</td></tr>
+          <tr><td><strong>SHORT</strong> (AUTH_SHORT)</td><td>A short handle the server issued after a first full authentication.</td><td>Saves bandwidth on later calls; only as strong as the first authentication.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Updated fact</span><p>Modern ONC RPC (for example NFSv4) uses <strong>RPCSEC_GSS</strong> (RFC 2203), which plugs in Kerberos v5 for authentication, integrity and encryption. AUTH_DES is obsolete. In other RPC systems, such as gRPC, security comes from TLS plus tokens (for example OAuth 2.0 bearer tokens).</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.6</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which authentication method uses the Data Encryption Standard (DES) to provide strong security?</p>
+          <div class="opts">
+            <button>A) NULL Authentication</button>
+            <button>B) UNIX Style</button>
+            <button data-correct>C) DES Authentication</button>
+            <button>D) SHORT Authentication</button>
+          </div>
+          <div class="explain">DES authentication proves identity with an encrypted timestamp, so it was the strong option in classic Sun RPC. UNIX style only states the UID, NULL sends nothing, and SHORT reuses a handle. Remember that DES itself is no longer considered secure today; RPCSEC_GSS with Kerberos replaced it.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.7 ========== -->
+    <section>
+      <h2 data-toc="4.7 Message format"><span class="num">4.7</span>RPC Message Format</h2>
+      <p>Sun RPC has exactly two kinds of message, CALL and REPLY, both encoded in XDR. The fields of a CALL are:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Message ID (XID)</td><td>Random number chosen by the client. The reply carries the same XID so the client can match replies to requests, and the server can detect duplicates.</td></tr>
+          <tr><td>Message type</td><td><code>0 = CALL</code>, <code>1 = REPLY</code>. This is what distinguishes the two.</td></tr>
+          <tr><td>RPC version</td><td>Version of the RPC protocol itself (always 2).</td></tr>
+          <tr><td>Program number</td><td>Which service.</td></tr>
+          <tr><td>Version number</td><td>Which version of that service.</td></tr>
+          <tr><td>Procedure number</td><td>Which function.</td></tr>
+          <tr><td>Credential and verifier</td><td>Authentication fields (flavor + data), see 4.6.</td></tr>
+          <tr><td>Arguments</td><td>The marshalled parameters.</td></tr>
+        </tbody>
+      </table></div>
+      <p>A REPLY contains the XID, type = REPLY, a status (accepted or denied), a verifier, and then either the marshalled results or an error code such as <code>PROG_UNAVAIL</code> or <code>PROC_UNAVAIL</code>.</p>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.7</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What distinguishes a CALL message from a REPLY message in RPC?</p>
+          <div class="opts">
+            <button>A) The source port number</button>
+            <button data-correct>B) The message type field (CALL vs REPLY)</button>
+            <button>C) The size of the payload</button>
+            <button>D) The checksum field</button>
+          </div>
+          <div class="explain">Every RPC message has a message-type field: 0 means CALL and 1 means REPLY. Ports and payload sizes vary and do not identify the message kind; RPC has no checksum field of its own (UDP/TCP provide one).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.8 ========== -->
+    <section>
+      <h2 data-toc="4.8 RPC language and rpcgen"><span class="num">4.8</span>RPC Language and the rpcgen Compiler</h2>
+      <p>Writing stubs by hand is tedious and error-prone. Instead, you describe the interface once in an <span class="term" title="Interface Definition Language: a language-neutral description of the procedures and data types a service offers">interface definition language (IDL)</span>. Sun's IDL is called <strong>RPC Language (RPCL)</strong>; it looks like C and is saved in a <code>.x</code> file. The <strong>rpcgen</strong> compiler reads that file and generates the code for you.</p>
+      <p class="code-title">calc.x</p>
+<pre><code><span class="k">struct</span> <span class="t">operands</span> {
+    <span class="t">int</span> a;
+    <span class="t">int</span> b;
+};
+
+<span class="k">program</span> CALC_PROG {
+    <span class="k">version</span> CALC_VERS {
+        <span class="t">int</span> ADD(operands) = <span class="n">1</span>;     <span class="c">/* procedure number 1 */</span>
+        <span class="t">int</span> SUB(operands) = <span class="n">2</span>;
+    } = <span class="n">1</span>;                         <span class="c">/* version number 1 */</span>
+} = <span class="n">0x20000001</span>;                  <span class="c">/* user-defined program number */</span></code></pre>
+      <p>Running <code>rpcgen -a calc.x</code> produces:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>File</th><th>Contents</th></tr></thead>
+        <tbody>
+          <tr><td><code>calc.h</code></td><td>Header file: constants and C structs shared by both sides.</td></tr>
+          <tr><td><code>calc_clnt.c</code></td><td>Client stub: functions like <code>add_1()</code> that marshal and send.</td></tr>
+          <tr><td><code>calc_svc.c</code></td><td>Server skeleton: <code>main()</code>, port mapper registration and the dispatcher that calls your procedure.</td></tr>
+          <tr><td><code>calc_xdr.c</code></td><td>XDR routines that convert <code>operands</code> to and from XDR.</td></tr>
+          <tr><td><code>calc_client.c</code>, <code>calc_server.c</code>, Makefile</td><td>Templates (only with <code>-a</code>); you fill in the real logic.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">Key idea</span><p>This "write the interface, generate the stubs" pattern is the heart of every RPC system: <code>.x</code> + rpcgen (Sun RPC), <code>.idl</code> + idlj (CORBA), <code>.proto</code> + protoc (gRPC), <code>.thrift</code> + thrift (Apache Thrift).</p></div>
+      <div class="callout tip"><span class="label">Practical note</span><p>On current Linux distributions, Sun RPC lives in the <code>libtirpc</code> library and rpcgen is a separate package (it was removed from glibc in version 2.32). Compile with <code>-ltirpc</code> and <code>-I/usr/include/tirpc</code>.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.8</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>What is the main output of rpcgen?</p>
+          <div class="opts">
+            <button>A) Compiled binary of the server</button>
+            <button data-correct>B) Client and server stubs + XDR routines</button>
+            <button>C) Only a Makefile</button>
+            <button>D) Bytecode for JVM</button>
+          </div>
+          <div class="explain">rpcgen generates C source code: the client stub, the server skeleton (with the dispatcher), XDR conversion routines and a header. You still compile them yourself; it does not produce binaries or Java bytecode.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.9 ========== -->
+    <section>
+      <h2 data-toc="4.9 Java RMI"><span class="num">4.9</span>Practical: Java RMI (Remote Method Invocation)</h2>
+      <p><strong>Java RMI</strong> is RPC for objects. Instead of calling a procedure, a Java program calls a <em>method on an object</em> that lives in another JVM. RMI was created by Sun Microsystems (JDK 1.1, 1997); Java is now owned by Oracle and RMI is still part of the JDK in the <code>java.rmi</code> module.</p>
+
+      <h3>Architecture</h3>
+      <div class="flow"><span class="node">Client</span><span class="arrow">→</span><span class="node hi">Stub</span><span class="arrow">→</span><span class="node">Remote Reference Layer</span><span class="arrow">→</span><span class="node">Transport (JRMP over TCP)</span><span class="arrow">→</span><span class="node">Skeleton / dispatcher</span><span class="arrow">→</span><span class="node">Remote object</span></div>
+      <dl class="defs">
+        <dt>Stub</dt><dd>Client-side proxy. Implements the same remote interface, marshals the call (using Java serialization) and sends it.</dd>
+        <dt>Skeleton</dt><dd>Server-side proxy that unmarshals and calls the real object. Since Java 1.2 a generic dispatcher does this job, so no skeleton classes are generated.</dd>
+        <dt>Remote Reference Layer</dt><dd>Decides how a reference behaves (for example a single unicast server object).</dd>
+        <dt>Transport layer</dt><dd>Manages TCP connections. The RMI wire protocol is called <strong>JRMP</strong> (Java Remote Method Protocol).</dd>
+        <dt>RMI registry</dt><dd>A simple <span class="term" title="A directory that maps human-readable names to remote object references">naming service</span>: servers <code>bind</code> a name to an object, clients <code>lookup</code> the name to get a stub. Started with <code>rmiregistry</code>; default port <strong>1099</strong>.</dd>
+      </dl>
+
+      <h3>Four steps to build an RMI application</h3>
+      <ol class="steps">
+        <li><strong>Define the remote interface</strong>: extends <code>java.rmi.Remote</code>; every method declares <code>throws RemoteException</code>.</li>
+        <li><strong>Implement it</strong> in a class that extends <code>UnicastRemoteObject</code> (or is exported with <code>UnicastRemoteObject.exportObject</code>).</li>
+        <li><strong>Create the server</strong>: create the object and <code>bind()</code>/<code>rebind()</code> it in the registry under a name.</li>
+        <li><strong>Create the client</strong>: <code>lookup()</code> the name, cast to the interface, and call methods.</li>
+      </ol>
+
+      <div class="tabs"><div role="tablist">
+        <button role="tab" aria-controls="rmi-if" aria-selected="true">Calculator.java</button>
+        <button role="tab" aria-controls="rmi-impl">CalculatorImpl.java</button>
+        <button role="tab" aria-controls="rmi-srv">CalculatorServer.java</button>
+        <button role="tab" aria-controls="rmi-cli">CalculatorClient.java</button>
+      </div>
+      <div role="tabpanel" id="rmi-if">
+<pre><code><span class="k">import</span> java.rmi.*;
+
+<span class="c">// Remote interface: the contract shared by client and server</span>
+<span class="k">public interface</span> <span class="t">Calculator</span> <span class="k">extends</span> <span class="t">Remote</span> {
+    <span class="t">long</span> add(<span class="t">long</span> a, <span class="t">long</span> b) <span class="k">throws</span> <span class="t">RemoteException</span>;
+    <span class="t">long</span> sub(<span class="t">long</span> a, <span class="t">long</span> b) <span class="k">throws</span> <span class="t">RemoteException</span>;
+    <span class="t">long</span> mul(<span class="t">long</span> a, <span class="t">long</span> b) <span class="k">throws</span> <span class="t">RemoteException</span>;
+    <span class="t">long</span> div(<span class="t">long</span> a, <span class="t">long</span> b) <span class="k">throws</span> <span class="t">RemoteException</span>;
+}</code></pre></div>
+      <div role="tabpanel" id="rmi-impl">
+<pre><code><span class="k">import</span> java.rmi.*;
+<span class="k">import</span> java.rmi.server.UnicastRemoteObject;
+
+<span class="k">public class</span> <span class="t">CalculatorImpl</span> <span class="k">extends</span> <span class="t">UnicastRemoteObject</span> <span class="k">implements</span> <span class="t">Calculator</span> {
+    <span class="k">public</span> CalculatorImpl() <span class="k">throws</span> <span class="t">RemoteException</span> { <span class="k">super</span>(); } <span class="c">// exports the object</span>
+    <span class="k">public</span> <span class="t">long</span> add(<span class="t">long</span> a, <span class="t">long</span> b) { <span class="k">return</span> a + b; }
+    <span class="k">public</span> <span class="t">long</span> sub(<span class="t">long</span> a, <span class="t">long</span> b) { <span class="k">return</span> a - b; }
+    <span class="k">public</span> <span class="t">long</span> mul(<span class="t">long</span> a, <span class="t">long</span> b) { <span class="k">return</span> a * b; }
+    <span class="k">public</span> <span class="t">long</span> div(<span class="t">long</span> a, <span class="t">long</span> b) { <span class="k">return</span> a / b; }  <span class="c">// b == 0 throws ArithmeticException to the client</span>
+}</code></pre></div>
+      <div role="tabpanel" id="rmi-srv">
+<pre><code><span class="k">import</span> java.rmi.registry.*;
+
+<span class="k">public class</span> <span class="t">CalculatorServer</span> {
+    <span class="k">public static void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">Exception</span> {
+        <span class="t">Registry</span> reg = <span class="t">LocateRegistry</span>.createRegistry(<span class="n">1099</span>); <span class="c">// or run "rmiregistry" separately</span>
+        reg.rebind(<span class="s">"CalculatorService"</span>, <span class="k">new</span> <span class="t">CalculatorImpl</span>());
+        <span class="t">System</span>.out.println(<span class="s">"Calculator server ready"</span>);
+    }
+}</code></pre></div>
+      <div role="tabpanel" id="rmi-cli">
+<pre><code><span class="k">import</span> java.rmi.Naming;
+
+<span class="k">public class</span> <span class="t">CalculatorClient</span> {
+    <span class="k">public static void</span> main(<span class="t">String</span>[] args) <span class="k">throws</span> <span class="t">Exception</span> {
+        <span class="c">// lookup returns a stub that implements Calculator</span>
+        <span class="t">Calculator</span> c = (<span class="t">Calculator</span>) <span class="t">Naming</span>.lookup(<span class="s">"rmi://localhost:1099/CalculatorService"</span>);
+        <span class="t">System</span>.out.println(<span class="s">"4 + 5 = "</span> + c.add(<span class="n">4</span>, <span class="n">5</span>));
+        <span class="t">System</span>.out.println(<span class="s">"9 / 3 = "</span> + c.div(<span class="n">9</span>, <span class="n">3</span>));
+    }
+}</code></pre></div>
+      </div>
+      <p>Run it: <code>javac *.java</code>, then <code>java CalculatorServer</code> in one terminal and <code>java CalculatorClient</code> in another. No <code>rmic</code> step is needed.</p>
+
+      <h3>RMI + JDBC: a remote database example</h3>
+      <p>A classic course example: a remote method reads the <code>student_data</code> table from MySQL and returns a <code>List&lt;Student&gt;</code>. The client never connects to the database directly; only the RMI server holds the database credentials. This is a three-tier design (client → RMI server → database).</p>
+      <p class="code-title">StudentService.java and Student.java</p>
+<pre><code><span class="k">public interface</span> <span class="t">StudentService</span> <span class="k">extends</span> <span class="t">Remote</span> {
+    <span class="t">List</span>&lt;<span class="t">Student</span>&gt; getStudents() <span class="k">throws</span> <span class="t">RemoteException</span>;
+}
+
+<span class="c">// Sent BY VALUE: must be Serializable so RMI can copy it to the client</span>
+<span class="k">public class</span> <span class="t">Student</span> <span class="k">implements</span> <span class="t">java.io.Serializable</span> {
+    <span class="k">private</span> <span class="t">int</span> id; <span class="k">private</span> <span class="t">String</span> name; <span class="k">private</span> <span class="t">String</span> branch;
+    <span class="c">// constructor + getters ...</span>
+}
+
+<span class="c">// In StudentServiceImpl.getStudents():</span>
+<span class="k">try</span> (<span class="t">Connection</span> con = <span class="t">DriverManager</span>.getConnection(<span class="s">"jdbc:mysql://localhost:3306/school"</span>, user, pass);
+     <span class="t">PreparedStatement</span> ps = con.prepareStatement(<span class="s">"SELECT id, name, branch FROM student_data"</span>);
+     <span class="t">ResultSet</span> rs = ps.executeQuery()) {
+    <span class="k">while</span> (rs.next()) list.add(<span class="k">new</span> <span class="t">Student</span>(rs.getInt(<span class="n">1</span>), rs.getString(<span class="n">2</span>), rs.getString(<span class="n">3</span>)));
+}</code></pre>
+      <div class="callout key"><span class="label">Key idea</span><p>In RMI, <strong>remote objects</strong> (that implement <code>Remote</code>) are passed <em>by reference</em>: the client gets a stub. Ordinary <strong>serializable objects</strong> (like <code>Student</code>) are passed <em>by value</em>: the client gets a copy. A parameter that is neither causes a marshalling error at run time.</p></div>
+
+      <h3>What changed in modern Java</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>Status today</th></tr></thead>
+        <tbody>
+          <tr><td>Skeleton classes</td><td>Not needed since Java 1.2 (generic server-side dispatch).</td></tr>
+          <tr><td>Stub classes and <code>rmic</code></td><td>Stubs are generated dynamically at run time since Java 5. The <code>rmic</code> tool was removed in Java 15.</td></tr>
+          <tr><td>RMI Activation (<code>java.rmi.activation</code>, <code>rmid</code>)</td><td>Removed in Java 17 (JEP 407).</td></tr>
+          <tr><td>Security policy files and <code>SecurityManager</code></td><td>The course's policy file (granting socket and file permissions with <code>-Djava.security.policy=...</code>) only worked together with a SecurityManager, which was needed for downloading stub code from a codebase. The SecurityManager was deprecated in Java 17 (JEP 411) and permanently disabled in Java 24 (JEP 486). Secure RMI today with TLS (<code>SslRMIClientSocketFactory</code>), firewalls and deserialization filters (<code>jdk.serialFilter</code>).</td></tr>
+          <tr><td>Core RMI (<code>java.rmi</code>, registry)</td><td>Still in the JDK, but rarely chosen for new systems. New services usually use gRPC or REST.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Forgetting <code>throws RemoteException</code> on a method of the remote interface. The compiler accepts it, but exporting the object fails at run time with "illegal remote method encountered".</p></div>
+      <div class="callout warn"><span class="label">Security warning</span><p>RMI uses Java deserialization, which has been a major source of remote code execution attacks. Never expose an RMI registry (port 1099) to the internet.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check 4.9 (RMI)</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q</span>Which RMI component acts as a proxy on the client side?</p>
+          <div class="opts">
+            <button>A) Skeleton</button>
+            <button data-correct>B) Stub</button>
+            <button>C) Registry</button>
+            <button>D) Transport layer</button>
+          </div>
+          <div class="explain">The stub lives in the client JVM, implements the remote interface and forwards each call. The skeleton is the server-side counterpart, the registry is the naming service, and the transport layer only moves bytes.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4.10 ========== -->
+    <section>
+      <h2 data-toc="4.10 RPC today: gRPC and REST"><span class="num">4.10</span>RPC Today: gRPC, REST and Friends</h2>
+      <p>The ideas in this chapter are still everywhere, only the tools changed. Classic Sun RPC survives mainly inside NFS. New systems usually pick one of these:</p>
+      <div class="cards">
+        <div class="card"><h4>gRPC</h4><p>Google's open-source RPC framework (2015, now a CNCF project). Interfaces are written in <strong>Protocol Buffers</strong> (<code>.proto</code>); <code>protoc</code> generates stubs in about a dozen languages; calls travel over HTTP/2 with TLS. Supports streaming and deadlines.</p></div>
+        <div class="card"><h4>REST / JSON over HTTP</h4><p>Not RPC strictly speaking: you act on <em>resources</em> with HTTP methods (GET, POST, PUT, DELETE). Human-readable and works in every browser. Often described with OpenAPI.</p></div>
+        <div class="card"><h4>Apache Thrift</h4><p>Created at Facebook; IDL plus code generation, similar idea to gRPC with pluggable transports.</p></div>
+        <div class="card"><h4>Message queues</h4><p>Kafka, RabbitMQ and similar: asynchronous messaging instead of calls. The sender does not wait, which suits one-way and long-running work.</p></div>
+      </div>
+
+      <h3>A tiny gRPC example</h3>
+      <p class="code-title">calculator.proto (the interface, like a .x file)</p>
+<pre><code><span class="k">syntax</span> = <span class="s">"proto3"</span>;
+<span class="k">package</span> calc;
+
+<span class="k">service</span> <span class="t">Calculator</span> {
+  <span class="k">rpc</span> Add (<span class="t">AddRequest</span>) <span class="k">returns</span> (<span class="t">AddReply</span>);
+}
+<span class="k">message</span> <span class="t">AddRequest</span> { <span class="t">int64</span> a = <span class="n">1</span>; <span class="t">int64</span> b = <span class="n">2</span>; }   <span class="c">// numbers are field tags, not values</span>
+<span class="k">message</span> <span class="t">AddReply</span>   { <span class="t">int64</span> sum = <span class="n">1</span>; }</code></pre>
+      <p class="code-title">client.py (Python; stubs generated by grpcio-tools)</p>
+<pre><code><span class="k">import</span> grpc, calculator_pb2 <span class="k">as</span> pb, calculator_pb2_grpc <span class="k">as</span> rpc
+
+channel = grpc.insecure_channel(<span class="s">"localhost:50051"</span>)        <span class="c"># use secure_channel + TLS in production</span>
+stub = rpc.CalculatorStub(channel)                        <span class="c"># the client stub</span>
+reply = stub.Add(pb.AddRequest(a=<span class="n">2</span>, b=<span class="n">3</span>), timeout=<span class="n">2.0</span>)    <span class="c"># looks like a local call</span>
+print(reply.sum)                                          <span class="c"># 5</span></code></pre>
+      <p>Everything from this chapter is visible: an IDL (<code>.proto</code>), generated stubs, binary marshalling (Protocol Buffers instead of XDR), and a timeout because the network can fail. Instead of a port mapper, the client is given a host and port directly or uses DNS / a service registry.</p>
+
+      <h3>Comparison: RPC vs RMI vs CORBA vs gRPC vs REST</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>Sun RPC</th><th>Java RMI</th><th>CORBA</th><th>gRPC</th><th>REST</th></tr></thead>
+        <tbody>
+          <tr><td>Model</td><td>Procedures</td><td>Objects (methods)</td><td>Objects (methods)</td><td>Service methods</td><td>Resources + HTTP verbs</td></tr>
+          <tr><td>Interface language</td><td>RPCL (.x)</td><td>Java interface</td><td>OMG IDL</td><td>Protocol Buffers</td><td>OpenAPI (optional)</td></tr>
+          <tr><td>Stub generator</td><td>rpcgen</td><td>Dynamic (formerly rmic)</td><td>IDL compiler (e.g. idlj)</td><td>protoc</td><td>Optional generators</td></tr>
+          <tr><td>Data format</td><td>XDR (binary)</td><td>Java serialization</td><td>CDR (binary)</td><td>Protobuf (binary)</td><td>JSON (text), usually</td></tr>
+          <tr><td>Transport</td><td>UDP or TCP</td><td>JRMP over TCP</td><td>IIOP over TCP</td><td>HTTP/2</td><td>HTTP/1.1, 2 or 3</td></tr>
+          <tr><td>Languages</td><td>Mainly C</td><td>Java only</td><td>Many</td><td>Many</td><td>Any</td></tr>
+          <tr><td>Naming / discovery</td><td>Port mapper (111)</td><td>RMI registry (1099)</td><td>Naming Service</td><td>DNS, service mesh</td><td>URLs + DNS</td></tr>
+          <tr><td>Status today</td><td>Legacy, used in NFS</td><td>In JDK, rarely used for new work</td><td>Legacy niche</td><td>Widely used</td><td>Widely used</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>The core answer to "RPC vs RMI": RPC calls <em>procedures</em> and is language-neutral (in principle), passing data by value; RMI calls <em>methods on objects</em>, is Java-only, and can pass remote objects by reference and serializable objects by value.</p></div>
+    </section>
+
+    <!-- ========== Final exam ========== -->
+    <section>
+      <h2 data-toc="Final exam"><span class="num">4.11</span>Chapter 4 Final Exam: RPC Mastery</h2>
+      <p>Fourteen questions covering every section. Answer each one to see the explanation.</p>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Final exam</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What does RPC stand for?</p>
+          <div class="opts"><button>Remote Program Call</button><button data-correct>Remote Procedure Call</button><button>Runtime Procedure Communication</button><button>Remote Port Control</button></div>
+          <div class="explain">RPC = Remote Procedure Call: calling a procedure that runs in another process, usually on another machine.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which component in RPC converts parameters to the external data representation before transmission?</p>
+          <div class="opts"><button>Port Mapper</button><button>Dispatcher</button><button data-correct>Stub (Marshalling)</button><button>Skeleton</button></div>
+          <div class="explain">The client stub marshals the arguments into XDR before sending. The skeleton does the reverse on the server (unmarshalling arguments); the dispatcher only chooses the procedure; the port mapper only maps program numbers to ports.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>Which protocol/port does the RPC port mapper use by default?</p>
+          <div class="opts"><button>TCP/80</button><button>UDP/443</button><button data-correct>TCP/UDP 111</button><button>ICMP</button></div>
+          <div class="explain">The port mapper (rpcbind) listens on port 111 over both TCP and UDP. ICMP has no ports at all.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which RPC call semantics guarantee that the server executes the request at most once, returning an error if uncertain?</p>
+          <div class="opts"><button>Exactly once</button><button data-correct>At most once</button><button>At least once</button><button>Idempotent only</button></div>
+          <div class="explain">At-most-once filters duplicate requests and reports an error rather than risk a second execution. Exactly-once would also promise that it ran, which cannot be guaranteed if the server crashes.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which authentication method in RPC relies on UNIX user IDs and hostnames (weak security)?</p>
+          <div class="opts"><button>NULL</button><button data-correct>UNIX style</button><button>DES</button><button>SHORT</button></div>
+          <div class="explain">AUTH_UNIX (now called AUTH_SYS) sends hostname, UID and GIDs in clear, and the server trusts them. It is weak because a client can claim any UID.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>In Java RMI, what is the purpose of the <code>rmiregistry</code>?</p>
+          <div class="opts"><button>Compiles remote interfaces</button><button data-correct>Provides a naming service to bind/unbind remote objects</button><button>Generates stub classes</button><button>Encrypts RMI traffic</button></div>
+          <div class="explain">The registry maps names to remote object references (default port 1099). Stubs are generated dynamically by the JVM, and the registry provides no encryption.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>XDR (eXternal Data Representation) is used to solve which problem?</p>
+          <div class="opts"><button>Network congestion</button><button data-correct>Machine independence &amp; byte order</button><button>Authentication</button><button>Connection management</button></div>
+          <div class="explain">XDR defines one common format (big-endian, 4-byte aligned) so machines with different byte orders and word sizes read the same values.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>Which of the following is an idempotent RPC operation (suited for "at least once" semantics)?</p>
+          <div class="opts"><button>Transfer $100</button><button>Append log entry</button><button data-correct>Read sensor value</button><button>Delete and create new record</button></div>
+          <div class="explain">Reading a value has no side effect, so repeating it is harmless. A transfer or append done twice changes the result; delete-and-create produces a new record (new ID) each time.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>In the RPC identification scheme, a program number groups related procedures. Version numbers are used to:</p>
+          <div class="opts"><button>Allocate temporary ports</button><button data-correct>Support multiple revisions of a service</button><button>Identify the client OS</button><button>Specify the transport layer</button></div>
+          <div class="explain">One server can offer versions 1 and 2 of the same program at once, so old clients keep working while the protocol evolves.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>Which rpcgen output provides the dispatcher that receives incoming requests and calls the appropriate server procedure?</p>
+          <div class="opts"><button>Client stub</button><button data-correct>Server skeleton</button><button>XDR filter</button><button>Header file</button></div>
+          <div class="explain">The server skeleton (<code>*_svc.c</code>) contains <code>main()</code>, registers with the port mapper and holds the dispatch routine that switches on the procedure number.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>Why can't each RPC program simply use its program number as its port number?</p>
+          <div class="opts"><button>Ports are reserved for HTTP</button><button data-correct>Program numbers are 32-bit, but ports are only 16-bit</button><button>Ports change every second</button><button>The port mapper encrypts port numbers</button></div>
+          <div class="explain">There are far more possible program numbers (2<sup>32</sup>) than ports (2<sup>16</sup>), so a dynamic mapping through the port mapper is needed.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>True or false: since Java 1.2, an RMI server needs a generated skeleton class for every remote object.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">False. Since Java 1.2 the RMI runtime dispatches calls generically, and since Java 5 even stubs are created dynamically. The <code>rmic</code> tool was removed in Java 15.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>In gRPC, what plays the role that XDR plays in Sun RPC?</p>
+          <div class="opts"><button>JSON</button><button data-correct>Protocol Buffers</button><button>HTTP/2</button><button>TLS</button></div>
+          <div class="explain">Protocol Buffers is gRPC's interface language and its binary serialization format, just as RPCL and XDR are for Sun RPC. HTTP/2 is the transport and TLS the security layer.</div>
+        </div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>An RMI remote method returns <code>List&lt;Student&gt;</code>. What must be true of <code>Student</code>?</p>
+          <div class="opts"><button>It must extend UnicastRemoteObject</button><button data-correct>It must implement java.io.Serializable so it can be copied to the client</button><button>It must be declared in an IDL file</button><button>Nothing; RMI can send any object</button></div>
+          <div class="explain"><code>Student</code> is plain data, so RMI sends it by value using Java serialization. Without <code>Serializable</code> the call fails with a marshalling exception. Only remote objects (implementing <code>Remote</code>) are passed by reference.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>RPC makes a remote call look like a local procedure call. Stubs hide the network: the client stub marshals and sends, the server stub (skeleton) unmarshals and calls.</li>
+        <li>No shared memory means parameters are passed by value; XDR gives a machine-independent data format.</li>
+        <li>Sun RPC identifies procedures by program, version and procedure numbers. The port mapper (rpcbind, port 111) maps programs to dynamic ports.</li>
+        <li>Call semantics: at-least-once (only for idempotent operations), at-most-once (duplicate filtering), exactly-once (ideal, very hard).</li>
+        <li>Authentication flavors: NULL, UNIX (weak), DES (strong for its time, obsolete now; replaced by RPCSEC_GSS/Kerberos), SHORT.</li>
+        <li>rpcgen turns a <code>.x</code> interface into client stub, server skeleton, XDR routines and header.</li>
+        <li>Java RMI is object-oriented RPC for Java: remote interface, <code>UnicastRemoteObject</code>, registry on port 1099. Skeletons and rmic are gone; Activation was removed in Java 17.</li>
+        <li>Today: gRPC (Protocol Buffers over HTTP/2), REST/JSON, Thrift and message queues do the same job.</li>
+      </ul></div>
+    </section>
+
+  </main>
 </div>
 
-<script>
-  // ---- Helper: knowledge check feedback (sections 4.1 to 4.9) ----
-  const answers = {
-    "41": "B",   // Q4.1: parameters are NOT passed by reference
-    "42": "B",   // stub hides network + marshalling
-    "43": "B",   // version numbers for evolution
-    "44": "C",   // port 111
-    "45": "C",   // at least once for idempotent
-    "46": "C",   // DES authentication
-    "47": "B",   // message type field
-    "48": "B",   // client/server stubs + XDR
-    "49": "B"    // RMI client-side stub
-  };
-
-  const explanations = {
-    "41": "Correct: RPC does NOT allow passing pointers/references; parameters are passed by value only.",
-    "42": "Correct: Stubs handle marshalling, network communication, making the remote call transparent.",
-    "43": "Correct: Version numbers allow servers to support multiple protocol versions simultaneously.",
-    "44": "Correct: Port mapper uses port 111 (well-known) for dynamic port resolution.",
-    "45": "Correct: Idempotent operations tolerate 'at least once' semantics; repeated executions safe.",
-    "46": "Correct: DES authentication uses encryption (keys) to verify identity strongly.",
-    "47": "Correct: The message type field (CALL or REPLY) differentiates request from response.",
-    "48": "Correct: rpcgen generates client stubs, server skeletons, and XDR (de)serialization routines.",
-    "49": "Correct: The stub (client-side proxy) forwards method calls to the remote object."
-  };
-
-  document.querySelectorAll('.check-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const section = btn.getAttribute('data-section');
-      const selectedRadio = document.querySelector(`input[name="q${section}"]:checked`);
-      const feedbackDiv = document.getElementById(`fb${section}`);
-      if (!selectedRadio) {
-        feedbackDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-exclamation-circle"></i> Please select an answer first.</div>`;
-        return;
-      }
-      const userValue = selectedRadio.value;
-      const correctVal = answers[section];
-      if (userValue === correctVal) {
-        feedbackDiv.innerHTML = `<div class="feedback correct-feedback"><i class="fas fa-check-circle"></i> ✅ Correct! ${explanations[section]}</div>`;
-      } else {
-        let correctLetter = "";
-        if (correctVal === "A") correctLetter = "A) ";
-        else if (correctVal === "B") correctLetter = "B) ";
-        else if (correctVal === "C") correctLetter = "C) ";
-        else correctLetter = "D) ";
-        feedbackDiv.innerHTML = `<div class="feedback wrong-feedback"><i class="fas fa-times-circle"></i> ❌ Incorrect. The correct answer is ${correctLetter}. ${explanations[section]}</div>`;
-      }
-    });
-  });
-
-  // ---------- BUILD FINAL QUIZ (10 questions covering all sections) ----------
-  const finalQuestions = [
-    { text: "1. What does RPC stand for?", options: ["Remote Program Call", "Remote Procedure Call", "Runtime Procedure Communication", "Remote Port Control"], correct: "Remote Procedure Call" },
-    { text: "2. Which component in RPC converts parameters to external data representation before transmission?", options: ["Port Mapper", "Dispatcher", "Stub (Marshalling)", "Skeleton"], correct: "Stub (Marshalling)" },
-    { text: "3. Which protocol/port does the RPC port mapper use by default?", options: ["TCP/80", "UDP/443", "TCP/UDP 111", "ICMP"], correct: "TCP/UDP 111" },
-    { text: "4. Which RPC call semantics guarantee that the server executes the request at most once, returning an error if uncertain?", options: ["Exactly once", "At most once", "At least once", "Idempotent only"], correct: "At most once" },
-    { text: "5. Which authentication method in RPC relies on UNIX user IDs and hostnames (weak security)?", options: ["NULL", "UNIX style", "DES", "SHORT"], correct: "UNIX style" },
-    { text: "6. In Java RMI, what is the purpose of the 'rmiregistry'?", options: ["Compiles remote interfaces", "Provides a naming service to bind/unbind remote objects", "Generates stub classes", "Encrypts RMI traffic"], correct: "Provides a naming service to bind/unbind remote objects" },
-    { text: "7. XDR (eXternal Data Representation) is used to solve which problem?", options: ["Network congestion", "Machine independence & byte order", "Authentication", "Connection management"], correct: "Machine independence & byte order" },
-    { text: "8. Which of the following is an idempotent RPC operation (suited for 'at least once' semantics)?", options: ["Transfer $100", "Append log entry", "Read sensor value", "Delete and create new record"], correct: "Read sensor value" },
-    { text: "9. In the RPC identification scheme, a program number groups related procedures. Version numbers are used to:", options: ["Allocate temporary ports", "Support multiple revisions of a service", "Identify the client OS", "Specify the transport layer"], correct: "Support multiple revisions of a service" },
-    { text: "10. Which rpcgen output provides the dispatcher that receives incoming requests and calls the appropriate server procedure?", options: ["Client stub", "Server skeleton", "XDR filter", "Header file"], correct: "Server skeleton" }
-  ];
-
-  function buildFinalQuiz() {
-    const container = document.getElementById("finalQuizContainer");
-    container.innerHTML = "";
-    finalQuestions.forEach((q, idx) => {
-      const qDiv = document.createElement("div");
-      qDiv.className = "quiz-question";
-      qDiv.style.background = "#fef9e6";
-      qDiv.style.borderRadius = "1.2rem";
-      qDiv.style.padding = "1rem";
-      qDiv.style.marginBottom = "1rem";
-      qDiv.innerHTML = `<strong>${q.text}</strong><div id="finalOpts-${idx}" style="margin-top: 0.6rem;"></div>`;
-      const optsDiv = qDiv.querySelector(`#finalOpts-${idx}`);
-      q.options.forEach(opt => {
-        const label = document.createElement("label");
-        label.className = "quiz-option";
-        label.innerHTML = `<input type="radio" name="finalQ${idx}" value="${opt.replace(/"/g, '&quot;')}"> <span>${opt}</span>`;
-        optsDiv.appendChild(label);
-      });
-      container.appendChild(qDiv);
-    });
-  }
-  buildFinalQuiz();
-
-  document.getElementById("submitFinalQuiz").addEventListener("click", () => {
-    let score = 0;
-    const results = [];
-    for (let i = 0; i < finalQuestions.length; i++) {
-      const selected = document.querySelector(`input[name="finalQ${i}"]:checked`);
-      const userAnswer = selected ? selected.value : null;
-      const correctAns = finalQuestions[i].correct;
-      const isCorrect = (userAnswer === correctAns);
-      if (isCorrect) score++;
-      results.push({ q: finalQuestions[i].text, correct: correctAns, user: userAnswer, ok: isCorrect });
-    }
-    const resultDiv = document.getElementById("finalQuizResult");
-    let feedbackHtml = `<div style="background:#f0f2f5; border-radius:1.2rem; padding:1rem;"><i class="fas fa-graduation-cap"></i> <strong>Final Score: ${score} / ${finalQuestions.length}</strong><br>`;
-    if (score === finalQuestions.length) feedbackHtml += "🏆 Outstanding! You've mastered Chapter 4 (RPC + RMI). 🏆";
-    else if (score >= 7) feedbackHtml += "👍 Good job! Review the incorrect answers to strengthen your RPC knowledge.";
-    else feedbackHtml += "📚 Re-read sections about port mapper, semantics, RMI registry and stubs. Try again!";
-    feedbackHtml += "<details><summary>🔍 Show detailed answers</summary><ul>";
-    results.forEach((r, idx) => {
-      feedbackHtml += `<li><strong>Q${idx+1}:</strong> ${r.q}<br> Your answer: ${r.user || "none"} — ${r.ok ? "✅ Correct" : `❌ Correct answer: ${r.correct}`}</li>`;
-    });
-    feedbackHtml += "</ul></details></div>";
-    resultDiv.innerHTML = feedbackHtml;
-    // Scroll to result
-    resultDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
-</script>
+<script src="assets/lt.js"></script>
 </body>
 </html>

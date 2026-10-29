@@ -1,730 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 1: The CIA Triad - Cybersecurity Fundamentals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --confidentiality: #3498db;
-            --integrity: #2ecc71;
-            --availability: #e74c3c;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            border-radius: 0 0 20px 20px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        .breadcrumb {
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .breadcrumb a {
-            color: var(--secondary);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .cia-intro {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .cia-intro h2 {
-            color: var(--primary);
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .cia-intro p {
-            font-size: 1.1rem;
-            max-width: 900px;
-            margin: 0 auto;
-            color: #555;
-        }
-
-        .triad-visual {
-            display: flex;
-            justify-content: center;
-            margin: 3rem 0;
-        }
-
-        .triad-item {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 0 1rem;
-            flex: 1;
-            max-width: 300px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .triad-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .triad-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            height: 80px;
-            width: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-        }
-
-        .confidentiality {
-            background: rgba(52, 152, 219, 0.1);
-            border-top: 5px solid var(--confidentiality);
-        }
-
-        .confidentiality .triad-icon {
-            background: var(--confidentiality);
-            color: white;
-        }
-
-        .integrity {
-            background: rgba(46, 204, 113, 0.1);
-            border-top: 5px solid var(--integrity);
-        }
-
-        .integrity .triad-icon {
-            background: var(--integrity);
-            color: white;
-        }
-
-        .availability {
-            background: rgba(231, 76, 60, 0.1);
-            border-top: 5px solid var(--availability);
-        }
-
-        .availability .triad-icon {
-            background: var(--availability);
-            color: white;
-        }
-
-        .principle-section {
-            background: white;
-            border-radius: 10px;
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .principle-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--light);
-        }
-
-        .principle-header h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-        }
-
-        .principle-icon {
-            font-size: 2rem;
-            margin-right: 1rem;
-            height: 60px;
-            width: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-        }
-
-        .confidentiality-header .principle-icon {
-            background: var(--confidentiality);
-        }
-
-        .integrity-header .principle-icon {
-            background: var(--integrity);
-        }
-
-        .availability-header .principle-icon {
-            background: var(--availability);
-        }
-
-        .principle-content h3 {
-            color: var(--primary);
-            margin: 1.5rem 0 1rem;
-            font-size: 1.4rem;
-        }
-
-        .key-points {
-            margin: 1rem 0;
-        }
-
-        .key-points li {
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .key-points li i {
-            margin-top: 0.2rem;
-        }
-
-        .example-section {
-            background: #e8f4f8;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--confidentiality);
-        }
-
-        .example-section h4 {
-            color: #0277bd;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .case-study {
-            background: #fff3e0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--warning);
-        }
-
-        .case-study h4 {
-            color: #ef6c00;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .implementation-section {
-            background: #e8f5e9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--success);
-        }
-
-        .implementation-section h4 {
-            color: #2e7d32;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .visual-aid {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-        }
-
-        .visual-aid h4 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        .comparison-table th, .comparison-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .comparison-table th {
-            background: var(--primary);
-            color: white;
-        }
-
-        .comparison-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        .interrelationship {
-            background: #f3e5f5;
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2.5rem 0;
-            text-align: center;
-        }
-
-        .interrelationship h3 {
-            color: #7b1fa2;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-section {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin: 2.5rem 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .quiz-section h3 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .quiz-question {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .quiz-question:last-child {
-            border-bottom: none;
-        }
-
-        .quiz-options {
-            margin: 1rem 0;
-        }
-
-        .quiz-option {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .quiz-option:hover {
-            background: #f5f5f5;
-        }
-
-        .quiz-option.correct {
-            background: #e8f5e9;
-            border-left: 4px solid var(--success);
-        }
-
-        .quiz-option.incorrect {
-            background: #ffebee;
-            border-left: 4px solid var(--danger);
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 10px;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .triad-visual {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .triad-item {
-                margin: 1rem 0;
-                max-width: 100%;
-            }
-            
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .principle-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .principle-icon {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The CIA Triad · LT Information</title>
+<meta name="description" content="Confidentiality, integrity and availability explained with controls, real incidents, trade-offs, and the extensions beyond CIA: authenticity, non-repudiation and the Parkerian hexad.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .up { color: var(--ok); font-weight: 700 }
+  .down { color: var(--warn); font-weight: 700 }
+  .neutral { color: var(--muted) }
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1><i class="fas fa-shield-alt"></i> The CIA Triad</h1>
-            <p>Confidentiality, Integrity, and Availability - The Foundation of Cybersecurity</p>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="#"><i class="fas fa-home"></i> Home</a> &gt; 
-            <a href="#">Cybersecurity Course</a> &gt; 
-            <a href="#">Lesson 1</a> &gt; 
-            <span>The CIA Triad</span>
-        </div>
-
-        <div class="cia-intro">
-            <h2>The Cornerstone of Information Security</h2>
-            <p>The CIA Triad is a fundamental model that forms the basis for developing security systems and policies. These three principles guide organizations in keeping their sensitive data and systems protected from unauthorized access, tampering, and disruption.</p>
-        </div>
-
-        <div class="triad-visual">
-            <div class="triad-item confidentiality">
-                <div class="triad-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3>Confidentiality</h3>
-                <p>Protecting information from unauthorized access</p>
-            </div>
-            <div class="triad-item integrity">
-                <div class="triad-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3>Integrity</h3>
-                <p>Ensuring data accuracy and trustworthiness</p>
-            </div>
-            <div class="triad-item availability">
-                <div class="triad-icon">
-                    <i class="fas fa-server"></i>
-                </div>
-                <h3>Availability</h3>
-                <p>Guaranteeing access to information when needed</p>
-            </div>
-        </div>
-
-        <!-- Confidentiality Section -->
-        <div class="principle-section">
-            <div class="principle-header confidentiality-header">
-                <div class="principle-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h2>Confidentiality: Protecting Sensitive Information</h2>
-            </div>
-            
-            <div class="principle-content">
-                <p>Confidentiality involves preventing the disclosure of information to unauthorized individuals, entities, or systems. It ensures that sensitive data is accessed only by those who have been authorized to view it.</p>
-                
-                <h3>Why Confidentiality Matters</h3>
-                <p>In our digital age, confidential information comes in many forms: personal identification data, financial records, trade secrets, intellectual property, and government classified information. A breach of confidentiality can lead to identity theft, financial loss, competitive disadvantage, or even threats to national security.</p>
-                
-                <div class="example-section">
-                    <h4><i class="fas fa-lightbulb"></i> Real-World Example: Healthcare Data Protection</h4>
-                    <p>In healthcare, patient records contain extremely sensitive information. The HIPAA (Health Insurance Portability and Accountability Act) in the United States mandates strict confidentiality controls. When you visit a doctor, only authorized medical staff can access your records - not the administrative staff, not other patients, and certainly not external parties.</p>
-                    <p>A breach occurred in 2015 when Anthem Inc. suffered a cyberattack that exposed the personal information of nearly 80 million people. The attackers accessed names, social security numbers, medical IDs, and other sensitive data, highlighting the catastrophic consequences of confidentiality failures.</p>
-                </div>
-                
-                <h3>Implementing Confidentiality</h3>
-                <div class="implementation-section">
-                    <h4><i class="fas fa-tools"></i> Confidentiality Controls and Mechanisms</h4>
-                    <ul class="key-points">
-                        <li><i class="fas fa-key" style="color: var(--confidentiality);"></i> <strong>Encryption:</strong> Transforming data into unreadable ciphertext that can only be decrypted with the correct key</li>
-                        <li><i class="fas fa-user-lock" style="color: var(--confidentiality);"></i> <strong>Access Control Lists (ACLs):</strong> Defining which users or system processes are granted access to objects</li>
-                        <li><i class="fas fa-passport" style="color: var(--confidentiality);"></i> <strong>Authentication:</strong> Verifying the identity of users before granting access</li>
-                        <li><i class="fas fa-user-tag" style="color: var(--confidentiality);"></i> <strong>Authorization:</strong> Determining what an authenticated user is allowed to do</li>
-                        <li><i class="fas fa-eye-slash" style="color: var(--confidentiality);"></i> <strong>Data Classification:</strong> Categorizing data based on sensitivity and applying appropriate protection</li>
-                        <li><i class="fas fa-file-signature" style="color: var(--confidentiality);"></i> <strong>Non-Disclosure Agreements (NDAs):</strong> Legal contracts that prevent parties from sharing confidential information</li>
-                    </ul>
-                </div>
-                
-                <div class="case-study">
-                    <h4><i class="fas fa-briefcase"></i> Case Study: The Panama Papers</h4>
-                    <p>In 2016, an anonymous source leaked 11.5 million documents from the Panamanian law firm Mossack Fonseca. These documents contained confidential information about offshore entities used by wealthy individuals and public officials for various purposes, including tax evasion and money laundering.</p>
-                    <p><strong>Confidentiality Failure:</strong> The law firm failed to protect its clients' confidential data, resulting in one of the largest data leaks in history. The breach had global repercussions, leading to political resignations, criminal investigations, and increased scrutiny of offshore financial activities.</p>
-                    <p><strong>Lesson:</strong> Even organizations whose primary business is maintaining confidentiality can fall victim to breaches if they don't implement robust security measures.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Integrity Section -->
-        <div class="principle-section">
-            <div class="principle-header integrity-header">
-                <div class="principle-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h2>Integrity: Ensuring Data Accuracy and Trustworthiness</h2>
-            </div>
-            
-            <div class="principle-content">
-                <p>Integrity involves maintaining the consistency, accuracy, and trustworthiness of data over its entire lifecycle. Data must not be changed in transit, and measures must be in place to ensure that unauthorized persons cannot alter data.</p>
-                
-                <h3>The Importance of Data Integrity</h3>
-                <p>When data integrity is compromised, the consequences can be severe. In financial systems, altered transaction amounts can lead to massive financial losses. In healthcare, modified patient records can result in incorrect treatments. In legal contexts, tampered evidence can lead to unjust outcomes.</p>
-                
-                <div class="visual-aid">
-                    <h4>Data Integrity Throughout the Information Lifecycle</h4>
-                    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 1rem;">
-                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
-                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                                <i class="fas fa-plus"></i>
-                            </div>
-                            <p>Creation</p>
-                        </div>
-                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
-                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <p>Storage</p>
-                        </div>
-                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
-                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
-                            <p>Transmission</p>
-                        </div>
-                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
-                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                                <i class="fas fa-pencil-alt"></i>
-                            </div>
-                            <p>Modification</p>
-                        </div>
-                        <div style="text-align: center; flex: 1; min-width: 120px; padding: 10px;">
-                            <div style="background: var(--integrity); color: white; border-radius: 50%; height: 60px; width: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
-                                <i class="fas fa-trash"></i>
-                            </div>
-                            <p>Destruction</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <h3>Implementing Integrity</h3>
-                <div class="implementation-section">
-                    <h4><i class="fas fa-tools"></i> Integrity Controls and Mechanisms</h4>
-                    <ul class="key-points">
-                        <li><i class="fas fa-hashtag" style="color: var(--integrity);"></i> <strong>Hash Functions:</strong> Creating unique digital fingerprints of data to detect alterations</li>
-                        <li><i class="fas fa-digital-tachograph" style="color: var(--integrity);"></i> <strong>Digital Signatures:</strong> Verifying the authenticity and integrity of digital messages</li>
-                        <li><i class="fas fa-clipboard-check" style="color: var(--integrity);"></i> <strong>Checksums:</strong> Simple error-detection method to verify data integrity</li>
-                        <li><i class="fas fa-code-branch" style="color: var(--integrity);"></i> <strong>Version Control:</strong> Tracking changes to documents or code over time</li>
-                        <li><i class="fas fa-user-shield" style="color: var(--integrity);"></i> <strong>Access Controls:</strong> Preventing unauthorized modifications through permission systems</li>
-                        <li><i class="fas fa-history" style="color: var(--integrity);"></i> <strong>Audit Trails:</strong> Logging all access and modification attempts for later review</li>
-                    </ul>
-                </div>
-                
-                <div class="case-study">
-                    <h4><i class="fas fa-briefcase"></i> Case Study: The Stuxnet Worm</h4>
-                    <p>Discovered in 2010, Stuxnet was a sophisticated computer worm that targeted industrial control systems, specifically Iran's nuclear facilities. Unlike most malware that focuses on confidentiality or availability, Stuxnet was designed to compromise integrity.</p>
-                    <p><strong>Integrity Attack:</strong> Stuxnet subtly altered the programming of centrifuges used for uranium enrichment while reporting normal operation readings to monitoring systems. This caused the centrifuges to physically degrade and fail while operators believed they were functioning normally.</p>
-                    <p><strong>Lesson:</strong> Integrity attacks can be more dangerous than confidentiality breaches because they can cause physical damage while remaining undetected. Critical infrastructure requires special integrity protection measures.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Availability Section -->
-        <div class="principle-section">
-            <div class="principle-header availability-header">
-                <div class="principle-icon">
-                    <i class="fas fa-server"></i>
-                </div>
-                <h2>Availability: Ensuring Access to Information and Systems</h2>
-            </div>
-            
-            <div class="principle-content">
-                <p>Availability ensures that information and systems are accessible and usable upon demand by authorized users. This principle focuses on maintaining operational performance and quick recovery from disruptions.</p>
-                
-                <h3>The Critical Nature of Availability</h3>
-                <p>In today's always-on digital economy, system downtime can have devastating consequences. E-commerce sites lose sales every minute they're unavailable. Emergency services depend on available communication systems. Manufacturing plants halt production when control systems go offline. The cost of downtime extends beyond immediate financial loss to include reputational damage and loss of customer trust.</p>
-                
-                <div class="example-section">
-                    <h4><i class="fas fa-lightbulb"></i> Real-World Example: Cloud Service Outages</h4>
-                    <p>In 2017, Amazon Web Services (AWS) experienced a significant outage that affected thousands of websites and services, including Trello, Slack, and Quora. The disruption was caused by a human error during a routine debugging exercise that accidentally took down more servers than intended.</p>
-                    <p>This incident highlighted how dependent modern businesses are on cloud services and how a failure in one part of the infrastructure can have cascading effects. Companies that had implemented proper availability measures with multi-region deployments were less affected than those relying on a single region.</p>
-                </div>
-                
-                <h3>Implementing Availability</h3>
-                <div class="implementation-section">
-                    <h4><i class="fas fa-tools"></i> Availability Controls and Mechanisms</h4>
-                    <ul class="key-points">
-                        <li><i class="fas fa-redo" style="color: var(--availability);"></i> <strong>Redundancy:</strong> Deploying duplicate components to ensure continued operation if one fails</li>
-                        <li><i class="fas fa-battery-full" style="color: var(--availability);"></i> <strong>Failover Systems:</strong> Automatic switching to backup systems when primary systems fail</li>
-                        <li><i class="fas fa-cloud-download-alt" style="color: var(--availability);"></i> <strong>Backup Solutions:</strong> Regular copying of data to enable recovery after data loss</li>
-                        <li><i class="fas fa-tachometer-alt" style="color: var(--availability);"></i> <strong>Load Balancing:</strong> Distributing workloads across multiple systems to prevent overload</li>
-                        <li><i class="fas fa-plug" style="color: var(--availability);"></i> <strong>Uninterruptible Power Supplies (UPS):</strong> Providing emergency power during outages</li>
-                        <li><i class="fas fa-first-aid" style="color: var(--availability);"></i> <strong>Disaster Recovery Plans:</strong> Documented processes for responding to and recovering from disasters</li>
-                    </ul>
-                </div>
-                
-                <div class="case-study">
-                    <h4><i class="fas fa-briefcase"></i> Case Study: The 2016 Dyn Cyberattack</h4>
-                    <p>In October 2016, a massive Distributed Denial of Service (DDoS) attack targeted Dyn, a major DNS provider. The attack leveraged millions of Internet of Things (IoT) devices infected with the Mirai malware to overwhelm Dyn's servers with traffic.</p>
-                    <p><strong>Availability Impact:</strong> The attack made many major websites inaccessible for hours, including Twitter, Netflix, Reddit, and GitHub. The incident demonstrated how vulnerabilities in seemingly unimportant connected devices (like cameras and DVRs) could be weaponized to disrupt critical internet infrastructure.</p>
-                    <p><strong>Lesson:</strong> Availability requires protecting not just your own systems but also understanding dependencies on third-party services. Defense-in-depth strategies are essential for maintaining availability against sophisticated attacks.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Interrelationship Section -->
-        <div class="interrelationship">
-            <h3><i class="fas fa-project-diagram"></i> The Interrelationship of CIA Principles</h3>
-            <p>The three principles of the CIA Triad are interconnected and sometimes involve trade-offs. Strengthening one aspect might weaken another, requiring careful balance in security planning.</p>
-            
-            <div class="visual-aid">
-                <h4>CIA Trade-offs in Practice</h4>
-                <table class="comparison-table">
-                    <tr>
-                        <th>Scenario</th>
-                        <th>Confidentiality Impact</th>
-                        <th>Integrity Impact</th>
-                        <th>Availability Impact</th>
-                    </tr>
-                    <tr>
-                        <td>Implementing complex encryption</td>
-                        <td style="color: var(--success);">Increases</td>
-                        <td style="color: var(--warning);">May decrease (performance issues)</td>
-                        <td style="color: var(--warning);">May decrease (processing overhead)</td>
-                    </tr>
-                    <tr>
-                        <td>Adding multiple authentication factors</td>
-                        <td style="color: var(--success);">Increases</td>
-                        <td style="color: var(--success);">Increases</td>
-                        <td style="color: var(--warning);">May decrease (user inconvenience)</td>
-                    </tr>
-                    <tr>
-                        <td>Implementing comprehensive logging</td>
-                        <td style="color: var(--warning);">May decrease (if logs exposed)</td>
-                        <td style="color: var(--success);">Increases</td>
-                        <td style="color: var(--warning);">May decrease (storage requirements)</td>
-                    </tr>
-                    <tr>
-                        <td>Creating system redundancies</td>
-                        <td style="color: var(--warning);">May decrease (more attack surfaces)</td>
-                        <td style="color: var(--neutral);">Neutral</td>
-                        <td style="color: var(--success);">Increases</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <p>Effective cybersecurity requires finding the right balance among these three principles based on the specific needs and risk profile of each organization and system.</p>
-        </div>
-
-        <!-- Quiz Section -->
-        <div class="quiz-section">
-            <h3><i class="fas fa-question-circle"></i> Test Your Understanding</h3>
-            
-            <div class="quiz-question">
-                <p><strong>1. A hospital implements a system where patient records can only be accessed by authorized medical staff using secure login credentials. Which CIA principle does this primarily address?</strong></p>
-                <div class="quiz-options">
-                    <div class="quiz-option" data-correct="true">Confidentiality</div>
-                    <div class="quiz-option" data-correct="false">Integrity</div>
-                    <div class="quiz-option" data-correct="false">Availability</div>
-                    <div class="quiz-option" data-correct="false">All of the above</div>
-                </div>
-            </div>
-            
-            <div class="quiz-question">
-                <p><strong>2. A financial institution uses cryptographic hash functions to ensure that transaction data hasn't been altered during transmission. Which CIA principle is being protected?</strong></p>
-                <div class="quiz-options">
-                    <div class="quiz-option" data-correct="false">Confidentiality</div>
-                    <div class="quiz-option" data-correct="true">Integrity</div>
-                    <div class="quiz-option" data-correct="false">Availability</div>
-                    <div class="quiz-option" data-correct="false">Authentication</div>
-                </div>
-            </div>
-            
-            <div class="quiz-question">
-                <p><strong>3. An e-commerce website implements load balancers and redundant servers to ensure it can handle high traffic during holiday sales. Which CIA principle is the primary focus?</strong></p>
-                <div class="quiz-options">
-                    <div class="quiz-option" data-correct="false">Confidentiality</div>
-                    <div class="quiz-option" data-correct="false">Integrity</div>
-                    <div class="quiz-option" data-correct="true">Availability</div>
-                    <div class="quiz-option" data-correct="false">Authorization</div>
-                </div>
-            </div>
-        </div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Cybersecurity · Lesson 1</span>
+    <h1>The CIA Triad</h1>
+    <p class="lead">Confidentiality, Integrity and Availability: the foundation of cybersecurity. Almost every security control, policy and exam question can be traced back to protecting one of these three properties, so this page builds them up carefully with real incidents and practice scenarios.</p>
+    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Foundation</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Define confidentiality, integrity and availability precisely and give controls for each.</li>
+        <li>Identify which property was violated in a real incident or scenario.</li>
+        <li>Explain why hashes, HMACs and digital signatures protect integrity differently, and which algorithms are deprecated.</li>
+        <li>Reason about trade-offs between the three properties.</li>
+        <li>Describe authenticity, non-repudiation and the Parkerian hexad as extensions of CIA.</li>
+      </ul>
     </div>
+  </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <p>Cybersecurity Fundamentals - Lesson 1: The CIA Triad &copy; 2023</p>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <section>
+      <h2><span class="num">1</span>The cornerstone of information security</h2>
+      <p>The CIA Triad is a fundamental model that forms the basis for developing security systems and policies. These three principles guide organisations in keeping their sensitive data and systems protected from unauthorised access, tampering and disruption. (In French-language courses you will see the same idea as <strong>DIC</strong>: Disponibilité, Intégrité, Confidentialité.)</p>
+
+      <figure class="diagram">
+        <svg viewBox="0 0 420 330" width="100%" role="img" aria-labelledby="ciaT ciaD" style="max-width:460px;display:block;margin:0 auto">
+          <title id="ciaT">The CIA triad</title>
+          <desc id="ciaD">A triangle with Confidentiality at the top, Integrity at bottom left and Availability at bottom right, surrounding the protected information.</desc>
+          <polygon points="210,40 50,290 370,290" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:3"/>
+          <circle cx="210" cy="40" r="30" style="fill:var(--panel);stroke:var(--accent);stroke-width:3"/>
+          <circle cx="50" cy="290" r="30" style="fill:var(--panel);stroke:var(--ok);stroke-width:3"/>
+          <circle cx="370" cy="290" r="30" style="fill:var(--panel);stroke:var(--warn);stroke-width:3"/>
+          <text x="210" y="47" text-anchor="middle" font-size="22" font-weight="700">C</text>
+          <text x="50" y="297" text-anchor="middle" font-size="22" font-weight="700">I</text>
+          <text x="370" y="297" text-anchor="middle" font-size="22" font-weight="700">A</text>
+          <text x="210" y="190" text-anchor="middle" font-size="16" font-weight="700">Information</text>
+          <text x="210" y="212" text-anchor="middle" font-size="13">and systems</text>
+          <text x="262" y="30" font-size="14">Confidentiality</text>
+          <text x="50" y="325" text-anchor="middle" font-size="14">Integrity</text>
+          <text x="370" y="325" text-anchor="middle" font-size="14">Availability</text>
+        </svg>
+        <figcaption>Figure 1. The three properties protect the same asset. A system is only as trustworthy as its weakest side.</figcaption>
+      </figure>
+
+      <div class="cards">
+        <div class="card"><h3>Confidentiality</h3><p>Protecting information from unauthorised access.</p></div>
+        <div class="card"><h3>Integrity</h3><p>Ensuring data accuracy and trustworthiness.</p></div>
+        <div class="card"><h3>Availability</h3><p>Guaranteeing access to information when needed.</p></div>
+      </div>
+
+      <div class="callout key"><span class="label">Key idea</span><p>For any security incident, ask three questions. Did the wrong people <strong>see</strong> it? (C) Was it <strong>changed</strong> without authorisation? (I) Could the right people <strong>use</strong> it when they needed to? (A)</p></div>
+      <p>The opposite of CIA is sometimes taught as the <strong>DAD</strong> triad, the attacker's goals: <strong>D</strong>isclosure (breaks C), <strong>A</strong>lteration (breaks I), <strong>D</strong>estruction or denial (breaks A).</p>
+    </section>
+
+    <section>
+      <h2><span class="num">2</span>Confidentiality: protecting sensitive information</h2>
+      <p>Confidentiality involves preventing the disclosure of information to unauthorised individuals, entities or systems. It ensures that sensitive data is accessed only by those who have been authorised to view it. Note that "unauthorised" includes insiders: a nurse browsing a celebrity's medical record without a clinical reason breaks confidentiality just as an outside hacker would.</p>
+
+      <h3>Why confidentiality matters</h3>
+      <p>In our digital age, confidential information comes in many forms: personal identification data, financial records, trade secrets, intellectual property and government classified information. A breach of confidentiality can lead to identity theft, financial loss, competitive disadvantage, legal penalties (for example under the EU's GDPR) or even threats to national security.</p>
+
+      <div class="callout example"><span class="label">Real-world example: healthcare data protection</span>
+        <p>In healthcare, patient records contain extremely sensitive information. HIPAA (Health Insurance Portability and Accountability Act) in the United States mandates strict confidentiality controls. When you visit a doctor, only authorised medical staff with a need to know can access your clinical records: not unrelated administrative staff, not other patients, and certainly not external parties.</p>
+        <p>A breach occurred in 2015 when the US health insurer Anthem Inc. suffered a cyberattack that exposed the personal information of nearly 80 million people. The attackers accessed names, Social Security numbers, member ID numbers, addresses and other sensitive data, highlighting the serious consequences of confidentiality failures.</p>
+      </div>
+
+      <h3>Implementing confidentiality</h3>
+      <dl class="defs">
+        <dt>Encryption</dt><dd>Transforming data into unreadable ciphertext that can only be decrypted with the correct key. Use AES-256 (or AES-128) for data at rest and TLS 1.3 for data in transit.</dd>
+        <dt>Access Control Lists (ACLs)</dt><dd>Defining which users or system processes are granted access to which objects.</dd>
+        <dt>Authentication</dt><dd>Verifying the identity of users before granting access; today this should mean MFA, ideally phishing-resistant passkeys (FIDO2).</dd>
+        <dt>Authorization</dt><dd>Determining what an authenticated user is allowed to do, following <em>least privilege</em> (only the access needed for the job) and <em>need to know</em>.</dd>
+        <dt>Data classification</dt><dd>Categorising data by sensitivity (for example Public, Internal, Confidential, Restricted) and applying appropriate protection to each level.</dd>
+        <dt>Non-Disclosure Agreements (NDAs)</dt><dd>Legal contracts that prevent parties from sharing confidential information: an administrative, not technical, control.</dd>
+      </dl>
+
+      <div class="callout tip"><span class="label">Three states of data</span><p>Protect data <strong>at rest</strong> (disk and database encryption), <strong>in transit</strong> (TLS, VPN) and <strong>in use</strong> (access control, screen locks, and emerging "confidential computing" hardware). Encrypting only one state leaves the others open.</p></div>
+
+      <h3>Common attacks on confidentiality</h3>
+      <ul>
+        <li><strong>Phishing</strong> to steal credentials, then reading mailboxes or files.</li>
+        <li><strong>Eavesdropping</strong> on unencrypted traffic (HTTP, Telnet, open Wi-Fi without WPA2/WPA3).</li>
+        <li><strong>Misconfiguration:</strong> cloud storage buckets or databases left publicly readable.</li>
+        <li><strong>Social engineering and shoulder surfing:</strong> reading a password over someone's shoulder.</li>
+        <li><strong>Insider misuse:</strong> authorised users accessing data they have no reason to see.</li>
+      </ul>
+
+      <div class="callout example"><span class="label">Case study: the Panama Papers</span>
+        <p>In 2016, an anonymous source leaked 11.5 million documents from the Panamanian law firm Mossack Fonseca to journalists. These documents contained confidential information about offshore entities used by wealthy individuals and public officials, in some cases for tax evasion and money laundering.</p>
+        <p><strong>Confidentiality failure:</strong> the law firm failed to protect its clients' confidential data, resulting in one of the largest data leaks in history. The leak had global repercussions, including political resignations, criminal investigations and increased scrutiny of offshore financial activities.</p>
+        <p><strong>Lesson:</strong> even organisations whose primary business is maintaining confidentiality can fall victim to breaches if they do not implement robust security measures.</p>
+      </div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>"Confidentiality" and "privacy" are related but not identical. Confidentiality is a security property (only authorised parties can read the data). Privacy is about an individual's rights over personal data: whether it should be collected and used at all. A company can keep data perfectly confidential and still violate privacy by collecting it without consent.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">3</span>Integrity: ensuring data accuracy and trustworthiness</h2>
+      <p>Integrity involves maintaining the consistency, accuracy and trustworthiness of data over its entire lifecycle. Data must not be changed in transit, and measures must be in place so that unauthorised persons cannot alter data, and so that any alteration, malicious or accidental, can be <em>detected</em>. Integrity also covers system integrity: the operating system and software should not be secretly modified (for example by a rootkit).</p>
+
+      <h3>The importance of data integrity</h3>
+      <p>When data integrity is compromised, the consequences can be severe. In financial systems, altered transaction amounts can lead to massive financial losses. In healthcare, a modified dosage or allergy entry can result in incorrect treatment. In legal contexts, tampered evidence can lead to unjust outcomes. Integrity attacks are especially dangerous because the victim keeps using the data and trusting it.</p>
+
+      <h3>Data integrity throughout the information lifecycle</h3>
+      <div class="flow"><span class="node">Creation</span><span class="arrow">→</span><span class="node">Storage</span><span class="arrow">→</span><span class="node">Transmission</span><span class="arrow">→</span><span class="node">Modification</span><span class="arrow">→</span><span class="node">Destruction</span></div>
+      <p>At every stage the question is the same: can we prove this is still the data that was legitimately created or approved? Input validation protects creation, access control and hashes protect storage, TLS protects transmission, change control and version history protect modification, and secure deletion makes destruction verifiable.</p>
+
+      <h3>Implementing integrity</h3>
+      <dl class="defs">
+        <dt>Hash functions</dt><dd>Creating a fixed-size digital fingerprint of data; any change, even one bit, produces a different hash. Use SHA-256 or SHA-3.</dd>
+        <dt>Digital signatures</dt><dd>Verifying the authenticity and integrity of digital messages: a hash signed with the sender's private key, checked with their public key.</dd>
+        <dt>Checksums</dt><dd>Simple error-detection method (for example CRC32) to catch accidental corruption.</dd>
+        <dt>Version control</dt><dd>Tracking changes to documents or code over time (Git), so any change can be reviewed and reverted.</dd>
+        <dt>Access controls</dt><dd>Preventing unauthorised modifications through permission systems (read-only vs write rights).</dd>
+        <dt>Audit trails</dt><dd>Logging all access and modification attempts for later review.</dd>
+      </dl>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mechanism</th><th>Detects accidental change</th><th>Detects deliberate tampering</th><th>Proves who made it</th></tr></thead>
+        <tbody>
+          <tr><td>Checksum (CRC32)</td><td>Yes</td><td>No: attacker recomputes it</td><td>No</td></tr>
+          <tr><td>Hash (SHA-256) alone</td><td>Yes</td><td>Only if the hash is obtained from a separate trusted source</td><td>No</td></tr>
+          <tr><td>HMAC (hash + shared secret key)</td><td>Yes</td><td>Yes</td><td>Only "someone holding the key"</td></tr>
+          <tr><td>Digital signature (RSA, ECDSA, Ed25519)</td><td>Yes</td><td>Yes</td><td>Yes: non-repudiation</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout example"><span class="label">Example: verifying a download</span>
+        <p>A Linux ISO page publishes its SHA-256 value. After downloading, you compute the hash and compare:</p>
+      </div>
+      <p class="code-title">terminal</p>
+      <pre><code><span class="c"># Linux</span>
+sha256sum ubuntu.iso
+<span class="c"># macOS</span>
+shasum -a 256 ubuntu.iso
+<span class="c"># Windows PowerShell</span>
+Get-FileHash ubuntu.iso -Algorithm SHA256</code></pre>
+      <p>If one character of the file changed, the hash is completely different. But if an attacker controls the website, they can replace both the file and the published hash; that is why distributions also <em>sign</em> their hash lists.</p>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Using MD5 or SHA-1 for security. Both have practical collision attacks (a public SHA-1 collision was demonstrated in 2017), so an attacker can craft two different files with the same hash. They remain acceptable only for non-security uses such as detecting accidental corruption.</p></div>
+
+      <div class="callout example"><span class="label">Case study: the Stuxnet worm</span>
+        <p>Discovered in 2010, Stuxnet was a sophisticated computer worm that targeted industrial control systems, specifically the Siemens controllers driving centrifuges at Iran's Natanz uranium-enrichment facility. Unlike most malware, which targets confidentiality or availability, Stuxnet was designed to compromise integrity.</p>
+        <p><strong>Integrity attack:</strong> Stuxnet subtly altered the programming of the centrifuge controllers, changing their rotation speeds, while replaying normal readings to the monitoring systems. The centrifuges physically degraded and failed while operators believed they were functioning normally.</p>
+        <p><strong>Lesson:</strong> integrity attacks can be more dangerous than confidentiality breaches because they can cause physical damage while remaining undetected. Critical infrastructure needs special integrity protection, such as signed controller code and independent monitoring.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">4</span>Availability: ensuring access to information and systems</h2>
+      <p>Availability ensures that information and systems are accessible and usable on demand by authorised users. This principle focuses on maintaining operational performance and quick recovery from disruptions, whether caused by attackers, hardware failure, human error or natural disaster.</p>
+
+      <h3>The critical nature of availability</h3>
+      <p>In today's always-on digital economy, system downtime can have devastating consequences. E-commerce sites lose sales every minute they are unavailable. Emergency services depend on available communication systems. Manufacturing plants halt production when control systems go offline. The cost of downtime extends beyond immediate financial loss to reputational damage and loss of customer trust.</p>
+
+      <h3>Measuring availability</h3>
+      <p>Availability is often promised in a <span class="term" title="Service Level Agreement: a contract stating the level of service a provider guarantees">SLA</span> as a percentage of uptime, the "nines":</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Uptime</th><th>Maximum downtime per year</th></tr></thead>
+        <tbody>
+          <tr><td>99% ("two nines")</td><td>≈ 3.65 days</td></tr>
+          <tr><td>99.9%</td><td>≈ 8.76 hours</td></tr>
+          <tr><td>99.99%</td><td>≈ 52.6 minutes</td></tr>
+          <tr><td>99.999% ("five nines")</td><td>≈ 5.26 minutes</td></tr>
+        </tbody>
+      </table></div>
+      <dl class="defs">
+        <dt>RTO</dt><dd>Recovery Time Objective: how long the service may be down before it must be restored.</dd>
+        <dt>RPO</dt><dd>Recovery Point Objective: how much data (measured in time) you can afford to lose. Nightly backups mean an RPO of up to 24 hours.</dd>
+      </dl>
+
+      <div class="callout example"><span class="label">Real-world example: cloud service outages</span>
+        <p>In February 2017, Amazon Web Services (AWS) had a significant S3 storage outage in its US-East-1 region that affected thousands of websites and services, including Trello, Slack and Quora. It was caused by human error: during a routine debugging task, a mistyped command removed far more servers than intended.</p>
+        <p>This incident highlighted how dependent modern businesses are on cloud services and how a failure in one part of the infrastructure can cascade. Companies with multi-region deployments were less affected than those relying on a single region.</p>
+      </div>
+
+      <h3>Implementing availability</h3>
+      <dl class="defs">
+        <dt>Redundancy</dt><dd>Deploying duplicate components (disks in RAID, extra servers, two internet links) so operation continues if one fails.</dd>
+        <dt>Failover systems</dt><dd>Automatic switching to backup systems when primary systems fail.</dd>
+        <dt>Backup solutions</dt><dd>Regular copies of data to enable recovery after loss. Follow 3-2-1 and keep one offline or immutable copy that ransomware cannot reach; test restores.</dd>
+        <dt>Load balancing</dt><dd>Distributing workloads across multiple systems to prevent overload.</dd>
+        <dt>Uninterruptible Power Supplies (UPS)</dt><dd>Providing emergency power during outages, usually bridging to a generator.</dd>
+        <dt>Disaster Recovery Plans</dt><dd>Documented, rehearsed processes for responding to and recovering from disasters.</dd>
+        <dt>DDoS protection</dt><dd>Upstream filtering and content delivery networks that absorb attack traffic.</dd>
+      </dl>
+
+      <div class="callout example"><span class="label">Case study: the 2016 Dyn cyberattack</span>
+        <p>In October 2016, a massive Distributed Denial of Service (DDoS) attack targeted Dyn, a major DNS provider. The attack used a large botnet of Internet of Things (IoT) devices, mainly cameras and video recorders with default passwords, infected with the Mirai malware, to overwhelm Dyn's servers with traffic.</p>
+        <p><strong>Availability impact:</strong> many major websites, including Twitter, Netflix, Reddit and GitHub, were unreachable for hours for large numbers of users. The incident showed how vulnerabilities in seemingly unimportant connected devices could be weaponised to disrupt critical internet infrastructure.</p>
+        <p><strong>Lesson:</strong> availability requires protecting not just your own systems but also understanding dependencies on third-party services (here, DNS). Defence in depth and redundant providers are essential.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card"><h4>Ransomware</h4><p>Today the most common availability attack on organisations: files and servers are encrypted until a ransom is paid. Modern groups also steal data first, so it hits confidentiality too.</p></div>
+        <div class="card"><h4>CrowdStrike outage (July 2024)</h4><p>A faulty update to security software crashed about 8.5 million Windows computers, disrupting airlines, banks and hospitals. No attacker: availability failures are not always malicious.</p></div>
+      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Thinking backups are only an availability control. A backup also restores <em>integrity</em> after tampering, but if it is unencrypted and stolen, it becomes a <em>confidentiality</em> problem. Protect backups like production data.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">5</span>The interrelationship of CIA principles</h2>
+      <p>The three principles of the CIA triad are interconnected and sometimes involve trade-offs. Strengthening one aspect might weaken another, requiring careful balance in security planning.</p>
+      <h3>CIA trade-offs in practice</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Scenario</th><th>Confidentiality</th><th>Integrity</th><th>Availability</th></tr></thead>
+        <tbody>
+          <tr><td>Implementing strong encryption</td><td class="up">Increases</td><td class="up">Increases if authenticated encryption (e.g. AES-GCM) is used; otherwise neutral</td><td class="down">May decrease: lost keys make data unrecoverable; small processing overhead</td></tr>
+          <tr><td>Adding multiple authentication factors</td><td class="up">Increases</td><td class="up">Increases (fewer unauthorised changes)</td><td class="down">May decrease (user inconvenience, lockouts if a device is lost)</td></tr>
+          <tr><td>Implementing comprehensive logging</td><td class="down">May decrease (if logs containing sensitive data are exposed)</td><td class="up">Increases (changes are traceable)</td><td class="down">May decrease (storage and performance requirements)</td></tr>
+          <tr><td>Creating system redundancies</td><td class="down">May decrease (more copies and attack surface)</td><td class="neutral">Neutral (but copies must stay synchronised)</td><td class="up">Increases</td></tr>
+        </tbody>
+      </table></div>
+      <p>Effective cybersecurity requires finding the right balance among these three principles based on the specific needs and risk profile of each organisation and system. A hospital emergency system favours availability (a doctor must never be locked out in an emergency); a military intelligence system favours confidentiality; a payment ledger favours integrity.</p>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Some older material (including an earlier version of this table) said that encryption decreases integrity. That is wrong. Encryption on its own does not change integrity; modern authenticated encryption actively protects it. The real cost of encryption is to <em>availability</em> if keys are lost or systems become slower.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">6</span>Beyond CIA: authenticity, non-repudiation and the Parkerian hexad</h2>
+      <p>CIA is necessary but not complete. Two properties are so often added that many standards (including ISO/IEC 27000 definitions) mention them alongside CIA:</p>
+      <dl class="defs">
+        <dt>Authenticity</dt><dd>The data or party is genuinely what it claims to be: this email really came from your bank; this website really is your bank.</dd>
+        <dt>Non-repudiation</dt><dd>The sender cannot later deny having sent or signed something. Achieved with digital signatures plus trustworthy logs and timestamps.</dd>
+      </dl>
+      <p>In 1998 Donn B. Parker proposed the <strong>Parkerian hexad</strong>, six properties instead of three:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Property</th><th>Meaning</th><th>Example of a violation</th></tr></thead>
+        <tbody>
+          <tr><td>Confidentiality</td><td>Only authorised parties can read it</td><td>Database leaked online</td></tr>
+          <tr><td>Possession (control)</td><td>You still control the data, even if nobody has read it</td><td>A laptop with an encrypted disk is stolen: no disclosure, but loss of possession</td></tr>
+          <tr><td>Integrity</td><td>It is complete and unchanged</td><td>Grade altered in a database</td></tr>
+          <tr><td>Authenticity</td><td>The origin or author is genuine</td><td>Fake invoice email that appears to come from a supplier</td></tr>
+          <tr><td>Availability</td><td>Usable when needed</td><td>DDoS takes the site offline</td></tr>
+          <tr><td>Utility</td><td>The data is still useful</td><td>Backups encrypted with a key that has been lost: the data exists but is useless</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Possession and utility are the two properties students forget. Use them for scenarios where data was not read and not changed but the owner still lost something: control (possession) or usefulness (utility).</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">7</span>Practice: which property was violated?</h2>
+      <p>Decide before opening each answer.</p>
+      <details class="reveal"><summary>An attacker intercepts a payment request and changes the IBAN to his own account.</summary><p><strong>Integrity</strong> (and authenticity of the request). Defence: signed or authenticated messages, plus out-of-band confirmation of changed bank details.</p></details>
+      <details class="reveal"><summary>An employee emails a customer list to a personal Gmail account before leaving the company.</summary><p><strong>Confidentiality.</strong> Data reached an unauthorised place. Controls: data-loss prevention, least privilege, NDA and exit procedures.</p></details>
+      <details class="reveal"><summary>A student's script floods the university registration portal on enrolment day, so nobody can register.</summary><p><strong>Availability.</strong> Controls: rate limiting, load balancing, DDoS protection.</p></details>
+      <details class="reveal"><summary>A cloud administrator accidentally makes a storage bucket of passport scans public.</summary><p><strong>Confidentiality</strong> through misconfiguration (OWASP: Security Misconfiguration). No attacker is needed for a breach.</p></details>
+      <details class="reveal"><summary>A company receives an email "from the CEO" asking finance to urgently pay a new supplier.</summary><p><strong>Authenticity</strong> (business email compromise). If the payment is made, integrity of the payment process is also broken. Defence: verify by phone using a known number, DMARC/SPF/DKIM on email.</p></details>
+      <details class="reveal"><summary>Ransomware encrypts a hospital's servers and the group posts patient files on its leak site.</summary><p><strong>Availability and confidentiality</strong>: the double-extortion pattern. Offline backups restore availability but cannot undo the disclosure.</p></details>
+    </section>
+
+    <section>
+      <h2><span class="num">8</span>Test your understanding</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: The CIA triad</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A hospital implements a system where patient records can only be accessed by authorised medical staff using secure login credentials. Which CIA principle does this primarily address?</p>
+          <div class="opts"><button data-correct>Confidentiality</button><button>Integrity</button><button>Availability</button><button>All of the above</button></div>
+          <div class="explain">Restricting who can view records is confidentiality. Access control can incidentally help integrity, but the primary purpose here is preventing unauthorised disclosure.</div>
         </div>
-    </footer>
 
-    <script>
-        // Quiz functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const quizOptions = document.querySelectorAll('.quiz-option');
-            
-            quizOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const isCorrect = this.getAttribute('data-correct') === 'true';
-                    
-                    // Remove previous styling
-                    this.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
-                        opt.classList.remove('correct', 'incorrect');
-                    });
-                    
-                    // Add appropriate styling
-                    if (isCorrect) {
-                        this.classList.add('correct');
-                    } else {
-                        this.classList.add('incorrect');
-                        
-                        // Highlight correct answer
-                        this.parentElement.querySelector('[data-correct="true"]').classList.add('correct');
-                    }
-                });
-            });
-        });
-    </script>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A financial institution uses cryptographic hash functions to ensure that transaction data has not been altered during transmission. Which CIA principle is being protected?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Authentication</button></div>
+          <div class="explain">Hashes detect changes, so they protect integrity. In practice the hash must be keyed (HMAC) or signed; otherwise an attacker who changes the data can recompute it. Hashing does not hide data, so it is not confidentiality.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>An e-commerce website implements load balancers and redundant servers to handle high traffic during holiday sales. Which CIA principle is the primary focus?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Authorization</button></div>
+          <div class="explain">Load balancing and redundancy keep the service usable under load or failure: availability.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Stuxnet changed centrifuge speeds while showing operators normal readings. Which property did it mainly attack?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Integrity</button><button>Availability</button><button>Utility</button></div>
+          <div class="explain">It altered controller logic and falsified sensor data. The physical damage that followed reduced availability, but the attack mechanism was integrity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which hash algorithm should you use today to protect the integrity of software downloads?</p>
+          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>CRC32</button></div>
+          <div class="explain">MD5 and SHA-1 have practical collision attacks; CRC32 only detects accidental errors. SHA-256 (or SHA-3) is the current standard.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>Which mechanism provides integrity <em>and</em> non-repudiation?</p>
+          <div class="opts"><button>Checksum</button><button>HMAC with a shared key</button><button data-correct>Digital signature</button><button>AES encryption</button></div>
+          <div class="explain">An HMAC proves integrity, but both parties hold the same key, so either could have produced it. Only a signature made with one person's private key ties the message to that person.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>A laptop with a fully encrypted disk is stolen. Nobody can read the data. In the Parkerian hexad, which property was still lost?</p>
+          <div class="opts"><button>Confidentiality</button><button data-correct>Possession (control)</button><button>Integrity</button><button>Authenticity</button></div>
+          <div class="explain">Encryption preserved confidentiality, but the owner no longer controls the device and data. That is exactly what Parker's "possession" captures.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>True or false: encrypting data reduces its integrity.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">Encryption does not damage integrity, and authenticated encryption (AES-GCM, ChaCha20-Poly1305) actively detects tampering. Its main risk is to availability if keys are lost.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>The 2016 Dyn attack was launched mainly from…</p>
+          <div class="opts"><button>Hacked corporate servers</button><button data-correct>IoT devices such as cameras and DVRs infected with Mirai</button><button>Phishing emails to Dyn staff</button><button>A malicious insider</button></div>
+          <div class="explain">Mirai logged into IoT devices using default passwords and turned them into a botnet that flooded Dyn's DNS servers.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>A service promises 99.9% uptime. Roughly how much downtime per year does that allow?</p>
+          <div class="opts"><button>About 5 minutes</button><button>About 52 minutes</button><button data-correct>About 8.8 hours</button><button>About 3.7 days</button></div>
+          <div class="explain">0.1% of 8,760 hours = 8.76 hours. 52 minutes is 99.99%; 5 minutes is 99.999%; 3.65 days is 99%.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>An attacker sends an invoice email that looks exactly like it came from a real supplier. Which extension of CIA is violated?</p>
+          <div class="opts"><button>Availability</button><button data-correct>Authenticity</button><button>Utility</button><button>Possession</button></div>
+          <div class="explain">The message is not genuinely from who it claims. Email authentication (SPF, DKIM, DMARC) and verification procedures protect authenticity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>Which pair of controls protects confidentiality of data both at rest and in transit?</p>
+          <div class="opts"><button>RAID and UPS</button><button data-correct>Disk encryption (AES-256) and TLS 1.3</button><button>Checksums and version control</button><button>Load balancer and failover</button></div>
+          <div class="explain">AES-based disk or database encryption covers data at rest; TLS covers data in transit. The other pairs protect availability or integrity.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>Your backups exist, but the only decryption key was lost in the ransomware attack. In the Parkerian hexad, which property is violated?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Utility</button><button>Authenticity</button></div>
+          <div class="explain">The data is intact and still in your possession but is useless without the key: a loss of utility. (In plain CIA terms you would call it availability.)</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>Which word in the DAD triad is the opposite of integrity?</p>
+          <div class="opts"><button>Disclosure</button><button data-correct>Alteration</button><button>Destruction</button><button>Denial</button></div>
+          <div class="explain">DAD = Disclosure (vs confidentiality), Alteration (vs integrity), Destruction/Denial (vs availability).</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2>
+        <ul>
+          <li><strong>Confidentiality:</strong> only authorised people see data. Controls: encryption (AES-256, TLS 1.3), MFA/passkeys, least privilege, classification, NDAs.</li>
+          <li><strong>Integrity:</strong> data and systems are accurate and unaltered, and changes are detectable. Controls: SHA-256 hashes, HMACs, digital signatures, access control, version control, audit trails. Avoid MD5 and SHA-1.</li>
+          <li><strong>Availability:</strong> usable when needed. Controls: redundancy, failover, load balancing, tested offline/immutable backups, UPS, DR plans, DDoS protection. Measure with uptime, RTO and RPO.</li>
+          <li>The three trade off against each other; the right balance depends on the system (hospital vs bank vs intelligence agency).</li>
+          <li>DAD (Disclosure, Alteration, Destruction) is the attacker's view of CIA.</li>
+          <li>Extensions: authenticity and non-repudiation; Parker's hexad adds possession, authenticity and utility.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

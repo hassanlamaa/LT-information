@@ -1,676 +1,523 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Fundamentals Course</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            opacity: 0.9;
-        }
-
-        .nav-container {
-            background: white;
-            border-radius: 10px;
-            padding: 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .nav-tab {
-            padding: 12px 24px;
-            background: var(--light);
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-tab:hover {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .nav-tab.active {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .lesson-content {
-            display: none;
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .lesson-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lesson-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--light);
-        }
-
-        .lesson-header h2 {
-            color: var(--primary);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .lesson-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .concept-section {
-            margin-bottom: 2rem;
-        }
-
-        .concept-section h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .concept-section h3 i {
-            color: var(--secondary);
-        }
-
-        .concept-card {
-            background: var(--light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid var(--secondary);
-        }
-
-        .concept-card h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .key-points {
-            margin: 1rem 0;
-        }
-
-        .key-points li {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .key-points li i {
-            color: var(--success);
-            margin-top: 0.2rem;
-        }
-
-        .example-section {
-            background: #e8f4f8;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border: 1px solid #b3e5fc;
-        }
-
-        .example-section h4 {
-            color: #0277bd;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .case-study {
-            background: #fff3e0;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border: 1px solid #ffcc80;
-        }
-
-        .case-study h4 {
-            color: #ef6c00;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .security-domain {
-            background: #f3e5f5;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 1px solid #ce93d8;
-        }
-
-        .security-domain h4 {
-            color: #7b1fa2;
-            margin-bottom: 1rem;
-        }
-
-        .risk-category {
-            background: #ffebee;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 1px solid #ef9a9a;
-        }
-
-        .risk-category h4 {
-            color: #c62828;
-            margin-bottom: 1rem;
-        }
-
-        .key-insight {
-            background: #e8f5e9;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--success);
-        }
-
-        .key-insight h4 {
-            color: var(--success);
-            margin-bottom: 0.5rem;
-        }
-
-        .visual-aid {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-        }
-
-        .visual-aid h4 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .chart-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 1rem;
-        }
-
-        .chart-item {
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .chart-bar {
-            height: 120px;
-            width: 30px;
-            background: #e0e0e0;
-            margin: 0 auto 10px;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-fill {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            border-radius: 4px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 10px;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .nav-tabs {
-                flex-direction: column;
-            }
-            
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .lesson-header h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chapter 1: Cybersecurity Fundamentals · LT Information</title>
+<meta name="description" content="Cybersecurity foundations, technical security measures and risk management: CIA/DIC, authentication, cryptography, OWASP, incident response, risk = likelihood × impact, controls, NIST CSF 2.0 and ISO/IEC 27001:2022.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .lesson-tag { display: inline-block; font: 700 .72rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--sunk); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; margin: 0 0 10px }
+  .risk-grid td, .risk-grid th { text-align: center }
+  .r-low { background: var(--ok-soft) }
+  .r-med { background: var(--warn-soft) }
+  .r-high { background: var(--bad-soft) }
+  .r-crit { background: var(--bad); color: var(--panel); font-weight: 700 }
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1><i class="fas fa-shield-alt"></i> Cybersecurity Fundamentals</h1>
-            <p>Master the principles and practices of information security with real-world examples</p>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="nav-container">
-            <div class="nav-tabs">
-                <div class="nav-tab active" data-target="lesson1">
-                    <i class="fas fa-lock"></i> Lesson 1: Foundations
-                </div>
-                <div class="nav-tab" data-target="lesson2">
-                    <i class="fas fa-cogs"></i> Lesson 2: Technical Security
-                </div>
-                <div class="nav-tab" data-target="lesson3">
-                    <i class="fas fa-chart-line"></i> Lesson 3: Risk Management
-                </div>
-            </div>
-        </div>
-
-        <!-- Lesson 1 Content -->
-        <div id="lesson1" class="lesson-content active">
-            <div class="lesson-header">
-                <h2>Lesson 1: Cybersecurity Foundations</h2>
-                <p>Core Principles and Application Domains</p>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-globe"></i> Cyberspace and Security</h3>
-                <div class="concept-card">
-                    <h4>Understanding Cyberspace</h4>
-                    <p>Cyberspace extends our natural environment, reflecting society through digital infrastructures, data and networked services. Unlike physical spaces, it's a pure creation of humans that doesn't belong to nature.</p>
-                    
-                    <div class="example-section">
-                        <h4><i class="fas fa-lightbulb"></i> Real-World Example</h4>
-                        <p><strong>Social Media Platforms:</strong> Facebook, Twitter, and LinkedIn create digital social environments that mirror our physical social interactions but with different rules and risks.</p>
-                        <p><strong>E-commerce:</strong> Amazon and eBay have created digital marketplaces that function similarly to physical shopping malls but with global reach and different security challenges.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-list-alt"></i> The DIC Criteria</h3>
-                <div class="concept-card">
-                    <h4>Fundamental Security Principles</h4>
-                    <p>The DIC criteria form the foundation of cybersecurity:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-check-circle"></i> <strong>Availability (D)</strong> - Resources must be operational and accessible when needed</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Integrity (I)</strong> - Resources remain intact, accurate and unmodified without authorization</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Confidentiality (C)</strong> - Data is protected against unauthorized disclosure</li>
-                    </ul>
-                    
-                    <div class="example-section">
-                        <h4><i class="fas fa-lightbulb"></i> Practical Examples</h4>
-                        <p><strong>Availability Failure:</strong> In 2016, the Dyn DNS outage took down major websites including Twitter, Netflix, and Reddit for hours, demonstrating the importance of availability.</p>
-                        <p><strong>Integrity Breach:</strong> The 2014 Sony Pictures hack resulted in modified data and leaked confidential information, showing integrity and confidentiality failures.</p>
-                        <p><strong>Confidentiality Compromise:</strong> The 2017 Equifax breach exposed personal data of 147 million people, a massive confidentiality failure.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-shield-alt"></i> Additional Security Functions</h3>
-                <div class="concept-card">
-                    <h4>Beyond the Basics</h4>
-                    <p>Modern cybersecurity extends beyond the DIC criteria to include:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-fingerprint"></i> <strong>Identification and Authentication</strong> - Verifying user identities</li>
-                        <li><i class="fas fa-user-shield"></i> <strong>Non-repudiation and Accountability</strong> - Ensuring actions can't be denied</li>
-                        <li><i class="fas fa-search"></i> <strong>Traceability and Auditing</strong> - Tracking activities for analysis</li>
-                    </ul>
-                    
-                    <div class="case-study">
-                        <h4><i class="fas fa-briefcase"></i> Case Study: Online Banking Security</h4>
-                        <p>Modern banking systems implement all these security functions:</p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-mobile-alt"></i> <strong>Authentication:</strong> Two-factor authentication using phones</li>
-                            <li><i class="fas fa-receipt"></i> <strong>Non-repudiation:</strong> Digital signatures on transactions</li>
-                            <li><i class="fas fa-history"></i> <strong>Traceability:</strong> Complete audit trails of all transactions</li>
-                        </ul>
-                        <p>When a customer disputes a transaction, the bank can provide undeniable proof through these security measures.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="key-insight">
-                <h4><i class="fas fa-key"></i> Key Takeaway</h4>
-                <p>Cybersecurity begins with understanding the fundamental principles of availability, integrity, and confidentiality, and extends to physical protection of infrastructure. These principles apply to all digital systems regardless of their specific purpose or technology.</p>
-            </div>
-        </div>
-
-        <!-- Lesson 2 Content -->
-        <div id="lesson2" class="lesson-content">
-            <div class="lesson-header">
-                <h2>Lesson 2: Technical Security Measures</h2>
-                <p>Implementation and Operational Practices</p>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-code"></i> Logical Security</h3>
-                <div class="security-domain">
-                    <h4>Software-Based Protection</h4>
-                    <p>Implementation of security mechanisms through software to ensure proper functioning of programs, services and data protection:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-code"></i> Quality software development and security testing</li>
-                        <li><i class="fas fa-lock"></i> Cryptography for integrity and confidentiality</li>
-                        <li><i class="fas fa-user-check"></i> Access control and authentication procedures</li>
-                        <li><i class="fas fa-virus"></i> Malware and intrusion detection systems</li>
-                    </ul>
-                    
-                    <div class="example-section">
-                        <h4><i class="fas fa-lightbulb"></i> Real-World Example: HTTPS Encryption</h4>
-                        <p>When you visit a secure website (indicated by HTTPS and a lock icon), logical security measures are at work:</p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-key"></i> <strong>Encryption:</strong> TLS/SSL protocols encrypt data between your browser and the server</li>
-                            <li><i class="fas fa-certificate"></i> <strong>Authentication:</strong> Digital certificates verify the website's identity</li>
-                            <li><i class="fas fa-shield-alt"></i> <strong>Integrity:</strong> Hash functions ensure data isn't modified in transit</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-laptop-code"></i> Application Security</h3>
-                <div class="security-domain">
-                    <h4>Security by Design</h4>
-                    <p>Security integrated throughout the software development lifecycle:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-cogs"></i> Development methodology following standards</li>
-                        <li><i class="fas fa-shield-alt"></i> Application robustness and quality controls</li>
-                        <li><i class="fas fa-tasks"></i> Security mechanism integration</li>
-                        <li><i class="fas fa-code-branch"></i> Regular security updates and patches</li>
-                    </ul>
-                    
-                    <div class="case-study">
-                        <h4><i class="fas fa-briefcase"></i> Case Study: The Equifax Breach</h4>
-                        <p>In 2017, Equifax suffered a massive data breach exposing personal information of 147 million people. The cause was an unpatched vulnerability in the Apache Struts framework.</p>
-                        <p><strong>Security Failures:</strong></p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-times-circle"></i> Failure to apply a known security patch for months</li>
-                            <li><i class="fas fa-times-circle"></i> Inadequate vulnerability scanning and detection</li>
-                            <li><i class="fas fa-times-circle"></i> Poor segmentation of sensitive data</li>
-                        </ul>
-                        <p>This case highlights the critical importance of application security practices, especially timely patching.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-server"></i> Operational Security</h3>
-                <div class="security-domain">
-                    <h4>Maintaining Secure Operations</h4>
-                    <p>Ensuring proper functioning of computer systems and telecommunications networks through:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-server"></i> Computer park management</li>
-                        <li><i class="fas fa-sync-alt"></i> Configuration and update management</li>
-                        <li><i class="fas fa-exclamation-triangle"></i> Incident management and resolution</li>
-                        <li><i class="fas fa-history"></i> Backup, continuity, and maintenance</li>
-                    </ul>
-                    
-                    <div class="visual-aid">
-                        <h4>Common Security Incident Response Timeline</h4>
-                        <div class="chart-container">
-                            <div class="chart-item">
-                                <div class="chart-bar">
-                                    <div class="chart-fill" style="height: 20%; background: #3498db;"></div>
-                                </div>
-                                <p>Detection<br>(0-2 hours)</p>
-                            </div>
-                            <div class="chart-item">
-                                <div class="chart-bar">
-                                    <div class="chart-fill" style="height: 40%; background: #e74c3c;"></div>
-                                </div>
-                                <p>Containment<br>(2-24 hours)</p>
-                            </div>
-                            <div class="chart-item">
-                                <div class="chart-bar">
-                                    <div class="chart-fill" style="height: 70%; background: #f39c12;"></div>
-                                </div>
-                                <p>Eradication<br>(1-7 days)</p>
-                            </div>
-                            <div class="chart-item">
-                                <div class="chart-bar">
-                                    <div class="chart-fill" style="height: 100%; background: #2ecc71;"></div>
-                                </div>
-                                <p>Recovery<br>(1-4 weeks)</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="example-section">
-                        <h4><i class="fas fa-lightbulb"></i> Real-World Example: Ransomware Attack Response</h4>
-                        <p>When the City of Atlanta was hit by ransomware in 2018, their operational security practices were tested:</p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-database"></i> <strong>Backup systems:</strong> Some departments could restore from backups</li>
-                            <li><i class="fas fa-times-circle"></i> <strong>Gaps identified:</strong> Inconsistent backup practices across departments</li>
-                            <li><i class="fas fa-clock"></i> <strong>Recovery time:</strong> Some systems took weeks to restore</li>
-                            <li><i class="fas fa-dollar-sign"></i> <strong>Cost:</strong> Recovery cost over $2.7 million</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="key-insight">
-                <h4><i class="fas fa-key"></i> Key Insight</h4>
-                <p>Global security is always that of the weakest link. Implementing encryption for data transfer is ineffective if the data can be accessed through unsecured platforms. A comprehensive approach must address all layers of the technology stack.</p>
-            </div>
-        </div>
-
-        <!-- Lesson 3 Content -->
-        <div id="lesson3" class="lesson-content">
-            <div class="lesson-header">
-                <h2>Lesson 3: Cybersecurity Risk Management</h2>
-                <p>Holistic Approach and Strategic Implementation</p>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-exclamation-triangle"></i> Cyber Threat Levels</h3>
-                <div class="risk-category">
-                    <h4>Understanding Threat Severity</h4>
-                    <p>Cybersecurity threats can be categorized by their potential impact:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> <strong>Low Danger:</strong> Nuisances like spam, minor disruptions</li>
-                        <li><i class="fas fa-exclamation-circle" style="color: var(--danger);"></i> <strong>Medium Danger:</strong> Controllable impacts requiring significant resources</li>
-                        <li><i class="fas fa-skull-crossbones" style="color: var(--danger);"></i> <strong>High Danger:</strong> Severe damages with lasting consequences</li>
-                    </ul>
-                    
-                    <div class="visual-aid">
-                        <h4>Threat Probability vs Impact Matrix</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; text-align: center; margin-top: 1rem;">
-                            <div style="grid-column: 2 / span 3; font-weight: bold;">Probability</div>
-                            <div style="font-weight: bold;">Impact</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Low</div>
-                            <div style="background: #fff3cd; padding: 10px;">Medium</div>
-                            <div style="background: #f8d7da; padding: 10px;">High</div>
-                            <div style="background: #e8f5e9; padding: 10px;">High</div>
-                            <div style="background: #fff3cd; padding: 10px;">Medium Risk</div>
-                            <div style="background: #f8d7da; padding: 10px;">High Risk</div>
-                            <div style="background: #f8d7da; padding: 10px;">Critical Risk</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Medium</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Low Risk</div>
-                            <div style="background: #fff3cd; padding: 10px;">Medium Risk</div>
-                            <div style="background: #f8d7da; padding: 10px;">High Risk</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Low</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Low Risk</div>
-                            <div style="background: #e8f5e9; padding: 10px;">Low Risk</div>
-                            <div style="background: #fff3cd; padding: 10px;">Medium Risk</div>
-                        </div>
-                    </div>
-                    
-                    <div class="case-study">
-                        <h4><i class="fas fa-briefcase"></i> Case Study: NotPetya Ransomware Attack</h4>
-                        <p>In 2017, the NotPetya ransomware attack caused over $10 billion in damages worldwide, targeting companies like Maersk, Merck, and FedEx.</p>
-                        <p><strong>Threat Characteristics:</strong></p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-bomb"></i> <strong>High Impact:</strong> Paralyzed operations for major corporations</li>
-                            <li><i class="fas fa-globe"></i> <strong>Global Reach:</strong> Affected organizations in multiple countries</li>
-                            <li><i class="fas fa-clock"></i> <strong>Rapid Spread:</strong> Used multiple infection vectors including a compromised software update</li>
-                        </ul>
-                        <p>This attack demonstrated how a high-danger threat could disrupt global supply chains and cause massive financial losses.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-globe-americas"></i> Global Cyber Risks</h3>
-                <div class="risk-category">
-                    <h4>Beyond Technical Threats</h4>
-                    <p>Modern organizations face cybersecurity challenges that extend beyond technical vulnerabilities:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-globe"></i> Dependence on foreign technology suppliers</li>
-                        <li><i class="fas fa-eye"></i> Economic intelligence and corporate espionage</li>
-                        <li><i class="fas fa-recycle"></i> Environmental impacts of digital infrastructure</li>
-                        <li><i class="fas fa-balance-scale"></i> Regulatory compliance across jurisdictions</li>
-                    </ul>
-                    
-                    <div class="example-section">
-                        <h4><i class="fas fa-lightbulb"></i> Real-World Example: SolarWinds Supply Chain Attack</h4>
-                        <p>In 2020, hackers compromised SolarWinds' software build system, inserting malware into updates that were then distributed to 18,000 customers, including government agencies.</p>
-                        <p><strong>Global Risk Factors:</strong></p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-link"></i> <strong>Supply Chain Vulnerability:</strong> Attack through a trusted software supplier</li>
-                            <li><i class="fas fa-user-secret"></i> <strong>Attribution Challenges:</strong> Sophisticated state-sponsored actors</li>
-                            <li><i class="fas fa-shield-alt"></i> <strong>Trust Erosion:</strong> Compromised trust in software update mechanisms</li>
-                        </ul>
-                        <p>This incident highlighted how global dependencies create systemic risks that transcend individual organizational security.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="concept-section">
-                <h3><i class="fas fa-sitemap"></i> Security Architecture Dimensions</h3>
-                <div class="security-domain">
-                    <h4>Holistic Security Framework</h4>
-                    <p>Effective cybersecurity requires addressing multiple dimensions simultaneously:</p>
-                    <ul class="key-points">
-                        <li><i class="fas fa-sitemap"></i> <strong>Political & Managerial:</strong> Security policy, governance, risk management</li>
-                        <li><i class="fas fa-cogs"></i> <strong>Technical:</strong> Security tools, systems, infrastructure</li>
-                        <li><i class="fas fa-users"></i> <strong>Human:</strong> Training, awareness, ethics, competence</li>
-                        <li><i class="fas fa-gavel"></i> <strong>Legal & Regulatory:</strong> Compliance, standards, procedures</li>
-                    </ul>
-                    
-                    <div class="case-study">
-                        <h4><i class="fas fa-briefcase"></i> Case Study: Target Data Breach (2013)</h4>
-                        <p>Target suffered a massive data breach exposing 40 million credit cards and 70 million customer records.</p>
-                        <p><strong>Multi-dimensional Failure Analysis:</strong></p>
-                        <ul class="key-points">
-                            <li><i class="fas fa-cogs"></i> <strong>Technical:</strong> Hackers entered through HVAC vendor credentials</li>
-                            <li><i class="fas fa-sitemap"></i> <strong>Managerial:</strong> Security team warnings were ignored</li>
-                            <li><i class="fas fa-users"></i> <strong>Human:</strong> Vendor access management was inadequate</li>
-                            <li><i class="fas fa-gavel"></i> <strong>Legal:</strong> Resulted in $18.5 million multi-state settlement</li>
-                        </ul>
-                        <p>This case demonstrates how failures across multiple dimensions can compound to create a major security incident.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="key-insight">
-                <h4><i class="fas fa-key"></i> Course Conclusion</h4>
-                <p>Cybersecurity requires a global, multidisciplinary approach that integrates technical measures with organizational, human, legal and ethical dimensions. No single solution can provide complete protection - effective security emerges from the thoughtful integration of people, processes, and technology across all dimensions of the organization.</p>
-            </div>
-        </div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Cybersecurity · Chapter 1</span>
+    <h1>Cybersecurity Fundamentals</h1>
+    <p class="lead">Master the principles and practices of information security with real-world examples. This chapter has three lessons: the foundations (what we protect and why), the technical measures that do the protecting, and the risk-management thinking that decides where to spend effort.</p>
+    <div class="chips"><span class="chip">≈ 45 min read</span><span class="chip">16 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">3 lessons</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Define cyberspace and cybersecurity, and explain the DIC/CIA criteria with a real incident for each.</li>
+        <li>Distinguish identification, authentication, authorization, accountability and non-repudiation.</li>
+        <li>Describe logical, application and operational security, and name current vs deprecated crypto (TLS 1.3, AES-256, SHA-256 vs SSL, DES, MD5, SHA-1).</li>
+        <li>Separate threat, vulnerability and risk, and score a risk as likelihood × impact.</li>
+        <li>Classify controls as preventive/detective/corrective and administrative/technical/physical.</li>
+        <li>Place NIST CSF 2.0, ISO/IEC 27001:2022 and zero trust in the bigger picture.</li>
+      </ul>
     </div>
+  </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <p>Cybersecurity Fundamentals Course &copy; 2023 | Learn with Real-World Examples and Case Studies</p>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <!-- ================= LESSON 1 ================= -->
+    <section>
+      <span class="lesson-tag">Lesson 1 · Foundations</span>
+      <h2><span class="num">1</span>Cyberspace and security</h2>
+      <p><span class="term" title="The global, human-made environment of networks, devices, data and the services running on them">Cyberspace</span> extends our natural environment, reflecting society through digital infrastructures, data and networked services. Unlike physical spaces, it is a pure creation of humans that does not belong to nature. Everything in it (servers, cables, protocols, accounts, databases) was designed by people, which means it also contains the mistakes people make.</p>
+      <p><span class="term" title="Protecting systems, networks and data against attacks, misuse and accidents">Cybersecurity</span> is the set of measures (technical, organisational, human and legal) that protect the things of value in cyberspace. Those things of value are called <span class="term" title="Anything of value to the organisation: data, systems, services, people, reputation">assets</span>: customer data, a payment service, a company's reputation, even the availability of a hospital's scheduling system.</p>
+
+      <div class="callout example"><span class="label">Real-world example</span>
+        <p><strong>Social media platforms:</strong> Facebook, X (formerly Twitter) and LinkedIn create digital social environments that mirror our physical social interactions, but with different rules and risks: fake profiles, account takeover, mass data scraping, misinformation.</p>
+        <p><strong>E-commerce:</strong> Amazon and eBay have created digital marketplaces that function like physical shopping malls but with global reach and different security challenges: card fraud, fake sellers, credential-stuffing attacks on customer accounts.</p>
+      </div>
+
+      <div class="callout analogy"><span class="label">Analogy</span><p>A physical shop worries about burglars at night. An online shop has "burglars" trying the door every second, from every country at once, and they can try thousands of stolen passwords per minute. Same goals (protect stock and customers), very different scale.</p></div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Treating cybersecurity as "an IT problem". Cyberspace reflects society, so most incidents combine a technical flaw with a human or organisational one: a phished employee, a skipped patch, an unmanaged supplier account.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">2</span>The DIC criteria (the CIA triad)</h2>
+      <p>The DIC criteria form the foundation of cybersecurity. "DIC" comes from the French <em>Disponibilité, Intégrité, Confidentialité</em>; in English textbooks the same three ideas are called the <strong>CIA triad</strong>. Same concepts, different order.</p>
+      <dl class="defs">
+        <dt>Availability (D)</dt><dd>Resources must be operational and accessible to authorised users when needed.</dd>
+        <dt>Integrity (I)</dt><dd>Resources remain intact, accurate and unmodified without authorisation, and any change is detectable.</dd>
+        <dt>Confidentiality (C)</dt><dd>Data is protected against unauthorised disclosure: only those allowed to read it can read it.</dd>
+      </dl>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Criterion</th><th>Question it answers</th><th>Typical attack</th><th>Typical control</th></tr></thead>
+        <tbody>
+          <tr><td>Availability</td><td>Can I use it when I need it?</td><td>DDoS, ransomware, sabotage</td><td>Redundancy, backups, DDoS protection</td></tr>
+          <tr><td>Integrity</td><td>Can I trust it has not been changed?</td><td>Tampering, man-in-the-middle, wiper malware</td><td>Hashes, digital signatures, access control</td></tr>
+          <tr><td>Confidentiality</td><td>Is it seen only by the right people?</td><td>Data breach, eavesdropping, phishing</td><td>Encryption, MFA, least privilege</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Practical examples</h3>
+      <div class="cards">
+        <div class="card"><h4>Availability failure</h4><p>In October 2016 a DDoS attack on <strong>Dyn</strong>, a DNS provider, used the Mirai botnet of hacked cameras and video recorders. Twitter, Netflix, Reddit and GitHub were unreachable for hours for many users. Nothing was stolen; the service simply could not be used.</p></div>
+        <div class="card"><h4>Integrity (and more) breach</h4><p>The 2014 <strong>Sony Pictures</strong> attack used wiper malware that destroyed data on thousands of machines, and the attackers leaked emails and unreleased films. That is an integrity and availability failure (destroyed data) <em>and</em> a confidentiality failure (leaks).</p></div>
+        <div class="card"><h4>Confidentiality compromise</h4><p>The 2017 <strong>Equifax</strong> breach exposed personal data (names, Social Security numbers, birth dates) of about 147 million people: a massive confidentiality failure.</p></div>
+      </div>
+
+      <div class="callout exam"><span class="label">Exam tip</span><p>When asked "which criterion was violated?", ask what the victim lost: the <em>ability to use</em> it (availability), the <em>ability to trust</em> it (integrity), or <em>control over who sees</em> it (confidentiality). Many real incidents hit more than one; name the main one and justify it.</p></div>
+
+      <details class="reveal"><summary>Scenario: a student changes his grade in the university database</summary><p><strong>Integrity.</strong> The data is still available and was not necessarily disclosed, but it is no longer accurate. If he also downloaded other students' grades, confidentiality was violated too.</p></details>
+      <details class="reveal"><summary>Scenario: ransomware encrypts a clinic's files and the attackers publish patient records</summary><p><strong>Availability</strong> (files unusable) <strong>and confidentiality</strong> (records leaked). This "double extortion" pattern, encrypting <em>and</em> stealing, is now the normal ransomware model.</p></details>
+    </section>
+
+    <section>
+      <h2><span class="num">3</span>Additional security functions</h2>
+      <p>Modern cybersecurity extends beyond the DIC criteria to include functions that tie actions to people:</p>
+      <dl class="defs">
+        <dt>Identification</dt><dd>Claiming an identity: typing a username, presenting a badge.</dd>
+        <dt>Authentication</dt><dd>Proving that claim: password, fingerprint, security key, passkey.</dd>
+        <dt>Authorization</dt><dd>Deciding what the authenticated identity may do (read, write, approve).</dd>
+        <dt>Non-repudiation</dt><dd>The author of an action cannot credibly deny it later, usually because it carries their digital signature.</dd>
+        <dt>Accountability</dt><dd>Every action can be traced to one responsible person; impossible with shared accounts.</dd>
+        <dt>Traceability and auditing</dt><dd>Recording activities in logs (audit trails) so they can be reviewed and analysed later.</dd>
+      </dl>
+
+      <h3>Authentication factors and MFA</h3>
+      <p>An authentication <em>factor</em> is a category of proof: something you <strong>know</strong> (password, PIN), something you <strong>have</strong> (phone, hardware key), something you <strong>are</strong> (fingerprint, face). <span class="term" title="Multi-factor authentication: at least two different factor categories">MFA</span> requires two or more different categories. Two passwords are still one factor.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Method</th><th>Strength</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Password only</td><td>Weak</td><td>Phished, guessed, reused across sites (credential stuffing)</td></tr>
+          <tr><td>SMS one-time code</td><td>Better than nothing</td><td>SIM-swap and real-time phishing can steal the code</td></tr>
+          <tr><td>Authenticator app / push</td><td>Good</td><td>Push can be abused by "MFA fatigue" (spamming approvals); number matching helps</td></tr>
+          <tr><td>Passkey / FIDO2 security key</td><td>Strongest common option</td><td>Phishing-resistant: the key is cryptographically bound to the real website, so a fake site gets nothing usable</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout example"><span class="label">Case study: online banking security</span>
+        <p>Modern banking systems implement all these security functions:</p>
+        <ul>
+          <li><strong>Authentication:</strong> multi-factor authentication using phones (app approval or one-time codes), increasingly passkeys.</li>
+          <li><strong>Non-repudiation:</strong> digital signatures on transactions.</li>
+          <li><strong>Traceability:</strong> complete audit trails of all transactions.</li>
+        </ul>
+        <p>When a customer disputes a transaction, the bank can provide strong evidence through these security measures: who logged in, from which device, which transaction was signed, and when.</p>
+      </div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Confusing authentication with authorization. Logging in successfully (authentication) says nothing about what you are allowed to do. A logged-in student who can open the admin page is an <em>authorization</em> failure, the most common web flaw (OWASP "Broken Access Control").</p></div>
+
+      <div class="callout key"><span class="label">Key takeaway</span><p>Cybersecurity begins with understanding the fundamental principles of availability, integrity and confidentiality, and extends to physical protection of infrastructure. These principles apply to all digital systems regardless of their specific purpose or technology.</p></div>
+    </section>
+
+    <!-- ================= LESSON 2 ================= -->
+    <section>
+      <span class="lesson-tag">Lesson 2 · Technical security</span>
+      <h2><span class="num">4</span>Logical security</h2>
+      <p><span class="term" title="Security implemented in software and data, as opposed to physical security">Logical security</span> is the implementation of security mechanisms through software to ensure proper functioning of programs, services and data protection:</p>
+      <ul>
+        <li>Quality software development and security testing</li>
+        <li>Cryptography for integrity and confidentiality</li>
+        <li>Access control and authentication procedures</li>
+        <li>Malware and intrusion detection systems (antivirus/EDR, IDS/IPS)</li>
+      </ul>
+
+      <div class="callout example"><span class="label">Real-world example: HTTPS encryption</span>
+        <p>When you visit a secure website (HTTPS, padlock icon), logical security measures are at work:</p>
+        <ul>
+          <li><strong>Encryption:</strong> the TLS protocol (today TLS 1.3, or 1.2) encrypts data between your browser and the server. "SSL" is the old name; all SSL versions and TLS 1.0/1.1 are deprecated and insecure.</li>
+          <li><strong>Authentication:</strong> digital certificates issued by a certificate authority verify the website's identity.</li>
+          <li><strong>Integrity:</strong> authenticated encryption (for example AES-GCM) and keyed hashes ensure data is not modified in transit.</li>
+        </ul>
+      </div>
+
+      <h3>Current versus deprecated cryptography</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Purpose</th><th>Use today</th><th>Deprecated / broken</th></tr></thead>
+        <tbody>
+          <tr><td>Symmetric encryption</td><td>AES-128/256 (AES-GCM), ChaCha20-Poly1305</td><td>DES (56-bit key, brute-forced in the late 1990s), 3DES, RC4</td></tr>
+          <tr><td>Hashing</td><td>SHA-256, SHA-384, SHA-3</td><td>MD5 and SHA-1 (practical collisions exist)</td></tr>
+          <tr><td>Password storage</td><td>Argon2id, bcrypt, scrypt (slow, salted)</td><td>Plain MD5/SHA-1/SHA-256 of the password, or plaintext</td></tr>
+          <tr><td>Secure web traffic</td><td>TLS 1.3, TLS 1.2</td><td>SSL 2.0/3.0, TLS 1.0/1.1</td></tr>
+          <tr><td>Public-key / signatures</td><td>RSA ≥ 2048-bit, ECDSA/Ed25519; NIST post-quantum standards (ML-KEM, ML-DSA, 2024) being rolled out</td><td>RSA-1024 and smaller</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>"Hashing encrypts the password." No: encryption is reversible with a key; a hash is one-way. And a plain fast hash (even SHA-256) is the wrong tool for passwords, because attackers can try billions of guesses per second. Use a deliberately slow password-hashing function such as Argon2id or bcrypt.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">5</span>Application security</h2>
+      <p><span class="term" title="Designing security in from the first requirement instead of adding it at the end">Security by design</span> means security is integrated throughout the software development lifecycle (a "secure SDLC"):</p>
+      <ul>
+        <li>Development methodology following standards (threat modelling, secure coding guidelines)</li>
+        <li>Application robustness and quality controls (code review, static and dynamic testing)</li>
+        <li>Security mechanism integration (authentication, input validation, logging)</li>
+        <li>Regular security updates and patches, including for third-party libraries</li>
+      </ul>
+
+      <h3>OWASP Top 10</h3>
+      <p>The <span class="term" title="Open Worldwide Application Security Project, a non-profit that publishes free web-security guidance">OWASP</span> Top 10 is the reference list of the most critical web application risks. The 2021 edition, still the one most courses and exams cite:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>OWASP Top 10 (2021)</th><th>Plain-English example</th></tr></thead>
+        <tbody>
+          <tr><td>A01</td><td>Broken Access Control</td><td>Changing <code>?id=101</code> to <code>?id=102</code> shows another customer's invoice</td></tr>
+          <tr><td>A02</td><td>Cryptographic Failures</td><td>Passwords stored with MD5, or a login page served over HTTP</td></tr>
+          <tr><td>A03</td><td>Injection (incl. SQL injection, XSS)</td><td>Typing <code>' OR '1'='1</code> into a login form</td></tr>
+          <tr><td>A04</td><td>Insecure Design</td><td>Password reset that only asks "what is your favourite colour?"</td></tr>
+          <tr><td>A05</td><td>Security Misconfiguration</td><td>Default admin password, public cloud storage bucket</td></tr>
+          <tr><td>A06</td><td>Vulnerable and Outdated Components</td><td>Running an unpatched library (Equifax, Log4Shell)</td></tr>
+          <tr><td>A07</td><td>Identification and Authentication Failures</td><td>No rate limit on login, no MFA</td></tr>
+          <tr><td>A08</td><td>Software and Data Integrity Failures</td><td>Installing updates without verifying their signature</td></tr>
+          <tr><td>A09</td><td>Security Logging and Monitoring Failures</td><td>Attack goes unnoticed for months</td></tr>
+          <tr><td>A10</td><td>Server-Side Request Forgery (SSRF)</td><td>Tricking the server into fetching internal URLs</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Update</span><p>OWASP published a 2025 edition. Broken Access Control stays at number 1, and new categories reflect current attacks, notably <em>Software Supply Chain Failures</em> and <em>Mishandling of Exceptional Conditions</em>. Check which edition your exam uses; the 2021 list above is the safe default.</p></div>
+
+      <div class="callout example"><span class="label">Case study: the Equifax breach (2017)</span>
+        <p>Equifax suffered a massive data breach exposing personal information of about 147 million people. The cause was an unpatched vulnerability in the Apache Struts web framework (CVE-2017-5638). A fix had been published in March 2017; attackers got in around mid-May.</p>
+        <p><strong>Security failures:</strong></p>
+        <ul>
+          <li>Failure to apply a known security patch for about two months.</li>
+          <li>Inadequate vulnerability scanning and detection (an expired certificate on a traffic-inspection device meant the data theft went unnoticed for weeks).</li>
+          <li>Poor segmentation of sensitive data, so one entry point reached many databases.</li>
+        </ul>
+        <p>This case highlights the critical importance of application security practices, especially timely patching. The same lesson repeated with <strong>Log4Shell</strong> (December 2021, a flaw in the widely used Log4j Java logging library) and the <strong>MOVEit Transfer</strong> mass data theft (2023, a SQL injection flaw exploited against many organisations at once).</p>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">6</span>Operational security</h2>
+      <p><span class="term" title="Day-to-day running of IT securely: maintenance, monitoring, backups, incident handling">Operational security</span> ensures proper functioning of computer systems and telecommunications networks through:</p>
+      <ul>
+        <li>Computer park (asset inventory) management: you cannot protect devices you do not know you have</li>
+        <li>Configuration and update management</li>
+        <li>Incident management and resolution</li>
+        <li>Backup, continuity and maintenance</li>
+      </ul>
+
+      <h3>Incident response</h3>
+      <p>An <span class="term" title="An event that actually or potentially harms confidentiality, integrity or availability">incident</span> is any event that harms or threatens CIA. The classic lifecycle (NIST SP 800-61) is: <strong>Preparation → Detection &amp; Analysis → Containment, Eradication &amp; Recovery → Post-incident activity (lessons learned)</strong>. The 2025 revision of SP 800-61 re-maps these activities onto the NIST CSF 2.0 functions, but the phases below are still how practitioners talk.</p>
+      <ol class="steps">
+        <li><strong>Detection:</strong> notice and confirm something is wrong (alerts, logs, user report).</li>
+        <li><strong>Containment:</strong> stop it spreading: isolate machines, disable accounts.</li>
+        <li><strong>Eradication:</strong> remove the cause: malware, backdoors, the exploited vulnerability.</li>
+        <li><strong>Recovery:</strong> restore from clean backups, monitor closely, return to normal.</li>
+      </ol>
+      <p>Common security incident response timeline (illustrative targets; real durations vary enormously with the incident and the organisation's preparation):</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Phase</th><th>Typical target duration</th><th>Main goal</th></tr></thead>
+        <tbody>
+          <tr><td>Detection</td><td>0–2 hours</td><td>Confirm the incident and its scope</td></tr>
+          <tr><td>Containment</td><td>2–24 hours</td><td>Stop the spread</td></tr>
+          <tr><td>Eradication</td><td>1–7 days</td><td>Remove the attacker and the cause</td></tr>
+          <tr><td>Recovery</td><td>1–4 weeks</td><td>Return to normal, safely</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Backups that survive ransomware</h3>
+      <p>Modern ransomware groups look for backups and delete or encrypt them first. The <strong>3-2-1 rule</strong>: keep 3 copies of data, on 2 different media, with 1 copy off-site. Current practice adds at least one <em>offline or immutable</em> copy (cannot be altered even by an admin account) and regular <em>restore tests</em>.</p>
+
+      <div class="callout example"><span class="label">Real-world example: ransomware attack response</span>
+        <p>When the City of Atlanta was hit by SamSam ransomware in March 2018, its operational security practices were tested:</p>
+        <ul>
+          <li><strong>Backup systems:</strong> some departments could restore from backups.</li>
+          <li><strong>Gaps identified:</strong> inconsistent backup practices across departments.</li>
+          <li><strong>Recovery time:</strong> some systems took weeks to restore.</li>
+          <li><strong>Cost:</strong> early emergency recovery contracts alone were reported at about $2.7 million; later estimates of the total cost were considerably higher. The ransom demand itself was far smaller than the recovery bill.</li>
+        </ul>
+      </div>
+
+      <div class="callout tip"><span class="label">Ransomware and phishing trends</span><p>Today's ransomware is usually run as "ransomware-as-a-service" (developers rent the malware to affiliates) and uses <strong>double extortion</strong>: steal data, encrypt systems, then threaten to publish. Some groups skip encryption and only steal. The usual entry points are phishing, stolen credentials on remote-access services without MFA (as in the 2021 Colonial Pipeline attack), and unpatched internet-facing systems. Phishing itself has moved to AI-written, well-targeted emails, QR-code phishing, and "adversary-in-the-middle" kits that steal session cookies, which is why phishing-resistant MFA (passkeys/FIDO2) is now recommended.</p></div>
+
+      <div class="callout key"><span class="label">Key insight</span><p>Global security is always that of the weakest link. Implementing encryption for data transfer is ineffective if the data can be accessed through unsecured platforms. A comprehensive approach must address all layers of the technology stack.</p></div>
+    </section>
+
+    <!-- ================= LESSON 3 ================= -->
+    <section>
+      <span class="lesson-tag">Lesson 3 · Risk management</span>
+      <h2><span class="num">7</span>Threats, vulnerabilities and risk</h2>
+      <p>Three words students mix up constantly. Get these right and most risk questions become easy.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Term</th><th>Definition</th><th>Example (laptop)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Threat</strong></td><td>Something that <em>could</em> cause harm: an actor or event</td><td>A thief in a café</td></tr>
+          <tr><td><strong>Vulnerability</strong></td><td>A weakness the threat can exploit</td><td>The disk is not encrypted</td></tr>
+          <tr><td><strong>Risk</strong></td><td>The chance that the threat exploits the vulnerability, combined with the damage if it does</td><td>Customer files exposed if the laptop is stolen</td></tr>
+          <tr><td><strong>Control</strong></td><td>A measure that reduces risk</td><td>Full-disk encryption (BitLocker/FileVault)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">Key idea</span><p><strong>Risk = Likelihood × Impact.</strong> No threat, or no vulnerability, means (almost) no risk. You usually cannot remove threats, so you reduce vulnerabilities or reduce impact.</p></div>
+
+      <h3>Worked example</h3>
+      <p>Score likelihood and impact from 1 (very low) to 5 (very high):</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr><td>Phishing leads to email account takeover</td><td>4</td><td>4</td><td><strong>16</strong></td></tr>
+          <tr><td>Stolen unencrypted laptop with client data</td><td>3</td><td>4</td><td><strong>12</strong></td></tr>
+          <tr><td>Flood destroys the server room</td><td>1</td><td>5</td><td><strong>5</strong></td></tr>
+        </tbody>
+      </table></div>
+      <p>Treat phishing first. If you add full-disk encryption, a stolen laptop is still likely (3) but the impact drops to 2: the new score 3 × 2 = <strong>6</strong> is the <span class="term" title="Risk that remains after controls are applied">residual risk</span>. The flood is rare but catastrophic: a good candidate for <em>transfer</em> (insurance) plus off-site backups.</p>
+
+      <h3>Cyber threat levels</h3>
+      <p>Cybersecurity threats can be categorised by their potential impact:</p>
+      <ul>
+        <li><strong>Low danger:</strong> nuisances like spam, minor disruptions.</li>
+        <li><strong>Medium danger:</strong> controllable impacts requiring significant resources.</li>
+        <li><strong>High danger:</strong> severe damages with lasting consequences.</li>
+      </ul>
+      <p>Threat probability vs impact matrix:</p>
+      <div class="table-wrap"><table class="risk-grid">
+        <thead><tr><th>Impact ↓ / Probability →</th><th>Low</th><th>Medium</th><th>High</th></tr></thead>
+        <tbody>
+          <tr><th>High</th><td class="r-med">Medium risk</td><td class="r-high">High risk</td><td class="r-crit">Critical risk</td></tr>
+          <tr><th>Medium</th><td class="r-low">Low risk</td><td class="r-med">Medium risk</td><td class="r-high">High risk</td></tr>
+          <tr><th>Low</th><td class="r-low">Low risk</td><td class="r-low">Low risk</td><td class="r-med">Medium risk</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Risk treatment options</h3>
+      <div class="cards">
+        <div class="card"><h4>Mitigate (reduce)</h4><p>Add controls: MFA, patching, encryption.</p></div>
+        <div class="card"><h4>Transfer (share)</h4><p>Cyber insurance, outsourcing to a provider under contract.</p></div>
+        <div class="card"><h4>Avoid</h4><p>Stop the risky activity: do not store card numbers at all.</p></div>
+        <div class="card"><h4>Accept</h4><p>Consciously live with a low risk, documented and signed off by management.</p></div>
+      </div>
+
+      <div class="callout example"><span class="label">Case study: NotPetya (2017)</span>
+        <p>NotPetya caused an estimated $10 billion or more in damages worldwide, hitting companies such as Maersk, Merck and FedEx's TNT Express. It looked like ransomware, but it was really a <strong>wiper</strong>: paying the ransom could not restore the files.</p>
+        <p><strong>Threat characteristics:</strong></p>
+        <ul>
+          <li><strong>High impact:</strong> paralysed operations for major corporations (Maersk had to rebuild much of its IT estate).</li>
+          <li><strong>Global reach:</strong> affected organisations in many countries, though it started in Ukraine.</li>
+          <li><strong>Rapid spread:</strong> used multiple infection vectors, including a compromised update of the Ukrainian accounting software M.E.Doc, the EternalBlue exploit and stolen credentials.</li>
+        </ul>
+        <p>This attack demonstrated how a high-danger threat could disrupt global supply chains and cause massive financial losses.</p>
+      </div>
+
+      <div class="callout warn"><span class="label">Common mistake</span><p>Calling an unpatched server "a threat". It is a <em>vulnerability</em>. The threat is whoever (or whatever) might exploit it.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">8</span>Types of security controls</h2>
+      <p>Controls are classified two ways at once: by <strong>when</strong> they act (before, during, after an incident) and by <strong>what kind</strong> of measure they are.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Preventive (stop it)</th><th>Detective (notice it)</th><th>Corrective (fix it)</th></tr></thead>
+        <tbody>
+          <tr><th>Administrative</th><td>Security policy, awareness training, background checks</td><td>Audits, log reviews, job rotation</td><td>Incident response plan, disciplinary process</td></tr>
+          <tr><th>Technical</th><td>Firewall, MFA, encryption, patching</td><td>IDS, SIEM alerts, antivirus/EDR detection</td><td>Restore from backup, EDR quarantine, patch after incident</td></tr>
+          <tr><th>Physical</th><td>Locks, badge readers, fences</td><td>CCTV, motion sensors, alarms</td><td>Fire suppression, replacing damaged hardware</td></tr>
+        </tbody>
+      </table></div>
+      <p>Two more types appear in exams: <strong>deterrent</strong> controls discourage attackers (warning banners, visible cameras) and <strong>compensating</strong> controls substitute when the ideal one is impossible (extra monitoring on a legacy system that cannot be patched).</p>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Classify on both axes: "CCTV camera" = <em>physical, detective</em> (and deterrent if visible). "Security awareness training" = <em>administrative, preventive</em>. "Restoring from backup" = <em>technical, corrective</em>.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">9</span>Global cyber risks</h2>
+      <p>Modern organisations face cybersecurity challenges that extend beyond technical vulnerabilities:</p>
+      <ul>
+        <li>Dependence on foreign technology suppliers (cloud, chips, software)</li>
+        <li>Economic intelligence and corporate espionage</li>
+        <li>Environmental impacts of digital infrastructure (energy, e-waste)</li>
+        <li>Regulatory compliance across jurisdictions (for example GDPR in the EU, NIS2 for critical sectors in the EU)</li>
+      </ul>
+
+      <div class="callout example"><span class="label">Real-world example: SolarWinds supply chain attack</span>
+        <p>In 2020, attackers compromised SolarWinds' software build system, inserting a backdoor (SUNBURST) into Orion updates. About 18,000 customers installed the trojanised update, including government agencies; a much smaller set were then actively exploited.</p>
+        <p><strong>Global risk factors:</strong></p>
+        <ul>
+          <li><strong>Supply chain vulnerability:</strong> attack through a trusted software supplier.</li>
+          <li><strong>Attribution challenges:</strong> sophisticated state-sponsored actors.</li>
+          <li><strong>Trust erosion:</strong> compromised trust in software update mechanisms.</li>
+        </ul>
+        <p>This incident highlighted how global dependencies create systemic risks that transcend individual organisational security.</p>
+      </div>
+      <div class="cards">
+        <div class="card"><h4>XZ Utils backdoor (2024)</h4><p>A backdoor was slipped into a widely used open-source compression library by a contributor who had gained maintainers' trust over a long period. It was caught by chance before reaching most stable Linux releases. Supply-chain risk includes open source.</p></div>
+        <div class="card"><h4>CrowdStrike outage (2024)</h4><p>A faulty security-software update crashed about 8.5 million Windows machines worldwide, grounding flights and disrupting hospitals. No attacker involved: dependence on one supplier is itself an availability risk.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">10</span>Security architecture dimensions and frameworks</h2>
+      <p>Effective cybersecurity requires addressing multiple dimensions simultaneously:</p>
+      <ul>
+        <li><strong>Political and managerial:</strong> security policy, governance, risk management.</li>
+        <li><strong>Technical:</strong> security tools, systems, infrastructure.</li>
+        <li><strong>Human:</strong> training, awareness, ethics, competence.</li>
+        <li><strong>Legal and regulatory:</strong> compliance, standards, procedures.</li>
+      </ul>
+
+      <div class="callout example"><span class="label">Case study: Target data breach (2013)</span>
+        <p>Target suffered a massive data breach exposing about 40 million payment cards and personal records of up to 70 million customers.</p>
+        <p><strong>Multi-dimensional failure analysis:</strong></p>
+        <ul>
+          <li><strong>Technical:</strong> attackers entered with stolen credentials of an HVAC (heating and air-conditioning) vendor, then moved to the payment network.</li>
+          <li><strong>Managerial:</strong> alerts from the security monitoring tools were not acted on.</li>
+          <li><strong>Human:</strong> vendor access management was inadequate.</li>
+          <li><strong>Legal:</strong> resulted in an $18.5 million multi-state settlement (2017), on top of other settlements and costs.</li>
+        </ul>
+        <p>This case demonstrates how failures across multiple dimensions can compound to create a major security incident.</p>
+      </div>
+
+      <h3>Frameworks that organise the work</h3>
+      <div class="cards">
+        <div class="card"><h4>NIST CSF 2.0 (2024)</h4><p>Six functions: <strong>Govern</strong> (new in 2.0: strategy, roles, policy, supply-chain risk), Identify, Protect, Detect, Respond, Recover. Version 2.0 also widened the scope from critical infrastructure to every organisation.</p></div>
+        <div class="card"><h4>ISO/IEC 27001:2022</h4><p>International, certifiable standard for an Information Security Management System (ISMS). Annex A has 93 controls in four themes: organisational, people, physical, technological. Certificates against the 2013 version had to transition by October 2025.</p></div>
+        <div class="card"><h4>Zero trust</h4><p>"Never trust, always verify": no user or device is trusted just because it is inside the network. Every request is authenticated, authorised and checked for device health (NIST SP 800-207).</p></div>
+      </div>
+      <div class="flow"><span class="node hi">Govern</span><span class="arrow">→</span><span class="node">Identify</span><span class="arrow">→</span><span class="node">Protect</span><span class="arrow">→</span><span class="node">Detect</span><span class="arrow">→</span><span class="node">Respond</span><span class="arrow">→</span><span class="node">Recover</span></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Older material lists five CSF functions. CSF 2.0 (February 2024) has <strong>six</strong>; the new one is <strong>Govern</strong>, which sits at the centre of the other five.</p></div>
+
+      <div class="callout key"><span class="label">Course conclusion</span><p>Cybersecurity requires a global, multidisciplinary approach that integrates technical measures with organisational, human, legal and ethical dimensions. No single solution can provide complete protection; effective security emerges from the thoughtful integration of people, processes and technology across all dimensions of the organisation.</p></div>
+    </section>
+
+    <section>
+      <h2><span class="num">11</span>Check your understanding</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: Cybersecurity fundamentals</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>The 2016 Mirai attack on Dyn made major websites unreachable for hours. Which criterion was mainly violated?</p>
+          <div class="opts"><button>Confidentiality</button><button>Integrity</button><button data-correct>Availability</button><button>Non-repudiation</button></div>
+          <div class="explain">Nothing was read or changed; users simply could not reach the services. Denial of service is the textbook availability attack.</div>
         </div>
-    </footer>
 
-    <script>
-        // Tab navigation functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const navTabs = document.querySelectorAll('.nav-tab');
-            const lessonContents = document.querySelectorAll('.lesson-content');
-            
-            navTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    
-                    // Remove active class from all tabs and contents
-                    navTabs.forEach(t => t.classList.remove('active'));
-                    lessonContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and target content
-                    this.classList.add('active');
-                    document.getElementById(targetId).classList.add('active');
-                });
-            });
-        });
-    </script>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>In the French acronym DIC, what does the "D" stand for?</p>
+          <div class="opts"><button>Data</button><button data-correct>Disponibilité (availability)</button><button>Detection</button><button>Defence</button></div>
+          <div class="explain">DIC = Disponibilité, Intégrité, Confidentialité: the same three criteria as the English CIA triad.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A user types her username on a login page. Which function is that?</p>
+          <div class="opts"><button data-correct>Identification</button><button>Authentication</button><button>Authorization</button><button>Accountability</button></div>
+          <div class="explain">A username is a claim of identity. Authentication happens when she proves it (password, passkey). Authorization decides what she may do afterwards.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which mechanism best provides non-repudiation for a bank transfer?</p>
+          <div class="opts"><button>A password shared by the accounting team</button><button>A SHA-256 hash of the transfer</button><button data-correct>The customer's digital signature on the transfer</button><button>Encrypting the transfer with AES-256</button></div>
+          <div class="explain">Only the holder of the private key can produce the signature, so they cannot credibly deny it. A plain hash proves nothing about who made it, encryption gives confidentiality, and a shared password destroys accountability.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which authentication method resists phishing best?</p>
+          <div class="opts"><button>SMS one-time code</button><button>Push notification approval</button><button data-correct>Passkey / FIDO2 security key</button><button>Security questions</button></div>
+          <div class="explain">A passkey is cryptographically bound to the genuine website's domain, so a look-alike phishing site cannot obtain a usable login. SMS codes and push approvals can be relayed or tricked out of users.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>What was the root cause of the 2017 Equifax breach?</p>
+          <div class="opts"><button>A phishing email to the CEO</button><button data-correct>A known Apache Struts vulnerability left unpatched</button><button>A DDoS attack on its DNS provider</button><button>An insider selling data</button></div>
+          <div class="explain">A patch for the Struts flaw existed about two months before attackers used it. This is OWASP A06, Vulnerable and Outdated Components.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>You must choose a hash function to verify downloaded files today. Which one?</p>
+          <div class="opts"><button>MD5</button><button>SHA-1</button><button data-correct>SHA-256</button><button>DES</button></div>
+          <div class="explain">MD5 and SHA-1 have practical collision attacks and are deprecated. DES is an (obsolete) encryption algorithm, not a hash.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>True or false: SSL 3.0 and TLS 1.0 are still acceptable for protecting a modern website.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">All SSL versions and TLS 1.0/1.1 are deprecated because of known attacks. Use TLS 1.3 (or 1.2 with strong cipher suites).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>On a 1–5 scale, risk A has likelihood 2 and impact 5; risk B has likelihood 4 and impact 3. Using risk = likelihood × impact, which do you treat first?</p>
+          <div class="opts"><button>Risk A (score 10), because impact matters most</button><button data-correct>Risk B (score 12)</button><button>They are equal</button><button>Neither, risks cannot be compared</button></div>
+          <div class="explain">A = 2 × 5 = 10, B = 4 × 3 = 12. B scores higher, so it is the priority, although a very high-impact risk like A may still need a specific plan (for example insurance).</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>An internet-facing server is missing a critical security patch. In risk terms, the missing patch is a…</p>
+          <div class="opts"><button>Threat</button><button data-correct>Vulnerability</button><button>Risk</button><button>Control</button></div>
+          <div class="explain">It is a weakness. The threat is the attacker or malware that could exploit it; the risk is the likelihood and impact of that happening.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>How is a CCTV camera in a server room best classified?</p>
+          <div class="opts"><button>Technical, preventive</button><button data-correct>Physical, detective</button><button>Administrative, corrective</button><button>Physical, corrective</button></div>
+          <div class="explain">A camera is physical and records or reveals intrusions (detective). A visible camera also deters, but it does not physically stop anyone entering.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>Which function was added in NIST Cybersecurity Framework 2.0 (2024)?</p>
+          <div class="opts"><button>Identify</button><button>Recover</button><button data-correct>Govern</button><button>Comply</button></div>
+          <div class="explain">CSF 2.0 has six functions: Govern, Identify, Protect, Detect, Respond, Recover. Govern is new and covers strategy, roles, policy and supply-chain risk.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>The SolarWinds Orion compromise (2020) is the classic example of which kind of attack?</p>
+          <div class="opts"><button>DDoS</button><button data-correct>Software supply chain attack</button><button>SQL injection</button><button>Insider theft</button></div>
+          <div class="explain">Attackers poisoned the vendor's build process, so customers installed the backdoor themselves through a trusted, signed update.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>A company buys cyber insurance to cover ransomware losses. Which risk treatment is that?</p>
+          <div class="opts"><button>Avoid</button><button>Mitigate</button><button data-correct>Transfer</button><button>Accept</button></div>
+          <div class="explain">Insurance shifts the financial impact to a third party. It does not reduce the likelihood of an attack, so it is usually combined with mitigation.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q15</span>True or false: NotPetya victims who paid the ransom got their files back.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">NotPetya was a wiper disguised as ransomware; recovery of the encrypted data was not possible even after payment. Offline backups were the only real remedy.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q16</span>How did attackers first get into Target's network in 2013?</p>
+          <div class="opts"><button>A zero-day in the point-of-sale terminals</button><button data-correct>Stolen credentials of an HVAC contractor</button><button>A malicious USB stick in a store</button><button>A misconfigured cloud bucket</button></div>
+          <div class="explain">A third-party HVAC vendor's credentials gave the first foothold. Poor segmentation and unheeded alerts let attackers reach payment systems: a multi-dimensional failure.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2>
+        <ul>
+          <li>Cyberspace is a human-made extension of society; cybersecurity protects its assets with technical, organisational, human and legal measures.</li>
+          <li>DIC = CIA: availability, integrity, confidentiality. Identification, authentication, authorization, non-repudiation, accountability and traceability extend them.</li>
+          <li>Use phishing-resistant MFA (passkeys/FIDO2) where possible; SMS codes are the weakest form of MFA.</li>
+          <li>Logical and application security: secure SDLC, OWASP Top 10, patching, and current crypto (TLS 1.3, AES-256, SHA-256; not SSL, DES, MD5, SHA-1).</li>
+          <li>Operational security: inventory, configuration and patch management, incident response, tested and offline/immutable backups.</li>
+          <li>Threat ≠ vulnerability ≠ risk. Risk = likelihood × impact; treat by mitigating, transferring, avoiding or accepting.</li>
+          <li>Controls are preventive, detective or corrective, and administrative, technical or physical.</li>
+          <li>Frameworks: NIST CSF 2.0 (six functions incl. Govern), ISO/IEC 27001:2022 (93 Annex A controls), zero trust. Security is the strength of the weakest link.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
 </body>
 </html>

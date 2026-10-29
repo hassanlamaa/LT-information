@@ -1,852 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client-Server Architecture Learning Module</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #34495e;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        nav {
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: center;
-        }
-        
-        .nav-link {
-            padding: 1rem 1.5rem;
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: var(--secondary-color);
-            border-bottom: 3px solid var(--secondary-color);
-        }
-        
-        main {
-            padding: 2rem 0;
-        }
-        
-        .section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        h2 {
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--light-color);
-        }
-        
-        h3 {
-            color: var(--secondary-color);
-            margin: 1.5rem 0 1rem;
-        }
-        
-        p {
-            margin-bottom: 1rem;
-        }
-        
-        .definition-box {
-            background-color: var(--light-color);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: 0 4px 4px 0;
-        }
-        
-        .diagram {
-            background-color: #f8f9fa;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
-        
-        .interactive-demo {
-            background-color: #f0f7ff;
-            border: 1px dashed var(--secondary-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .demo-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: var(--primary-color);
-        }
-        
-        .server-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .server-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-top: 4px solid var(--secondary-color);
-        }
-        
-        .server-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .server-card h4 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .server-card p {
-            font-size: 0.9rem;
-            color: #555;
-        }
-        
-        .comparison {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin: 1.5rem 0;
-        }
-        
-        .pros, .cons {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .pros ul, .cons ul {
-            padding-left: 1.5rem;
-        }
-        
-        .pros li, .cons li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .pros h3 {
-            color: var(--success-color);
-        }
-        
-        .cons h3 {
-            color: var(--accent-color);
-        }
-        
-        .quiz-container {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .quiz-question {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-        
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .quiz-option {
-            padding: 0.8rem;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-        
-        .quiz-option:hover {
-            background-color: #f0f7ff;
-        }
-        
-        .quiz-option.selected {
-            background-color: #e1f0ff;
-            border-color: var(--secondary-color);
-        }
-        
-        .quiz-option.correct {
-            background-color: #d4ffd4;
-            border-color: var(--success-color);
-        }
-        
-        .quiz-option.incorrect {
-            background-color: #ffd4d4;
-            border-color: var(--accent-color);
-        }
-        
-        .quiz-feedback {
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .feedback-correct {
-            background-color: #e8f8ef;
-            color: var(--success-color);
-            border-left: 3px solid var(--success-color);
-        }
-        
-        .feedback-incorrect {
-            background-color: #fdeaea;
-            color: var(--accent-color);
-            border-left: 3px solid var(--accent-color);
-        }
-        
-        .quiz-result {
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: none;
-        }
-        
-        .result-excellent {
-            background-color: #e8f8ef;
-            color: var(--success-color);
-            border: 2px solid var(--success-color);
-        }
-        
-        .result-good {
-            background-color: #fff9e6;
-            color: var(--warning-color);
-            border: 2px solid var(--warning-color);
-        }
-        
-        .result-poor {
-            background-color: #fdeaea;
-            color: var(--accent-color);
-            border: 2px solid var(--accent-color);
-        }
-        
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-wrap: wrap;
-            }
-            
-            .server-types {
-                grid-template-columns: 1fr;
-            }
-            
-            .comparison {
-                flex-direction: column;
-            }
-            
-            .demo-controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            button {
-                width: 100%;
-                max-width: 250px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Client/Server Part 2: How It Works · LT Information</title>
+<meta name="description" content="How a web client and a web server cooperate to show you a page: the request/response steps, advantages and disadvantages of the model, and the main server types, with an interactive demo and a quiz.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .diagram svg .box { fill: var(--panel); stroke: var(--line); stroke-width: 2 }
+  .diagram svg .box.hi { fill: var(--accent-soft); stroke: var(--accent) }
+  .diagram svg .wire { stroke: var(--muted); stroke-width: 2; fill: none }
+  .diagram svg .wire.alt { stroke: var(--accent); stroke-dasharray: 6 4 }
+  .diagram svg .tip { fill: var(--muted) }
+  .diagram svg .tip.alt { fill: var(--accent) }
+  .diagram svg .small { font-size: 13px; fill: var(--muted) }
+  .lt-main p code, .lt-main li code, .lt-main dd code, .lt-main td code { overflow-wrap: anywhere }
+  .sim-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+  .sim-stage { font: 700 .82rem var(--mono); color: var(--muted); margin-left: auto }
+  .sim-track { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none }
+  .sim-track li { font: 600 .78rem var(--body); padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: var(--sunk) }
+  .sim-track li.on { background: var(--accent); border-color: var(--accent); color: var(--panel) }
+  .sim-track li.done { background: var(--accent-soft); color: var(--ink) }
+  .sim-body { margin-top: 12px }
+  .sim-body p { margin: 0 0 10px }
+  .sim-link { color: var(--accent); text-decoration: underline; font-weight: 700 }
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Client-Server Architecture</h1>
-            <p class="subtitle">Understanding How Web Applications Work</p>
-        </div>
-    </header>
-    
-    <nav>
-        <div class="container nav-container">
-            <a href="#intro" class="nav-link active">Introduction</a>
-            <a href="#process" class="nav-link">How It Works</a>
-            <a href="#advantages" class="nav-link">Pros & Cons</a>
-            <a href="#servers" class="nav-link">Server Types</a>
-            <a href="#quiz" class="nav-link">Knowledge Check</a>
-        </div>
-    </nav>
-    
-    <main class="container">
-        <section id="intro" class="section">
-            <h2>Introduction to Client-Server Architecture</h2>
-            
-            <div class="definition-box">
-                <p><strong>Web Client:</strong> A program that sends requests for documents to a web server (e.g., a web browser).</p>
-                <p><strong>Web Server:</strong> A program that receives requests and sends back the requested documents.</p>
-            </div>
-            
-            <p>A <strong>distributed architecture</strong> means that a client program may be running on a completely separate machine from that of the server. Because the task of document storage is left to the server and the task of document presentation is left to the client, each program can concentrate on those duties and progress independently of each other.</p>
-            
-            <div class="diagram">
-                <h3>Client-Server Model</h3>
-                <svg width="100%" height="200" viewBox="0 0 600 200">
-                    <rect x="50" y="50" width="150" height="80" rx="10" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
-                    <text x="125" y="95" text-anchor="middle" fill="white" font-weight="bold">Client</text>
-                    
-                    <rect x="400" y="50" width="150" height="80" rx="10" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-                    <text x="475" y="95" text-anchor="middle" fill="white" font-weight="bold">Server</text>
-                    
-                    <path d="M200 90 L400 90" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    <text x="300" y="85" text-anchor="middle" fill="#2c3e50" font-size="14">Request</text>
-                    
-                    <path d="M400 110 L200 110" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    <text x="300" y="125" text-anchor="middle" fill="#2c3e50" font-size="14">Response</text>
-                    
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
-                        </marker>
-                    </defs>
-                </svg>
-            </div>
-        </section>
-        
-        <section id="process" class="section">
-            <h2>How Client-Server Communication Works</h2>
-            
-            <p>Here's an example of how the process works when you request a web page:</p>
-            
-            <div class="interactive-demo">
-                <h3>Interactive Demo: Requesting "The History of Computers"</h3>
-                <div class="demo-controls">
-                    <button id="step1">Step 1: Click Hyperlink</button>
-                    <button id="step2">Step 2: Send HTTP Request</button>
-                    <button id="step3">Step 3: Receive Response</button>
-                    <button id="reset">Reset</button>
-                </div>
-                
-                <div id="demo-content">
-                    <p>Click "Step 1" to begin the simulation.</p>
-                </div>
-            </div>
-            
-            <h3>The Process Explained:</h3>
-            <ol>
-                <li>Running a Web client, the user selects a hyperlink in a piece of hypertext connecting to another document - "The History of Computers", for example.</li>
-                <li>The Web client uses the address associated with that hyperlink to connect to the Web server at a specified network address and asks for the document.</li>
-                <li>The server responds by sending the text and any other media within that text (pictures, sounds, or movies) to the client, which the client then renders for presentation on the user's screen.</li>
-            </ol>
-        </section>
-        
-        <section id="advantages" class="section">
-            <h2>Advantages and Disadvantages</h2>
-            
-            <div class="comparison">
-                <div class="pros">
-                    <h3>Advantages</h3>
-                    <ul>
-                        <li><strong>Centralized management:</strong> easier network administration, maintenance, and backups</li>
-                        <li><strong>Scalability:</strong> Easy to add more resources without affecting performance</li>
-                        <li><strong>Enhanced Data Sharing:</strong> Data is immediately available to all authorized users</li>
-                        <li><strong>Location Independence:</strong> Users can access applications from anywhere</li>
-                        <li><strong>Improved security:</strong> Centralized control over access and resources</li>
-                    </ul>
-                </div>
-                
-                <div class="cons">
-                    <h3>Disadvantages</h3>
-                    <ul>
-                        <li><strong>Server cost:</strong> Requires investment in hardware and software</li>
-                        <li><strong>Complex configuration:</strong> Setup and maintenance can be complicated</li>
-                        <li><strong>Single point of failure:</strong> If the server goes down, the entire network fails</li>
-                        <li><strong>Traffic congestion:</strong> Server can become overloaded with too many requests</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <section id="servers" class="section">
-            <h2>Different Types of Servers</h2>
-            <p>Servers are classified by the services they provide. Here are the most common types:</p>
-            
-            <div class="server-types">
-                <div class="server-card">
-                    <h4>File Server</h4>
-                    <p>Used for sharing files (documents, media, images) across a network. Designed primarily for storage and retrieval of files requested by clients.</p>
-                </div>
-                
-                <div class="server-card">
-                    <h4>Database Server</h4>
-                    <p>Provides database services to other computers. Works with query languages like SQL. Examples: Oracle, Microsoft SQL Server.</p>
-                </div>
-                
-                <div class="server-card">
-                    <h4>Transaction Server</h4>
-                    <p>Divides work into individual operations called transactions. Used in Online Transaction Processing (OLTP) systems.</p>
-                </div>
-                
-                <div class="server-card">
-                    <h4>Groupware Server</h4>
-                    <p>Provides applications for collaboration (shared calendars, databases, electronic meetings). Examples: Microsoft Exchange.</p>
-                </div>
-                
-                <div class="server-card">
-                    <h4>Web Server</h4>
-                    <p>Handles HTTP protocol and serves static content. Retrieves files from the server's storage and sends them to clients.</p>
-                </div>
-                
-                <div class="server-card">
-                    <h4>Web Application Server</h4>
-                    <p>Extends web servers to support dynamic content by mixing data with templates or accessing databases.</p>
-                </div>
-            </div>
-            
-            <h3>Web Server vs. Web Application Server</h3>
-            <div class="diagram">
-                <svg width="100%" height="300" viewBox="0 0 600 300">
-                    <!-- Client -->
-                    <rect x="50" y="50" width="100" height="60" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
-                    <text x="100" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Client</text>
-                    
-                    <!-- Web Server -->
-                    <rect x="200" y="30" width="150" height="80" rx="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-                    <text x="275" y="75" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Web Server</text>
-                    <text x="275" y="95" text-anchor="middle" fill="white" font-size="12">(Static Content)</text>
-                    
-                    <!-- App Server -->
-                    <rect x="200" y="150" width="150" height="80" rx="5" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
-                    <text x="275" y="195" text-anchor="middle" fill="white" font-weight="bold" font-size="14">App Server</text>
-                    <text x="275" y="215" text-anchor="middle" fill="white" font-size="12">(Dynamic Content)</text>
-                    
-                    <!-- Database -->
-                    <rect x="400" y="150" width="150" height="80" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
-                    <text x="475" y="195" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Database</text>
-                    
-                    <!-- Arrows -->
-                    <path d="M150 80 L200 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    <path d="M200 80 L150 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    
-                    <path d="M350 80 L400 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    <path d="M400 170 L350 80" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    
-                    <path d="M350 170 L400 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    <path d="M400 170 L350 170" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrow)"/>
-                    
-                    <!-- Labels -->
-                    <text x="175" y="70" text-anchor="middle" fill="#2c3e50" font-size="12">HTTP Request/Response</text>
-                    <text x="375" y="125" text-anchor="middle" fill="#2c3e50" font-size="12">Dynamic Content Request</text>
-                    <text x="375" y="240" text-anchor="middle" fill="#2c3e50" font-size="12">Database Query</text>
-                    
-                    <defs>
-                        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
-                        </marker>
-                    </defs>
-                </svg>
-            </div>
-        </section>
-        
-        <section id="quiz" class="section">
-            <h2>Knowledge Check</h2>
-            <p>Test your understanding of client-server architecture with this interactive quiz:</p>
-            
-            <div class="quiz-container">
-                <div class="quiz-question" id="q1">
-                    <h3>Question 1: What is the primary role of a web client?</h3>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">Store documents and data</div>
-                        <div class="quiz-option" data-correct="true">Send requests for documents to a web server</div>
-                        <div class="quiz-option" data-correct="false">Process database transactions</div>
-                        <div class="quiz-option" data-correct="false">Manage network security</div>
-                    </div>
-                    <div class="quiz-feedback feedback-correct">
-                        <strong>Correct!</strong> A web client's main function is to send requests to a web server and display the received content.
-                    </div>
-                    <div class="quiz-feedback feedback-incorrect">
-                        <strong>Incorrect.</strong> The primary role of a web client is to send requests for documents to a web server, not to store data or process transactions.
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="q2">
-                    <h3>Question 2: Which protocol is primarily used for communication between web clients and servers?</h3>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">FTP (File Transfer Protocol)</div>
-                        <div class="quiz-option" data-correct="false">SMTP (Simple Mail Transfer Protocol)</div>
-                        <div class="quiz-option" data-correct="true">HTTP (Hypertext Transfer Protocol)</div>
-                        <div class="quiz-option" data-correct="false">TCP (Transmission Control Protocol)</div>
-                    </div>
-                    <div class="quiz-feedback feedback-correct">
-                        <strong>Correct!</strong> HTTP is the primary protocol used for web communication between clients and servers.
-                    </div>
-                    <div class="quiz-feedback feedback-incorrect">
-                        <strong>Incorrect.</strong> While TCP is used at the transport layer, HTTP is the application-layer protocol specifically designed for web communication.
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="q3">
-                    <h3>Question 3: What is a key disadvantage of the client-server model?</h3>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">Enhanced data sharing</div>
-                        <div class="quiz-option" data-correct="false">Centralized management</div>
-                        <div class="quiz-option" data-correct="true">Single point of failure</div>
-                        <div class="quiz-option" data-correct="false">Location independence</div>
-                    </div>
-                    <div class="quiz-feedback feedback-correct">
-                        <strong>Correct!</strong> If the server fails, the entire network or application can become unavailable, creating a single point of failure.
-                    </div>
-                    <div class="quiz-feedback feedback-incorrect">
-                        <strong>Incorrect.</strong> The other options are actually advantages of the client-server model. The single point of failure is a significant disadvantage.
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="q4">
-                    <h3>Question 4: Which type of server is specifically designed to handle dynamic content?</h3>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false">File Server</div>
-                        <div class="quiz-option" data-correct="false">Database Server</div>
-                        <div class="quiz-option" data-correct="false">Transaction Server</div>
-                        <div class="quiz-option" data-correct="true">Web Application Server</div>
-                    </div>
-                    <div class="quiz-feedback feedback-correct">
-                        <strong>Correct!</strong> Web Application Servers are specifically designed to generate dynamic content by combining data with templates.
-                    </div>
-                    <div class="quiz-feedback feedback-incorrect">
-                        <strong>Incorrect.</strong> While database servers store data and transaction servers process transactions, web application servers are specifically designed for dynamic content generation.
-                    </div>
-                </div>
-                
-                <div class="quiz-question" id="q5">
-                    <h3>Question 5: What is the main advantage of centralized management in client-server architecture?</h3>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="true">Easier administration, maintenance, and backups</div>
-                        <div class="quiz-option" data-correct="false">Faster processing on client machines</div>
-                        <div class="quiz-option" data-correct="false">Lower hardware costs</div>
-                        <div class="quiz-option" data-correct="false">Eliminates the need for network infrastructure</div>
-                    </div>
-                    <div class="quiz-feedback feedback-correct">
-                        <strong>Correct!</strong> Centralized management makes network administration, maintenance, and backups much easier since resources are managed in one place.
-                    </div>
-                    <div class="quiz-feedback feedback-incorrect">
-                        <strong>Incorrect.</strong> While client-server architecture has many benefits, the main advantage of centralized management is simplified administration and maintenance.
-                    </div>
-                </div>
-                
-                <div class="demo-controls">
-                    <button id="check-answers">Check Answers</button>
-                    <button id="reset-quiz">Reset Quiz</button>
-                </div>
-                
-                <div id="quiz-result" class="quiz-result">
-                    <!-- Results will be displayed here -->
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <div class="container">
-            <p>Client-Server Architecture Learning Module &copy; 2023</p>
-        </div>
-    </footer>
 
-    <script>
-        // Navigation highlighting
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('.section');
-            
-            // Set up intersection observer to highlight active section
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.5
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, observerOptions);
-            
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            // Smooth scrolling for navigation links
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 20,
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            // Interactive demo functionality
-            const step1Btn = document.getElementById('step1');
-            const step2Btn = document.getElementById('step2');
-            const step3Btn = document.getElementById('step3');
-            const resetBtn = document.getElementById('reset');
-            const demoContent = document.getElementById('demo-content');
-            
-            step1Btn.addEventListener('click', function() {
-                demoContent.innerHTML = `
-                    <p><strong>Step 1:</strong> User clicks on a hyperlink for "The History of Computers" in their web browser.</p>
-                    <div style="margin: 1rem 0; padding: 1rem; background: #e8f4fd; border-radius: 4px;">
-                        <a href="#" style="color: #3498db; text-decoration: underline;">The History of Computers</a>
-                    </div>
-                    <p>The browser now knows which document to request from the server.</p>
-                `;
-            });
-            
-            step2Btn.addEventListener('click', function() {
-                demoContent.innerHTML = `
-                    <p><strong>Step 2:</strong> The browser sends an HTTP request to the web server.</p>
-                    <div style="margin: 1rem 0; padding: 1rem; background: #fff3cd; border-radius: 4px; font-family: monospace;">
-                        GET /history-of-computers.html HTTP/1.1<br>
-                        Host: www.example.com<br>
-                        User-Agent: Mozilla/5.0...
-                    </div>
-                    <p>The request travels over the network to the server at the specified address.</p>
-                `;
-            });
-            
-            step3Btn.addEventListener('click', function() {
-                demoContent.innerHTML = `
-                    <p><strong>Step 3:</strong> The server processes the request and sends back the HTML document.</p>
-                    <div style="margin: 1rem 0; padding: 1rem; background: #d4edda; border-radius: 4px; font-family: monospace;">
-                        HTTP/1.1 200 OK<br>
-                        Content-Type: text/html<br>
-                        <br>
-                        &lt;html&gt;<br>
-                        &lt;head&gt;&lt;title&gt;History of Computers&lt;/title&gt;&lt;/head&gt;<br>
-                        &lt;body&gt;<br>
-                        &lt;h1&gt;The History of Computers&lt;/h1&gt;<br>
-                        &lt;p&gt;Content about computer history...&lt;/p&gt;<br>
-                        &lt;/body&gt;<br>
-                        &lt;/html&gt;
-                    </div>
-                    <p>The browser receives the HTML, renders it, and displays the page to the user.</p>
-                `;
-            });
-            
-            resetBtn.addEventListener('click', function() {
-                demoContent.innerHTML = `<p>Click "Step 1" to begin the simulation.</p>`;
-            });
-            
-            // Quiz functionality
-            const quizOptions = document.querySelectorAll('.quiz-option');
-            const checkAnswersBtn = document.getElementById('check-answers');
-            const resetQuizBtn = document.getElementById('reset-quiz');
-            const quizResult = document.getElementById('quiz-result');
-            const quizQuestions = document.querySelectorAll('.quiz-question');
-            
-            // Track answered questions
-            let answeredQuestions = new Set();
-            
-            quizOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const question = this.closest('.quiz-question');
-                    const questionId = question.id;
-                    
-                    // Remove selected class from siblings in the same question
-                    const siblings = this.parentElement.children;
-                    for (let sibling of siblings) {
-                        sibling.classList.remove('selected');
-                    }
-                    
-                    // Add selected class to clicked option
-                    this.classList.add('selected');
-                    
-                    // Mark question as answered
-                    answeredQuestions.add(questionId);
-                    
-                    // Enable check answers button if all questions are answered
-                    if (answeredQuestions.size === quizQuestions.length) {
-                        checkAnswersBtn.disabled = false;
-                    }
-                });
-            });
-            
-            checkAnswersBtn.addEventListener('click', function() {
-                let correctAnswers = 0;
-                let totalQuestions = quizQuestions.length;
-                
-                quizQuestions.forEach(question => {
-                    const selectedOption = question.querySelector('.quiz-option.selected');
-                    const correctFeedback = question.querySelector('.feedback-correct');
-                    const incorrectFeedback = question.querySelector('.feedback-incorrect');
-                    
-                    if (selectedOption) {
-                        const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
-                        
-                        // Highlight correct/incorrect answers
-                        question.querySelectorAll('.quiz-option').forEach(option => {
-                            option.classList.remove('correct', 'incorrect');
-                            if (option.getAttribute('data-correct') === 'true') {
-                                option.classList.add('correct');
-                            } else if (option === selectedOption && !isCorrect) {
-                                option.classList.add('incorrect');
-                            }
-                        });
-                        
-                        // Show appropriate feedback
-                        if (isCorrect) {
-                            correctAnswers++;
-                            correctFeedback.style.display = 'block';
-                            incorrectFeedback.style.display = 'none';
-                        } else {
-                            correctFeedback.style.display = 'none';
-                            incorrectFeedback.style.display = 'block';
-                        }
-                    }
-                });
-                
-                // Calculate and display results
-                const percentage = Math.round((correctAnswers / totalQuestions) * 100);
-                let resultClass, resultMessage;
-                
-                if (percentage === 100) {
-                    resultClass = 'result-excellent';
-                    resultMessage = `Excellent! You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%) - Perfect score!`;
-                } else if (percentage >= 70) {
-                    resultClass = 'result-good';
-                    resultMessage = `Good job! You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%) - Well done!`;
-                } else {
-                    resultClass = 'result-poor';
-                    resultMessage = `You scored ${correctAnswers} out of ${totalQuestions} (${percentage}%). Review the material and try again!`;
-                }
-                
-                quizResult.textContent = resultMessage;
-                quizResult.className = `quiz-result ${resultClass}`;
-                quizResult.style.display = 'block';
-                
-                // Scroll to results
-                quizResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            });
-            
-            resetQuizBtn.addEventListener('click', function() {
-                // Reset all quiz questions
-                quizQuestions.forEach(question => {
-                    question.querySelectorAll('.quiz-option').forEach(option => {
-                        option.classList.remove('selected', 'correct', 'incorrect');
-                    });
-                    
-                    question.querySelectorAll('.quiz-feedback').forEach(feedback => {
-                        feedback.style.display = 'none';
-                    });
-                });
-                
-                // Reset results display
-                quizResult.style.display = 'none';
-                quizResult.textContent = '';
-                
-                // Reset answered questions tracking
-                answeredQuestions.clear();
-                
-                // Reset check answers button
-                checkAnswersBtn.disabled = false;
-            });
-        });
-    </script>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Client/Server Architecture · Part 2</span>
+    <h1>Client/Server Part 2: How It Works</h1>
+    <p class="lead">What actually happens between clicking a link and seeing a page? This lesson follows one request from a web client to a web server and back, then weighs the strengths and weaknesses of the client/server model and the kinds of servers that make the web work.</p>
+    <div class="chips"><span class="chip">≈ 25 min read</span><span class="chip">10 quiz questions</span><span class="chip">Level: Introductory</span><span class="chip">Interactive demo</span></div>
+    <div class="goals">
+      <h2>By the end you can</h2>
+      <ul>
+        <li>Define web client, web server and distributed architecture.</li>
+        <li>Describe, step by step, how a browser gets a web page from a server.</li>
+        <li>Argue the advantages and disadvantages of client/server, with mitigations.</li>
+        <li>Tell the main server types apart, especially a web server from a web application server.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <!-- 1. INTRO -->
+    <section id="intro">
+      <h2><span class="num">1</span>Introduction to Client/Server Architecture</h2>
+      <p>The web is the best-known client/server system. Two programs share the work: one asks for documents, the other stores and delivers them.</p>
+      <dl class="defs">
+        <dt>Web client</dt><dd>A program that sends requests for documents to a web server, for example a web browser (Chrome, Firefox, Safari, Edge) or a mobile app.</dd>
+        <dt>Web server</dt><dd>A program that receives requests and sends back the requested documents, for example Nginx, Apache HTTP Server or Microsoft IIS.</dd>
+        <dt>Protocol</dt><dd>The agreed language both sides use. On the web it is <strong>HTTP</strong> (HyperText Transfer Protocol), today almost always as <strong>HTTPS</strong>, which wraps HTTP in TLS encryption.</dd>
+        <dt>URL</dt><dd>The address of a document, such as <code>https://www.example.edu/history.html</code>: the protocol (<code>https</code>), the server's name (<code>www.example.edu</code>) and the path to the document (<code>/history.html</code>).</dd>
+      </dl>
+      <p>A <strong>distributed architecture</strong> means that a client program may be running on a completely separate machine from that of the server. Because the task of document storage is left to the server and the task of document presentation is left to the client, each program can concentrate on those duties and progress independently of each other.</p>
+      <div class="callout example"><span class="label">Example of "progress independently"</span><p>A new browser version can add dark mode or faster rendering without any change to millions of web servers, and a website can move to a new server or database without anyone reinstalling their browser. The two sides only have to keep speaking the same protocol.</p></div>
+      <figure class="diagram">
+        <svg viewBox="0 0 600 170" role="img" aria-label="Client sends a request to the server, server sends a response">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip" points="0 0, 10 4, 0 8"/></marker>
+            <marker id="arrowhead2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip alt" points="0 0, 10 4, 0 8"/></marker>
+          </defs>
+          <rect class="box hi" x="30" y="45" width="150" height="80" rx="12"/>
+          <text x="105" y="82" text-anchor="middle" font-weight="700">Client</text>
+          <text class="small" x="105" y="104" text-anchor="middle">presents documents</text>
+          <rect class="box hi" x="420" y="45" width="150" height="80" rx="12"/>
+          <text x="495" y="82" text-anchor="middle" font-weight="700">Server</text>
+          <text class="small" x="495" y="104" text-anchor="middle">stores documents</text>
+          <path class="wire" d="M185 72 L415 72" marker-end="url(#arrowhead)"/>
+          <text x="300" y="62" text-anchor="middle">Request</text>
+          <path class="wire alt" d="M415 100 L185 100" marker-end="url(#arrowhead2)"/>
+          <text x="300" y="125" text-anchor="middle">Response</text>
+          <text class="small" x="300" y="155" text-anchor="middle">over the network, using HTTP/HTTPS</text>
+        </svg>
+        <figcaption>Figure 1. The client/server model: the client requests, the server responds.</figcaption>
+      </figure>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A library. You (the client) fill in a request slip with a book's call number (the URL). The librarian (the server) fetches the book from the stacks (storage) and hands it over. You read it at your own desk in your own way (presentation). The library does not care how you read; you do not care how the shelves are organised.</p></div>
+      <div class="callout key"><span class="label">Key idea</span><p>Separation of duties: the <strong>server stores</strong>, the <strong>client presents</strong>. That split is what lets each side be improved, replaced or scaled on its own.</p></div>
+    </section>
+
+    <!-- 2. PROCESS -->
+    <section id="process">
+      <h2><span class="num">2</span>How Client/Server Communication Works</h2>
+      <p>Here is an example of how the process works when you request a web page. Step through the demo, then read the explanation below it.</p>
+
+      <div class="tool" id="demo">
+        <h3 style="margin-top:0">Interactive demo: requesting "The History of Computers"</h3>
+        <div class="sim-bar">
+          <button class="btn" id="sim-next" type="button">Start: Step 1</button>
+          <button class="btn ghost" id="sim-back" type="button" disabled>Back</button>
+          <button class="btn ghost" id="sim-reset" type="button">Reset</button>
+          <span class="sim-stage" id="sim-stage" aria-live="polite">Step 0 of 4</span>
+        </div>
+        <ol class="sim-track" id="sim-track">
+          <li>1 Click link</li><li>2 Find and connect</li><li>3 Send request</li><li>4 Receive and render</li>
+        </ol>
+        <div class="sim-body" id="demo-content" aria-live="polite">
+          <p>Click "Start: Step 1" to begin the simulation.</p>
+        </div>
+      </div>
+
+      <h3>The process explained</h3>
+      <ol class="steps">
+        <li>Running a web client, the user selects a hyperlink in a piece of hypertext connecting to another document, "The History of Computers", for example.</li>
+        <li>The web client uses the address associated with that hyperlink to connect to the web server at a specified network address and asks for the document.</li>
+        <li>The server responds by sending the text and any other media within that text (pictures, sounds, or movies) to the client, which the client then renders for presentation on the user's screen.</li>
+      </ol>
+
+      <h3>What happens underneath</h3>
+      <p>Those three steps hide several smaller ones that are worth knowing for exams and for troubleshooting:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Stage</th><th>What happens</th><th>Protocol</th></tr></thead>
+        <tbody>
+          <tr><td>Name lookup</td><td>The browser turns the server name (<code>www.example.edu</code>) into an IP address.</td><td>DNS (usually UDP port 53)</td></tr>
+          <tr><td>Connect</td><td>The browser opens a connection to the server's IP address on port 443.</td><td>TCP three-way handshake, or QUIC for HTTP/3</td></tr>
+          <tr><td>Secure</td><td>The server proves its identity with a certificate and both sides agree on encryption keys.</td><td>TLS 1.3</td></tr>
+          <tr><td>Request</td><td>The browser sends <code>GET /history-of-computers.html</code> with headers.</td><td>HTTP</td></tr>
+          <tr><td>Response</td><td>The server returns a status code (200 OK), headers and the HTML.</td><td>HTTP</td></tr>
+          <tr><td>Extra requests</td><td>The HTML refers to images, CSS and scripts; the browser requests each one, often in parallel on the same connection.</td><td>HTTP/2 or HTTP/3</td></tr>
+          <tr><td>Render</td><td>The browser builds the page and displays it.</td><td>(inside the client)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Thinking one click means one request. A typical page needs dozens of requests: the HTML first, then every image, stylesheet, font and script it mentions. That is why HTTP/2 and HTTP/3, which carry many requests at once over one connection, make pages load faster than HTTP/1.1.</p></div>
+      <div class="callout tip"><span class="label">Try it</span><p>Open your browser's developer tools (F12), choose the <strong>Network</strong> tab and reload any page. Each row is one request/response pair. The "Protocol" column shows <code>h2</code> (HTTP/2) or <code>h3</code> (HTTP/3).</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>If asked "describe how a client obtains a web page", write the three classic steps (select link → connect and request → server sends, client renders), then add DNS lookup and HTTPS to show you know how it works today.</p></div>
+    </section>
+
+    <!-- 3. PROS CONS -->
+    <section id="advantages">
+      <h2><span class="num">3</span>Advantages and Disadvantages</h2>
+      <p>Putting data and services on a central server has clear benefits, and the same centralisation causes the main weaknesses.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Advantages</h4>
+          <ul>
+            <li><strong>Centralised management:</strong> easier network administration, maintenance and backups, because data and settings live in one place.</li>
+            <li><strong>Scalability:</strong> resources (CPU, memory, storage, more servers) can be added as demand grows, usually without changing the clients.</li>
+            <li><strong>Enhanced data sharing:</strong> data is immediately available to all authorised users; everyone sees the same, current copy.</li>
+            <li><strong>Location independence:</strong> users can access applications from anywhere with a network connection and a client.</li>
+            <li><strong>Improved security control:</strong> access rights, patches and monitoring are managed centrally.</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Disadvantages</h4>
+          <ul>
+            <li><strong>Server cost:</strong> requires investment in hardware, software, licences and skilled administrators.</li>
+            <li><strong>Complex configuration:</strong> setup and maintenance can be complicated.</li>
+            <li><strong>Single point of failure:</strong> if the only server goes down, the service it provides becomes unavailable to every client.</li>
+            <li><strong>Traffic congestion:</strong> the server can become overloaded when too many requests arrive at once (including deliberate denial-of-service attacks).</li>
+            <li><strong>Attractive target:</strong> one server holding everyone's data is worth attacking, so a single breach can expose all users.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout warn"><span class="label">Correction</span><p>Older notes say "if the server goes down, the entire network fails" and that scaling happens "without affecting performance". More precisely: the <em>network</em> keeps working but the <em>service</em> stops; and adding resources helps only up to a point, because the database or the network link often becomes the next bottleneck.</p></div>
+      <h3>How real systems reduce the disadvantages</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Disadvantage</th><th>Common mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>Single point of failure</td><td>Several servers behind a load balancer; database replicas; automatic failover</td></tr>
+          <tr><td>Traffic congestion</td><td>Load balancing, caching, content delivery networks (CDNs), rate limiting</td></tr>
+          <tr><td>Server cost</td><td>Cloud hosting: rent capacity and pay for what you use</td></tr>
+          <tr><td>Attractive target</td><td>Encryption (HTTPS, encrypted storage), firewalls, patching, least privilege, monitoring</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Client/server vs peer-to-peer</h3>
+      <p>The alternative is <strong>peer-to-peer (P2P)</strong>, where every machine is both client and server and shares its own resources directly with others (for example BitTorrent).</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Aspect</th><th>Client/server</th><th>Peer-to-peer</th></tr></thead>
+        <tbody>
+          <tr><td>Roles</td><td>Fixed: clients request, servers provide</td><td>Every peer does both</td></tr>
+          <tr><td>Data location</td><td>Central server</td><td>Spread across peers</td></tr>
+          <tr><td>Management and security</td><td>Central, easier to control</td><td>Hard to control and audit</td></tr>
+          <tr><td>Single point of failure</td><td>Yes, unless made redundant</td><td>No: losing one peer rarely matters</td></tr>
+          <tr><td>Cost</td><td>Server investment needed</td><td>Uses peers' own machines</td></tr>
+          <tr><td>Typical use</td><td>Websites, banking, email, databases</td><td>File sharing, some video calling, blockchain networks</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Pair each disadvantage with a mitigation. "Single point of failure, mitigated by redundant servers and load balancing" scores better than just "single point of failure".</p></div>
+    </section>
+
+    <!-- 4. SERVERS -->
+    <section id="servers">
+      <h2><span class="num">4</span>Different Types of Servers</h2>
+      <p>Servers are classified by the services they provide. Here are the most common types:</p>
+      <div class="cards">
+        <div class="card"><h4>File server</h4><p>Used for sharing files (documents, media, images) across a network. Designed primarily for storage and retrieval of files requested by clients. Uses protocols such as SMB (Windows shares) or NFS.</p></div>
+        <div class="card"><h4>Database server</h4><p>Provides database services to other computers. Works with query languages like SQL: the client sends a query, the server runs it and returns only the matching rows. Examples: Oracle, Microsoft SQL Server, PostgreSQL, MySQL.</p></div>
+        <div class="card"><h4>Transaction server</h4><p>Divides work into individual operations called transactions, each completed fully or not at all. Used in Online Transaction Processing (OLTP) systems such as payments, ticket booking and stock trading.</p></div>
+        <div class="card"><h4>Groupware server</h4><p>Provides applications for collaboration (shared calendars, mail, shared databases and documents, electronic meetings). Examples: Microsoft Exchange; today often cloud services such as Microsoft 365 or Google Workspace.</p></div>
+        <div class="card"><h4>Web server</h4><p>Handles the HTTP protocol and serves static content. Retrieves files from the server's storage and sends them to clients unchanged. Examples: Nginx, Apache HTTP Server, IIS.</p></div>
+        <div class="card"><h4>Web application server</h4><p>Extends web servers to support dynamic content by mixing data with templates or accessing databases, and runs the business logic. Examples: Apache Tomcat, WildFly, Node.js, Spring Boot, Django.</p></div>
+      </div>
+      <dl class="defs">
+        <dt>Static content</dt><dd>A file that is the same for every visitor, sent as-is: a logo, a CSS file, a PDF timetable.</dd>
+        <dt>Dynamic content</dt><dd>A page built at request time, different per user or per moment: your grades, your shopping basket, search results.</dd>
+        <dt>OLTP</dt><dd>Online Transaction Processing: many short, concurrent transactions that must be fast and never corrupt data.</dd>
+      </dl>
+
+      <h3>Web server vs web application server</h3>
+      <figure class="diagram">
+        <svg viewBox="0 0 640 300" role="img" aria-label="Client talks to web server; web server serves static files itself and forwards dynamic requests to the app server, which queries the database">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip" points="0 0, 10 4, 0 8"/></marker>
+            <marker id="arrowB" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon class="tip alt" points="0 0, 10 4, 0 8"/></marker>
+          </defs>
+          <rect class="box hi" x="10" y="40" width="120" height="70" rx="10"/>
+          <text x="70" y="80" text-anchor="middle" font-weight="700">Client</text>
+          <rect class="box hi" x="250" y="30" width="160" height="90" rx="10"/>
+          <text x="330" y="70" text-anchor="middle" font-weight="700">Web Server</text>
+          <text class="small" x="330" y="92" text-anchor="middle">(static content)</text>
+          <rect class="box" x="250" y="190" width="160" height="90" rx="10"/>
+          <text x="330" y="230" text-anchor="middle" font-weight="700">App Server</text>
+          <text class="small" x="330" y="252" text-anchor="middle">(dynamic content)</text>
+          <rect class="box" x="490" y="190" width="140" height="90" rx="10"/>
+          <text x="560" y="240" text-anchor="middle" font-weight="700">Database</text>
+          <path class="wire" d="M135 65 L245 65" marker-end="url(#arrow)"/>
+          <path class="wire alt" d="M245 90 L135 90" marker-end="url(#arrowB)"/>
+          <text class="small" x="190" y="55" text-anchor="middle">HTTP request</text>
+          <text class="small" x="190" y="112" text-anchor="middle">response</text>
+          <path class="wire" d="M310 125 L310 185" marker-end="url(#arrow)"/>
+          <path class="wire alt" d="M350 185 L350 125" marker-end="url(#arrowB)"/>
+          <text class="small" x="300" y="160" text-anchor="end">dynamic request</text>
+          <text class="small" x="360" y="160" text-anchor="start">generated page</text>
+          <path class="wire" d="M415 225 L485 225" marker-end="url(#arrow)"/>
+          <path class="wire alt" d="M485 250 L415 250" marker-end="url(#arrowB)"/>
+          <text class="small" x="450" y="215" text-anchor="middle">query</text>
+          <text class="small" x="450" y="272" text-anchor="middle">rows</text>
+        </svg>
+        <figcaption>Figure 2. Static files are answered by the web server directly. Dynamic requests are forwarded to the application server, which queries the database and returns a generated page through the web server.</figcaption>
+      </figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Aspect</th><th>Web server</th><th>Web application server</th></tr></thead>
+        <tbody>
+          <tr><td>Main job</td><td>Serve files over HTTP</td><td>Run code that builds responses</td></tr>
+          <tr><td>Content</td><td>Static (HTML, CSS, images)</td><td>Dynamic (per user, per request)</td></tr>
+          <tr><td>Talks to a database?</td><td>No</td><td>Yes, usually</td></tr>
+          <tr><td>Business logic</td><td>None</td><td>Yes</td></tr>
+          <tr><td>Examples</td><td>Nginx, Apache HTTP Server, IIS</td><td>Tomcat, WildFly, Node.js, Django</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A web server is a shop assistant handing you pre-packed items from a shelf. An application server is a cook who prepares your order to your specification, fetching ingredients (data) from the store room (database).</p></div>
+      <div class="callout tip"><span class="label">In practice</span><p>Real deployments usually put both together: Nginx in front serves static files and handles HTTPS, and forwards dynamic requests to the application server behind it. This setup is called a <strong>reverse proxy</strong>.</p></div>
+    </section>
+
+    <!-- 5. QUIZ -->
+    <section id="quiz">
+      <h2><span class="num">5</span>Knowledge Check</h2>
+      <p>Test your understanding of client/server architecture. Each answer shows why it is right.</p>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: how client/server works</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>What is the primary role of a web client?</p>
+          <div class="opts">
+            <button>Store documents and data</button>
+            <button data-correct>Send requests for documents to a web server</button>
+            <button>Process database transactions</button>
+            <button>Manage network security</button>
+          </div>
+          <div class="explain">A web client's main function is to send requests to a web server and display (render) the content it receives. Storing documents is the server's job; processing transactions belongs to transaction and database servers.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>Which protocol is primarily used for communication between web clients and servers?</p>
+          <div class="opts">
+            <button>FTP (File Transfer Protocol)</button>
+            <button>SMTP (Simple Mail Transfer Protocol)</button>
+            <button data-correct>HTTP (Hypertext Transfer Protocol)</button>
+            <button>TCP (Transmission Control Protocol)</button>
+          </div>
+          <div class="explain">HTTP (in practice HTTPS) is the application-layer protocol of the web. TCP is a transport-layer protocol that carries HTTP/1.1 and HTTP/2, but it is not the web's own protocol; HTTP/3 does not even use TCP. FTP transfers files and SMTP sends mail.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>What is a key disadvantage of the client/server model?</p>
+          <div class="opts">
+            <button>Enhanced data sharing</button>
+            <button>Centralized management</button>
+            <button data-correct>Single point of failure</button>
+            <button>Location independence</button>
+          </div>
+          <div class="explain">If the only server fails, the service it provides becomes unavailable to every client. The other three options are advantages of the model.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>Which type of server is specifically designed to handle dynamic content?</p>
+          <div class="opts">
+            <button>File Server</button>
+            <button>Database Server</button>
+            <button>Transaction Server</button>
+            <button data-correct>Web Application Server</button>
+          </div>
+          <div class="explain">A web application server generates content per request by combining data with templates and running business logic. Database servers store and query data; transaction servers guarantee all-or-nothing operations; file servers store files.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>What is the main advantage of centralized management in client/server architecture?</p>
+          <div class="opts">
+            <button data-correct>Easier administration, maintenance, and backups</button>
+            <button>Faster processing on client machines</button>
+            <button>Lower hardware costs</button>
+            <button>Eliminates the need for network infrastructure</button>
+          </div>
+          <div class="explain">With data and services in one place, administrators back up, patch and control access once instead of on every machine. It does not lower hardware cost (servers cost money) and it still needs a network.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>In a distributed architecture, the client and the server:</p>
+          <div class="opts">
+            <button>Must always run on the same machine</button>
+            <button data-correct>May run on completely separate machines</button>
+            <button>Must be written in the same programming language</button>
+            <button>Must be updated at the same time</button>
+          </div>
+          <div class="explain">Distributed means the parts can run on different machines and cooperate over a network. Because they only share a protocol, they can use different languages and be updated independently.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>Before the browser can connect to <code>www.example.edu</code>, what must happen first?</p>
+          <div class="opts">
+            <button>The server sends the HTML</button>
+            <button data-correct>A DNS lookup turns the name into an IP address</button>
+            <button>The browser renders the page</button>
+            <button>The FTP control connection is opened</button>
+          </div>
+          <div class="explain">Computers connect to IP addresses, not names. DNS resolves the name first; only then can the browser open a TCP (or QUIC) connection and send the HTTP request.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>The status line <code>HTTP/1.1 200 OK</code> means:</p>
+          <div class="opts">
+            <button>The client has an error in its request</button>
+            <button>The page has moved to a new address</button>
+            <button data-correct>The request succeeded and the document follows</button>
+            <button>The server is overloaded</button>
+          </div>
+          <div class="explain">2xx codes mean success; 200 OK is the normal answer to a successful GET. Client errors are 4xx (such as 404), redirects are 3xx (such as 301), and an overloaded server answers 503.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>True or false: a web page normally arrives as one single response containing the HTML, images and styles together.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">The first response is the HTML. The browser then sends separate requests for each image, stylesheet, script and font the HTML refers to. HTTP/2 and HTTP/3 speed this up by carrying many of these requests in parallel on one connection.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>Which is the best way to reduce the single-point-of-failure risk?</p>
+          <div class="opts">
+            <button>Install a faster client browser</button>
+            <button>Switch from HTTPS to HTTP</button>
+            <button data-correct>Run several servers behind a load balancer, with replicated data</button>
+            <button>Store all data only on client machines</button>
+          </div>
+          <div class="explain">Redundancy removes the single point: if one server fails, the load balancer sends requests to the others. Client speed and HTTP versus HTTPS do not affect server availability, and moving data to clients gives up the benefits of client/server.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2><ul>
+        <li>A web client (browser) requests documents; a web server stores and sends them. The server stores, the client presents.</li>
+        <li>Distributed architecture: client and server can run on separate machines and evolve independently, as long as they share the protocol (HTTP/HTTPS).</li>
+        <li>Getting a page: select a link → DNS lookup → connect (TCP or QUIC) and TLS → HTTP request → response → extra requests → render.</li>
+        <li>Advantages: central management, scalability, data sharing, location independence, central security control.</li>
+        <li>Disadvantages: cost, complexity, single point of failure, congestion, attractive target; reduced with redundancy, load balancing, caching and security controls.</li>
+        <li>Server types: file, database, transaction (OLTP), groupware, web (static) and web application (dynamic).</li>
+      </ul></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
+<script>
+(function () {
+  'use strict';
+  var box = document.getElementById('demo-content');
+  var next = document.getElementById('sim-next');
+  var back = document.getElementById('sim-back');
+  var reset = document.getElementById('sim-reset');
+  var stage = document.getElementById('sim-stage');
+  var track = document.querySelectorAll('#sim-track li');
+  if (!box || !next) return;
+
+  var STEPS = [
+    '<p><strong>Step 1:</strong> The user clicks a hyperlink for "The History of Computers" in their web browser.</p>' +
+    '<p><span class="sim-link">The History of Computers</span></p>' +
+    '<p>The link points to <code>https://www.example.com/history-of-computers.html</code>, so the browser now knows which document to request and from which server.</p>',
+
+    '<p><strong>Step 2:</strong> The browser finds and connects to the server.</p>' +
+    '<pre><code>DNS:  www.example.com  →  93.184.215.14\n' +
+    'TCP:  SYN → SYN-ACK → ACK        (port 443)\n' +
+    'TLS:  certificate checked, keys agreed (TLS 1.3)</code></pre>' +
+    '<p>Now there is a secure channel. With HTTP/3 the connection and TLS setup happen together over QUIC (UDP).</p>',
+
+    '<p><strong>Step 3:</strong> The browser sends an HTTP request to the web server.</p>' +
+    '<pre><code>GET /history-of-computers.html HTTP/1.1\n' +
+    'Host: www.example.com\n' +
+    'User-Agent: Mozilla/5.0 ...\n' +
+    'Accept: text/html</code></pre>' +
+    '<p>The request travels over the network to the server at the specified address. (Shown in HTTP/1.1 text form; HTTP/2 and HTTP/3 carry the same information in binary frames.)</p>',
+
+    '<p><strong>Step 4:</strong> The server processes the request and sends back the HTML document.</p>' +
+    '<pre><code>HTTP/1.1 200 OK\n' +
+    'Content-Type: text/html; charset=utf-8\n\n' +
+    '&lt;html&gt;\n' +
+    '&lt;head&gt;&lt;title&gt;History of Computers&lt;/title&gt;&lt;/head&gt;\n' +
+    '&lt;body&gt;\n' +
+    '&lt;h1&gt;The History of Computers&lt;/h1&gt;\n' +
+    '&lt;p&gt;Content about computer history...&lt;/p&gt;\n' +
+    '&lt;/body&gt;\n' +
+    '&lt;/html&gt;</code></pre>' +
+    '<p>The browser receives the HTML, requests any images and styles it mentions, renders the page and displays it to the user.</p>'
+  ];
+  var INTRO = '<p>Click "Start: Step 1" to begin the simulation.</p>';
+  var i = 0; // 0 = not started; 1..4 = step shown
+
+  function render() {
+    box.innerHTML = i === 0 ? INTRO : STEPS[i - 1];
+    stage.textContent = 'Step ' + i + ' of ' + STEPS.length;
+    track.forEach(function (li, k) {
+      li.classList.toggle('on', k === i - 1);
+      li.classList.toggle('done', k < i - 1);
+    });
+    back.disabled = i === 0;
+    next.disabled = i === STEPS.length;
+    next.textContent = i === 0 ? 'Start: Step 1' : (i < STEPS.length ? 'Next: Step ' + (i + 1) : 'Finished');
+  }
+  next.addEventListener('click', function () { if (i < STEPS.length) { i++; render(); } });
+  back.addEventListener('click', function () { if (i > 0) { i--; render(); } });
+  reset.addEventListener('click', function () { i = 0; render(); });
+  render();
+})();
+</script>
 </body>
 </html>

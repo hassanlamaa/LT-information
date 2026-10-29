@@ -1,1207 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Layers Interactive Learning</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --layer1: #3498db;    /* Logical Security - Blue */
-            --layer2: #2ecc71;    /* Operational Security - Green */
-            --layer3: #9b59b6;    /* Telecom Security - Purple */
-            --layer4: #e74c3c;    /* Cybersecurity - Red */
-            --dark-bg: #1a1a2e;
-            --darker-bg: #16213e;
-            --light-bg: #f5f7fa;
-            --text-light: #ffffff;
-            --text-dark: #333333;
-            --card-bg: #ffffff;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--dark-bg), var(--darker-bg));
-            color: var(--text-light);
-            padding: 2rem 0;
-            border-radius: 0 0 20px 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .header-content {
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--layer1), var(--layer2), var(--layer3), var(--layer4));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto 1.5rem;
-        }
-
-        .learning-objectives {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-            text-align: left;
-        }
-
-        .learning-objectives h3 {
-            color: var(--layer4);
-            margin-bottom: 1rem;
-        }
-
-        .objectives-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
-        }
-
-        .objective-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .objective-item i {
-            color: var(--layer2);
-            margin-top: 3px;
-        }
-
-        /* Navigation */
-        .navigation {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            background-color: var(--card-bg);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .nav-btn.active {
-            color: white;
-        }
-
-        .nav-btn.layer1.active {
-            background-color: var(--layer1);
-        }
-
-        .nav-btn.layer2.active {
-            background-color: var(--layer2);
-        }
-
-        .nav-btn.layer3.active {
-            background-color: var(--layer3);
-        }
-
-        .nav-btn.layer4.active {
-            background-color: var(--layer4);
-        }
-
-        /* Main Content Area */
-        .content-area {
-            min-height: 500px;
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-            padding-bottom: 10px;
-            border-bottom: 3px solid;
-        }
-
-        .section-title.layer1 {
-            border-bottom-color: var(--layer1);
-        }
-
-        .section-title.layer2 {
-            border-bottom-color: var(--layer2);
-        }
-
-        .section-title.layer3 {
-            border-bottom-color: var(--layer3);
-        }
-
-        .section-title.layer4 {
-            border-bottom-color: var(--layer4);
-        }
-
-        .section-icon {
-            font-size: 2rem;
-        }
-
-        .layer1 .section-icon {
-            color: var(--layer1);
-        }
-
-        .layer2 .section-icon {
-            color: var(--layer2);
-        }
-
-        .layer3 .section-icon {
-            color: var(--layer3);
-        }
-
-        .layer4 .section-icon {
-            color: var(--layer4);
-        }
-
-        .section-content {
-            display: none;
-        }
-
-        .section-content.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Security Onion Visualization */
-        .security-onion {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
-        }
-
-        .onion-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-        }
-
-        .onion-layer {
-            position: absolute;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .onion-layer:hover {
-            transform: scale(1.05);
-        }
-
-        .layer-cyber {
-            width: 300px;
-            height: 300px;
-            background-color: var(--layer4);
-            z-index: 1;
-        }
-
-        .layer-telecom {
-            width: 230px;
-            height: 230px;
-            background-color: var(--layer3);
-            z-index: 2;
-            top: 35px;
-            left: 35px;
-        }
-
-        .layer-operational {
-            width: 160px;
-            height: 160px;
-            background-color: var(--layer2);
-            z-index: 3;
-            top: 70px;
-            left: 70px;
-        }
-
-        .layer-logical {
-            width: 90px;
-            height: 90px;
-            background-color: var(--layer1);
-            z-index: 4;
-            top: 105px;
-            left: 105px;
-        }
-
-        /* Components Grid */
-        .components-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 2rem 0;
-        }
-
-        .component-card {
-            background-color: var(--light-bg);
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border-left: 5px solid;
-        }
-
-        .component-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .component-card.layer1 {
-            border-left-color: var(--layer1);
-        }
-
-        .component-card.layer2 {
-            border-left-color: var(--layer2);
-        }
-
-        .component-card.layer3 {
-            border-left-color: var(--layer3);
-        }
-
-        .component-card.layer4 {
-            border-left-color: var(--layer4);
-        }
-
-        .component-icon {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Example Section */
-        .example-section {
-            background-color: var(--light-bg);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .example-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .example-title i {
-            color: var(--layer4);
-        }
-
-        .example-scenario {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 5px solid var(--layer4);
-        }
-
-        .vulnerability-list {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-        }
-
-        .vulnerability-item {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            background-color: rgba(231, 76, 60, 0.1);
-            border-radius: 5px;
-        }
-
-        /* Knowledge Check */
-        .knowledge-check {
-            background-color: var(--light-bg);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .quiz-container {
-            margin-top: 1.5rem;
-        }
-
-        .quiz-question {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin: 1rem 0;
-        }
-
-        .quiz-option {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .quiz-option:hover {
-            background-color: #f0f0f0;
-        }
-
-        .quiz-option.selected {
-            border-color: var(--layer1);
-            background-color: rgba(52, 152, 219, 0.1);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--layer2);
-            background-color: rgba(46, 204, 113, 0.2);
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--layer4);
-            background-color: rgba(231, 76, 60, 0.1);
-        }
-
-        .quiz-feedback {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: none;
-        }
-
-        .quiz-feedback.correct {
-            background-color: rgba(46, 204, 113, 0.2);
-            border-left: 5px solid var(--layer2);
-        }
-
-        .quiz-feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.1);
-            border-left: 5px solid var(--layer4);
-        }
-
-        .check-answer-btn, .next-question-btn {
-            background-color: var(--layer1);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
-            transition: var(--transition);
-        }
-
-        .check-answer-btn:hover, .next-question-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .next-question-btn {
-            background-color: var(--layer2);
-            display: none;
-        }
-
-        .next-question-btn:hover {
-            background-color: #27ae60;
-        }
-
-        /* Progress Tracker */
-        .progress-tracker {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        .progress-bar {
-            flex-grow: 1;
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin: 0 1rem;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, var(--layer1), var(--layer2), var(--layer3), var(--layer4));
-            width: 25%;
-            transition: width 0.5s ease;
-        }
-
-        .progress-text {
-            font-weight: 600;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #666;
-            border-top: 1px solid #eee;
-            margin-top: 2rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .nav-btn {
-                width: 90%;
-                justify-content: center;
-            }
-            
-            .components-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .onion-container {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .layer-cyber {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .layer-telecom {
-                width: 190px;
-                height: 190px;
-                top: 30px;
-                left: 30px;
-            }
-            
-            .layer-operational {
-                width: 130px;
-                height: 130px;
-                top: 60px;
-                left: 60px;
-            }
-            
-            .layer-logical {
-                width: 70px;
-                height: 70px;
-                top: 90px;
-                left: 90px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Security Layers · LT Information</title>
+<meta name="description" content="The four security layers (logical and application, operational, telecommunications, cybersecurity integration), defence in depth and the weakest-link principle, with scenarios and knowledge checks.">
+<link rel="stylesheet" href="assets/lt.css">
+<style>
+  .ring { cursor: pointer; outline: none }
+  .ring circle { stroke: var(--line); stroke-width: 2 }
+  .ring:hover circle, .ring:focus-visible circle, .ring.is-active circle { stroke: var(--accent); stroke-width: 4 }
+  .ring text { pointer-events: none }
+  .ring-hint { font-size: .9rem; color: var(--muted); margin: 0 0 10px }
+  .tool .out { font-family: var(--body); white-space: normal }
+  .tool .out h4 { margin: 0 0 6px }
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1><i class="fas fa-shield-alt"></i> Cybersecurity Layers Interactive Learning</h1>
-                <p class="subtitle">Explore how different security domains interact and protect information systems. Understand the "weakest link" principle through interactive examples and knowledge checks.</p>
-                
-                <div class="learning-objectives">
-                    <h3><i class="fas fa-bullseye"></i> Learning Objectives</h3>
-                    <div class="objectives-list">
-                        <div class="objective-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Distinguish between the four primary security layers</span>
-                        </div>
-                        <div class="objective-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Explain key components and concerns of each layer</span>
-                        </div>
-                        <div class="objective-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Analyze real-world scenarios to identify involved layers</span>
-                        </div>
-                        <div class="objective-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Apply the "weakest link" principle to security assessment</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <!-- Navigation -->
-        <div class="navigation">
-            <button class="nav-btn layer1 active" data-target="layer1">
-                <i class="fas fa-code"></i> Layer 1: Logical & Application Security
-            </button>
-            <button class="nav-btn layer2" data-target="layer2">
-                <i class="fas fa-cogs"></i> Layer 2: Operational Security
-            </button>
-            <button class="nav-btn layer3" data-target="layer3">
-                <i class="fas fa-network-wired"></i> Layer 3: Telecommunications Security
-            </button>
-            <button class="nav-btn layer4" data-target="layer4">
-                <i class="fas fa-umbrella"></i> Layer 4: Cybersecurity Integration
-            </button>
-        </div>
-
-        <!-- Security Onion Visualization -->
-        <div class="security-onion">
-            <div class="onion-container">
-                <div class="onion-layer layer-cyber" data-target="layer4">
-                    <span>Cybersecurity</span>
-                </div>
-                <div class="onion-layer layer-telecom" data-target="layer3">
-                    <span>Telecommunications</span>
-                </div>
-                <div class="onion-layer layer-operational" data-target="layer2">
-                    <span>Operational</span>
-                </div>
-                <div class="onion-layer layer-logical" data-target="layer1">
-                    <span>Logical</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="content-area">
-            <!-- Layer 1: Logical & Application Security -->
-            <section class="section-content active" id="layer1">
-                <div class="section-title layer1">
-                    <i class="fas fa-code section-icon"></i>
-                    <h2>Layer 1: Logical & Application Security</h2>
-                </div>
-                
-                <p><strong>Definition:</strong> Security implemented through <strong>software, programs, and data management</strong> to ensure proper functioning and data protection.</p>
-                
-                <div class="components-grid">
-                    <div class="component-card layer1">
-                        <div class="component-icon">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <h3>Secure Development</h3>
-                        <p>Following "Security by Design" principles, quality coding practices, and thorough security testing during development.</p>
-                    </div>
-                    
-                    <div class="component-card layer1">
-                        <div class="component-icon">
-                            <i class="fas fa-key"></i>
-                        </div>
-                        <h3>Cryptography</h3>
-                        <p>Implementing encryption and hashing to ensure data <strong>integrity and confidentiality</strong> during storage and transmission.</p>
-                    </div>
-                    
-                    <div class="component-card layer1">
-                        <div class="component-icon">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <h3>Access Control</h3>
-                        <p>Authentication procedures and authorization mechanisms to ensure only authorized users access specific resources.</p>
-                    </div>
-                    
-                    <div class="component-card layer1">
-                        <div class="component-icon">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h3>Data Classification</h3>
-                        <p>Categorizing data by sensitivity (Normal, Confidential, Secret) and applying appropriate protection measures for each category.</p>
-                    </div>
-                </div>
-                
-                <div class="example-section">
-                    <div class="example-title">
-                        <i class="fas fa-hospital-alt"></i>
-                        <h3>Real-World Example: Hospital Records System</h3>
-                    </div>
-                    
-                    <div class="example-scenario">
-                        <p><strong>Scenario:</strong> A hospital uses state-of-the-art encryption for patient data. However, their software was developed quickly with minimal testing, and all doctors share the same admin password.</p>
-                        
-                        <p><strong>Logical Security Issues:</strong></p>
-                        <ul class="vulnerability-list">
-                            <li class="vulnerability-item"><strong>Poor Development Quality:</strong> Minimal testing leads to undiscovered vulnerabilities</li>
-                            <li class="vulnerability-item"><strong>Weak Access Control:</strong> Shared admin passwords eliminate accountability</li>
-                            <li class="vulnerability-item"><strong>No Least Privilege:</strong> All doctors have admin access when they only need patient data access</li>
-                        </ul>
-                        
-                        <p><strong>Outcome:</strong> Despite strong encryption (one component), the system is vulnerable due to weaknesses in other logical security components.</p>
-                    </div>
-                </div>
-                
-                <!-- Knowledge Check for Layer 1 -->
-                <div class="knowledge-check">
-                    <h3><i class="fas fa-brain"></i> Knowledge Check: Logical Security</h3>
-                    
-                    <div class="quiz-container">
-                        <div class="quiz-question" id="question1">
-                            <p><strong>Question 1:</strong> A company has implemented strong encryption for all data but hasn't classified data by sensitivity level. Which logical security component is weak?</p>
-                            
-                            <div class="quiz-options">
-                                <div class="quiz-option" data-correct="false">Cryptography</div>
-                                <div class="quiz-option" data-correct="true">Data Classification</div>
-                                <div class="quiz-option" data-correct="false">Access Control</div>
-                                <div class="quiz-option" data-correct="false">Malware Detection</div>
-                            </div>
-                            
-                            <div class="quiz-feedback">
-                                <p><strong>Explanation:</strong> Data classification is essential for applying appropriate protection measures based on sensitivity. Without it, all data gets the same protection level, which may be insufficient for confidential information or wasteful for normal data.</p>
-                            </div>
-                            
-                            <button class="check-answer-btn">Check Answer</button>
-                            <button class="next-question-btn">Next Question</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Layer 2: Operational Security -->
-            <section class="section-content" id="layer2">
-                <div class="section-title layer2">
-                    <i class="fas fa-cogs section-icon"></i>
-                    <h2>Layer 2: Operational Security</h2>
-                </div>
-                
-                <p><strong>Definition:</strong> Ensuring <strong>day-to-day functioning</strong> through tools, procedures, maintenance, and management of IT systems.</p>
-                
-                <div class="components-grid">
-                    <div class="component-card layer2">
-                        <div class="component-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h3>Configuration & Update Management</h3>
-                        <p>Keeping systems properly configured, patched, and updated to address known vulnerabilities.</p>
-                    </div>
-                    
-                    <div class="component-card layer2">
-                        <div class="component-icon">
-                            <i class="fas fa-history"></i>
-                        </div>
-                        <h3>Backup & Continuity Management</h3>
-                        <p>Regular backups, tested restoration procedures, and business continuity planning for disaster recovery.</p>
-                    </div>
-                    
-                    <div class="component-card layer2">
-                        <div class="component-icon">
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                        <h3>Incident Management</h3>
-                        <p>Processes for detecting, responding to, and resolving security incidents with proper documentation.</p>
-                    </div>
-                    
-                    <div class="component-card layer2">
-                        <div class="component-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <h3>Log Management</h3>
-                        <p>Collecting, monitoring, and analyzing log files for security events, anomalies, and forensic investigations.</p>
-                    </div>
-                </div>
-                
-                <div class="example-section">
-                    <div class="example-title">
-                        <i class="fas fa-building"></i>
-                        <h3>Real-World Example: Financial Firm Outage</h3>
-                    </div>
-                    
-                    <div class="example-scenario">
-                        <p><strong>Scenario:</strong> A financial firm skipped server maintenance to "save costs." No recent backup tests were performed. During peak trading hours, their transaction system fails completely.</p>
-                        
-                        <p><strong>Operational Security Issues:</strong></p>
-                        <ul class="vulnerability-list">
-                            <li class="vulnerability-item"><strong>Poor Maintenance:</strong> Skipped maintenance leads to preventable system failure</li>
-                            <li class="vulnerability-item"><strong>Untested Backups:</strong> Recovery procedures aren't verified to work when needed</li>
-                            <li class="vulnerability-item"><strong>Lack of Monitoring:</strong> No performance monitoring to predict impending failure</li>
-                        </ul>
-                        
-                        <p><strong>Outcome:</strong> Recovery takes 8 hours instead of the promised 30 minutes, causing significant financial losses and reputational damage.</p>
-                    </div>
-                </div>
-                
-                <!-- Knowledge Check for Layer 2 -->
-                <div class="knowledge-check">
-                    <h3><i class="fas fa-brain"></i> Knowledge Check: Operational Security</h3>
-                    
-                    <div class="quiz-container">
-                        <div class="quiz-question" id="question2">
-                            <p><strong>Question 2:</strong> A company performs regular backups but has never tested restoring data from them. Which operational security principle is being violated?</p>
-                            
-                            <div class="quiz-options">
-                                <div class="quiz-option" data-correct="false">Configuration Management</div>
-                                <div class="quiz-option" data-correct="false">Incident Management</div>
-                                <div class="quiz-option" data-correct="true">Backup Verification</div>
-                                <div class="quiz-option" data-correct="false">Log Management</div>
-                            </div>
-                            
-                            <div class="quiz-feedback">
-                                <p><strong>Explanation:</strong> Backups without restoration testing are unreliable. The only way to ensure backups work is to periodically test restoration procedures. Many organizations discover their backups are corrupted or incomplete only during a real crisis.</p>
-                            </div>
-                            
-                            <button class="check-answer-btn">Check Answer</button>
-                            <button class="next-question-btn">Next Question</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Layer 3: Telecommunications Security -->
-            <section class="section-content" id="layer3">
-                <div class="section-title layer3">
-                    <i class="fas fa-network-wired section-icon"></i>
-                    <h2>Layer 3: Telecommunications Security</h2>
-                </div>
-                
-                <p><strong>Definition:</strong> Securing <strong>end-to-end network connectivity</strong> and infrastructure to ensure reliable, protected communication.</p>
-                
-                <div class="components-grid">
-                    <div class="component-card layer3">
-                        <div class="component-icon">
-                            <i class="fas fa-route"></i>
-                        </div>
-                        <h3>Network Architecture Security</h3>
-                        <p>Designing network topology with security zones, segmentation, and defense-in-depth principles.</p>
-                    </div>
-                    
-                    <div class="component-card layer3">
-                        <div class="component-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Access Controls</h3>
-                        <p>Network access controls, firewalls, and intrusion prevention systems to filter and monitor traffic.</p>
-                    </div>
-                    
-                    <div class="component-card layer3">
-                        <div class="component-icon">
-                            <i class="fas fa-user-secret"></i>
-                        </div>
-                        <h3>Transmission Security</h3>
-                        <p>Encrypting data in transit using protocols like TLS/SSL, VPNs, and secure routing protocols.</p>
-                    </div>
-                    
-                    <div class="component-card layer3">
-                        <div class="component-icon">
-                            <i class="fas fa-tachometer-alt"></i>
-                        </div>
-                        <h3>Network Management</h3>
-                        <p>Monitoring network performance, availability, and security events through centralized management tools.</p>
-                    </div>
-                </div>
-                
-                <div class="example-section">
-                    <div class="example-title">
-                        <i class="fas fa-shipping-fast"></i>
-                        <h3>Real-World Example: E-commerce Platform</h3>
-                    </div>
-                    
-                    <div class="example-scenario">
-                        <p><strong>Scenario:</strong> An e-commerce company uses strong TLS encryption for customer transactions. However, their internal network has no segmentation, and employee workstations are on the same network segment as database servers.</p>
-                        
-                        <p><strong>Telecommunications Security Issues:</strong></p>
-                        <ul class="vulnerability-list">
-                            <li class="vulnerability-item"><strong>Poor Network Segmentation:</strong> Flat network allows lateral movement if one device is compromised</li>
-                            <li class="vulnerability-item"><strong>Weak Internal Controls:</strong> No internal firewalls between different network zones</li>
-                            <li class="vulnerability-item"><strong>Over-reliance on Perimeter Security:</strong> Strong external encryption doesn't protect against internal threats</li>
-                        </ul>
-                        
-                        <p><strong>Outcome:</strong> When an employee's workstation gets infected with malware, attackers can easily move to database servers and steal customer data despite strong external encryption.</p>
-                    </div>
-                </div>
-                
-                <!-- Knowledge Check for Layer 3 -->
-                <div class="knowledge-check">
-                    <h3><i class="fas fa-brain"></i> Knowledge Check: Telecommunications Security</h3>
-                    
-                    <div class="quiz-container">
-                        <div class="quiz-question" id="question3">
-                            <p><strong>Question 3:</strong> A company implements excellent encryption for data transmission but doesn't segment their internal network. Which telecommunications security principle is weak?</p>
-                            
-                            <div class="quiz-options">
-                                <div class="quiz-option" data-correct="false">Transmission Security</div>
-                                <div class="quiz-option" data-correct="true">Network Architecture</div>
-                                <div class="quiz-option" data-correct="false">Access Controls</div>
-                                <div class="quiz-option" data-correct="false">Network Management</div>
-                            </div>
-                            
-                            <div class="quiz-feedback">
-                                <p><strong>Explanation:</strong> Network segmentation is a critical architectural security control that limits lateral movement if a system is compromised. Without segmentation, attackers who breach one system can easily access others on the same network, regardless of strong transmission encryption.</p>
-                            </div>
-                            
-                            <button class="check-answer-btn">Check Answer</button>
-                            <button class="next-question-btn">Next Question</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Layer 4: Cybersecurity Integration -->
-            <section class="section-content" id="layer4">
-                <div class="section-title layer4">
-                    <i class="fas fa-umbrella section-icon"></i>
-                    <h2>Layer 4: Cybersecurity Integration</h2>
-                </div>
-                
-                <p><strong>Definition:</strong> The <strong>strategic integration</strong> of all security layers to create a comprehensive security posture and organizational resilience.</p>
-                
-                <div class="components-grid">
-                    <div class="component-card layer4">
-                        <div class="component-icon">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <h3>Integration & Coordination</h3>
-                        <p>Ensuring all security layers work together cohesively rather than as isolated silos.</p>
-                    </div>
-                    
-                    <div class="component-card layer4">
-                        <div class="component-icon">
-                            <i class="fas fa-link"></i>
-                        </div>
-                        <h3>Weakest Link Principle</h3>
-                        <p>Recognizing that overall security strength equals the strength of the weakest component across all layers.</p>
-                    </div>
-                    
-                    <div class="component-card layer4">
-                        <div class="component-icon">
-                            <i class="fas fa-balance-scale"></i>
-                        </div>
-                        <h3>Risk Management</h3>
-                        <p>Balancing security investments based on threat assessment (dangerousness × probability).</p>
-                    </div>
-                    
-                    <div class="component-card layer4">
-                        <div class="component-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3>Organizational Responsibility</h3>
-                        <p>Establishing security as everyone's responsibility, not just the IT department's job.</p>
-                    </div>
-                </div>
-                
-                <div class="example-section">
-                    <div class="example-title">
-                        <i class="fas fa-industry"></i>
-                        <h3>Real-World Example: Manufacturing Company</h3>
-                    </div>
-                    
-                    <div class="example-scenario">
-                        <p><strong>Scenario:</strong> A manufacturing company invests heavily in network security (firewalls, intrusion detection) but neglects employee security training. They also have excellent backup systems but poor access controls on their design servers.</p>
-                        
-                        <p><strong>Cybersecurity Integration Issues:</strong></p>
-                        <ul class="vulnerability-list">
-                            <li class="vulnerability-item"><strong>Inconsistent Security Investment:</strong> Strong in some areas, weak in others</li>
-                            <li class="vulnerability-item"><strong>Failure to Recognize Weakest Link:</strong> Despite strong network security, human factors create vulnerabilities</li>
-                            <li class="vulnerability-item"><strong>Lack of Holistic View:</strong> Treating security as a set of isolated controls rather than an integrated system</li>
-                        </ul>
-                        
-                        <p><strong>Outcome:</strong> An employee falls for a phishing email, giving attackers credentials that bypass the strong network security. Attackers then access design servers due to weak access controls, stealing proprietary manufacturing designs.</p>
-                    </div>
-                </div>
-                
-                <!-- Knowledge Check for Layer 4 -->
-                <div class="knowledge-check">
-                    <h3><i class="fas fa-brain"></i> Knowledge Check: Cybersecurity Integration</h3>
-                    
-                    <div class="quiz-container">
-                        <div class="quiz-question" id="question4">
-                            <p><strong>Question 4:</strong> A company has strong logical, operational, and telecommunications security, but no employee security training program. According to the "weakest link" principle, what is their overall security level?</p>
-                            
-                            <div class="quiz-options">
-                                <div class="quiz-option" data-correct="false">Excellent - 3 out of 4 areas are strong</div>
-                                <div class="quiz-option" data-correct="false">Good - The majority of areas are strong</div>
-                                <div class="quiz-option" data-correct="true">Poor - One weak area compromises all</div>
-                                <div class="quiz-option" data-correct="false">Can't determine without more information</div>
-                            </div>
-                            
-                            <div class="quiz-feedback">
-                                <p><strong>Explanation:</strong> The "weakest link" principle states that overall security is determined by the weakest component. Since human factors (lack of training) often represent significant vulnerabilities, this weakness can undermine all other security controls, making the overall security poor despite strengths in other areas.</p>
-                            </div>
-                            
-                            <button class="check-answer-btn">Check Answer</button>
-                            <button class="next-question-btn">Complete Module</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Progress Tracker -->
-        <div class="progress-tracker">
-            <span class="progress-text">Module Progress</span>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <span class="progress-text" id="progressText">25%</span>
-        </div>
+<section class="lt-hero">
+  <div class="lt-hero-in">
+    <span class="eyebrow">Cybersecurity · Security layers</span>
+    <h1>Security Layers</h1>
+    <p class="lead">Explore how different security domains interact and protect information systems. Understand the "weakest link" principle through interactive examples, scenarios and knowledge checks, and see how today's defence-in-depth and zero-trust thinking build on the same layered idea.</p>
+    <div class="chips"><span class="chip">≈ 35 min read</span><span class="chip">14 quiz questions</span><span class="chip">Level: Foundation</span><span class="chip">Interactive layer explorer</span></div>
+    <div class="goals">
+      <h2>Learning objectives</h2>
+      <ul>
+        <li>Distinguish between the four primary security layers.</li>
+        <li>Explain key components and concerns of each layer.</li>
+        <li>Analyse real-world scenarios to identify the layers involved.</li>
+        <li>Apply the "weakest link" principle to security assessment.</li>
+        <li>Classify controls across layers and score risks as likelihood × impact.</li>
+      </ul>
     </div>
+  </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <p>Cybersecurity Layers Interactive Learning Module | Based on teaching guide for information security foundations</p>
-            <p>Remember: <em>"Global security is always that of the weakest link."</em></p>
+<div class="lt-layout">
+  <nav class="lt-toc" aria-label="On this page"></nav>
+  <main class="lt-main">
+
+    <section>
+      <h2 id="overview"><span class="num">1</span>The layered model</h2>
+      <p>Security is organised in <strong>layers</strong>, like the layers of an onion around the information you want to protect. Each layer has its own people, tools and failure modes. The innermost layer is the software and data itself; around it sit the day-to-day operations that keep it running, the networks that carry it, and finally the organisation-wide cybersecurity strategy that ties everything together.</p>
+
+      <div class="tool">
+        <p class="ring-hint">Click or tap a ring (or use Tab and Enter) to see what that layer covers.</p>
+        <figure class="diagram" style="margin-bottom:0">
+          <svg viewBox="0 0 360 360" width="100%" role="group" aria-label="Security onion: four concentric layers" style="max-width:380px;display:block;margin:0 auto">
+            <g class="ring" data-layer="4" tabindex="0" role="button" aria-label="Layer 4: Cybersecurity integration">
+              <circle cx="180" cy="180" r="172" style="fill:var(--sunk)"/>
+              <text x="180" y="36" text-anchor="middle" font-size="15" font-weight="700">Cybersecurity</text>
+            </g>
+            <g class="ring" data-layer="3" tabindex="0" role="button" aria-label="Layer 3: Telecommunications security">
+              <circle cx="180" cy="180" r="132" style="fill:var(--tip-soft)"/>
+              <text x="180" y="76" text-anchor="middle" font-size="15" font-weight="700">Telecommunications</text>
+            </g>
+            <g class="ring" data-layer="2" tabindex="0" role="button" aria-label="Layer 2: Operational security">
+              <circle cx="180" cy="180" r="92" style="fill:var(--ok-soft)"/>
+              <text x="180" y="116" text-anchor="middle" font-size="15" font-weight="700">Operational</text>
+            </g>
+            <g class="ring" data-layer="1" tabindex="0" role="button" aria-label="Layer 1: Logical and application security">
+              <circle cx="180" cy="180" r="52" style="fill:var(--accent-soft)"/>
+              <text x="180" y="178" text-anchor="middle" font-size="15" font-weight="700">Logical</text>
+              <text x="180" y="196" text-anchor="middle" font-size="12">+ data</text>
+            </g>
+          </svg>
+          <figcaption>Figure 1. The security onion. An attacker coming from outside must defeat every ring to reach the data, unless one ring has a gap.</figcaption>
+        </figure>
+        <div class="out" id="ringOut" aria-live="polite">Select a layer.</div>
+      </div>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Layer</th><th>Protects</th><th>Typical controls</th><th>Typical failure</th></tr></thead>
+        <tbody>
+          <tr><td>1. Logical &amp; application</td><td>Software and data</td><td>Secure coding, crypto, access control, classification</td><td>SQL injection, shared admin password</td></tr>
+          <tr><td>2. Operational</td><td>Day-to-day running</td><td>Patching, backups, logging, incident response</td><td>Unpatched server, untested backups</td></tr>
+          <tr><td>3. Telecommunications</td><td>Networks and links</td><td>Segmentation, firewalls, TLS, VPN, WPA3</td><td>Flat network, open Wi-Fi, Telnet</td></tr>
+          <tr><td>4. Cybersecurity integration</td><td>The whole organisation</td><td>Governance, risk management, training, frameworks</td><td>Silos, untrained staff, no risk owner</td></tr>
+        </tbody>
+      </table></div>
+
+      <dl class="defs">
+        <dt>Defence in depth</dt><dd>Using several independent layers of controls so that if one fails, another still stops or detects the attacker.</dd>
+        <dt>Weakest link</dt><dd>"Global security is always that of the weakest link": an attacker only needs one gap, so overall security is limited by the weakest layer.</dd>
+        <dt>Zero trust</dt><dd>The modern refinement: no user, device or network location is trusted by default; every request is authenticated and authorised (NIST SP 800-207).</dd>
+      </dl>
+      <div class="callout analogy"><span class="label">Analogy</span><p>A bank branch has a locked door, a guard, cameras, a vault and a time lock. A robber has to beat all of them. But if the vault code is written on a sticky note, all the other layers barely matter: that note is the weakest link.</p></div>
+      <div class="callout exam"><span class="label">Exam tip</span><p>Defence in depth and weakest link are two sides of the same idea. Defence in depth is the <em>strategy</em> (stack independent layers); weakest link is the <em>warning</em> (one neglected layer undoes the investment in the others).</p></div>
+    </section>
+
+    <section>
+      <h2 id="layer1"><span class="num">2</span>Layer 1: Logical &amp; application security</h2>
+      <p><strong>Definition:</strong> security implemented through <strong>software, programs and data management</strong> to ensure proper functioning and data protection. This is the layer closest to the data: if the application itself is flawed, no firewall can fully compensate.</p>
+      <div class="cards">
+        <div class="card"><h3>Secure development</h3><p>Following "Security by Design" principles, quality coding practices, and thorough security testing (code review, static and dynamic analysis) during development. The OWASP Top 10 lists the most common web flaws, led by Broken Access Control.</p></div>
+        <div class="card"><h3>Cryptography</h3><p>Implementing encryption and hashing to ensure data <strong>integrity and confidentiality</strong> during storage and transmission. Use AES-256 and SHA-256; avoid DES, MD5 and SHA-1. Store passwords with Argon2id or bcrypt.</p></div>
+        <div class="card"><h3>Access control</h3><p>Authentication procedures (MFA, ideally passkeys/FIDO2) and authorization mechanisms to ensure only authorised users access specific resources, following least privilege.</p></div>
+        <div class="card"><h3>Data classification</h3><p>Categorising data by sensitivity (Normal, Confidential, Secret; many companies use Public, Internal, Confidential, Restricted) and applying appropriate protection measures to each category.</p></div>
+      </div>
+      <p><span class="term" title="Give each user or process only the minimum access needed for their task">Least privilege</span> is the rule that ties these together: a doctor needs to read and update patient records, not to administer the database server.</p>
+
+      <div class="callout example"><span class="label">Real-world example: hospital records system</span>
+        <p><strong>Scenario:</strong> a hospital uses state-of-the-art encryption for patient data. However, its software was developed quickly with minimal testing, and all doctors share the same admin password.</p>
+        <p><strong>Logical security issues:</strong></p>
+        <ul>
+          <li><strong>Poor development quality:</strong> minimal testing leads to undiscovered vulnerabilities.</li>
+          <li><strong>Weak access control:</strong> shared admin passwords eliminate accountability; nobody can tell which doctor did what.</li>
+          <li><strong>No least privilege:</strong> all doctors have admin access when they only need patient data access.</li>
+        </ul>
+        <p><strong>Outcome:</strong> despite strong encryption (one component), the system is vulnerable because of weaknesses in the other logical security components. Encryption protects data at rest, but an attacker who phishes the shared admin password simply logs in and reads everything decrypted.</p>
+      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>"We encrypt everything, so we are secure." Encryption only protects against people who do not have the key or a valid login. Most breaches use valid (stolen) credentials or an application flaw, and the application decrypts the data for them.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: Logical security</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q1</span>A company has implemented strong encryption for all data but has not classified data by sensitivity level. Which logical security component is weak?</p>
+          <div class="opts"><button>Cryptography</button><button data-correct>Data Classification</button><button>Access Control</button><button>Malware Detection</button></div>
+          <div class="explain">Data classification is essential for applying appropriate protection measures based on sensitivity. Without it, all data gets the same protection level, which may be insufficient for confidential information or wasteful for normal data.</div>
         </div>
-    </footer>
+        <div class="quiz-done"></div>
+      </div>
+    </section>
 
-    <script>
-        // Navigation functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const navButtons = document.querySelectorAll('.nav-btn');
-            const onionLayers = document.querySelectorAll('.onion-layer');
-            const sections = document.querySelectorAll('.section-content');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            
-            // Initialize first section as active
-            let currentSection = 'layer1';
-            updateProgress();
-            
-            // Navigation button click handlers
-            navButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const target = this.getAttribute('data-target');
-                    
-                    // Update active button
-                    navButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show corresponding section
-                    showSection(target);
-                    
-                    // Update progress
-                    updateProgress();
-                });
-            });
-            
-            // Onion layer click handlers
-            onionLayers.forEach(layer => {
-                layer.addEventListener('click', function() {
-                    const target = this.getAttribute('data-target');
-                    
-                    // Update active button
-                    navButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.getAttribute('data-target') === target) {
-                            btn.classList.add('active');
-                        }
-                    });
-                    
-                    // Show corresponding section
-                    showSection(target);
-                    
-                    // Update progress
-                    updateProgress();
-                });
-            });
-            
-            // Function to show a specific section
-            function showSection(sectionId) {
-                // Hide all sections
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Show selected section
-                document.getElementById(sectionId).classList.add('active');
-                
-                // Update current section
-                currentSection = sectionId;
-            }
-            
-            // Update progress based on current section
-            function updateProgress() {
-                let progress = 25;
-                
-                switch(currentSection) {
-                    case 'layer1':
-                        progress = 25;
-                        break;
-                    case 'layer2':
-                        progress = 50;
-                        break;
-                    case 'layer3':
-                        progress = 75;
-                        break;
-                    case 'layer4':
-                        progress = 100;
-                        break;
-                }
-                
-                progressFill.style.width = `${progress}%`;
-                progressText.textContent = `${progress}%`;
-            }
-            
-            // Quiz functionality
-            const quizOptions = document.querySelectorAll('.quiz-option');
-            const checkAnswerBtns = document.querySelectorAll('.check-answer-btn');
-            const nextQuestionBtns = document.querySelectorAll('.next-question-btn');
-            
-            // Quiz option selection
-            quizOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove selection from all options in this question
-                    const questionContainer = this.closest('.quiz-question');
-                    const options = questionContainer.querySelectorAll('.quiz-option');
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Select this option
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Check answer button functionality
-            checkAnswerBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const questionContainer = this.closest('.quiz-question');
-                    const selectedOption = questionContainer.querySelector('.quiz-option.selected');
-                    const feedback = questionContainer.querySelector('.quiz-feedback');
-                    
-                    if (!selectedOption) {
-                        alert('Please select an answer first!');
-                        return;
-                    }
-                    
-                    // Show feedback
-                    feedback.style.display = 'block';
-                    
-                    // Mark correct/incorrect
-                    const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
-                    
-                    if (isCorrect) {
-                        selectedOption.classList.add('correct');
-                        feedback.classList.add('correct');
-                        feedback.innerHTML = '<p><strong>Correct!</strong> ' + feedback.innerHTML + '</p>';
-                    } else {
-                        selectedOption.classList.add('incorrect');
-                        feedback.classList.add('incorrect');
-                        feedback.innerHTML = '<p><strong>Incorrect.</strong> ' + feedback.innerHTML + '</p>';
-                        
-                        // Also show the correct answer
-                        const correctOption = questionContainer.querySelector('.quiz-option[data-correct="true"]');
-                        if (correctOption) {
-                            correctOption.classList.add('correct');
-                        }
-                    }
-                    
-                    // Disable all options
-                    const options = questionContainer.querySelectorAll('.quiz-option');
-                    options.forEach(opt => {
-                        opt.style.pointerEvents = 'none';
-                    });
-                    
-                    // Show next question button
-                    this.style.display = 'none';
-                    const nextBtn = questionContainer.querySelector('.next-question-btn');
-                    if (nextBtn) {
-                        nextBtn.style.display = 'inline-block';
-                    }
-                });
-            });
-            
-            // Next question button functionality
-            nextQuestionBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const questionContainer = this.closest('.quiz-question');
-                    const currentSectionId = questionContainer.closest('.section-content').id;
-                    
-                    // Determine next section
-                    let nextSectionId;
-                    switch(currentSectionId) {
-                        case 'layer1':
-                            nextSectionId = 'layer2';
-                            break;
-                        case 'layer2':
-                            nextSectionId = 'layer3';
-                            break;
-                        case 'layer3':
-                            nextSectionId = 'layer4';
-                            break;
-                        case 'layer4':
-                            // Completion message
-                            alert('Congratulations! You have completed the Cybersecurity Layers module. Remember: Security is a process, not a product!');
-                            return;
-                    }
-                    
-                    // Navigate to next section
-                    navButtons.forEach(navBtn => {
-                        navBtn.classList.remove('active');
-                        if (navBtn.getAttribute('data-target') === nextSectionId) {
-                            navBtn.classList.add('active');
-                        }
-                    });
-                    
-                    showSection(nextSectionId);
-                    updateProgress();
-                });
-            });
-            
-            // Add some interactive effects to component cards
-            const componentCards = document.querySelectorAll('.component-card');
-            componentCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
+    <section>
+      <h2 id="layer2"><span class="num">3</span>Layer 2: Operational security</h2>
+      <p><strong>Definition:</strong> ensuring <strong>day-to-day functioning</strong> through tools, procedures, maintenance and management of IT systems. A system that was secure on launch day becomes insecure within months if nobody patches, monitors and backs it up.</p>
+      <div class="cards">
+        <div class="card"><h3>Configuration &amp; update management</h3><p>Keeping systems properly configured, patched and updated to address known vulnerabilities. Prioritise flaws that are actively exploited, for example those on CISA's Known Exploited Vulnerabilities (KEV) list.</p></div>
+        <div class="card"><h3>Backup &amp; continuity management</h3><p>Regular backups, tested restoration procedures, and business continuity planning for disaster recovery. Follow 3-2-1 (3 copies, 2 media, 1 off-site) and keep one offline or immutable copy that ransomware cannot delete.</p></div>
+        <div class="card"><h3>Incident management</h3><p>Processes for detecting, responding to and resolving security incidents with proper documentation: preparation, detection and analysis, containment, eradication and recovery, lessons learned.</p></div>
+        <div class="card"><h3>Log management</h3><p>Collecting, monitoring and analysing log files for security events, anomalies and forensic investigations, usually centralised in a SIEM (Security Information and Event Management) system.</p></div>
+      </div>
+      <dl class="defs">
+        <dt>RTO</dt><dd>Recovery Time Objective: the maximum acceptable downtime.</dd>
+        <dt>RPO</dt><dd>Recovery Point Objective: the maximum acceptable data loss, in time (nightly backup = up to 24 h lost).</dd>
+        <dt>Change management</dt><dd>Changes are planned, approved, tested and reversible, so "maintenance" does not itself cause an outage.</dd>
+      </dl>
+
+      <div class="callout example"><span class="label">Real-world example: financial firm outage</span>
+        <p><strong>Scenario:</strong> a financial firm skipped server maintenance to "save costs". No recent backup tests were performed. During peak trading hours, its transaction system fails completely.</p>
+        <p><strong>Operational security issues:</strong></p>
+        <ul>
+          <li><strong>Poor maintenance:</strong> skipped maintenance leads to a preventable system failure.</li>
+          <li><strong>Untested backups:</strong> recovery procedures are not verified to work when needed.</li>
+          <li><strong>Lack of monitoring:</strong> no performance monitoring to predict the impending failure.</li>
+        </ul>
+        <p><strong>Outcome:</strong> recovery takes 8 hours instead of the promised 30 minutes (the RTO), causing significant financial losses and reputational damage.</p>
+      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Keeping the only backup on a network share that the same admin account can reach. Ransomware operators steal admin credentials and delete or encrypt backups before launching the encryption. Separate credentials and an offline/immutable copy are essential.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: Operational security</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q2</span>A company performs regular backups but has never tested restoring data from them. Which operational security principle is being violated?</p>
+          <div class="opts"><button>Configuration Management</button><button>Incident Management</button><button data-correct>Backup Verification</button><button>Log Management</button></div>
+          <div class="explain">Backups without restoration testing are unreliable. The only way to ensure backups work is to periodically test restoration procedures. Many organisations discover their backups are corrupted or incomplete only during a real crisis.</div>
+        </div>
+        <div class="quiz-done"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="layer3"><span class="num">4</span>Layer 3: Telecommunications security</h2>
+      <p><strong>Definition:</strong> securing <strong>end-to-end network connectivity</strong> and infrastructure to ensure reliable, protected communication: LAN, Wi-Fi, WAN links, internet access, VPNs and the devices that run them (routers, switches, firewalls).</p>
+      <div class="cards">
+        <div class="card"><h3>Network architecture security</h3><p>Designing network topology with security zones (for example a DMZ for public servers), segmentation (VLANs, internal firewalls) and defence-in-depth principles.</p></div>
+        <div class="card"><h3>Access controls</h3><p>Network access control (802.1X), firewalls and intrusion prevention systems (IPS) to filter and monitor traffic.</p></div>
+        <div class="card"><h3>Transmission security</h3><p>Encrypting data in transit with TLS 1.3/1.2 (SSL and TLS 1.0/1.1 are deprecated), VPNs (IPsec, WireGuard), WPA3 for Wi-Fi, and secure routing practices.</p></div>
+        <div class="card"><h3>Network management</h3><p>Monitoring network performance, availability and security events through centralised management tools, using secure protocols (SSH, SNMPv3).</p></div>
+      </div>
+
+      <h3>Insecure protocols and their replacements</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Avoid</th><th>Problem</th><th>Use instead</th></tr></thead>
+        <tbody>
+          <tr><td>Telnet</td><td>Passwords in clear text</td><td>SSH</td></tr>
+          <tr><td>FTP</td><td>Clear-text credentials and files</td><td>SFTP or FTPS</td></tr>
+          <tr><td>HTTP</td><td>No encryption or server authentication</td><td>HTTPS with TLS 1.3/1.2</td></tr>
+          <tr><td>WEP, WPA (TKIP)</td><td>Broken; keys recoverable</td><td>WPA3 (or WPA2-AES where WPA3 is unavailable)</td></tr>
+          <tr><td>SNMP v1/v2c</td><td>Community strings in clear text</td><td>SNMPv3 with authentication and encryption</td></tr>
+          <tr><td>SSL, TLS 1.0/1.1</td><td>Known protocol attacks</td><td>TLS 1.3</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout tip"><span class="label">Why WPA3</span><p>WPA3-Personal replaces the WPA2 pre-shared-key handshake with SAE (Simultaneous Authentication of Equals), which resists offline password-guessing attacks on captured handshakes and provides forward secrecy. Open networks can use OWE ("Enhanced Open") so traffic is encrypted even without a password.</p></div>
+
+      <div class="callout example"><span class="label">Real-world example: e-commerce platform</span>
+        <p><strong>Scenario:</strong> an e-commerce company uses strong TLS encryption for customer transactions. However, its internal network has no segmentation, and employee workstations are on the same network segment as database servers.</p>
+        <p><strong>Telecommunications security issues:</strong></p>
+        <ul>
+          <li><strong>Poor network segmentation:</strong> a flat network allows lateral movement if one device is compromised.</li>
+          <li><strong>Weak internal controls:</strong> no internal firewalls between different network zones.</li>
+          <li><strong>Over-reliance on perimeter security:</strong> strong external encryption does not protect against internal threats.</li>
+        </ul>
+        <p><strong>Outcome:</strong> when an employee's workstation is infected with malware, attackers can easily move to database servers and steal customer data despite strong external encryption. A zero-trust design (workstations may only reach the database through the application, with every connection authenticated) would have blocked that path.</p>
+      </div>
+      <div class="callout warn"><span class="label">Common mistake</span><p>Thinking TLS protects the data everywhere. TLS protects data <em>in transit</em> between two endpoints. Once it arrives on the server, protection depends on the other layers.</p></div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: Telecommunications security</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q3</span>A company implements excellent encryption for data transmission but does not segment its internal network. Which telecommunications security principle is weak?</p>
+          <div class="opts"><button>Transmission Security</button><button data-correct>Network Architecture</button><button>Access Controls</button><button>Network Management</button></div>
+          <div class="explain">Network segmentation is a critical architectural security control that limits lateral movement if a system is compromised. Without segmentation, attackers who breach one system can easily access others on the same network, regardless of strong transmission encryption.</div>
+        </div>
+        <div class="quiz-done"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="layer4"><span class="num">5</span>Layer 4: Cybersecurity integration</h2>
+      <p><strong>Definition:</strong> the <strong>strategic integration</strong> of all security layers to create a comprehensive security posture and organisational resilience. This is where management, people and frameworks come in.</p>
+      <div class="cards">
+        <div class="card"><h3>Integration &amp; coordination</h3><p>Ensuring all security layers work together cohesively rather than as isolated silos: developers, operations and network teams share alerts, priorities and responsibility.</p></div>
+        <div class="card"><h3>Weakest link principle</h3><p>Recognising that overall security strength equals the strength of the weakest component across all layers.</p></div>
+        <div class="card"><h3>Risk management</h3><p>Balancing security investments based on threat assessment (dangerousness × probability, also written impact × likelihood).</p></div>
+        <div class="card"><h3>Organisational responsibility</h3><p>Establishing security as everyone's responsibility, not just the IT department's job, with leadership accountable for it.</p></div>
+      </div>
+
+      <h3>Risk management worked example</h3>
+      <p>Score each risk on 1–5 for <strong>dangerousness (impact)</strong> and <strong>probability (likelihood)</strong>, then multiply:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Risk</th><th>Layer</th><th>Probability</th><th>Dangerousness</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr><td>Staff phished, credentials stolen</td><td>4 (people)</td><td>4</td><td>4</td><td><strong>16</strong></td></tr>
+          <tr><td>Unpatched VPN appliance exploited</td><td>2 / 3</td><td>3</td><td>5</td><td><strong>15</strong></td></tr>
+          <tr><td>Backups fail to restore</td><td>2</td><td>2</td><td>5</td><td><strong>10</strong></td></tr>
+          <tr><td>Office Wi-Fi still on WPA2 with a shared password</td><td>3</td><td>2</td><td>3</td><td><strong>6</strong></td></tr>
+        </tbody>
+      </table></div>
+      <p>The budget goes first to phishing-resistant MFA plus awareness training, then patching the VPN. Treating risks in score order is how the weakest-link principle becomes an action plan.</p>
+
+      <h3>Frameworks for integration</h3>
+      <div class="cards">
+        <div class="card"><h4>NIST CSF 2.0 (2024)</h4><p>Six functions: Govern (new), Identify, Protect, Detect, Respond, Recover. "Govern" is exactly this layer: strategy, roles, policy and supply-chain risk.</p></div>
+        <div class="card"><h4>ISO/IEC 27001:2022</h4><p>Certifiable management system for information security. Its 93 Annex A controls are grouped into organisational, people, physical and technological themes, which map neatly onto the layers on this page.</p></div>
+      </div>
+
+      <div class="callout example"><span class="label">Real-world example: manufacturing company</span>
+        <p><strong>Scenario:</strong> a manufacturing company invests heavily in network security (firewalls, intrusion detection) but neglects employee security training. It also has excellent backup systems but poor access controls on its design servers.</p>
+        <p><strong>Cybersecurity integration issues:</strong></p>
+        <ul>
+          <li><strong>Inconsistent security investment:</strong> strong in some areas, weak in others.</li>
+          <li><strong>Failure to recognise the weakest link:</strong> despite strong network security, human factors create vulnerabilities.</li>
+          <li><strong>Lack of holistic view:</strong> treating security as a set of isolated controls rather than an integrated system.</li>
+        </ul>
+        <p><strong>Outcome:</strong> an employee falls for a phishing email, giving attackers credentials that bypass the strong network security. Attackers then access design servers because of weak access controls, stealing proprietary manufacturing designs. Training plus phishing-resistant MFA (passkeys) would have broken the first step; least privilege on the design servers would have limited the second.</p>
+      </div>
+
+      <div class="quiz">
+        <div class="quiz-head"><h3>Knowledge check: Cybersecurity integration</h3><span class="quiz-score"></span></div>
+        <div class="q">
+          <p class="q-text"><span class="qn">Q4</span>A company has strong logical, operational and telecommunications security, but no employee security training programme. According to the "weakest link" principle, what is its overall security level?</p>
+          <div class="opts"><button>Excellent: 3 out of 4 areas are strong</button><button>Good: the majority of areas are strong</button><button data-correct>Poor: one weak area compromises all</button><button>Cannot determine without more information</button></div>
+          <div class="explain">The "weakest link" principle states that overall security is determined by the weakest component. Since human factors (lack of training) are among the most exploited weaknesses (phishing is a leading entry point), this gap can undermine all other controls. In practice, defence in depth can soften the damage, but the principle tells you where to invest next.</div>
+        </div>
+        <div class="quiz-done"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="controls"><span class="num">6</span>Controls across the layers</h2>
+      <p>Every layer uses controls of three kinds (administrative, technical, physical), and each control acts at a moment: before (preventive), during (detective) or after (corrective) an incident.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Preventive</th><th>Detective</th><th>Corrective</th></tr></thead>
+        <tbody>
+          <tr><th>Administrative</th><td>Security policy, training, data classification rules</td><td>Audits, log reviews</td><td>Incident response plan, disciplinary action</td></tr>
+          <tr><th>Technical</th><td>MFA, firewall, encryption, network segmentation, patching</td><td>IDS, SIEM alerts, EDR, file-integrity monitoring</td><td>Restore from backup, quarantine malware, failover</td></tr>
+          <tr><th>Physical</th><td>Locked server room, badge access</td><td>CCTV, door alarms</td><td>Fire suppression, replacing damaged equipment</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout key"><span class="label">Key idea</span><p>A strong design has preventive, detective <em>and</em> corrective controls in every layer. Prevention alone fails silently; detection without correction just watches the damage.</p></div>
+    </section>
+
+    <section>
+      <h2 id="quiz"><span class="num">7</span>Final quiz</h2>
+      <div class="quiz">
+        <div class="quiz-head"><h3>Quiz: Security layers</h3><span class="quiz-score"></span></div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q5</span>Which layer does SQL injection in a web application mainly belong to?</p>
+          <div class="opts"><button data-correct>Logical &amp; application</button><button>Operational</button><button>Telecommunications</button><button>Cybersecurity integration</button></div>
+          <div class="explain">Injection is a flaw in the application code (OWASP Top 10, "Injection"). It is fixed by parameterised queries and input validation in the software.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q6</span>A server is compromised because a published patch was never installed. Which layer failed?</p>
+          <div class="opts"><button>Logical &amp; application</button><button data-correct>Operational</button><button>Telecommunications</button><button>Physical</button></div>
+          <div class="explain">Patch and update management is a day-to-day operational task. The flaw was in the software, but the failure was in operations not applying the fix.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q7</span>Which is the most secure choice for an office Wi-Fi network today?</p>
+          <div class="opts"><button>WEP</button><button>WPA with TKIP</button><button>WPA2 with a password written on the wall</button><button data-correct>WPA3</button></div>
+          <div class="explain">WPA3 uses SAE, which resists offline password guessing. WEP and WPA-TKIP are broken; WPA2 is acceptable only with AES and a strong secret.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q8</span>A network administrator still manages switches with Telnet. What should replace it?</p>
+          <div class="opts"><button>FTP</button><button data-correct>SSH</button><button>HTTP</button><button>SNMPv1</button></div>
+          <div class="explain">Telnet sends passwords in clear text. SSH encrypts and authenticates the session. The other options are also insecure clear-text protocols.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q9</span>What does "defence in depth" mean?</p>
+          <div class="opts"><button>Buying the most expensive firewall</button><button data-correct>Several independent layers of controls, so one failure does not expose the asset</button><button>Encrypting data twice</button><button>Hiding the network from attackers</button></div>
+          <div class="explain">Defence in depth stacks different controls (application, operations, network, people) so an attacker must defeat several, and each layer can detect them.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q10</span>Which statement best describes zero trust?</p>
+          <div class="opts"><button>Trust everything inside the firewall</button><button>Never connect to the internet</button><button data-correct>Never trust by default; authenticate and authorise every request, wherever it comes from</button><button>Only trust users with admin rights</button></div>
+          <div class="explain">Zero trust (NIST SP 800-207) removes the idea of a trusted internal network, which is exactly what failed in the flat-network e-commerce scenario.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q11</span>Risk X has probability 2 and dangerousness 5. Risk Y has probability 4 and dangerousness 3. Which score is higher?</p>
+          <div class="opts"><button>X, with 10</button><button data-correct>Y, with 12</button><button>They are equal at 7</button><button>X, with 25</button></div>
+          <div class="explain">Multiply, do not add: X = 2 × 5 = 10, Y = 4 × 3 = 12. Y is treated first.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q12</span>A SIEM raising an alert about many failed logins is which type of control?</p>
+          <div class="opts"><button>Administrative, preventive</button><button data-correct>Technical, detective</button><button>Physical, detective</button><button>Technical, corrective</button></div>
+          <div class="explain">It is software (technical) and it notices an event in progress (detective). Account lockout after the alert would be preventive or corrective.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q13</span>True or false: because an e-commerce site uses TLS 1.3, its customer database is protected even if an internal workstation is infected.</p>
+          <div class="opts tf"><button>True</button><button data-correct>False</button></div>
+          <div class="explain">TLS only protects data in transit between browser and server. An infected internal machine on a flat network can reach the database directly: a network-architecture problem.</div>
+        </div>
+
+        <div class="q">
+          <p class="q-text"><span class="qn">Q14</span>In NIST CSF 2.0, which function corresponds most closely to Layer 4 (cybersecurity integration and strategy)?</p>
+          <div class="opts"><button>Detect</button><button>Recover</button><button data-correct>Govern</button><button>Protect</button></div>
+          <div class="explain">Govern, added in CSF 2.0 (2024), covers strategy, roles and responsibilities, policy and supply-chain risk: the organisation-wide integration this layer describes.</div>
+        </div>
+
+        <div class="quiz-done"></div>
+        <p><button class="btn ghost quiz-reset">Reset quiz</button></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="summary"><h2>Summary</h2>
+        <ul>
+          <li><strong>Layer 1, logical &amp; application:</strong> secure development, cryptography, access control (least privilege, MFA), data classification.</li>
+          <li><strong>Layer 2, operational:</strong> configuration and patch management, tested backups (3-2-1 plus offline/immutable), incident management, log management; RTO and RPO.</li>
+          <li><strong>Layer 3, telecommunications:</strong> segmentation and security zones, firewalls/IPS, TLS 1.3, VPN, WPA3, secure management protocols.</li>
+          <li><strong>Layer 4, cybersecurity integration:</strong> coordination, risk management (dangerousness × probability), everyone's responsibility, frameworks such as NIST CSF 2.0 and ISO/IEC 27001:2022.</li>
+          <li>Defence in depth stacks independent layers; zero trust removes implicit trust in the network.</li>
+          <li>Remember: <em>"Global security is always that of the weakest link."</em> Security is a process, not a product.</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/lt.js"></script>
+<script>
+// Layer explorer: clicking a ring of the security onion shows that layer's summary and a link to its section.
+(function () {
+  'use strict';
+  var LAYERS = {
+    '1': { name: 'Layer 1: Logical & application security', id: 'layer1',
+      text: 'Software, programs and data: secure development, cryptography, access control and data classification. Typical failure: an application flaw or a shared admin password.' },
+    '2': { name: 'Layer 2: Operational security', id: 'layer2',
+      text: 'Day-to-day running: configuration and update management, backups and continuity, incident management, log management. Typical failure: an unpatched server or untested backups.' },
+    '3': { name: 'Layer 3: Telecommunications security', id: 'layer3',
+      text: 'End-to-end connectivity: network architecture and segmentation, firewalls and IPS, transmission security (TLS, VPN, WPA3), network management. Typical failure: a flat network that allows lateral movement.' },
+    '4': { name: 'Layer 4: Cybersecurity integration', id: 'layer4',
+      text: 'The whole organisation: coordination of all layers, the weakest-link principle, risk management and shared responsibility. Typical failure: untrained staff or security run in silos.' }
+  };
+  var out = document.getElementById('ringOut');
+  var rings = document.querySelectorAll('.ring');
+  if (!out || !rings.length) return;
+  function show(g) {
+    var d = LAYERS[g.getAttribute('data-layer')];
+    if (!d) return;
+    rings.forEach(function (r) { r.classList.toggle('is-active', r === g); });
+    out.innerHTML = '';
+    var h = document.createElement('h4'); h.textContent = d.name;
+    var p = document.createElement('p'); p.textContent = d.text; p.style.margin = '0 0 6px';
+    var a = document.createElement('a'); a.href = '#' + d.id; a.textContent = 'Go to this layer →';
+    out.appendChild(h); out.appendChild(p); out.appendChild(a);
+  }
+  rings.forEach(function (g) {
+    g.addEventListener('click', function () { show(g); });
+    g.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(g); }
+    });
+  });
+})();
+</script>
 </body>
 </html>
